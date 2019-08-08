@@ -19,6 +19,7 @@ import './registerServiceWorker'
 // Vue plugins
 import './plugins/iview'
 import './plugins/vant'
+import './plugins/element-ui'
 import './plugins/baseComponents'
 
 // global css

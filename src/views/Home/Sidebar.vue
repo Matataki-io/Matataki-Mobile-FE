@@ -128,7 +128,7 @@
         <a href="https://wj.qq.com/s2/4206369/e337">
           <div class="cell">
             <div class="cell-left">
-              <svg-icon icon-class="feedback" class="left-img icon-feedback" /> 
+              <svg-icon icon-class="feedback" class="left-img icon-feedback" />
               <span class="left-text">用户反馈</span>
             </div>
             <div class="cell-right"><span></span></div>
@@ -136,16 +136,21 @@
         </a>
       </div>
     </div>
-    <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" />
+    <!-- <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" /> -->
+    <AuthModal v-model="showModal" />
   </van-popup>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import defaultAvatar from '@/assets/avatar-default.svg'
+import AuthModal from '@/components/Auth/auth.vue'
 
 export default {
   name: 'Sidebar',
+  components: {
+    AuthModal
+  },
   props: {
     value: {
       type: Boolean,

@@ -356,6 +356,23 @@ const API = {
   async wxShare(url) {
     return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
+  async getCaptcha(email) {
+    return axiosforApiServer.get('/login/captcha', { params: { email } })
+  },
+  async verifyEmail(email) {
+    return axiosforApiServer({
+      url: '/login/verify',
+      method: 'get',
+      params: { email },
+      noLoading: true
+    })
+  },
+  async register({ email, password, captcha }) {
+    return axiosforApiServer.post('/login/regist', { email, password, captcha: captcha.toString() })
+  },
+  async login({ username, password }) {
+    return axiosforApiServer.post('/login/account', { username, password })
+  }
 }
 
 export default API
