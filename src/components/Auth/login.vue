@@ -10,7 +10,8 @@
       <el-form-item class="ss-btn">
         <el-button type="primary" @click="submitLoginForm">登录</el-button>
         <div class="bottom-tip">
-          <a href="javascript:void(0);">忘记密码</a> | <a href="javascript:void(0);" @click="$emit('switch')">注册</a>
+          <!-- <a href="javascript:void(0);">忘记密码</a> | -->
+          <a href="javascript:void(0);" @click="$emit('switch')">注册</a>
         </div>
       </el-form-item>
     </el-form>
