@@ -6,6 +6,7 @@
     <BackTop v-if="!isPublishPage" :right="20" :bottom="70" :height="40">
       <img class="backtop" src="@/assets/img/icon_back_top.svg" alt="backtop" />
     </BackTop>
+    <AuthModal v-model="loginModalShow" />
   </div>
 </template>
 
@@ -15,8 +16,12 @@ import { mapActions, mapGetters } from 'vuex'
 import { version } from '../package.json'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
+import AuthModal from '@/components/Auth/index.vue'
 
 export default {
+  components: {
+    AuthModal
+  },
   data() {
     return {
       isRouterAlive: true
@@ -29,6 +34,14 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
+    loginModalShow: {
+      get() {
+        return this.$store.state.loginModalShow
+      },
+      set(v) {
+        this.$store.commit('setLoginModal', v)
+      }
+    },
     isPublishPage() {
       // 如果是发布页面隐藏小火箭
       return this.$route.name === 'Publish'

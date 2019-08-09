@@ -91,7 +91,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="login-btn" href="javascript:;" @click="showModal = true">立即登录</div>
+        <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">立即登录</div>
       </template>
       <div class="cell-container">
         <a href="https://smartsignature.io/article/617">
@@ -137,14 +137,14 @@
       </div>
     </div>
     <!-- <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" /> -->
-    <AuthModal v-model="showModal" />
+    <!-- <AuthModal v-model="showModal" /> -->
   </van-popup>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import defaultAvatar from '@/assets/avatar-default.svg'
-import AuthModal from '@/components/Auth/auth.vue'
+import AuthModal from '@/components/Auth/index.vue'
 
 export default {
   name: 'Sidebar',
