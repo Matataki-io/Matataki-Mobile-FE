@@ -460,7 +460,7 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (this.currentUserInfo.idProvider !== 'GitHub') {
+        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
         try {
@@ -497,7 +497,7 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
-      if (this.currentUserInfo.idProvider !== 'GitHub') {
+      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$backendAPI.editArticle({ article, signature })
@@ -535,7 +535,7 @@ export default {
     // 发布||修改按钮
     async sendThePost() {
       // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page
-      if (!this.isLogined) return (this.$store.commit('setLoginModal', true))
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData))
@@ -828,7 +828,7 @@ export default {
     margin-right: 1px !important;
   }
 }
-.ivu-poptip-popper  {
+.ivu-poptip-popper {
   z-index: 500;
 }
 </style>

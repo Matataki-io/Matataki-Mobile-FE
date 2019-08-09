@@ -27,8 +27,11 @@ import '@/assets/css/index.less'
 
 import './icons'
 
+import publishMethods from './utils/publish_methods'
+
 Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$errorHandling = errorHandling
+Vue.prototype.$publishMethods = publishMethods
 
 Vue.use(VueClipboard)
 

@@ -761,6 +761,7 @@ export default {
     },
     // 购买按钮
     buyButton() {
+      if (!this.detection()) return
       const { currentUserInfo, findBlockchain, article } = this
       const { idProvider } = currentUserInfo
       const filterBlockchain = findBlockchain(article.prices, idProvider)
@@ -770,8 +771,28 @@ export default {
       }
       this.buyProductModal = true
     },
+    // 检测能否投资
+    detection() {
+      if (this.isSupport) {
+        this.$toast({ duration: 1000, message: '已投资' })
+        return false
+      }
+      if (!this.isLogined) {
+        this.$toast({ duration: 1000, message: '登陆后即可投资' })
+        return false
+      }
+      // email github 无法赞赏
+      const { idProvider } = this.currentUserInfo
+      if (this.$publishMethods.invalidId(idProvider)) {
+        this.$toast({ duration: 1000, message: `${idProvider}账号暂不支持` })
+        return false
+      }
+      return true
+    },
     // 投资按钮
     async invest() {
+      if (!this.detection()) return
+
       if (this.currentUserInfo.idProvider === 'GitHub')
         return this.$toast({ duration: 1000, message: 'Github账号暂不支持投资功能' })
       // 如果是商品 判断库存是否充足

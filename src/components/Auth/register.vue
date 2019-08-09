@@ -1,19 +1,39 @@
 <template>
-  <section class="register" v-show="!isLogin">
-    <el-form :model="registerForm" :rules="registerRules" ref="registerForm" class="ss-form">
+  <section v-show="!isLogin" class="register">
+    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input type="" v-model="registerForm.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="registerForm.email" type="" placeholder="请输入邮箱"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="registerForm.password" placeholder="请设置密码" show-password></el-input>
+        <el-input
+          v-model="registerForm.password"
+          type="password"
+          placeholder="请设置密码"
+          show-password
+        ></el-input>
       </el-form-item>
       <el-form-item prop="repassword">
-        <el-input type="password" v-model="registerForm.repassword" placeholder="请再次设置密码" show-password></el-input>
+        <el-input
+          v-model="registerForm.repassword"
+          type="password"
+          placeholder="请再次设置密码"
+          show-password
+        ></el-input>
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
-          <el-input v-model.number="registerForm.smscode" placeholder="请输入验证码" autocomplete="off"></el-input>
-          <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">{{ timer ? `${count}S` : `获取验证码` }}</el-button>
+          <el-input
+            v-model="registerForm.smscode"
+            placeholder="请输入邮箱验证码"
+            autocomplete="off"
+          ></el-input>
+          <el-button
+            type="primary"
+            :loading="loading"
+            :disabled="!!timer || loading"
+            @click="sendCode"
+            >{{ timer ? `${count}S` : `获取验证码` }}</el-button
+          >
         </div>
       </el-form-item>
       <el-form-item class="ss-btn">
@@ -55,7 +75,9 @@ export default {
       if (!value) {
         return callback(new Error('请输入验证码'))
       }
-      if (!Number.isInteger(value)) {
+
+
+      if (!Number.isInteger(Number(value))) {
         callback(new Error('请输入数字值'))
       } else if (value.toString().length !== 6) {
         callback(new Error('请输入6位数字'))
@@ -137,21 +159,22 @@ export default {
       }
     },
     // 注册提交
-    submitRegisterForm() {
-      this.$refs.registerForm.validate(async (valid) => {
+    async submitRegisterForm() {
+      await this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           try {
             this.loading = true
-            const res = await this.$API.register({
+            const res = await this.$backendAPI.register({
               email: this.registerForm.email,
               captcha: this.registerForm.smscode,
               password: this.registerForm.password
             })
-            if (res.data.code === 0) {
+            console.log(res)
+            if (res.status === 200 && res.data.code === 0) {
               this.successToast('注册成功，请登录')
               this.$emit('switch')
             } else {
-              this.failToast('注册失败，请重试')
+              this.failToast(res.data.message)
             }
             this.loading = false
           } catch (error) {
@@ -175,8 +198,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     button {
-      margin-left: 20px;
-      width: 120px;
+      margin-left: 10px;
       text-align: center;
     }
   }

@@ -80,7 +80,8 @@ export default {
         return
       }
       await this.signInx(type)
-      this.change(false)
+      // this.change(false)
+      this.$emit('hide')
     },
     async signInx(type) {
       try {
@@ -119,7 +120,7 @@ export default {
             })
             if (res.data.code === 0) {
               this.$store.commit('setAccessToken', res.data.data)
-              this.$store.commit('setUserConfig', { idProvider: 'email' })
+              this.$store.commit('setUserConfig', { idProvider: 'Email' })
               // localStorage.setItem('idProvider', config.idProvider)
               this.successToast('登录成功')
               this.$emit('hide')
