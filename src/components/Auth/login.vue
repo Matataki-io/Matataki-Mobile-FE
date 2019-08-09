@@ -18,13 +18,13 @@
       <h1 class="oauth-title">第三方账号登录</h1>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
-          <img src="@/assets/newimg/eos_icon.svg" alt="EOS">
+          <svg-icon class="eos" icon-class="eos_login" />
         </div>
         <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
           <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
         </div>
         <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
-          <img src="@/assets/img/github.png" alt="github">
+          <svg-icon class="github" icon-class="github" />
         </div>
       </div>
     </div>
@@ -160,12 +160,18 @@ export default {
     font-weight: 400;
   }
   .oauth {
+    .eos {
+      font-size: 24px;
+    }
+    .github {
+      font-size: 22px;
+    }
     .flexCenter();
     .oauth-bg {
       cursor: pointer;
       .flexCenter();
-      width: 32px;
-      height: 32px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       padding: 6px;
       img {
@@ -181,7 +187,7 @@ export default {
   background: #000000;
 }
 .bg-gray {
-  background: #333333;
+  background: #333;
 }
 .bg-blue {
   background: #4d9afd;
