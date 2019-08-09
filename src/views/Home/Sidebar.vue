@@ -136,8 +136,6 @@
         </a>
       </div>
     </div>
-    <!-- <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" /> -->
-    <!-- <AuthModal v-model="showModal" /> -->
   </van-popup>
 </template>
 

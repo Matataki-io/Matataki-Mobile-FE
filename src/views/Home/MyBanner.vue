@@ -22,9 +22,8 @@
         <p class="login-notification">即刻登录</p>
         <p class="login-notification">开始智能签名之旅</p>
       </div>
-      <a class="my-user-page" href="javascript:;" @click="showModal = true">立即登录</a>
+      <a class="my-user-page" href="javascript:;" @click="$store.commit('setLoginModal', true)">立即登录</a>
     </template>
-    <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" />
   </div>
 </template>
 
@@ -46,7 +45,6 @@ export default {
   },
   data() {
     return {
-      showModal: false,
       avatar: ''
     }
   },
@@ -61,10 +59,6 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
-    },
-    // 改变modal
-    changeInfo(status) {
-      this.showModal = status
     }
   },
   watch: {

@@ -148,7 +148,6 @@
       @changeInfo="changeInfo"
       @modalCancel="modalCancel"
     />
-    <BaseModalForSignIn :show-modal="showSignInModal" @changeInfo="changeInfo2" />
     <article-transfer
       v-if="isShowTransfer"
       :transfer-modal="transferModal"
@@ -220,7 +219,6 @@ export default {
     isOriginal: false, // 是否原创
     imgUploadDone: 0,
     showModal: false, // 弹框显示
-    showSignInModal: false,
     modalText: {
       text: ['文章尚未保存，是否退出？'], // 退出
       button: ['再想想', '退出']
@@ -472,7 +470,7 @@ export default {
           console.log(response)
           return 'success'
         } catch (error) {
-          this.showSignInModal = this.$errorHandling.isNoToken(error)
+          this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
           throw error
         }
       } catch (error) {
@@ -537,7 +535,7 @@ export default {
     // 发布||修改按钮
     async sendThePost() {
       // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page
-      if (!this.isLogined) return (this.showSignInModal = true)
+      if (!this.isLogined) return (this.$store.commit('setLoginModal', true))
 
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData))
@@ -708,9 +706,6 @@ export default {
     // 关闭modal
     changeInfo(status) {
       this.showModal = status
-    },
-    changeInfo2(status) {
-      this.showSignInModal = status
     },
     // modal 同意
     modalCancel() {

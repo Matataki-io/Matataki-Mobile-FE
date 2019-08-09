@@ -139,11 +139,6 @@
         :listtype="'others'"
       />
     </template>
-
-    <BaseModalForSignIn
-      :show-modal="showSignInModal"
-      @changeInfo="stats => (showSignInModal = stats)"
-    />
   </div>
 </template>
 
@@ -171,7 +166,6 @@ export default {
         supports: 0,
         drafts: 0
       },
-      showSignInModal: false,
       scrollStatus: false // 根据滚动状态判断是否显示按钮
     }
   },
@@ -224,7 +218,7 @@ export default {
     },
     async followOrUnfollowUser({ id, type }) {
       if (!this.isLogined) {
-        this.showSignInModal = true
+        this.$store.commit('setLoginModal', true)
         return
       }
       const message = type === 1 ? '关注' : '取消关注'
@@ -235,7 +229,7 @@ export default {
         this.followed = type === 1
       } catch (error) {
         this.$toast.fail({ duration: 1000, message: `${message}失败` })
-        this.showSignInModal = this.$errorHandling.isNoToken(error)
+        this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
       }
       this.refreshUser()
     },

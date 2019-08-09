@@ -355,7 +355,6 @@
       :channel="article.channel_id"
       @changeInfo="status => (infoModa = status)"
     />
-    <BaseModalForSignIn :show-modal="showModal" @changeInfo="changeInfo" />
     <Widget
       :id="article.id"
       :widget-modal="widgetModal"
@@ -455,7 +454,6 @@ export default {
         ontPrice: 0,
         stock: 0
       },
-      showModal: false,
       supportModal: false,
       opr: false,
       infoModa: false,
@@ -662,9 +660,6 @@ export default {
       })
     },
     ...mapActions(['makeShare', 'makeOrder']),
-    changeInfo(status) {
-      this.showModal = status
-    },
     // 复制hash
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
@@ -756,7 +751,7 @@ export default {
     },
     b4support() {
       if (!this.isLogined) {
-        this.showModal = true
+        this.$store.commit('setLoginModal', true)
       }
     },
     // 根据 idProvider 查询商品数据

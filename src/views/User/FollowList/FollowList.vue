@@ -39,10 +39,6 @@
         @followOrUnfollowUser="followOrUnfollowUser"
       />
     </BasePull>
-    <BaseModalForSignIn
-      :show-modal="showSignInModal"
-      @changeInfo="stats => (showSignInModal = stats)"
-    />
   </div>
 </template>
 
@@ -77,7 +73,6 @@ export default {
       ],
       activeIndex: 0,
       activeIndexName: this.listtype,
-      showSignInModal: false
     }
   },
   computed: {
@@ -102,7 +97,7 @@ export default {
     async followOrUnfollowUser({ id, type, index, indexList }) {
       // console.log(id, type, index, indexList);
       if (!this.isLogined) {
-        this.showSignInModal = true
+        this.$store.commit('setLoginModal', true)
         return
       }
       const message = type === 1 ? '关注' : '取消关注'
@@ -122,7 +117,7 @@ export default {
         this.followed = type === 1
       } catch (error) {
         this.$toast.fail({ duration: 1000, message: `${message}失败` })
-        this.showSignInModal = this.$errorHandling.isNoToken(error)
+        this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
       }
     }
   }
