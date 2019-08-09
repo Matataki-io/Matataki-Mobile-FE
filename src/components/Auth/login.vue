@@ -104,7 +104,7 @@ export default {
       })
     },
     failToast(msg) {
-      this.$toast.fail({
+      this.$toast({
         duration: 1500,
         message: msg
       })
@@ -125,7 +125,7 @@ export default {
               this.successToast('登录成功')
               this.$emit('hide')
             } else {
-              this.failToast(`登录失败，${res.data.message}`)
+              this.failToast(`登录失败，账号或密码错误`)
             }
           } catch (error) {
             this.failToast('登录失败，请联系管理员')
