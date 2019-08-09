@@ -120,6 +120,7 @@ export default {
             if (res.data.code === 0) {
               this.$store.commit('setAccessToken', res.data.data)
               this.$store.commit('setUserConfig', { idProvider: 'email' })
+              // localStorage.setItem('idProvider', config.idProvider)
               this.successToast('登录成功')
               this.$emit('hide')
             } else {

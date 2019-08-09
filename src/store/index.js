@@ -313,8 +313,13 @@ export default new Vuex.Store({
     },
     setUserConfig(state, config = null) {
       // only idProvider now
-      if (config) state.userConfig.idProvider = config.idProvider
-      else state.userConfig.idProvider = null
+      if (config) {
+        localStorage.setItem('idProvider', config.idProvider)
+        state.userConfig.idProvider = config.idProvider
+      } else {
+        localStorage.removeItem('idProvider')
+        state.userConfig.idProvider = null
+      }
     },
     setLoginModal(state, show) {
       state.loginModalShow = show
