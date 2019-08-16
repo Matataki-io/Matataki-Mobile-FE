@@ -63,33 +63,6 @@ export default {
     }
   },
   created() {
-    // https://juejin.im/post/5bfa4bb951882558ae3c171e
-    console.info('Smart Signature version :', version)
-    console.log(navigator.userAgent.toLowerCase(), window.location)
-    this.tz()
-
-    const { signIn, updateNotify } = this
-
-    let accessToken = null
-    // 根据本地存储的状态来自动登陆。失败之后再重试一次
-    const data = {
-      accessToken: accessTokenAPI.get(),
-      idProvider: localStorage.getItem('idProvider')
-    }
-    if (data.idProvider && data.accessToken) {
-      console.log('sign in form localStorage')
-      try {
-        accessToken = signIn(data)
-      } catch (error) {
-        accessToken = signIn(data)
-      }
-    }
-    this.$backendAPI.accessToken = accessToken
-    console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
-
-    window.updateNotify = updateNotify
-  },
-  mounted() {
     ;(function() {
       const isPC = () => {
         const userAgentInfo = navigator.userAgent
@@ -121,6 +94,31 @@ export default {
     const easterEgg = new Konami(() => {
       this.triggerEasterEgg()
     })
+    // https://juejin.im/post/5bfa4bb951882558ae3c171e
+    console.info('Smart Signature version :', version)
+    console.log(navigator.userAgent.toLowerCase(), window.location)
+    this.tz()
+
+    const { signIn, updateNotify } = this
+
+    let accessToken = null
+    // 根据本地存储的状态来自动登陆。失败之后再重试一次
+    const data = {
+      accessToken: accessTokenAPI.get(),
+      idProvider: localStorage.getItem('idProvider')
+    }
+    if (data.idProvider && data.accessToken) {
+      console.log('sign in form localStorage')
+      try {
+        accessToken = signIn(data)
+      } catch (error) {
+        accessToken = signIn(data)
+      }
+    }
+    this.$backendAPI.accessToken = accessToken
+    console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
+
+    window.updateNotify = updateNotify
   },
   methods: {
     tz() {
@@ -147,6 +145,17 @@ export default {
       } else {
         pathURL = pathname
       }
+
+      const getQueryVariable = (variable) => {
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (let i=0;i<vars.length;i++) {
+                let pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+      }
+      if (getQueryVariable('from') === 'wx')  return
 
       if (isWeixin() && origin !== wxOrigin) {
         window.location.href = wxOrigin + pathURL
