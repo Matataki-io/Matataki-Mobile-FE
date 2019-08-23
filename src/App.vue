@@ -146,7 +146,7 @@ export default {
         pathURL = pathname
       }
 
-      const getQueryVariable = (variable) => {
+      /* const getQueryVariable = (variable) => {
         let query = window.location.search.substring(1);
         let vars = query.split("&");
         for (let i=0;i<vars.length;i++) {
@@ -155,7 +155,7 @@ export default {
         }
         return(false);
       }
-      if (getQueryVariable('from') === 'wx')  return
+      if (getQueryVariable('from') === 'wx')  return */
 
       if (isWeixin() && origin !== wxOrigin) {
         window.location.href = wxOrigin + pathURL
