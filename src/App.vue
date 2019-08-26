@@ -96,7 +96,7 @@ export default {
     })
     // https://juejin.im/post/5bfa4bb951882558ae3c171e
     console.info('Smart Signature version :', version)
-    console.log(navigator.userAgent.toLowerCase(), window.location)
+    // console.log(navigator.userAgent.toLowerCase(), window.location)
     this.tz()
 
     const { signIn, updateNotify } = this
@@ -146,16 +146,18 @@ export default {
         pathURL = pathname
       }
 
-      const getQueryVariable = (variable) => {
-        let query = window.location.search.substring(1);
-        let vars = query.split("&");
-        for (let i=0;i<vars.length;i++) {
-                let pair = vars[i].split("=");
-                if(pair[0] == variable){return pair[1];}
+      const getQueryVariable = variable => {
+        let query = window.location.search.substring(1)
+        let vars = query.split('&')
+        for (let i = 0; i < vars.length; i++) {
+          let pair = vars[i].split('=')
+          if (pair[0] == variable) {
+            return pair[1]
+          }
         }
-        return(false);
+        return false
       }
-      if (getQueryVariable('from') === 'wx')  return
+      if (getQueryVariable('from') === 'wx') return
 
       if (isWeixin() && origin !== wxOrigin) {
         window.location.href = wxOrigin + pathURL
