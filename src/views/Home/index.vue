@@ -48,7 +48,7 @@
         :auto-request-time="itemList.autoRequestTime"
         @getListData="getListData"
       >
-        <template v-if="itemList.articles.length === 0">
+        <template v-if="!itemList.loading">
           <!-- 骨架占位 -->
           <ContentLoader
             v-for="itemLoader in [0, 1]"
@@ -71,6 +71,14 @@
             :article="itemArticle"
           />
         </template>
+        <p
+          v-if="itemList.articles.length === 0 && itemList.loading"
+          style="font-size: 14px;
+              text-align: center;
+              margin-top: 20px;"
+        >
+          暂无内容
+        </p>
       </BasePull>
     </div>
 
@@ -115,7 +123,8 @@ export default {
               },
               apiUrl: 'homeScoreRanking',
               articles: [],
-              autoRequestTime: 0
+              autoRequestTime: 0,
+              loading: false
             },
             {
               label: '最新',
@@ -125,7 +134,19 @@ export default {
               },
               apiUrl: 'homeTimeRanking',
               articles: [],
-              autoRequestTime: 0
+              autoRequestTime: 0,
+              loading: false
+            },
+            {
+              label: '关注',
+              title: '我的关注',
+              params: {
+                channel: 1
+              },
+              apiUrl: 'followedPosts',
+              articles: [],
+              autoRequestTime: 0,
+              loading: false
             }
           ],
           activeIndex: 0,
@@ -144,7 +165,8 @@ export default {
               },
               apiUrl: 'homeTimeRanking',
               articles: [],
-              autoRequestTime: 0
+              autoRequestTime: 0,
+              loading: false
             },
             {
               label: '最热',
@@ -154,7 +176,8 @@ export default {
               },
               apiUrl: 'homeSupportsRanking',
               articles: [],
-              autoRequestTime: 0
+              autoRequestTime: 0,
+              loading: false
             }
           ],
           activeIndex: 0,
@@ -218,6 +241,7 @@ export default {
     // 获取文章列表数据
     getListData(res) {
       // console.log(this.nowIndex, res.index);
+      this.content[this.nowIndex].navMenu[res.index].loading = true
       this.content[this.nowIndex].navMenu[res.index].articles = res.list
     },
     // 获取推荐文章或者商品

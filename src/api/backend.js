@@ -243,7 +243,9 @@ const API = {
       // tag by id
       getPostByTagById: 'posts/getPostByTag',
       // buy
-      buyHistory: 'order/products'
+      buyHistory: 'order/products',
+      // 已经关注用户的文章
+      followedPosts: 'posts/followedPosts'
     }
 
     return !needAccessToken

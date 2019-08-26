@@ -26,10 +26,11 @@
           </div>
         </transition>
       </div>
-      <div slot="info" class="information" @click="infoModa = true">
+      <!-- 文章攻略 暂时隐藏 -->
+      <!-- <div slot="info" class="information" @click="infoModa = true">
         <img src="@/assets/newimg/gonglue_innovationbar.svg" alt="information" />
         <span>攻略</span>
-      </div>
+      </div> -->
     </BaseHeader>
 
     <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
@@ -350,11 +351,12 @@
     </van-popup>
 
     <!-- 文章 Info -->
-    <ArticleInfo
+    <!-- 文章攻略 -->
+    <!-- <ArticleInfo
       :info-moda="infoModa"
       :channel="article.channel_id"
       @changeInfo="status => (infoModa = status)"
-    />
+    /> -->
     <Widget
       :id="article.id"
       :widget-modal="widgetModal"
@@ -392,7 +394,7 @@ import { ontAddressVerify } from '@/common/reg'
 import { precision } from '@/common/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
-import ArticleInfo from './ArticleInfo.vue'
+// import ArticleInfo from './ArticleInfo.vue'
 import Widget from './Widget'
 import articleTransfer from '@/components/articleTransfer'
 import tagCard from '@/components/tagCard/index'
@@ -412,7 +414,7 @@ export default {
   name: 'Article',
   components: {
     CommentsList,
-    ArticleInfo,
+    // ArticleInfo,
     ContentLoader,
     mavonEditor,
     Widget,
@@ -456,7 +458,7 @@ export default {
       },
       supportModal: false,
       opr: false,
-      infoModa: false,
+      // infoModa: false, // 文章攻略
       isRequest: false,
       articleLoading: true, // 文章加载状态
       isOriginal: false,
