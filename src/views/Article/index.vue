@@ -1044,10 +1044,8 @@ export default {
       this.totalSupportedAmount.showName = name
     },
     async followOrUnfollowUser({ id, type }) {
-      if (!this.isLogined) {
-        this.showSignInModal = true
-        return
-      }
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+
       const message = type === 1 ? '关注' : '取消关注'
       try {
         if (type === 1) await this.$backendAPI.follow({ id })
@@ -1056,7 +1054,6 @@ export default {
         this.followed = type === 1
       } catch (error) {
         this.$toast.fail({ duration: 1000, message: `${message}失败` })
-        this.showSignInModal = this.$errorHandling.isNoToken(error)
       }
     }
   }
