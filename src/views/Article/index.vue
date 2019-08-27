@@ -368,7 +368,8 @@
         name: article.nickname || article.author,
         time: articleCreateTimeComputed,
         content: compiledMarkdown,
-        shareLink: getShareLink
+        shareLink: getShareLink,
+        cover
       }"
       @changeWidgetModal="status => (widgetModal = status)"
     />
@@ -395,9 +396,9 @@ import { precision } from '@/common/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
 // import ArticleInfo from './ArticleInfo.vue'
-import Widget from './Widget'
-import articleTransfer from '@/components/articleTransfer'
-import tagCard from '@/components/tagCard/index'
+import Widget from './Widget/index.vue'
+import articleTransfer from '@/components/articleTransfer/index.vue'
+import tagCard from '@/components/tagCard/index.vue'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
