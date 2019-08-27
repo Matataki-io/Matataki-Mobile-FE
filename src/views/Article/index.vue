@@ -80,20 +80,11 @@
           </template>
         </div>
       </header>
+      <ipfs :hash="article.hash"></ipfs>
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
-
-      <div class="ipfs-hash">
-        <img
-          src="@/assets/img/icon_copy.svg"
-          class="copy-hash"
-          alt="hash"
-          @click="copyText(getCopyIpfsHash)"
-        />
-        <span>IPFS Hash: {{ article.hash || 'Loading...' }}</span>
-      </div>
-
-      <div class="decoration">
+      <statement :article="article"></statement>
+      <!-- <div class="decoration">
         <a
           data-pocket-label="pocket"
           data-pocket-count="horizontal"
@@ -106,7 +97,7 @@
             未经授权禁止转载
           </template>
         </span>
-      </div>
+      </div> -->
       <!-- don't tag hide -->
       <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
         <tag-card
@@ -395,6 +386,8 @@ import { ontAddressVerify } from '@/common/reg'
 import { precision } from '@/common/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
+import ipfs from './ipfs.vue'
+import statement from './statement.vue'
 // import ArticleInfo from './ArticleInfo.vue'
 import Widget from './Widget/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
@@ -420,7 +413,9 @@ export default {
     mavonEditor,
     Widget,
     tagCard,
-    articleTransfer
+    articleTransfer,
+    ipfs,
+    statement
   },
   props: ['hash'],
   data() {
