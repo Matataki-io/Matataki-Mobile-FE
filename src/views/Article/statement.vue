@@ -1,15 +1,6 @@
 <template>
   <div class="decoration">
-    <p class="statement">
-      免责声明：本文由用户「日番谷冬狮郎第十番队队长」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。
-    </p>
     <div class="flex mt">
-      <a
-        data-pocket-label="pocket"
-        data-pocket-count="horizontal"
-        class="pocket-btn"
-        data-lang="en"
-      ></a>
       <span class="is-original">
         本文发布于瞬matataki
         <template v-if="isOriginal">
@@ -17,6 +8,11 @@
         </template>
       </span>
     </div>
+    <p class="statement">
+      免责声明：本文由用户「{{
+        article.nickname || article.username
+      }}」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。
+    </p>
   </div>
 </template>
 
@@ -47,11 +43,11 @@ export default {
     color: rgba(178, 178, 178, 1);
     line-height: 1.5;
     padding: 0;
-    margin: 40px 0 0;
+    margin: 10px 0 0;
   }
   .is-original {
     padding: 0;
-    margin: 10px 0 0;
+    margin: 40px 0 0;
     text-align: right;
     font-size: 14px;
     color: #b2b2b2;

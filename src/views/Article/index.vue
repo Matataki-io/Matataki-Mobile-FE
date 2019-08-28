@@ -84,21 +84,6 @@
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
       <statement :article="article"></statement>
-      <!-- <div class="decoration">
-        <a
-          data-pocket-label="pocket"
-          data-pocket-count="horizontal"
-          class="pocket-btn"
-          data-lang="en"
-        ></a>
-        <span class="is-original">
-          本文发布于智能签名<br />
-          <template v-if="isOriginal">
-            未经授权禁止转载
-          </template>
-        </span>
-      </div> -->
-      <!-- don't tag hide -->
       <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
         <tag-card
           v-for="(item, index) in article.tags"
@@ -574,19 +559,6 @@ export default {
     // 未來支持推特連接後， 可以顯示其推特帳號在推特 card 預覽裡
     // ];
     // },
-    script() {
-      return [
-        {
-          type: 'text/javascript',
-          id: 'pocket-btn-js', // id 不知道作用 生成的 script 有id就带着好了
-          src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
-        },
-        {
-          type: 'text/javascript',
-          src: '//cdn.embedly.com/widgets/platform.js'
-        }
-      ]
-    }
   },
   methods: {
     // 提取内容 删除多余的标签
