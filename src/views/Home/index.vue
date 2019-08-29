@@ -46,6 +46,7 @@
         :now-index="indexList"
         :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
         :auto-request-time="itemList.autoRequestTime"
+        :need-access-token="true"
         @getListData="getListData"
       >
         <template v-if="!itemList.loading">

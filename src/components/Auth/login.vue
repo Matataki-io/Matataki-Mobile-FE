@@ -1,11 +1,16 @@
 <template>
   <section class="login">
-    <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="ss-form">
+    <el-form :model="loginForm" ref="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
         <el-input v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
+        <el-input
+          type="password"
+          v-model="loginForm.password"
+          placeholder="请输入密码"
+          show-password
+        ></el-input>
       </el-form-item>
       <el-form-item class="ss-btn">
         <el-button type="primary" @click="submitLoginForm">登录</el-button>
@@ -22,7 +27,7 @@
           <svg-icon class="eos" icon-class="eos_login" />
         </div>
         <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
-          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
+          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
         </div>
         <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
           <svg-icon class="github" icon-class="github" />
@@ -90,10 +95,12 @@ export default {
       try {
         await this.signIn({ idProvider: type })
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+        window.location.reload() // 登陆完成刷新一次
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+          window.location.reload() // 登陆完成刷新一次
         } catch (err) {
           console.log(err)
           this.failToast('登陆失败')
@@ -127,6 +134,7 @@ export default {
               // localStorage.setItem('idProvider', config.idProvider)
               this.successToast('登录成功')
               this.$emit('hide')
+              window.location.reload() // 登陆完成刷新一次
             } else {
               this.failToast(`登录失败，账号或密码错误`)
             }
