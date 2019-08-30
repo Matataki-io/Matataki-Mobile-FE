@@ -538,7 +538,7 @@ export default {
         separator: '-',
         complement: 'Smart Signature'
       }
-    },
+    }
     // Meta tags // 做ssr 再使用
     // meta() {
     // const { article, getUrl, post } = this;
@@ -982,7 +982,7 @@ export default {
       }
       this.$Modal.confirm({
         title: '提示',
-        content: '<p>该文章已上传至 IPFS 永久保存, 本次操作仅删除智能签名中的显示。</p>',
+        content: '<p>该文章已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示。</p>',
         loading: true,
         onOk: () => {
           delArticleFunc(this.article.id)

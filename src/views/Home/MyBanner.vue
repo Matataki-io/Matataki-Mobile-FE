@@ -20,9 +20,11 @@
     <template v-else>
       <div>
         <p class="login-notification">即刻登录</p>
-        <p class="login-notification">开始智能签名之旅</p>
+        <p class="login-notification">开始瞬MATATAKI之旅</p>
       </div>
-      <a class="my-user-page" href="javascript:;" @click="$store.commit('setLoginModal', true)">立即登录</a>
+      <a class="my-user-page" href="javascript:;" @click="$store.commit('setLoginModal', true)"
+        >立即登录</a
+      >
     </template>
   </div>
 </template>
