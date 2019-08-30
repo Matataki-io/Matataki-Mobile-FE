@@ -375,6 +375,10 @@ const API = {
   },
   async login({ username, password }) {
     return axiosforApiServer.post('/login/account', { username, password })
+  },
+  // 获取首页统计数据
+  postsStats() {
+    return axiosforApiServer.get('/posts/stats')
   }
 }
 
