@@ -1,5 +1,6 @@
 <template>
   <div class="home mw">
+    <bannerMatataki :class="!isShowSlide && 'margin'" />
     <!-- 首页头部 -->
     <home-head
       :nav="navList"
@@ -29,8 +30,6 @@
         :slide-index="index"
         :now-index="nowIndex"
       />
-
-      <banner :class="!isShowSlide && 'margin'" />
 
       <!-- 标题 -->
       <div class="now-title" :class="!isShowSlide && 'nav-hide'">{{ contentTitle }}</div>
@@ -94,7 +93,8 @@ import homeNav from './components/homeNav.vue'
 import homeSlide from './components/homeSlide.vue'
 import Sidebar from './Sidebar.vue'
 import { ArticleCard } from '@/components/'
-import banner from '@/components/banner/index.vue'
+// import banner from '@/components/banner/index.vue'
+import bannerMatataki from '@/components/banner/banner_matataki.vue'
 
 export default {
   name: 'Home',
@@ -105,7 +105,8 @@ export default {
     ArticleCard,
     ContentLoader,
     Sidebar,
-    banner
+    bannerMatataki
+    // banner,
   },
   data() {
     return {

@@ -92,7 +92,6 @@ export default {
 
 <style lang="less" scoped>
 .home-slide {
-  padding-top: 50px;
   &-title {
     font-size: 20px;
     font-weight: bold;
