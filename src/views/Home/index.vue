@@ -117,23 +117,23 @@ export default {
         {
           navMenu: [
             {
-              label: '最热',
-              title: '最热文章',
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeScoreRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            },
-            {
               label: '最新',
               title: '最新文章',
               params: {
                 channel: 1
               },
               apiUrl: 'homeTimeRanking',
+              articles: [],
+              autoRequestTime: 0,
+              loading: false
+            },
+            {
+              label: '最热',
+              title: '最热文章',
+              params: {
+                channel: 1
+              },
+              apiUrl: 'homeScoreRanking',
               articles: [],
               autoRequestTime: 0,
               loading: false
