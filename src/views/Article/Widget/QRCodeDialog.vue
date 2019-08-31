@@ -32,6 +32,8 @@
     </div>
     <button v-if="canvas" class="save-btn" disabled>长按图片保存</button>
     <button v-else class="save-btn" @click="toCanvas">生成图片</button>
+    <button class="save-btn close" @click="close">关闭</button>
+
     <!--<a
       :class="['save-btn', { disabled: isAPP }]"
       download="smartsignature.png"
@@ -193,6 +195,9 @@ export default {
     background: #b2b2b2;
   }
   &:disabled {
+    background: #b2b2b2;
+  }
+  &.close {
     background: #b2b2b2;
   }
 }
