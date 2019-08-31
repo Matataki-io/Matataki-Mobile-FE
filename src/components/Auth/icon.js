@@ -1,4 +1,3 @@
-
 import iconEOS from '@/assets/img/icon_logo_eos.svg'
 import iconTokenpocket from '@/assets/img/icon_tokenpocket.svg'
 import iconMathwallet from '@/assets/img/icon_mathwallet.svg'
@@ -59,8 +58,7 @@ export const wallet = {
       url: iconCyano,
       href:
         'https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm',
-      alt:
-        'https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm'
+      alt: 'https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm'
     },
     {
       url: iconMathwallet,
@@ -114,7 +112,7 @@ export const idProvider = [
     ],
     doc: {
       title: '《如何使用EOS登录》',
-      href: 'https://www.smartsignature.io/p/515'
+      href: 'https://www.matataki.io/p/515'
     }
   },
   {
@@ -142,7 +140,7 @@ export const idProvider = [
     ],
     doc: {
       title: '《如何使用ONT登录》',
-      href: 'https://www.smartsignature.io/p/516'
+      href: 'https://www.matataki.io/p/516'
     }
   }
 ]

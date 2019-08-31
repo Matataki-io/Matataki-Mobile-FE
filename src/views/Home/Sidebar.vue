@@ -94,7 +94,7 @@
         <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">立即登录</div>
       </template>
       <div class="cell-container">
-        <a href="https://smartsignature.io/article/617">
+        <a href="https://matataki.io/article/617">
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" />
@@ -114,7 +114,7 @@
         </a>
       </div>
       <div class="cell-container">
-        <a href="https://smartsignature.io/article/616">
+        <a href="https://matataki.io/article/616">
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/img/icon_sidebar_sb.svg" alt="article" class="left-img" />

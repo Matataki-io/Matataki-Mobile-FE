@@ -2,7 +2,7 @@
   <div class="mw help">
     <BaseHeader :pageinfo="{ title: '设置' }" />
     <div class="help-block">
-      <a class="help-list" href="https://smartsignature.io/article/617">
+      <a class="help-list" href="https://matataki.io/article/617">
         <span class="help-list-title">规则介绍</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>

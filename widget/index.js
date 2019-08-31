@@ -19,7 +19,7 @@ const urlMode = {
     api: 'https://apitest.smartsignature.io'
   },
   production: {
-    url: 'https://smartsignature.io',
+    url: 'https://matataki.io',
     api: 'https://api.smartsignature.io'
   }
 }
