@@ -77,9 +77,10 @@ export default {
       // 有邀请id
       if (searchFilter.length !== 0) utils.setCookie('referral', searchFilter[0].slice(9))
       else { // 如果没有邀请连接
+      // 移动端和pc端不一样 会加载GitHub无法写入邀请人 所以不做删除
         // 检查是否有邀请id 有则删除
-        let referral = utils.getCookie('referral')
-        if (referral) utils.delCookie('referral')
+        // let referral = utils.getCookie('referral')
+        // if (referral) utils.delCookie('referral')
       }
       // console.log(this.referral)
     },
