@@ -172,9 +172,9 @@ export default {
   text-align: center;
   position: relative;
   z-index: 9999;
-  padding-top: 100px;
+  padding-top: 70px;
   bottom: 2px;
-  margin-top: -100px;
+  margin-top: -120px;
   color: #b2b2b2;
   font-size: 14px;
 }
@@ -261,7 +261,7 @@ export default {
 .content-container {
   box-sizing: border-box;
   // overflow: hidden;
-  padding: 40px 40px 50px;
+  padding: 20px 40px 20px;
   margin: 0;
   min-height: 290px;
   p {
