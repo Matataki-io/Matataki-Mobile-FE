@@ -78,7 +78,7 @@
       <!-- 他人 -->
       <BaseHeader
         :pageinfo="{ title: name }"
-        :customize-header-bc="'#1C9CFE'"
+        :customize-header-bc="'#542DE0'"
         :scroll-toggle-bc="'#fff'"
         :is-scroll-emit="true"
         :scroll-show-title="true"

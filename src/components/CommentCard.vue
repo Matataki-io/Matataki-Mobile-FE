@@ -120,7 +120,7 @@ export default {
 }
 .comment-quantity {
   font-weight: 700;
-  color: #1c9cfe;
+  color: #542DE0;
   line-height: 20px;
   letter-spacing: 1px;
 }

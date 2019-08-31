@@ -168,7 +168,7 @@ export default {
   .icon {
     width: 14px;
     height: 14px;
-    color: #1c9cfe;
+    color: #542DE0;
     flex: 0 0 14px;
   }
 }

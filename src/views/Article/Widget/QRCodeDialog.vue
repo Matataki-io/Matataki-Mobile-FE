@@ -180,7 +180,7 @@ export default {
   color: #ffffff;
   border-radius: 6px;
   border: none;
-  background: #1c9cfe;
+  background: #542DE0;
   width: 335px;
   height: 34px;
   display: flex;

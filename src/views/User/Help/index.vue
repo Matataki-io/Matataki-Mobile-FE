@@ -25,7 +25,7 @@
           <van-switch
             v-model="articleTransfer"
             size="22px"
-            active-color="#1C9CFE"
+            active-color="#542DE0"
             inactive-color="#F0F0F0"
             @change="changeTransfer"
           />

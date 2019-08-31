@@ -196,7 +196,7 @@ module.exports = {
     }
   },
   pwa: {
-    msTileColor: '#1C9CFE',
+    msTileColor: '#542DE0',
     themeColor: '#FFF',
     workboxOptions: {
       skipWaiting: true,
