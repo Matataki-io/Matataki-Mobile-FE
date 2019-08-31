@@ -469,7 +469,9 @@ export default {
       const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/article/${article.id}`
-      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
+      const shareLink = this.isLogined
+        ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
+        : articleUrl
       return shareLink
     },
     getCopyIpfsHash() {

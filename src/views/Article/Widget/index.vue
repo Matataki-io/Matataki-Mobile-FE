@@ -118,7 +118,7 @@ export default {
       this.oldWidgetModalStatus = oldVal
       // 如果显示创建widget 但是没有内容
       if (newVal === 3 && !this.widgetContent) {
-        const invite = this.invite ? `&invite=${this.invite}` : ''
+        const invite = this.invite ? `&invite=${this.invite}&referral=${this.invite}` : ''
         this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${invite}' frameborder=0></iframe>`
       }
     },
@@ -127,7 +127,7 @@ export default {
     },
     widgetContent(newVal) {
       let content = ''
-      const invite = this.invite ? `&invite=${this.invite}` : ''
+      const invite = this.invite ? `&invite=${this.invite}&referral=${this.invite}` : ''
       // 去前后空格防止空内容
       if (strTrim(newVal)) content = `&content=${newVal}`
       this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${content}${invite}' frameborder=0></iframe>`
