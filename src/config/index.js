@@ -1,6 +1,6 @@
 import { networks } from './network'
 
-const dappName = 'matataki'
+const dappName = 'Smart Signature'
 const network = networks
 const ontology = {
   currentUsingNode: null,
