@@ -3,6 +3,7 @@
     <div ref="container" :class="{ 'white-bg': !canvas }">
       <div v-if="!canvas" ref="capture" class="container">
         <div class="header">
+          <div style="height: 24px;"></div>
           <div class="info">
             <img class="avatar" :src="shareInfo.avatar" alt="" :onerror="defaultAvatar" />
             <span class="username">{{ shareInfo.name }}</span>
@@ -215,7 +216,7 @@ export default {
     align-items: center;
     z-index: 10;
     position: relative;
-    margin: 24px 0 0 20px;
+    margin: 0 0 0 20px;
   }
   .username {
     font-size: 16px;
