@@ -46,7 +46,7 @@
 <script>
 /* eslint-disable */
 const TIME_COUNT = 60
-
+import utils from "@/utils/utils";
 export default {
   name: 'RegisterContent',
   data() {
@@ -162,13 +162,18 @@ export default {
     async submitRegisterForm() {
       await this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
+          let params = {
+            email: this.registerForm.email,
+            captcha: this.registerForm.smscode,
+            password: this.registerForm.password
+          }
+          // 检查是否有邀请id
+          let referral = utils.getCookie('referral')
+          if (referral) Object.assign(params, { referral: referral })
+
           try {
             this.loading = true
-            const res = await this.$backendAPI.register({
-              email: this.registerForm.email,
-              captcha: this.registerForm.smscode,
-              password: this.registerForm.password
-            })
+            const res = await this.$backendAPI.register(params)
             console.log(res)
             if (res.status === 200 && res.data.code === 0) {
               this.successToast('注册成功，请登录')

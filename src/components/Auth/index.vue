@@ -5,6 +5,7 @@
     class-name="modalCenter signupModal"
   >
     <section v-show="step === 1" class="auth-main">
+    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
       <div class="auth-title-container">
         <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">登录</span>
         <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">注册</span>
@@ -32,6 +33,7 @@
 import Login from './login'
 import Register from './register'
 import Wallet from './wallet'
+import utils from "@/utils/utils";
 
 export default {
   name: 'AuthModal',
@@ -45,6 +47,7 @@ export default {
       isLogin: true,
       step: 1,
       showModal: false,
+      referral: false
     }
   },
   props: {
@@ -59,6 +62,31 @@ export default {
     },
     value(val) {
       this.showModal = val
+    }
+  },
+    mounted(){
+    this.isReferral()
+    this.getReferral()
+  },
+  methods: {
+           // 是否有推荐
+    isReferral() {
+      let search = window.location.search.slice(1)
+      let searchArr = search.split('&')
+      let searchFilter = searchArr.filter((i) => i.includes('referral='))
+      // 有邀请id
+      if (searchFilter.length !== 0) utils.setCookie('referral', searchFilter[0].slice(9))
+      else { // 如果没有邀请连接
+        // 检查是否有邀请id 有则删除
+        let referral = utils.getCookie('referral')
+        if (referral) utils.delCookie('referral')
+      }
+      // console.log(this.referral)
+    },
+    // 得到邀请状态
+    getReferral() {
+      let referral = utils.getCookie('referral')
+      if (referral) this.referral = true
     }
   }
 }

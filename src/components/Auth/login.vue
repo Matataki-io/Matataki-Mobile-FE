@@ -15,6 +15,7 @@
       <el-form-item class="ss-btn">
         <el-button type="primary" @click="submitLoginForm">登录</el-button>
         <div class="bottom-tip">
+          <span class="red">首次登录领100积分！</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> | -->
           <a href="javascript:void(0);" @click="$emit('switch')">注册</a>
         </div>
@@ -41,6 +42,7 @@
 /* eslint-disable */
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { idProvider } from './icon.js'
+import utils from "@/utils/utils";
 
 export default {
   name: 'LoginContent',
@@ -73,7 +75,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
         ]
-      }
+      },
     }
   },
   computed: {
@@ -95,12 +97,12 @@ export default {
       try {
         await this.signIn({ idProvider: type })
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        window.location.reload() // 登陆完成刷新一次
+        // window.location.reload() // 登陆完成刷新一次
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-          window.location.reload() // 登陆完成刷新一次
+          // window.location.reload() // 登陆完成刷新一次
         } catch (err) {
           console.log(err)
           this.failToast('登陆失败')
@@ -146,17 +148,24 @@ export default {
           return false
         }
       })
-    }
+    },
   }
 }
 </script>
 
 <style lang="less" scoped>
 .bottom-tip {
+  width: 100%;
   font-size: 14px;
   float: right;
   line-height: 20px;
   margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .red {
+    color:#FB6877;
+  }
 }
 .oauth-box {
   display: flex;
@@ -212,4 +221,6 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+
 </style>

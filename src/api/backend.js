@@ -2,7 +2,7 @@ import axios from 'axios'
 import https from 'https'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
-
+import utils from "../utils/utils.js";
 // Doc : https://github.com/axios/axios
 
 export const urlAddress = process.env.VUE_APP_URL
@@ -127,14 +127,18 @@ const API = {
    * 根据用户名，公钥，客户端签名请求access_token
    */
   async auth({ idProvider, publicKey: publickey, signature: sign, username }) {
+    let params = {
+      platform: idProvider.toLowerCase(),
+      publickey,
+      sign,
+      username
+    }
+    // 推荐人id
+    let referral = utils.getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
     return axiosforApiServer.post(
       '/login/auth',
-      {
-        platform: idProvider.toLowerCase(),
-        publickey,
-        sign,
-        username
-      },
+      params,
       {
         headers: { Authorization: 'Basic bXlfYXBwOm15X3NlY3JldA==' }
       }
@@ -318,7 +322,13 @@ const API = {
     return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
   },
   async loginGitHub(code) {
-    return axiosforApiServer.post('/login/github', { code })
+    let params = code
+
+    // 推荐人id
+    let referral = utils.getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+
+    return axiosforApiServer.post('/login/github', params)
   },
   // 获取可用标签列表
   async getTags() {
@@ -370,8 +380,8 @@ const API = {
       noLoading: true
     })
   },
-  async register({ email, password, captcha }) {
-    return axiosforApiServer.post('/login/regist', { email, password, captcha: captcha.toString() })
+  async register({ email, password, captcha, referral }) {
+    return axiosforApiServer.post('/login/regist', { email, password, captcha: captcha.toString(), referral })
   },
   async login({ username, password }) {
     return axiosforApiServer.post('/login/account', { username, password })
