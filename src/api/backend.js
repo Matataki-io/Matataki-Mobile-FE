@@ -322,8 +322,7 @@ const API = {
     return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
   },
   async loginGitHub(code) {
-    let params = code
-
+    let params = { code }
     // 推荐人id
     let referral = utils.getCookie('referral')
     if (referral) Object.assign(params, { referral: referral })
