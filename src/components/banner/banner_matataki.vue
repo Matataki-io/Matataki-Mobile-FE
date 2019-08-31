@@ -108,7 +108,7 @@ export default {
   &-num {
     font-size: 20px;
     font-weight:bold;
-    color: #542DE0;
+    color: #542de0;
     padding: 0;
     margin: 0;
     word-break: break-all;

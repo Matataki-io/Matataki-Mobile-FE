@@ -2,7 +2,7 @@ export default () => {
   // tag id 对应相应的颜色, 全局统一
   const id = 200
   const color = [
-    '#542DE0',
+    '#542de0',
     '#FB6877',
     '#886CFF',
     '#FFA443',

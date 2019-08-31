@@ -97,7 +97,7 @@ export default {
   .des {
     font-size: 12px;
     font-weight: 400;
-    color: rgba(28, 156, 254, 1);
+    color: #542de0;
     line-height: 17px;
   }
 }
@@ -168,7 +168,7 @@ export default {
   .icon {
     width: 14px;
     height: 14px;
-    color: #542DE0;
+    color: #542de0;
     flex: 0 0 14px;
   }
 }

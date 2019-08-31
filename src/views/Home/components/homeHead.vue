@@ -121,7 +121,7 @@ export default {
         right: -2px;
         display: block;
         height: 5px;
-        background-color: #542DE0;
+        background-color: #542de0;
       }
     }
   }

@@ -374,7 +374,7 @@ export default {
   }
   .cell.active {
     .left-text {
-      color: #542DE0;
+      color: #542de0;
     }
   }
 }

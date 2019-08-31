@@ -77,7 +77,7 @@ export default {
   margin-bottom: 20px;
 }
 .blue {
-  background: #542DE0;
+  background: #542de0;
 }
 .gray {
   background: #b2b2b2;

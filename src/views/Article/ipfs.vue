@@ -81,10 +81,10 @@ export default {
     width: 18px;
     cursor: pointer;
     vertical-align: middle;
-    color: rgba(28, 156, 254, 1);
+    color: #542de0;
     .ipfs {
       font-size: 16px;
-      color: rgba(28, 156, 254, 1);
+      color: #542de0;
     }
   }
 }

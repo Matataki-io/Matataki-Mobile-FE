@@ -6,8 +6,8 @@
     <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="标签栏_已投资" transform="translate(-215.000000, -11.000000)">
             <g id="yizan" transform="translate(215.000000, 11.000000)">
-                <rect id="矩形-copy-5" stroke="#542DE0" x="0.5" y="0.5" width="64" height="28" rx="6"></rect>
-                <text id="已投资" font-family="PingFangSC-Medium, PingFang SC" font-size="12" font-weight="400" letter-spacing="1.5" fill="#542DE0">
+                <rect id="矩形-copy-5" stroke="#542de0" x="0.5" y="0.5" width="64" height="28" rx="6"></rect>
+                <text id="已投资" font-family="PingFangSC-Medium, PingFang SC" font-size="12" font-weight="400" letter-spacing="1.5" fill="#542de0">
                     <tspan x="12" y="19">已投资</tspan>
                 </text>
             </g>
