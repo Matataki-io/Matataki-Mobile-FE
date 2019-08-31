@@ -7,12 +7,12 @@ import Navigation from 'vue-navigation'
 // 复制内容
 import VueClipboard from 'vue-clipboard2'
 
+// import VConsole from 'vconsole'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import { backendAPI } from '@/api'
 import errorHandling from '@/common/errorHandling'
-
 import './registerServiceWorker'
 // import "lib-flexible"; // 适配
 
@@ -28,6 +28,8 @@ import '@/assets/css/index.less'
 import './icons'
 
 import publishMethods from './utils/publish_methods'
+
+// new VConsole()
 
 Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$errorHandling = errorHandling

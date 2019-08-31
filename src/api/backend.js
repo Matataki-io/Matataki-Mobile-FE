@@ -2,7 +2,7 @@ import axios from 'axios'
 import https from 'https'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
-import utils from "../utils/utils.js";
+import utils from '../utils/utils.js'
 // Doc : https://github.com/axios/axios
 
 export const urlAddress = process.env.VUE_APP_URL
@@ -136,13 +136,9 @@ const API = {
     // 推荐人id
     let referral = utils.getCookie('referral')
     if (referral) Object.assign(params, { referral: referral })
-    return axiosforApiServer.post(
-      '/login/auth',
-      params,
-      {
-        headers: { Authorization: 'Basic bXlfYXBwOm15X3NlY3JldA==' }
-      }
-    )
+    return axiosforApiServer.post('/login/auth', params, {
+      headers: { Authorization: 'Basic bXlfYXBwOm15X3NlY3JldA==' }
+    })
   },
   async getArticleDatafromIPFS(hash) {
     return axios.get(`${apiServer}/post/ipfs/${hash}`)
@@ -380,7 +376,12 @@ const API = {
     })
   },
   async register({ email, password, captcha, referral }) {
-    return axiosforApiServer.post('/login/regist', { email, password, captcha: captcha.toString(), referral })
+    return axiosforApiServer.post('/login/regist', {
+      email,
+      password,
+      captcha: captcha.toString(),
+      referral
+    })
   },
   async login({ username, password }) {
     return axiosforApiServer.post('/login/account', { username, password })

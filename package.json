@@ -38,6 +38,7 @@
     "scatterjs-core": "^2.7.18",
     "scatterjs-plugin-eosjs": "^1.5.1",
     "vant": "^1.6.19",
+    "vconsole": "^3.3.4",
     "vue": "^2.6.6",
     "vue-clipboard2": "^0.3.0",
     "vue-content-loader": "^0.2.1",

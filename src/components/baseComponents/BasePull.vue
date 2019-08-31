@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'BasePull',
   props: {
@@ -115,6 +117,9 @@ export default {
       oldPage: 0 // 上一页
     }
   },
+  computed: {
+    ...mapGetters(['isLogined'])
+  },
   watch: {
     // 父级请求完参数 刷新滚动分页
     params() {
@@ -125,6 +130,9 @@ export default {
     autoRequestTime() {
       console.log('autoRequestTime')
       this.refresh()
+    },
+    isLogined(newState) {
+      if (newState) this.refresh()
     }
   },
   created() {},

@@ -101,12 +101,12 @@ export default {
       try {
         await this.signIn({ idProvider: type })
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        window.location.reload() // 登陆完成刷新一次
+        // window.location.reload() // 登陆完成刷新一次
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-          window.location.reload() // 登陆完成刷新一次
+          // window.location.reload() // 登陆完成刷新一次
         } catch (err) {
           console.log(err)
           this.failToast('登陆失败')
