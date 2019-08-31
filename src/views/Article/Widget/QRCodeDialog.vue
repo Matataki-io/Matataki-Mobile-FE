@@ -215,7 +215,7 @@ export default {
     align-items: center;
     z-index: 10;
     position: relative;
-    padding: 24px 0 0 20px;
+    margin: 24px 0 0 20px;
   }
   .username {
     font-size: 16px;
