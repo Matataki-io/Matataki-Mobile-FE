@@ -461,16 +461,19 @@ export default {
       const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/article/${article.id}`
-      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
+      const shareLink = this.isLogined
+        ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
+        : articleUrl
+      return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外500积分奖励！ ！`
     },
     getShareLink() {
       // 应产品需求 这里改为移动端的链接
 
       const { article, currentUserInfo } = this
-      const { protocol, host } = window.location
-      // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      // const { protocol, host } = window.location
+      // const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const articleUrl = `${process.env.VUE_APP_URL}/article/${article.id}`
+
       const shareLink = this.isLogined
         ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
