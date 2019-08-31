@@ -7,7 +7,7 @@ import './index.less'
 import readImg from './img/read.svg'
 import upsImg from './img/ups.svg'
 import logoImg from './img/logo.svg'
-import logoRectangleImg from './img/logo_rectangle.svg'
+import logoRectangleImg from './img/share_logo.png'
 
 // 获取url信息
 const urlSearch = window.location.search.substr(1).split('&')

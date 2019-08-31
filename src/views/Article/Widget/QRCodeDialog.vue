@@ -206,7 +206,7 @@ export default {
   margin: auto;
 }
 .header {
-  height: 200px;
+  height: 167px;
   background-color: @purpleDark;
   position: relative;
   overflow: hidden;
@@ -231,7 +231,7 @@ export default {
     font-size: 20px;
     color: #fff;
     padding: 0;
-    margin: 40px auto 0;
+    margin: 60px auto 0;
     line-height: 1.5;
     letter-spacing: 1px;
     z-index: 10;
