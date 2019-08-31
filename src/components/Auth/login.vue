@@ -19,10 +19,14 @@
           <!-- <a href="javascript:void(0);">忘记密码</a> | -->
           <a href="javascript:void(0);" @click="$emit('switch')">注册</a>
         </div>
+        <span class="red">在PC版登陆后查看积分详情</span>
       </el-form-item>
     </el-form>
     <div class="oauth-box">
       <h1 class="oauth-title">第三方账号登录</h1>
+      <p class="red" style="margin-bottom: 10px;">
+        不同帐号内容不互通
+      </p>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
           <svg-icon class="eos" icon-class="eos_login" />
@@ -163,9 +167,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .red {
-    color:#FB6877;
-  }
+}
+.red {
+  color:#FB6877;
 }
 .oauth-box {
   display: flex;
@@ -176,7 +180,7 @@ export default {
   .oauth-title {
     font-size: 16px;
     color: #000000;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: 400;
   }
   .oauth {
