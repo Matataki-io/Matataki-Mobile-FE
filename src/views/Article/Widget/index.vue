@@ -195,14 +195,14 @@ export default {
     box-shadow: none;
   }
 }
-.widget-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+// .widget-flex {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
 
-  .ivu-modal {
-    top: 0;
-  }
-}
+//   .ivu-modal {
+//     top: 0;
+//   }
+// }
 </style>
 <style src="./index.less" scoped lang="less"></style>

@@ -163,7 +163,7 @@ export default {
   margin: auto;
 }
 .outer {
-  margin-top: 100px;
+  // margin-top: 100px;
 }
 .hide-article-box {
   width: 100%;
