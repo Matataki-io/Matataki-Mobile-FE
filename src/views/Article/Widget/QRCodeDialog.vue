@@ -104,7 +104,7 @@ export default {
     saveLocal(canvas) {
       let link = document.createElement('a')
       link.href = canvas.toDataURL()
-      link.setAttribute('download', 'smartsignature.png')
+      link.setAttribute('download', `${this.shareInfo.title}.png`)
       link.style.display = 'none'
       link.click()
     },

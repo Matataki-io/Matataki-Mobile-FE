@@ -95,7 +95,7 @@ export default {
       this.triggerEasterEgg()
     })
     // https://juejin.im/post/5bfa4bb951882558ae3c171e
-    console.info('Smart Signature version :', version)
+    // console.info('matataki version :', version)
     // console.log(navigator.userAgent.toLowerCase(), window.location)
     this.tz()
 

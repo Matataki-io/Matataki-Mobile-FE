@@ -209,7 +209,6 @@ export default {
     }
   },
   created() {
-    document.title = '首页 - SmartSignature'
     this.postsRecommend(1)
     this.postsRecommend(2)
   },

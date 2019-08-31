@@ -28,7 +28,6 @@ export default {
     const { isMe, id } = this
     this.user = isMe(id) ? '我的用户页' : `${id} 的用户页`
     this.pageTitle = isMe(id) ? '我的投资' : `${id} 的投资`
-    document.title = `${this.user} - SmartSignature`
   },
   methods: {
     goBack() {

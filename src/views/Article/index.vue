@@ -524,7 +524,7 @@ export default {
     }
   },
   created() {
-    document.title = '正在加载文章 - Smart Signature'
+    document.title = '正在加载文章 - matataki'
     this.getArticleInfo(this.hash) // 得到文章信息
   },
   head: {
@@ -533,7 +533,7 @@ export default {
       return {
         inner: `${post.title} by ${post.author}`,
         separator: '-',
-        complement: 'Smart Signature'
+        complement: 'matataki'
       }
     }
     // Meta tags // 做ssr 再使用
@@ -542,7 +542,7 @@ export default {
     // return [
     // Open Graph
     // { p: 'og:url', c: getUrl },
-    // { p: 'og:site_name', c: 'Smart Signature' },
+    // { p: 'og:site_name', c: 'matataki' },
     // { p: 'og:type', c: 'article' },
     // { p: 'og:title', c: post.title },
     // { p: 'og:description', c: post.desc },
@@ -551,7 +551,7 @@ export default {
     // { p: 'og:image', c: 'https://example.com/image.jpg' },
     //  Twitter
     // { n: 'twitter:card', c: post.desc },
-    // { n: 'twitter:site', c: '@Smart Signature' },
+    // { n: 'twitter:site', c: '@matataki' },
     // { n: 'twitter:creator', c: '@article' }, // @username for the content creator / author.
     // 未來支持推特連接後， 可以顯示其推特帳號在推特 card 預覽裡
     // ];
