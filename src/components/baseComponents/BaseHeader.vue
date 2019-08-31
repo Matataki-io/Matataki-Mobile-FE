@@ -21,7 +21,7 @@
     >
       {{ pageinfo.title }}
     </p>
-    <img v-else class="logo" src="@/assets/img/logo.png" alt="logo" />
+    <!-- <img v-else class="logo" src="@/assets/img/logo.png" alt="logo" /> -->
     <div
       slot="right"
       :class="[scrollShowTitle && 'scroll', scrollShowTitle && scrollToggleStatus && 'scroll-show']"
