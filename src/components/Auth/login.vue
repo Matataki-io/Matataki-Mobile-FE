@@ -1,13 +1,13 @@
 <template>
   <section class="login">
-    <el-form :model="loginForm" ref="loginForm" :rules="loginRules" class="ss-form">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
         <el-input v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          type="password"
           v-model="loginForm.password"
+          type="password"
           placeholder="请输入密码"
           show-password
         ></el-input>
@@ -101,12 +101,12 @@ export default {
       try {
         await this.signIn({ idProvider: type })
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        // window.location.reload() // 登陆完成刷新一次
+        window.location.reload() // 登陆完成刷新一次
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-          // window.location.reload() // 登陆完成刷新一次
+          window.location.reload() // 登陆完成刷新一次
         } catch (err) {
           console.log(err)
           this.failToast('登陆失败')
