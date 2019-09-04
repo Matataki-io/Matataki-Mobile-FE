@@ -46,6 +46,7 @@
     "vue-infinite-loading": "^2.4.4",
     "vue-navigation": "^1.1.4",
     "vue-router": "^3.0.1",
+    "vue-scroll-reveal": "^1.0.11",
     "vue-slider-component": "^3.0.26",
     "vue-upload-component": "^2.8.20",
     "vuex": "^3.0.1",

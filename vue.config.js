@@ -214,8 +214,8 @@ module.exports = {
   // 代理
   // devServer: {
   //   proxy: {
-  //     "/": {
-  //       target: "https://apitest.smartsignature.io"
+  //     '/': {
+  //       target: 'https://apitest.smartsignature.io'
   //     }
   //   }
   // }

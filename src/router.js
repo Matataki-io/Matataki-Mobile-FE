@@ -15,9 +15,9 @@ export default new VueRouter({
       component: Home
     },
     {
-      path: '/likeButton',
-      name: 'likeButton',
-      component: () => import('./views/likeButton.vue')
+      path: '/index',
+      name: 'index',
+      component: () => import(/* webpackChunkName: "index" */ './views/Home/about/index.vue')
     },
     {
       path: '/about',

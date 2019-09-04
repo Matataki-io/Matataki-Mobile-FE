@@ -2,7 +2,7 @@ import axios from 'axios'
 import https from 'https'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
-import utils from '../utils/utils.js'
+import utils from '../utils/utils'
 // Doc : https://github.com/axios/axios
 
 export const urlAddress = process.env.VUE_APP_URL
@@ -12,7 +12,8 @@ export const apiServer = process.env.VUE_APP_API
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 
 // 代理使用地址
-// export const apiServerAdders = process.env.NODE_ENV === 'development' ? '/' : process.env.VUE_APP_API;
+// export const apiServerAdders =
+//   process.env.NODE_ENV === 'development' ? '/' : process.env.VUE_APP_API
 // https://github.com/axios/axios/issues/535
 const axiosforApiServer = axios.create({
   baseURL: apiServer,

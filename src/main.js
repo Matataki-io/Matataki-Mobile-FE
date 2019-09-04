@@ -21,6 +21,7 @@ import './plugins/iview'
 import './plugins/vant'
 import './plugins/element-ui'
 import './plugins/baseComponents'
+import './plugins/vue_plugins'
 
 // global css
 import '@/assets/css/index.less'
