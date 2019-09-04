@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from './views/Home/index.vue'
 import { accessTokenAPI } from '@/api'
 
 if (!window.VueRouter) Vue.use(VueRouter)
@@ -11,13 +10,13 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/index',
       name: 'index',
       component: () => import(/* webpackChunkName: "index" */ './views/Home/about/index.vue')
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: () => import(/* webpackChunkName: "home" */ './views/Home/index.vue')
     },
     {
       path: '/about',
@@ -32,7 +31,7 @@ export default new VueRouter({
       name: 'Article',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true */ './views/Article/index.vue')
+        import(/* webpackChunkName: "Article", webpackPrefetch: true */ './views/Article/index.vue')
     },
     {
       path: '/tag',
@@ -43,7 +42,7 @@ export default new VueRouter({
     {
       path: '/login/github',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      component: () => import(/* webpackChunkName: "Login" */ './views/Login.vue'),
       beforeEnter: (to, from, next) => {
         if (!to.query.from) {
           next({ name: 'Login', query: { ...to.query, from: from.path } })
@@ -54,13 +53,13 @@ export default new VueRouter({
       path: '/user/:id',
       name: 'User',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/index.vue')
+      component: () => import(/* webpackChunkName: "User" */ './views/User/index.vue')
     },
     {
       path: '/user/edit/:id',
       name: 'UserEdit',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/edit.vue'),
+      component: () => import(/* webpackChunkName: "UserEdit" */ './views/User/edit.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -74,7 +73,7 @@ export default new VueRouter({
       path: '/user/asset/:id',
       name: 'Asset',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/Asset/index.vue'),
+      component: () => import(/* webpackChunkName: "Asset" */ './views/User/Asset/index.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -88,7 +87,7 @@ export default new VueRouter({
       path: '/user/asset/:id/:type',
       name: 'AssetType',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/Asset/Asset.vue'),
+      component: () => import(/* webpackChunkName: "AssetType" */ './views/User/Asset/Asset.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -116,7 +115,7 @@ export default new VueRouter({
       path: '/user/:id/original',
       name: 'Original',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/Original.vue'),
+      component: () => import(/* webpackChunkName: "Original" */ './views/User/Original.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -130,7 +129,7 @@ export default new VueRouter({
       path: '/user/:id/reward',
       name: 'Reward',
       props: true,
-      component: () => import(/* webpackChunkName: "user" */ './views/User/Reward.vue'),
+      component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -155,7 +154,7 @@ export default new VueRouter({
       path: '/publish/:id',
       name: 'Publish',
       props: true,
-      component: () => import(/* webpackChunkName: "article-edit" */ './views/Publish/Publish.vue'),
+      component: () => import(/* webpackChunkName: "Publish" */ './views/Publish/Publish.vue'),
       beforeEnter: (to, from, next) => {
         if (to.query.from === 'edit' && from.name !== 'Article') next('/')
         else next()
@@ -166,13 +165,13 @@ export default new VueRouter({
       name: 'FollowList',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "followlist" */ './views/User/FollowList/FollowList.vue')
+        import(/* webpackChunkName: "FollowList" */ './views/User/FollowList/FollowList.vue')
     },
     {
       path: '/draftbox/:id',
       name: 'DraftBox',
       props: true,
-      component: () => import(/* webpackChunkName: "draftbox" */ './views/User/DraftBox.vue'),
+      component: () => import(/* webpackChunkName: "DraftBox" */ './views/User/DraftBox.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -192,12 +191,13 @@ export default new VueRouter({
       path: '/_easter-egg',
       name: 'EasterEgg',
       props: true,
-      component: () => import(/* webpackChunkName: "easter-egg" */ './views/EasterEgg.vue')
+      component: () => import(/* webpackChunkName: "EasterEgg" */ './views/EasterEgg.vue')
     },
     {
-      // 幽林页面重定向进入首页 可以考虑设计 404 页面
+      // 幽林页面重定向进入 404 页面
       path: '*',
-      redirect: '/'
+      name: 404,
+      component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
     }
   ]
 })
