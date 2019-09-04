@@ -6,12 +6,18 @@
     <a v-else href="javascript:void(0);" class="home-head-notlogin" @click="$emit('login')">登录</a>
 
     <div class="home-head-nav">
+      <router-link
+        :class="$route.name === 'index' && 'active'"
+        href="javascript:void(0);"
+        :to="{ name: 'index' }"
+        >首页</router-link
+      >
       <a
         v-for="(item, index) in nav"
         :key="index"
         :class="nowIndex === index && 'active'"
         href="javascript:void(0);"
-        @click="$emit('toggleNav', index)"
+        @click="toggle(index)"
       >
         <span>{{ item }}</span>
       </a>
@@ -55,6 +61,18 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+    },
+    toggle(i) {
+      if (this.$route.name === 'index') {
+        this.$router.push({
+          name: 'home',
+          params: {
+            nav: i
+          }
+        })
+      } else {
+        this.$emit('toggleNav', i)
+      }
     }
   }
 }

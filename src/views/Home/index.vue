@@ -65,8 +65,8 @@
         </template>
         <template v-else>
           <ArticleCard
-            v-for="(itemArticle, indexArticle) in itemList.articles"
-            :key="indexArticle"
+            v-for="itemArticle in itemList.articles"
+            :key="itemArticle.id"
             :now-index="nowIndex"
             :article="itemArticle"
           />
@@ -209,11 +209,18 @@ export default {
     }
   },
   created() {
+    this.initNav()
     this.postsRecommend(1)
     this.postsRecommend(2)
   },
   mounted() {},
   methods: {
+    initNav() {
+      if (!this.$route.params) return
+      if (this.$route.params.nav === 0) this.nowIndex = 0
+      else if (this.$route.params.nav === 1) this.nowIndex = 1
+      else this.nowIndex = 0
+    },
     increaseTime(type, i) {
       // 如果自动刷新的时间为0 并且 内容长度为0 刷新一次组件
       if (type === 'headNav') {

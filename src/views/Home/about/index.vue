@@ -1,11 +1,6 @@
 <template>
-  <div class="home">
-    <home-head
-      :nav="navList"
-      :now-index="nowIndex"
-      @toggleNav="toggleNav"
-      @login="showSidebar = true"
-    />
+  <div class="home-container">
+    <home-head :nav="['文章', '商品']" :now-index="-1" @login="showSidebar = true" />
     <div class="one">
       <img
         v-scroll-reveal="{ distance: '20px' }"
@@ -24,12 +19,12 @@
         瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
       </p>
       <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
-        <router-link :to="{ name: 'article' }">
+        <router-link :to="{ name: 'home' }">
           <el-button class="home-btn" icon="el-icon-reading">
             开始阅读
           </el-button>
         </router-link>
-        <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo('publish')">
+        <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
           立即创作
         </el-button>
       </div>
@@ -142,11 +137,14 @@
         <p>{{ item.des }}</p>
       </div>
     </div>
+    <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import homeHead from '../components/homeHead.vue'
+import Sidebar from '../Sidebar.vue'
 
 import effect1 from '@/assets/img/home/effect1.png'
 import effect2 from '@/assets/img/home/effect2.png'
@@ -161,11 +159,12 @@ import stage3 from '@/assets/img/home/stage3.png'
 
 export default {
   components: {
-    homeHead
+    homeHead,
+    Sidebar
   },
   data() {
     return {
-      navList: ['首页', '文章', '商品'],
+      showSidebar: false,
       nowIndex: 0,
       effectList: [
         {
@@ -228,6 +227,15 @@ export default {
           img: stage3
         }
       ]
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined'])
+  },
+  methods: {
+    jumpTo() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.$router.push({ name: 'Publish', params: { id: 'create' } })
     }
   }
 }
