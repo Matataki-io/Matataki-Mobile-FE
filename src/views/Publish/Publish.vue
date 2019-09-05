@@ -61,13 +61,14 @@
           </Poptip>
         </p>
         <div v-if="editorMode !== 'edit'" class="fission-num-slider">
-          <VueSlider
+          <el-slider
             v-model="fissionNum"
-            class="fission-num-slider2"
+            class="slider"
             :min="1"
             :max="2"
-            :interval="0.1"
-          ></VueSlider>
+            :step="0.1"
+            :show-tooltip="false"
+          />
         </div>
         <div class="fission-num-Input">
           {{ fissionNum }}
@@ -175,8 +176,6 @@ import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
 import { sleep } from '@/common/methods'
 import debounce from 'lodash/debounce'
 import { toolbars } from './toolbars' // 编辑器配置
@@ -191,7 +190,6 @@ export default {
   name: 'NewPost',
   components: {
     mavonEditor,
-    VueSlider,
     imgUpload,
     modalPrompt,
     tagCard,
@@ -836,5 +834,14 @@ export default {
 }
 .ivu-poptip-popper {
   z-index: 500;
+}
+
+.slider {
+  .el-slider__bar {
+    background-color: #542de0;
+  }
+  .el-slider__button {
+    border-color: #542de0;
+  }
 }
 </style>
