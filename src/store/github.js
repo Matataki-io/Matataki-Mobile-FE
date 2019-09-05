@@ -1,18 +1,16 @@
 import { backendAPI } from '@/api'
 
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
-
-// initial state
 const state = {}
 
 const getters = {}
 
 const actions = {
+  // eslint-disable-next-line no-empty-pattern
   async signIn({}, { code }) {
     if (!code) throw new Error('GitHub login faild, no code.')
-    const { data: accessToken } = await backendAPI.loginGitHub(code)
-    return accessToken
+    const res = await backendAPI.loginGitHub(code)
+    if (res.status === 200 && res.data.code === 0) return res.data.data
+    else return ''
   }
 }
 

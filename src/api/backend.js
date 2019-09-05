@@ -137,9 +137,7 @@ const API = {
     // 推荐人id
     let referral = utils.getCookie('referral')
     if (referral) Object.assign(params, { referral: referral })
-    return axiosforApiServer.post('/login/auth', params, {
-      headers: { Authorization: 'Basic bXlfYXBwOm15X3NlY3JldA==' }
-    })
+    return axiosforApiServer.post('/login/auth', params)
   },
   async getArticleDatafromIPFS(hash) {
     return axios.get(`${apiServer}/post/ipfs/${hash}`)
