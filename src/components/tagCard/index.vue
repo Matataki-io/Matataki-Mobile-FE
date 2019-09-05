@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import tagColor from '@/common/tagColor'
-
 export default {
   name: 'TagColor',
   props: {
@@ -43,7 +41,6 @@ export default {
     }
   },
   created() {
-    this.tagColors = tagColor()
     // console.log(this.tagCard)
     // 初始化根据模式设置
     this.setStyle(!this.tagMode)
@@ -51,15 +48,13 @@ export default {
   methods: {
     // status: true 选中状态 false 默认状态
     setStyle(status = false) {
-      const getTagColor = this.tagColors[this.tagCardCopy.id]
       if (status) {
         this.tagStyleObject.color = '#fff'
-        this.tagStyleObject.backgroundColor = getTagColor
+        this.tagStyleObject.backgroundColor = '#542de0'
       } else {
-        this.tagStyleObject.color = getTagColor
-        this.tagStyleObject.backgroundColor = '#fff'
+        this.tagStyleObject.color = '#542de0'
+        this.tagStyleObject.backgroundColor = '#ebe6ff'
       }
-      this.tagStyleObject.border = `1px solid ${getTagColor}`
     },
     // 切换状态
     toggleTagStatus(status) {

@@ -169,9 +169,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { mavonEditor } from 'mavon-editor'
 import { defaultImagesUploader } from '@/api'
 import { sendPost } from '@/api/ipfs'
-import { mavonEditor } from 'mavon-editor'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
@@ -726,8 +726,14 @@ export default {
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
             let { data } = res.data
-            data.map(i => (i.status = false))
-            this.tagCards = data
+
+            // 过滤商品标签 id <= 100
+            const filterId = i => i.id <= 100
+            const filterTag = data.filter(filterId)
+            // 过滤商品标签 id <= 100 end
+
+            filterTag.map(i => (i.status = false))
+            this.tagCards = filterTag
           } else console.log(res.data.message)
         })
         .catch(err => {
