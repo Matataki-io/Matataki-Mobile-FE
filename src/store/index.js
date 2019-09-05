@@ -4,7 +4,7 @@ import ontology from './ontology'
 import scatter from './scatter'
 import github from './github'
 import { backendAPI, accessTokenAPI } from '@/api'
-import publishMethods from '@/utils/publish_methods.js'
+import publishMethods from '@/utils/publish_methods'
 
 if (!window.Vue) Vue.use(Vuex)
 

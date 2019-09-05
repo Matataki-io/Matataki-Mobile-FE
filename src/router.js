@@ -188,12 +188,6 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "Help" */ './views/User/Help/index.vue')
     },
     {
-      path: '/_easter-egg',
-      name: 'EasterEgg',
-      props: true,
-      component: () => import(/* webpackChunkName: "EasterEgg" */ './views/EasterEgg.vue')
-    },
-    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,
