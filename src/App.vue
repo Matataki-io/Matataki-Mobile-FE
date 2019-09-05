@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import Konami from 'konami'
 import { mapActions, mapGetters } from 'vuex'
-import { version } from '../package.json'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'
@@ -90,12 +88,7 @@ export default {
       if (isPC() && window.location.pathname !== '/login/github')
         window.location.href = process.env.VUE_APP_PC_URL + pathname
     })()
-    // eslint-disable-next-line no-unused-vars
-    const easterEgg = new Konami(() => {
-      this.triggerEasterEgg()
-    })
     // https://juejin.im/post/5bfa4bb951882558ae3c171e
-    // console.info('matataki version :', version)
     // console.log(navigator.userAgent.toLowerCase(), window.location)
     this.tz()
 
@@ -188,11 +181,6 @@ export default {
           ]),
         duration: 0
       })
-    },
-    triggerEasterEgg() {
-      // 当用户在键盘输入 ⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA 时触发这个函数
-      this.$Message.info('恭喜你找到了隐藏彩蛋！')
-      this.$router.push({ name: 'EasterEgg' })
     },
     async reload() {
       this.isRouterAlive = false
