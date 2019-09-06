@@ -68,7 +68,7 @@
       <a
         v-scroll-reveal="{ distance: '20px', delay: 300 }"
         target="_blank"
-        href="http://www.miit.gov.cn/n1146290/n1146402/n1146445/c6180238/part/6180297.pdf"
+        href="https://www.matataki.io/p/806"
         >阅读更多></a
       >
       <img
@@ -89,7 +89,7 @@
         v-scroll-reveal="{ distance: '20px', delay: 300 }"
         target="_blank"
         href="
-        http://www.ipfs.cn/news/info-100533.html
+        https://www.matataki.io/p/807
         "
         >阅读更多></a
       >
