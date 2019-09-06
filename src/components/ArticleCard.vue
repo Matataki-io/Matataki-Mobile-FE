@@ -21,7 +21,8 @@
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
           <p v-if="nowIndex === 0" class="read-ups">
-            {{ article.read }}浏览&nbsp;&nbsp;{{ article.ups }}投资
+            {{ article.read }}浏览
+            <!-- &nbsp;&nbsp;{{ article.ups }}投资 -->
           </p>
           <p v-else class="read-ups">
             {{ article.sale }}销量<span>&nbsp;&nbsp;{{ articleEosValue }}EOS/份</span>
