@@ -15,8 +15,11 @@
         alt="logo"
       />
       <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">一个永久存储和版权确权的内容平台</h1>
-      <p v-scroll-reveal="{ distance: '20px', delay: 400 }">
-        瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
+      <p class="home-text" v-scroll-reveal="{ distance: '20px', delay: 400 }">
+        瞬MATATAKI 是一个保护创作者权益的高质量内容平台，
+        通过IPFS协议保障内容的永久可访问和确权信息可查询；
+        使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络；
+        致力于回归更加开放去中心化的互联网。
       </p>
       <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
         <router-link :to="{ name: 'home' }">
