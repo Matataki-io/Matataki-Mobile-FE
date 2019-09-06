@@ -25,6 +25,7 @@ import './plugins/vue_plugins'
 
 // global css
 import '@/assets/css/index.less'
+import '@/assets/gt.js'
 
 import './icons'
 
