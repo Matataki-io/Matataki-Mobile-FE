@@ -121,109 +121,113 @@
       />
     </div>
 
-    <footer class="footer">
-      <div class="footer-block footer-info">
-        <div class="amount">
-          <Dropdown trigger="click" @on-click="toggleAmount">
-            <div>
-              <div
-                :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
-                class="amount-img"
-              ></div>
-              <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
-                totalSupportedAmount.show
-              }}</span
-              >&nbsp;
-              <Icon type="ios-arrow-up" />
+    <footer class="footer" :class="article.channel_id === 1 && 'flex-right'">
+      <template v-if="article.channel_id === 2">
+        <div class="footer-block footer-info">
+          <div class="amount">
+            <Dropdown trigger="click" @on-click="toggleAmount">
+              <div>
+                <div
+                  :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
+                  class="amount-img"
+                ></div>
+                <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
+                  totalSupportedAmount.show
+                }}</span
+                >&nbsp;
+                <Icon type="ios-arrow-up" />
+              </div>
+              <DropdownMenu slot="list">
+                <DropdownItem name="eos" class="amount-icon">
+                  <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
+                  {{ totalSupportedAmount.eos }}
+                </DropdownItem>
+                <DropdownItem name="ont" class="amount-icon">
+                  <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
+                  {{ totalSupportedAmount.ont }}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <div class="amount-text">
+              {{ article.channel_id === 2 ? '总收益' : '投资总额' }}
             </div>
-            <DropdownMenu slot="list">
-              <DropdownItem name="eos" class="amount-icon">
-                <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
-                {{ totalSupportedAmount.eos }}
-              </DropdownItem>
-              <DropdownItem name="ont" class="amount-icon">
-                <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
-                {{ totalSupportedAmount.ont }}
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <div class="amount-text">
-            {{ article.channel_id === 2 ? '总收益' : '投资总额' }}
+          </div>
+          <div v-if="article.channel_id !== 2" class="fission">
+            <div>
+              <div class="amount-img fission"></div>
+              <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
+            </div>
+            <div class="amount-text">裂变系数</div>
           </div>
         </div>
-        <div v-if="article.channel_id !== 2" class="fission">
-          <div>
-            <div class="amount-img fission"></div>
-            <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
-          </div>
-          <div class="amount-text">裂变系数</div>
-        </div>
-      </div>
-      <div v-if="article.channel_id === 2" class="footer-block footer-btn">
-        <button
-          v-if="isSupported === -1"
-          class="button-support bg-yellow border-yellow"
-          @click="b4support"
-        >
-          投资<img src="@/assets/newimg/touzi.svg" />
-        </button>
-        <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
-          投资中
-        </button>
-        <button
-          v-else-if="isSupported === 1"
-          class="button-support bg-yellow border-yellow"
-          @click="invest"
-        >
-          投资<img src="@/assets/newimg/touzi.svg" />
-        </button>
-        <button
-          v-else-if="isSupported === 2"
-          class="button-support bg-yellow border-yellow"
-          disabled
-        >
-          已投资
-        </button>
+        <div class="footer-block footer-btn">
+          <button
+            v-if="isSupported === -1"
+            class="button-support bg-yellow border-yellow"
+            @click="b4support"
+          >
+            投资<img src="@/assets/newimg/touzi.svg" />
+          </button>
+          <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
+            投资中
+          </button>
+          <button
+            v-else-if="isSupported === 1"
+            class="button-support bg-yellow border-yellow"
+            @click="invest"
+          >
+            投资<img src="@/assets/newimg/touzi.svg" />
+          </button>
+          <button
+            v-else-if="isSupported === 2"
+            class="button-support bg-yellow border-yellow"
+            disabled
+          >
+            已投资
+          </button>
 
-        <button
-          v-if="isSupported === -1"
-          class="button-support bg-yellow border-yellow"
-          @click="b4support"
-        >
-          购买<img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button
-          v-else-if="isSupported === 0"
-          class="button-support bg-yellow border-yellow"
-          disabled
-        >
-          购买中<img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button
-          v-else
-          class="button-support bg-yellow border-yellow"
-          :disabled="product.stock === 0"
-          @click="buyButton"
-        >
-          {{ product.stock === 0 ? '售罄' : '购买' }}<img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
-          分享<img src="@/assets/newimg/share2.svg" />
-        </button>
-      </div>
+          <button
+            v-if="isSupported === -1"
+            class="button-support bg-yellow border-yellow"
+            @click="b4support"
+          >
+            购买<img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button
+            v-else-if="isSupported === 0"
+            class="button-support bg-yellow border-yellow"
+            disabled
+          >
+            购买中<img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button
+            v-else
+            class="button-support bg-yellow border-yellow"
+            :disabled="product.stock === 0"
+            @click="buyButton"
+          >
+            {{ product.stock === 0 ? '售罄' : '购买' }}<img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
+            分享<img src="@/assets/newimg/share2.svg" />
+          </button>
+        </div>
+      </template>
       <div v-else class="footer-block footer-btn">
-        <button v-if="isSupported === -1" class="button-support" @click="b4support">
-          投资<img src="@/assets/newimg/touzi.svg" />
-        </button>
-        <button v-if="isSupported === 0" class="button-support" disabled>
-          投资中
-        </button>
-        <button v-else-if="isSupported === 1" class="button-support" @click="invest">
-          投资<img src="@/assets/newimg/touzi.svg" />
-        </button>
-        <button v-else-if="isSupported === 2" class="button-support" disabled>
-          已投资
-        </button>
+        <template v-if="article.channel_id === 2">
+          <button v-if="isSupported === -1" class="button-support" @click="b4support">
+            投资<img src="@/assets/newimg/touzi.svg" />
+          </button>
+          <button v-if="isSupported === 0" class="button-support" disabled>
+            投资中
+          </button>
+          <button v-else-if="isSupported === 1" class="button-support" @click="invest">
+            投资<img src="@/assets/newimg/touzi.svg" />
+          </button>
+          <button v-else-if="isSupported === 2" class="button-support" disabled>
+            已投资
+          </button>
+        </template>
         <button class="button-share" @click="widgetModal = true">
           分享<img src="@/assets/newimg/share.svg" />
         </button>
