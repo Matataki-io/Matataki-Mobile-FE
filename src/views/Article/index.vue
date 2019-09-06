@@ -113,6 +113,7 @@
         </div>
       </div>-->
       <CommentsList
+        v-if="article.channel_id === 2"
         class="comments"
         :sign-id="signId"
         :is-request="isRequest"
