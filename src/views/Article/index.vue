@@ -121,6 +121,8 @@
       />
     </div>
 
+    <div class="empty-line"></div>
+
     <footer class="footer" :class="article.channel_id === 1 && 'flex-right'">
       <template v-if="article.channel_id === 2">
         <div class="footer-block footer-info">
