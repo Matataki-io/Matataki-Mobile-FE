@@ -30,6 +30,12 @@ import './icons'
 
 import publishMethods from './utils/publish_methods'
 
+// 积分配置
+import point from '../config/points'
+
+Vue.prototype.$point = point
+// 积分配置 end
+
 // new VConsole()
 
 Vue.prototype.$backendAPI = backendAPI

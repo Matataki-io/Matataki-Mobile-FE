@@ -188,6 +188,12 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "Help" */ './views/User/Help/index.vue')
     },
     {
+      path: '/point',
+      name: 'point',
+      props: true,
+      component: () => import(/* webpackChunkName: "point" */ './views/point/index.vue')
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,

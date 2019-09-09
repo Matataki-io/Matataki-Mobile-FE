@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import '@vant/touch-emulator' // 桌面端使用 vant
 import {
+  Button,
   Toast,
   PullRefresh,
   Loading,
@@ -19,7 +20,9 @@ import {
   Radio,
   Checkbox,
   CheckboxGroup,
-  List
+  List,
+  Tab,
+  Tabs
 } from 'vant'
 
 // 增加前缀 区分多个组件库 防止冲突
@@ -41,3 +44,6 @@ Vue.use(Field) // 输入框
 Vue.use(Lazyload) //
 Vue.use(Swipe).use(SwipeItem) // 轮播图
 Vue.use(List) //
+Vue.use(Tab) //
+Vue.use(Tabs) //
+Vue.use(Button) // 侧边栏

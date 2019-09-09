@@ -42,6 +42,28 @@
               </div>
             </div>
           </router-link>
+          <router-link :to="{ name: 'Asset', params: { id } }">
+            <div class="cell">
+              <div class="cell-left">
+                <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
+                <span class="left-text">我的积分</span>
+              </div>
+              <div class="cell-right">
+                <span>13123123(假数据</span>
+              </div>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'Asset', params: { id } }">
+            <div class="cell">
+              <div class="cell-left">
+                <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
+                <span class="left-text">我的邀请</span>
+              </div>
+              <div class="cell-right">
+                <span>已邀请132213位用户(假数据</span>
+              </div>
+            </div>
+          </router-link>
         </div>
         <div class="cell-container">
           <router-link :to="{ name: 'Original', params: { id } }">
@@ -91,7 +113,9 @@
         </div>
       </template>
       <template v-else>
-        <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">立即登录</div>
+        <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">
+          立即登录
+        </div>
       </template>
       <div class="cell-container">
         <a href="https://matataki.io/article/617">
@@ -142,13 +166,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import defaultAvatar from '@/assets/avatar-default.svg'
-import AuthModal from '@/components/Auth/index.vue'
 
 export default {
   name: 'Sidebar',
-  components: {
-    AuthModal
-  },
   props: {
     value: {
       type: Boolean,

@@ -388,6 +388,21 @@ const API = {
   // 获取首页统计数据
   postsStats() {
     return axiosforApiServer.get('/posts/stats')
+  },
+  // 获取任务状态
+  userPointStatus() {
+    return this.accessBackend({
+      method: 'GET',
+      url: '/user/pointStatus'
+    })
+  },
+  // 领取任务积分
+  userClaimTaskPoint(data) {
+    return this.accessBackend({
+      method: 'POST',
+      url: '/user/claimTaskPoint',
+      data: data
+    })
   }
 }
 
