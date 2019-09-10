@@ -367,8 +367,12 @@ const API = {
   async wxShare(url) {
     return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
-  async getCaptcha(email) {
-    return axiosforApiServer.get('/login/captcha', { params: { email } })
+  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return axiosforApiServer.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    })
   },
   async verifyEmail(email) {
     return axiosforApiServer({
@@ -406,6 +410,13 @@ const API = {
       method: 'POST',
       url: '/user/claimTaskPoint',
       data: data
+    })
+  },
+  registerGT() {
+    return axiosforApiServer({
+      url: `/gt/register-slide?t=${new Date().getTime()}`,
+      method: 'get',
+      dataType: 'json'
     })
   }
 }

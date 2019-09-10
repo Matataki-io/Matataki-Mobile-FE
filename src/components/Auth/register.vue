@@ -111,6 +111,34 @@ export default {
     }
   },
   methods: {
+    registerInitGT(cb) {
+      this.$backendAPI.registerGT().then(response => {
+        const res = response.data
+        window.initGeetest({
+          // 以下 4 个配置参数为必须，不能缺少
+          gt: res.gt,
+          challenge: res.challenge,
+          offline: !res.success, // 表示用户后台检测极验服务器是否宕机
+          new_captcha: res.new_captcha, // 用于宕机时表示是新验证码的宕机
+          product: "bind", // 产品形式，包括：float，popup
+          width: "300px"
+          // 更多配置参数说明请参见：http://docs.geetest.com/install/client/web-front/
+        }, (captchaObj) => {
+          this.captchaObj = captchaObj;
+          captchaObj.onReady(() => {
+            captchaObj.verify();
+          }).onSuccess(() => {
+            const result = captchaObj.getValidate();
+            if (!result) {
+              this.$message.error('请先完成校验')
+            } else {
+              cb(result);
+            }
+            // this.validateGT(result, captchaObj);
+          });
+        });
+      })
+    },
     successToast(msg) {
       this.$toast.success({
         duration: 1500,
@@ -123,22 +151,26 @@ export default {
         message: msg
       })
     },
+    confirmSendCode(gt) {
+      this.$backendAPI.getCaptcha(this.registerForm.email, {
+        geetest_challenge: gt.geetest_challenge,
+        geetest_validate: gt.geetest_validate,
+        geetest_seccode: gt.geetest_seccode
+      }).then(res => {
+        if (res.data.code === 0) {
+          this.countDown()
+          this.successToast('验证码发送成功，5分钟内使用有效')
+        } else {
+          this.failToast('验证码发送失败')
+        }
+      })
+    },
     sendCode() {
       this.$refs.registerForm.validateField('email', async (error) => {
         if (error) {
           console.error('sendCode error', error)
         } else {
-          try {
-            const res = await this.$backendAPI.getCaptcha(this.registerForm.email)
-            if (res.data.code === 0) {
-              this.countDown()
-              this.successToast('验证码发送成功，5分钟内使用有效')
-            } else {
-              this.failToast('验证码发送失败')
-            }
-          } catch (error) {
-            this.failToast('验证码发送失败')
-          }
+          this.registerInitGT(this.confirmSendCode)
         }
       })
     },
