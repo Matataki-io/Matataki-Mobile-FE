@@ -42,25 +42,25 @@
               </div>
             </div>
           </router-link>
-          <router-link :to="{ name: 'Asset', params: { id } }">
+          <router-link :to="{ name: 'point' }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
+                <svg-icon class="left-img" icon-class="point" />
                 <span class="left-text">我的积分</span>
               </div>
               <div class="cell-right">
-                <span>13123123(假数据</span>
+                <span>{{ stats.points || 0 }}</span>
               </div>
             </div>
           </router-link>
-          <router-link :to="{ name: 'Asset', params: { id } }">
+          <router-link :to="{ name: 'invite' }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
+                <svg-icon class="left-img" icon-class="box1" />
                 <span class="left-text">我的邀请</span>
               </div>
               <div class="cell-right">
-                <span>已邀请132213位用户(假数据</span>
+                <span>已邀请{{ stats.referral_amount || 0 }}位用户</span>
               </div>
             </div>
           </router-link>
@@ -376,6 +376,8 @@ export default {
       justify-content: flex-start;
       .left-img {
         margin-right: 10px;
+        width: 20px;
+        font-size: 20px;
       }
       .left-text {
         color: #000000;
