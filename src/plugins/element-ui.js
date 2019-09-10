@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css'
 
-import { Button, Input, Form, FormItem, Row, Col, Slider, Progress } from 'element-ui'
+import { Button, Input, Form, FormItem, Row, Col, Slider, Progress, Avatar } from 'element-ui'
 
 Vue.use(Input)
 Vue.use(Button)
@@ -11,3 +11,4 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Slider)
 Vue.use(Progress)
+Vue.use(Avatar)

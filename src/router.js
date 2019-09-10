@@ -194,6 +194,12 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "point" */ './views/point/index.vue')
     },
     {
+      path: '/invite',
+      name: 'invite',
+      props: true,
+      component: () => import(/* webpackChunkName: "invite" */ './views/invite/index.vue')
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,

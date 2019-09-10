@@ -244,7 +244,11 @@ const API = {
       // buy
       buyHistory: 'order/products',
       // 已经关注用户的文章
-      followedPosts: 'posts/followedPosts'
+      followedPosts: 'posts/followedPosts',
+      // 用户积分日志
+      userPoint: 'user/points',
+      // 邀请列表，没有统计数据
+      userInvitees: 'user/invitees'
     }
 
     return !needAccessToken
