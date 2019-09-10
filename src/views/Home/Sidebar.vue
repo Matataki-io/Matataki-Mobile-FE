@@ -149,11 +149,11 @@
         </a>
       </div>
       <div class="cell-container">
-        <a href="https://wj.qq.com/s2/4206369/e337">
+        <a href="https://support.qq.com/product/84254" target="_blank">
           <div class="cell">
             <div class="cell-left">
-              <svg-icon icon-class="feedback" class="left-img icon-feedback" />
-              <span class="left-text">用户反馈</span>
+              <svg-icon icon-class="tgc" class="left-img icon-feedback" />
+              <span class="left-text">吐个槽</span>
             </div>
             <div class="cell-right"><span></span></div>
           </div>
