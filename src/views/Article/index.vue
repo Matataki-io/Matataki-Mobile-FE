@@ -94,7 +94,7 @@
       <div v-if="article.is_buy" class="buy-alert">已购买成功，请前往“购买记录”页面查看！</div>
     </router-link>
 
-    <div class="comments-list" v-if="article.channel_id === 2">
+    <div v-if="article.channel_id === 2" class="comments-list">
       <h1 class="comment-title">
         {{ article.channel_id === 2 ? '支持队列' : '投资队列' }}
         {{ article.ups || 0 }}

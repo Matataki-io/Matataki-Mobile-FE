@@ -72,7 +72,7 @@ export default {
         }
       ],
       activeIndex: 0,
-      activeIndexName: this.listtype,
+      activeIndexName: this.listtype
     }
   },
   computed: {

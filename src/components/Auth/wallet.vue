@@ -10,7 +10,7 @@
         :href="itemWallet.href"
         target="_blank"
       >
-        <img :src="itemWallet.url" :alt="itemWallet.alt">
+        <img :src="itemWallet.url" :alt="itemWallet.alt" />
       </a>
     </div>
     <h1 class="step-title">
@@ -23,7 +23,7 @@
         :href="itemWallet.href"
         target="_blank"
       >
-        <img :src="itemWallet.url" :alt="itemWallet.alt">
+        <img :src="itemWallet.url" :alt="itemWallet.alt" />
       </a>
     </div>
   </section>

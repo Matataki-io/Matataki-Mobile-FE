@@ -2,7 +2,7 @@
   <div class="banner-container mw">
     <div class="banner">
       <div class="banner-logo">
-        <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo">
+        <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo" />
       </div>
       <div class="banner-data">
         <div class="data">
@@ -32,7 +32,6 @@
       </div>
     </div>
   </div>
-  </div>
 </template>
 
 <script>
@@ -47,9 +46,12 @@ export default {
   },
   methods: {
     getPostsStats() {
-      this.$backendAPI.postsStats().then(res => {
-        if (res.status === 200 && res.data.code === 0) this.postsStats = res.data.data
-      }).catch(err => console.log(`获得统计次数${err}`))
+      this.$backendAPI
+        .postsStats()
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0) this.postsStats = res.data.data
+        })
+        .catch(err => console.log(`获得统计次数${err}`))
     }
   }
 }
@@ -63,7 +65,7 @@ export default {
 .banner {
   margin-top: 60px;
   margin-bottom: 20px;
-  height:67px;
+  height: 67px;
   background: #ebe6ff;
   border-radius: 10px;
   display: flex;
@@ -98,16 +100,16 @@ export default {
   margin: 0 2px;
   box-sizing: border-box;
   &-title {
-    color:rgba(178,178,178,1);
+    color: rgba(178, 178, 178, 1);
     padding: 0;
     margin: 0;
-    font-size:12px;
-    font-weight:400;
-    line-height:14px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
   }
   &-num {
     font-size: 20px;
-    font-weight:bold;
+    font-weight: bold;
     color: #542de0;
     padding: 0;
     margin: 0;

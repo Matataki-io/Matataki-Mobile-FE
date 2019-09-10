@@ -1,18 +1,14 @@
 <template>
-  <Modal
-    v-model="showModal"
-    footer-hide
-    class-name="modalCenter signupModal"
-  >
+  <Modal v-model="showModal" footer-hide class-name="modalCenter signupModal">
     <section v-show="step === 1" class="auth-main">
-    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
+      <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请" />
       <div class="auth-title-container">
-        <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">登录</span>
-        <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">注册</span>
+        <span :class="['auth-title', { active: isLogin }]" @click="isLogin = true">登录</span>
+        <span :class="['auth-title', { active: !isLogin }]" @click="isLogin = false">注册</span>
       </div>
       <div class="loginRegister">
-        <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false"/>
-        <Register v-show="!isLogin" @switch="isLogin = true"/>
+        <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false" />
+        <Register v-show="!isLogin" @switch="isLogin = true" />
       </div>
     </section>
     <Wallet v-show="step === 2" />

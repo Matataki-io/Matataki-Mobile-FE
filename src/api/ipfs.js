@@ -13,7 +13,7 @@ function sendPost({ title, author, desc, content }) {
   //   data: stringifyData,
   //   config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
   // });
-  const token = accessTokenAPI.get();
+  const token = accessTokenAPI.get()
   return axios({
     method: 'post',
     url: `${apiServer}/post/ipfs`,
