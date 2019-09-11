@@ -123,8 +123,7 @@
 
     <div class="empty-line"></div>
 
-    <footer class="footer" :class="article.channel_id === 1 && 'flex-right'">
-      <template v-if="article.channel_id === 2">
+    <footer v-if="article.channel_id === 2" class="footer">
         <div class="footer-block footer-info">
           <div class="amount">
             <Dropdown trigger="click" @on-click="toggleAmount">
@@ -214,27 +213,18 @@
             分享<img src="@/assets/newimg/share2.svg" />
           </button>
         </div>
-      </template>
-      <div v-else class="footer-block footer-btn">
-        <template v-if="article.channel_id === 2">
-          <button v-if="isSupported === -1" class="button-support" @click="b4support">
-            投资<img src="@/assets/newimg/touzi.svg" />
-          </button>
-          <button v-if="isSupported === 0" class="button-support" disabled>
-            投资中
-          </button>
-          <button v-else-if="isSupported === 1" class="button-support" @click="invest">
-            投资<img src="@/assets/newimg/touzi.svg" />
-          </button>
-          <button v-else-if="isSupported === 2" class="button-support" disabled>
-            已投资
-          </button>
-        </template>
-        <button class="button-share" @click="widgetModal = true">
-          分享<img src="@/assets/newimg/share.svg" />
-        </button>
-      </div>
+        <!-- <button class="button-share" @click="widgetModal = true">
+          分享1<img src="@/assets/newimg/share.svg" />
+        </button> -->
     </footer>
+     <ArticleFooter
+        ref="articleFooter"
+        v-else
+        class="footer flex-right"
+        :article="article"
+        :token="ssToken"
+        @share="widgetModal = true"
+     />
 
     <van-dialog
       v-model="supportModal"
@@ -380,6 +370,7 @@ import statement from './statement.vue'
 import Widget from './Widget/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
+import ArticleFooter from '@/components/ArticleFooter.vue'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -403,7 +394,8 @@ export default {
     tagCard,
     articleTransfer,
     ipfs,
-    statement
+    statement,
+    ArticleFooter
   },
   props: ['hash'],
   data() {
@@ -447,7 +439,13 @@ export default {
       articleLoading: true, // 文章加载状态
       isOriginal: false,
       widgetModal: false, // 分享 widget dialog
-      transferModal: false // 转让
+      transferModal: false, // 转让
+      ssToken: {
+        points: [],
+        dislikes: 0,
+        likes: 0,
+        is_liked: 0
+      },
     }
   },
   computed: {
@@ -628,6 +626,7 @@ export default {
           if (res.status === 200 && res.data.code === 0) {
             this.article = res.data.data
             this.setArticle(res.data.data, supportDialog)
+            this.setSSToken(res.data)
             // 默认会执行获取文章方法，更新文章调用则不需要获取内容
             if (!supportDialog) {
               this.getArticleDatafromIPFS(res.data.data.hash)
@@ -655,6 +654,15 @@ export default {
           console.error(err)
           this.$Message.error('获取文章内容失败请重试')
         })
+    },
+    setSSToken(res) {
+      this.$refs.articleFooter.postBackendReading(res.data);
+      this.ssToken = {
+        points: res.data.points || [], // 用户是否喜欢了这篇文章
+        dislikes: res.data.dislikes,
+        likes: res.data.likes,
+        is_liked: res.data.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
+      }
     },
     // 设置文章
     async setArticle(article, supportDialog = false) {
