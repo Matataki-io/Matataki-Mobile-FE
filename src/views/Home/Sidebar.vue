@@ -191,6 +191,8 @@ export default {
       introduction: '',
       stats: {
         accounts: 0,
+        points: 0,
+        referral_amount: 0,
         articles: 0,
         supports: 0,
         drafts: 0
@@ -237,6 +239,8 @@ export default {
         introduction,
         username,
         accounts,
+        points,
+        referral_amount,
         articles,
         supports,
         drafts
@@ -250,6 +254,8 @@ export default {
         this.setAvatarImage(avatar)
         this.stats = {
           accounts,
+          points,
+          referral_amount,
           articles,
           supports,
           drafts
