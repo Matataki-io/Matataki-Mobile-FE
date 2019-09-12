@@ -33,7 +33,7 @@ export default {
       isObj: {
         type: 'newObject',
         key: 'data',
-        kes: null
+        keys: 'list'
       }
     }
   },
