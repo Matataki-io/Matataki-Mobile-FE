@@ -3,8 +3,8 @@
   <div class="progress">
     <Progress :p="timeCount" :clicked="clicked">
       <template slot="text">
-        <span v-show="!clicked" class="center-text">+ {{ points.all }}</span>
-        <div v-show="type==='great' || 'bullshit'" class="has-reward-box">
+        <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
+        <div v-show="type==='great' || type==='bullshit'" class="has-reward-box">
           <span class="has-reward">已领取{{ points.all }}</span>
         </div>
         <!-- <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" /> -->
