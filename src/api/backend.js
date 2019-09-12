@@ -256,7 +256,7 @@ const API = {
       ? axiosforApiServer.get(pullApiUrl[url], { params })
       : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
   },
-  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
+  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
     return this.accessBackend({
       method: 'POST',
       url: '/draft/save',
@@ -265,12 +265,22 @@ const API = {
         content,
         cover,
         fissionFactor,
-        isOriginal,
-        tags
+        is_original: isOriginal,
+        tags,
+        commentPayPoint
       }
     })
   },
-  async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
+  async updateDraft({
+    id,
+    title,
+    content,
+    cover,
+    fissionFactor,
+    isOriginal,
+    tags,
+    commentPayPoint
+  }) {
     return this.accessBackend({
       method: 'POST',
       url: '/draft/save',
@@ -280,8 +290,9 @@ const API = {
         content,
         cover,
         fissionFactor,
-        isOriginal,
-        tags
+        is_original: isOriginal,
+        tags,
+        commentPayPoint
       }
     })
   },
@@ -446,7 +457,7 @@ const API = {
       url: `/posts/${id}/readnew`,
       data: { time }
     })
-  },
+  }
 }
 
 export default API

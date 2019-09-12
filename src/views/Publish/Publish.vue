@@ -438,6 +438,7 @@ export default {
       this.markdownData = data.content
       this.id = id
       this.isOriginal = Boolean(data.is_original)
+      this.commentPayPoint = data.comment_pay_point
 
       this.setTag(data)
     },
@@ -515,6 +516,8 @@ export default {
     async createDraft(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      // 设置积分
+      article.commentPayPoint = this.commentPayPoint
       const response = await this.$backendAPI.createDraft(article)
       if (response.data.msg !== 'success') this.failed('失败请重试')
       this.$toast.success({ duration: 1000, message: '保存成功' })
@@ -550,6 +553,8 @@ export default {
     async updateDraft(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      // 设置积分
+      article.commentPayPoint = this.commentPayPoint
       try {
         const response = await this.$backendAPI.updateDraft(article)
         if (response.status === 200 && response.data.code === 0) {
