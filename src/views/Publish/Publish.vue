@@ -51,7 +51,6 @@
         <p>
           评论价格
           <Poptip
-            step-strictly
             popper-class="my-poptip"
             content="用户需要向您支付对应的积分才可评论(1-20)"
             width="250"
@@ -64,6 +63,7 @@
         <div class="fission-num-slider">
           <el-input-number
             v-model="commentPayPoint"
+            step-strictly
             style="width: 86px"
             controls-position="right"
             class="price-point"
