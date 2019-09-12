@@ -51,6 +51,7 @@
         <p>
           评论价格
           <Poptip
+            step-strictly
             popper-class="my-poptip"
             content="用户需要向您支付对应的积分才可评论(1-20)"
             width="250"
