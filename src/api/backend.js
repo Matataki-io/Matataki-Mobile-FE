@@ -256,6 +256,14 @@ const API = {
       ? axiosforApiServer.get(pullApiUrl[url], { params })
       : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
   },
+  // 提交积分评论
+  postPointComment(data) {
+    return this.accessBackend({
+      method: 'POST',
+      url: '/comment/comment',
+      data: data
+    })
+  },
   async createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
     return this.accessBackend({
       method: 'POST',

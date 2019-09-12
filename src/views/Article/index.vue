@@ -94,14 +94,15 @@
       <div v-if="article.is_buy" class="buy-alert">已购买成功，请前往“购买记录”页面查看！</div>
     </router-link>
 
-    <div v-if="article.channel_id === 2" class="comments-list">
-      <h1 class="comment-title">
-        {{ article.channel_id === 2 ? '支持队列' : '投资队列' }}
-        {{ article.ups || 0 }}
-      </h1>
-      <!--<div class="commentslist-title">
-        <span>投资队列 {{article.ups || 0}}</span>
-      </div>-->
+    <!-- 内容居中 -->
+    <div class="article-container">
+      <!-- 评论内容 -->
+      <commentInput
+        v-if="!isProduct"
+        :article="article"
+        @doneComment="commentRequest = Date.now()"
+      />
+      <!-- <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" /> -->
       <!--<div class="product" v-if="article.product">
         <div class="product-list" v-for="(item, index) in article.product" :key="index">
           <span>《{{item.title}}》&#45;&#45;key: {{item.digital_copy}}</span>
@@ -117,6 +118,7 @@
         :sign-id="signId"
         :is-request="isRequest"
         :type="article.channel_id"
+        :commentRequest="commentRequest"
         @stopAutoRequest="status => (isRequest = status)"
       />
     </div>
@@ -124,107 +126,107 @@
     <div class="empty-line"></div>
 
     <footer v-if="article.channel_id === 2" class="footer">
-        <div class="footer-block footer-info">
-          <div class="amount">
-            <Dropdown trigger="click" @on-click="toggleAmount">
-              <div>
-                <div
-                  :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
-                  class="amount-img"
-                ></div>
-                <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
-                  totalSupportedAmount.show
-                }}</span
-                >&nbsp;
-                <Icon type="ios-arrow-up" />
-              </div>
-              <DropdownMenu slot="list">
-                <DropdownItem name="eos" class="amount-icon">
-                  <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
-                  {{ totalSupportedAmount.eos }}
-                </DropdownItem>
-                <DropdownItem name="ont" class="amount-icon">
-                  <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
-                  {{ totalSupportedAmount.ont }}
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <div class="amount-text">
-              {{ article.channel_id === 2 ? '总收益' : '投资总额' }}
-            </div>
-          </div>
-          <div v-if="article.channel_id !== 2" class="fission">
+      <div class="footer-block footer-info">
+        <div class="amount">
+          <Dropdown trigger="click" @on-click="toggleAmount">
             <div>
-              <div class="amount-img fission"></div>
-              <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
+              <div
+                :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
+                class="amount-img"
+              ></div>
+              <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
+                totalSupportedAmount.show
+              }}</span
+              >&nbsp;
+              <Icon type="ios-arrow-up" />
             </div>
-            <div class="amount-text">裂变系数</div>
+            <DropdownMenu slot="list">
+              <DropdownItem name="eos" class="amount-icon">
+                <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
+                {{ totalSupportedAmount.eos }}
+              </DropdownItem>
+              <DropdownItem name="ont" class="amount-icon">
+                <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
+                {{ totalSupportedAmount.ont }}
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          <div class="amount-text">
+            {{ article.channel_id === 2 ? '总收益' : '投资总额' }}
           </div>
         </div>
-        <div class="footer-block footer-btn">
-          <button
-            v-if="isSupported === -1"
-            class="button-support bg-yellow border-yellow"
-            @click="b4support"
-          >
-            投资<img src="@/assets/newimg/touzi.svg" />
-          </button>
-          <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
-            投资中
-          </button>
-          <button
-            v-else-if="isSupported === 1"
-            class="button-support bg-yellow border-yellow"
-            @click="invest"
-          >
-            投资<img src="@/assets/newimg/touzi.svg" />
-          </button>
-          <button
-            v-else-if="isSupported === 2"
-            class="button-support bg-yellow border-yellow"
-            disabled
-          >
-            已投资
-          </button>
-
-          <button
-            v-if="isSupported === -1"
-            class="button-support bg-yellow border-yellow"
-            @click="b4support"
-          >
-            购买<img src="@/assets/newimg/goumai.svg" />
-          </button>
-          <button
-            v-else-if="isSupported === 0"
-            class="button-support bg-yellow border-yellow"
-            disabled
-          >
-            购买中<img src="@/assets/newimg/goumai.svg" />
-          </button>
-          <button
-            v-else
-            class="button-support bg-yellow border-yellow"
-            :disabled="product.stock === 0"
-            @click="buyButton"
-          >
-            {{ product.stock === 0 ? '售罄' : '购买' }}<img src="@/assets/newimg/goumai.svg" />
-          </button>
-          <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
-            分享<img src="@/assets/newimg/share2.svg" />
-          </button>
+        <div v-if="article.channel_id !== 2" class="fission">
+          <div>
+            <div class="amount-img fission"></div>
+            <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
+          </div>
+          <div class="amount-text">裂变系数</div>
         </div>
-        <!-- <button class="button-share" @click="widgetModal = true">
+      </div>
+      <div class="footer-block footer-btn">
+        <button
+          v-if="isSupported === -1"
+          class="button-support bg-yellow border-yellow"
+          @click="b4support"
+        >
+          投资<img src="@/assets/newimg/touzi.svg" />
+        </button>
+        <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
+          投资中
+        </button>
+        <button
+          v-else-if="isSupported === 1"
+          class="button-support bg-yellow border-yellow"
+          @click="invest"
+        >
+          投资<img src="@/assets/newimg/touzi.svg" />
+        </button>
+        <button
+          v-else-if="isSupported === 2"
+          class="button-support bg-yellow border-yellow"
+          disabled
+        >
+          已投资
+        </button>
+
+        <button
+          v-if="isSupported === -1"
+          class="button-support bg-yellow border-yellow"
+          @click="b4support"
+        >
+          购买<img src="@/assets/newimg/goumai.svg" />
+        </button>
+        <button
+          v-else-if="isSupported === 0"
+          class="button-support bg-yellow border-yellow"
+          disabled
+        >
+          购买中<img src="@/assets/newimg/goumai.svg" />
+        </button>
+        <button
+          v-else
+          class="button-support bg-yellow border-yellow"
+          :disabled="product.stock === 0"
+          @click="buyButton"
+        >
+          {{ product.stock === 0 ? '售罄' : '购买' }}<img src="@/assets/newimg/goumai.svg" />
+        </button>
+        <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
+          分享<img src="@/assets/newimg/share2.svg" />
+        </button>
+      </div>
+      <!-- <button class="button-share" @click="widgetModal = true">
           分享1<img src="@/assets/newimg/share.svg" />
         </button> -->
     </footer>
-     <ArticleFooter
-        ref="articleFooter"
-        v-else
-        class="footer flex-right"
-        :article="article"
-        :token="ssToken"
-        @share="widgetModal = true"
-     />
+    <ArticleFooter
+      v-else
+      ref="articleFooter"
+      class="footer flex-right"
+      :article="article"
+      :token="ssToken"
+      @share="widgetModal = true"
+    />
 
     <van-dialog
       v-model="supportModal"
@@ -371,6 +373,7 @@ import Widget from './Widget/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
+import commentInput from '@/components/article_comment'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -395,7 +398,8 @@ export default {
     articleTransfer,
     ipfs,
     statement,
-    ArticleFooter
+    ArticleFooter,
+    commentInput
   },
   props: ['hash'],
   data() {
@@ -446,6 +450,7 @@ export default {
         likes: 0,
         is_liked: 0
       },
+      commentRequest: 0
     }
   },
   computed: {
@@ -656,7 +661,7 @@ export default {
         })
     },
     setSSToken(res) {
-      this.$refs.articleFooter.postBackendReading(res.data);
+      this.$refs.articleFooter.postBackendReading(res.data)
       this.ssToken = {
         points: res.data.points || [], // 用户是否喜欢了这篇文章
         dislikes: res.data.dislikes,

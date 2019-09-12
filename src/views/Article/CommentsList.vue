@@ -1,26 +1,55 @@
 <template>
-  <BasePull
-    :loading-text="'暂无评论'"
-    :params="params"
-    :api-url="apiUrl"
-    :is-refresh="false"
-    :auto-request-time="autoRequestTime"
-    :need-access-token="true"
-    :is-obj="isObj"
-    :immediate-check="false"
-    @getListData="getListData"
-  >
-    <CommentCard v-for="(item, index) in articles" :key="index" :comment="item" :type="type" />
-  </BasePull>
+  <div>
+    <h1 class="comment-title">
+      {{ type === 2 ? '支持队列' : '评论列表' }}
+      {{ commentLength }}
+    </h1>
+    <BasePull
+      :loading-text="'暂无评论'"
+      :params="params"
+      :api-url="apiUrl"
+      :is-refresh="false"
+      :auto-request-time="autoRequestTime"
+      :need-access-token="true"
+      :is-obj="isObj"
+      :immediate-check="false"
+      @getListData="getListData"
+    >
+      <template v-if="type === 2">
+        <CommentCard v-for="item in articles" :comment="item" :type="type" :key="item.uid" />
+      </template>
+      <template v-else>
+        <articleCard v-for="item in articles" :key="item.uid" :comment="item" :type="type" />
+      </template>
+    </BasePull>
+  </div>
 </template>
 
 <script>
-import { CommentCard } from '@/components/'
+import CommentCard from '@/components/comment/CommentCard.vue'
+import articleCard from '@/components/comment/article_card.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: { CommentCard },
-  props: ['signId', 'isRequest', 'type'],
+  components: { CommentCard, articleCard },
+  props: {
+    signId: {
+      type: Number,
+      required: true
+    },
+    isRequest: {
+      type: Boolean,
+      required: true
+    },
+    type: {
+      type: Number, // 2是商品 1是文章
+      required: true
+    },
+    commentRequest: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       params: {
@@ -34,7 +63,8 @@ export default {
         type: 'newObject',
         key: 'data',
         keys: 'list'
-      }
+      },
+      commentLength: 0
     }
   },
   computed: {
@@ -59,6 +89,9 @@ export default {
       } else {
         clearInterval(this.timer)
       }
+    },
+    commentRequest(val) {
+      this.autoRequestTime = val
     }
   },
 
@@ -75,7 +108,17 @@ export default {
         this.$emit('stopAutoRequest', false)
       }
       this.articles = res.list
+      this.commentLength = res.data.data.count
     }
   }
 }
 </script>
+
+<style lang="less" scoped>
+.comment-title {
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+}
+</style>
