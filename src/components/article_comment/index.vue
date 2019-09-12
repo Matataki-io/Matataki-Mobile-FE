@@ -25,7 +25,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 // import avatar from '@/components/avatar/index.vue'
-import { strTrim } from '@/common/reg'
 
 export default {
   components: {
@@ -71,11 +70,10 @@ export default {
     },
     postComment() {
       if (!this.islogin()) return
-      if (!strTrim(this.comment))
-        return this.$toast({ duration: 1000, message: '评论内容不能为空' })
+      if (!this.comment.trim()) return this.$toast({ duration: 1000, message: '评论内容不能为空' })
       const data = {
         signId: this.article.id,
-        comment: strTrim(this.comment)
+        comment: this.comment.trim()
       }
       this.$backendAPI
         .postPointComment(data)
