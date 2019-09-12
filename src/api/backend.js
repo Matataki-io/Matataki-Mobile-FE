@@ -70,7 +70,7 @@ const API = {
   },
   async sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint },
     signature = null
   ) {
     return this.accessBackend({
@@ -87,7 +87,8 @@ const API = {
         signId,
         title,
         is_original: isOriginal,
-        tags
+        tags,
+        commentPayPoint
       }
     })
   },

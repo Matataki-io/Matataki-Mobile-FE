@@ -49,6 +49,34 @@
       />
       <div v-if="editorMode !== 'edit'" class="fission">
         <p>
+          评论价格
+          <Poptip
+            popper-class="my-poptip"
+            content="用户需要向您支付对应的积分才可评论(1-20)"
+            width="250"
+            word-wrap
+            placement="top-start"
+          >
+            <span class="question">?</span>
+          </Poptip>
+        </p>
+        <div class="fission-num-slider">
+          <el-input-number
+            v-model="commentPayPoint"
+            style="width: 86px"
+            controls-position="right"
+            class="price-point"
+            :min="1"
+            :max="20"
+            size="mini"
+            label="评论价格"
+          />
+          <span class="input-number">/积分</span>
+        </div>
+        <!-- <span class="set-des"></span> -->
+      </div>
+      <!-- <div v-if="editorMode !== 'edit'" class="fission">
+        <p>
           裂变系数
           <Poptip
             popper-class="my-poptip"
@@ -73,7 +101,7 @@
         <div class="fission-num-Input">
           {{ fissionNum }}
         </div>
-      </div>
+      </div> -->
       <div class="cover-container">
         <div v-show="cover">
           <img class="cover-img" :src="coverEditor" alt="cover" />
@@ -227,7 +255,8 @@ export default {
     transferButton: false, // 转让按钮
     transferModal: false, // 转让弹框
     allowLeave: false, // 允许离开
-    saveInfo: {}
+    saveInfo: {},
+    commentPayPoint: 1
   }),
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -454,6 +483,8 @@ export default {
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      // 设置积分
+      article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
       try {
         const { author, hash } = article
