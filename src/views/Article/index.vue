@@ -98,7 +98,7 @@
     <div class="article-container">
       <!-- 评论内容 -->
       <commentInput
-        v-if="!isProduct"
+        v-if="article.channel_id !== 2"
         :article="article"
         @doneComment="commentRequest = Date.now()"
       />
