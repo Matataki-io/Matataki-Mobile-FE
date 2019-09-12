@@ -5,7 +5,9 @@
       <template slot="text">
         <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
         <div v-show="type==='great' || type==='bullshit'" class="has-reward-box">
-          <span class="has-reward">已领取{{ points.all }}</span>
+          <router-link :to="{ name: 'point' }">
+            <span class="has-reward">已领取{{ points.all }}</span>
+          </router-link>
         </div>
         <!-- <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" /> -->
         <!-- <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" /> -->
