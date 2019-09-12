@@ -213,7 +213,7 @@ export default {
           .then(response => {
             let res = response.data
             if (res.code === 0) {
-              this.$toast.success({ duration: 1000, message: '阅读新文章奖励${this.$point.readNew}积分, 评价后可领取更多积分!' })
+              this.$toast.success({ duration: 1000, message: `阅读新文章奖励${this.$point.readNew}积分, 评价后可领取更多积分!` })
               console.log('阅读新文章增加积分成功')
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
