@@ -1,8 +1,12 @@
 <template>
   <div class="card">
     <div class="info">
-      <el-avatar size="medium" :src="circleUrl"></el-avatar>
-      <span class="username">{{ card.username }}</span>
+      <router-link :to="{ name: 'User', params: { id: card.id } }">
+        <el-avatar size="medium" :src="circleUrl"></el-avatar>
+      </router-link>
+      <router-link :to="{ name: 'User', params: { id: card.id } }">
+        <span class="username">{{ card.username }}</span>
+      </router-link>
     </div>
     <p class="card-date">{{ friendlyDate }}</p>
   </div>
