@@ -20,6 +20,12 @@
         <br />
         好友阅读获得积分你可得额外1/{{ 1 / $point.readReferralRate }}
       </p>
+      <br />
+      <p class="point-des">
+        注：未激活者阅读{{ $point.readNew }}篇文章并作出评价后即可完成激活，激活后您即可领取额外{{
+          $point.regInviteFinished
+        }}积分。
+      </p>
     </div>
 
     <div v-if="isLogined">
