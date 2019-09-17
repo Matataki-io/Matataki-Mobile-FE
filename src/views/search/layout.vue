@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <van-sticky>
-      <search :search-query-val="searchQueryVal" @backBtn="$router.push('home')"></search>
+      <search :search-query-val="searchQueryVal" @backBtn="$router.go(-1)"></search>
       <van-dropdown-menu active-color="#542de0">
         <van-dropdown-item v-model="value1" :options="option1" @change="menuChange" />
         <van-dropdown-item v-model="value2" disabled :options="option2" />
@@ -101,8 +101,8 @@ export default {
     },
     menuChange(val) {
       let name = this.option1[val].name
-      console.log(name)
-      this.$router.push({
+      // console.log(name)
+      this.$router.replace({
         name: name,
         query: {
           q: this.searchQueryVal.trim()
