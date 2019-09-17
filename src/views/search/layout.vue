@@ -121,7 +121,7 @@ export default {
 .search {
   background-color: #fff;
   height: 100%;
-  overflow: auto;
+  // overflow: auto;
 }
 .search-container {
   padding: 0 10px;
