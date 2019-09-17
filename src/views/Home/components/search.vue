@@ -32,12 +32,15 @@ export default {
   watch: {
     showSearch(newVal) {
       this.showSearchStatus = this.showSearch
-      if (newVal) {
-        document.querySelector('body').style.overflow = 'hidden'
-      } else {
-        document.querySelector('body').style.overflow = ''
-      }
+      // if (newVal) {
+      //   document.querySelector('body').style.overflow = 'hidden'
+      // } else {
+      //   document.querySelector('body').style.overflow = ''
+      // }
     }
+  },
+  beforeDestroy() {
+    // document.querySelector('body').style.overflow = ''
   },
   mounted() {
     this.getRecommend()
