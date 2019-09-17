@@ -103,7 +103,7 @@ export default {
     margin: 10px;
     a {
       font-size: 14px;
-      color: #969799;
+      color: #5a5a5a;
       cursor: pointer;
     }
   }
