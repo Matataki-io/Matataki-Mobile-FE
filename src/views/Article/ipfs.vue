@@ -1,6 +1,16 @@
 <template>
   <div class="article-ipfs">
-    <p>本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。</p>
+    <p>
+      本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。
+      <el-popover
+        placement="top-start"
+        width="300"
+        trigger="click"
+        content="「HASH」是一篇作品上传到 IPFS 后生成的独一无二的 ID，通过HASH可在 IPFS 不同节点访问作品內容。"
+      >
+        <svg-icon slot="reference" class="help-icon" icon-class="help" />
+      </el-popover>
+    </p>
     <div class="ipfs-hash">
       <svg-icon class="copy-hash" icon-class="copy" @click="copyText(getCopyIpfsHash)" />
       <n-link class="ipfs" target="_blank" :to="{ name: 'ipfs-hash', params: { hash: hash } }">
