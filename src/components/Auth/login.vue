@@ -198,6 +198,7 @@ export default {
       height: 42px;
       border-radius: 50%;
       padding: 6px;
+      color: #fff;
       img {
         width: 20px;
       }

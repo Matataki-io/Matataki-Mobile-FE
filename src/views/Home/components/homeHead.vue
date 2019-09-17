@@ -22,26 +22,43 @@
         <span>{{ item }}</span>
       </a>
     </div>
-
-    <img
-      class="home-head-create"
-      src="@/assets/img/icon_home_create.svg"
-      alt="create"
-      @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
-    />
+    <div class="fl ac">
+      <svg-icon class="search-icon" icon-class="search" @click="showSearch = true"></svg-icon>
+      <img
+        class="home-head-create"
+        src="@/assets/img/icon_home_create.svg"
+        alt="create"
+        @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
+      />
+    </div>
+    <search :show-search="showSearch" @showSearchStatus="showSearch = false"></search>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import search from './search.vue'
 
 export default {
   name: 'HomeHead',
-  props: ['nav', 'nowIndex'],
+  components: {
+    search
+  },
+  props: {
+    nav: {
+      type: Array,
+      required: true
+    },
+    nowIndex: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
       avatar: '',
-      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`
+      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
+      showSearch: false
     }
   },
   computed: {
@@ -117,10 +134,9 @@ export default {
   }
   &-nav {
     a {
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 18px;
       color: rgba(178, 178, 178, 1);
-      margin: 0 12px;
+      margin: 0 10px;
       position: relative;
       text-align: center;
       transition: all 0.18s ease-in-out;
@@ -129,6 +145,7 @@ export default {
         position: relative;
       }
       &.active {
+        font-weight: bold;
         color: rgba(0, 0, 0, 1);
       }
       &.active::after {
@@ -138,7 +155,7 @@ export default {
         left: -2px;
         right: -2px;
         display: block;
-        height: 5px;
+        height: 4px;
         background-color: #542de0;
       }
     }
@@ -149,5 +166,12 @@ export default {
     height: 20px;
     cursor: pointer;
   }
+}
+
+.search-icon {
+  color: #000;
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 16px;
 }
 </style>

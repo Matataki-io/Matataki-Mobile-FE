@@ -248,6 +248,10 @@ const API = {
       followedPosts: 'posts/followedPosts',
       // 用户积分日志
       userPoint: 'user/points',
+      // 搜索文章
+      searchArticleList: 'posts/search',
+      // 搜索用户
+      searchUserList: 'users/search',
       // 邀请列表，没有统计数据
       userInvitees: 'user/invitees'
     }
@@ -465,6 +469,10 @@ const API = {
       url: `/posts/${id}/readnew`,
       data: { time }
     })
+  },
+  // 搜索推荐
+  searchRecommend(params) {
+    return axiosforApiServer.get('/search/recommend', params)
   }
 }
 

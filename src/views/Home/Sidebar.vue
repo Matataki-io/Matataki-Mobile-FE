@@ -384,6 +384,7 @@ export default {
         margin-right: 10px;
         width: 20px;
         font-size: 20px;
+        color: #1f1f1f;
       }
       .left-text {
         color: #000000;

@@ -200,6 +200,24 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "invite" */ './views/invite/index.vue')
     },
     {
+      path: '/search',
+      name: 'search',
+      props: true,
+      component: () => import(/* webpackChunkName: "search" */ './views/search/index.vue')
+    },
+    {
+      path: '/search/shop',
+      name: 'search/shop',
+      props: true,
+      component: () => import(/* webpackChunkName: "search/shop" */ './views/search/shop.vue')
+    },
+    {
+      path: '/search/user',
+      name: 'search/user',
+      props: true,
+      component: () => import(/* webpackChunkName: "search/user" */ './views/search/user.vue')
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,

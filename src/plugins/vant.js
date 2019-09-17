@@ -22,7 +22,11 @@ import {
   CheckboxGroup,
   List,
   Tab,
-  Tabs
+  Tabs,
+  Search,
+  DropdownMenu,
+  DropdownItem,
+  Sticky
 } from 'vant'
 
 // 增加前缀 区分多个组件库 防止冲突
@@ -46,4 +50,7 @@ Vue.use(Swipe).use(SwipeItem) // 轮播图
 Vue.use(List) //
 Vue.use(Tab) //
 Vue.use(Tabs) //
-Vue.use(Button) // 侧边栏
+Vue.use(Button)
+Vue.use(Search)
+Vue.use(DropdownMenu).use(DropdownItem)
+Vue.use(Sticky)

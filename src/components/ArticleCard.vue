@@ -17,7 +17,7 @@
         <div class="full"></div>
       </div>
       <div class="card-text">
-        <h2 v-clampy="2" class="title">{{ article.title }}</h2>
+        <p v-clampy="2" class="title search-res" v-html="xssTitle"></p>
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
           <p v-if="nowIndex === 0" class="read-ups">
@@ -35,16 +35,19 @@
         </template>
       </div>
     </div>
+    <!-- 只有文章卡才会有内容 -->
+    <p v-if="isSearchCard" v-clampy="3" class="content search-res" v-html="xssContent"></p>
   </router-link>
 </template>
 
 <script>
 import moment from 'moment'
+import clampy from '@clampy-js/vue-clampy'
+import Vue from 'vue'
 import { isNDaysAgo } from '@/common/methods'
 import { precision } from '@/common/precisionConversion'
 
-import clampy from '@clampy-js/vue-clampy'
-import Vue from 'vue'
+import { xssFilter } from '@/common/xss'
 
 Vue.use(clampy)
 
@@ -60,10 +63,15 @@ export default {
     },
     nowIndex: {
       type: Number,
-      default: () => 0
+      default: 0
     },
     // isOtherUser 是其他用户信息视角吗
     isOtherUser: {
+      type: Boolean,
+      default: false
+    },
+    // 是否为搜索卡
+    isSearchCard: {
       type: Boolean,
       default: false
     }
@@ -91,6 +99,12 @@ export default {
     },
     articleEosValue() {
       return precision(this.article.eosprice, 'eos')
+    },
+    xssTitle() {
+      return xssFilter(this.article && this.article.title)
+    },
+    xssContent() {
+      return xssFilter(this.article && this.article.short_content)
     }
   },
   mounted() {}
@@ -175,7 +189,8 @@ export default {
   font-weight: bold;
   color: rgba(0, 0, 0, 1);
   line-height: 18px;
-  white-space: normal;
+  height: 36px;
+  overflow: hidden;
 }
 
 .img-outer {
@@ -210,6 +225,17 @@ export default {
   flex-direction: column;
   height: 60px;
   justify-content: space-between;
+}
+
+.content {
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 // 因为不开放适配 所以媒体查询放大
