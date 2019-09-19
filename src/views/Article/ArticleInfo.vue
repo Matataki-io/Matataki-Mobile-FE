@@ -1,4 +1,5 @@
 <template>
+  <!-- 没有用到 暂不翻译 -->
   <Modal v-model="infoModaCopy" footer-hide class-name="modalCenter" @on-visible-change="change">
     <template v-if="channel === 1">
       <div class="info-content">

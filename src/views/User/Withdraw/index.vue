@@ -1,6 +1,6 @@
 <template>
   <div class="mw withdraw">
-    <BaseHeader :pageinfo="{ title: '提现' }" />
+    <BaseHeader :pageinfo="{ title: $t('withdraw.title') }" />
     <div class="withdraw-head">
       <div class="withdraw-head-type">
         <img :src="withdrawData.head.logo" :alt="withdrawData.head.type" />
@@ -32,14 +32,16 @@
     </div>
 
     <div class="withdraw-button-content">
-      <a href="javascript:;" class="withdraw-button" @click="withdrawButton">提现</a>
+      <a href="javascript:;" class="withdraw-button" @click="withdrawButton">
+        {{ $t('withdraw.title') }}
+      </a>
     </div>
   </div>
 </template>
 
 <script>
-import { precision } from '@/common/precisionConversion'
 import { mapActions, mapGetters } from 'vuex'
+import { precision } from '@/common/precisionConversion'
 import iconEOS from '@/assets/img/icon_EOS.svg'
 import iconONT from '@/assets/img/icon_ONT.svg'
 import { strTrim } from '@/common/reg'
@@ -57,43 +59,43 @@ export default {
         },
         list: [
           {
-            title: '提现地址',
+            title: this.$t('withdraw.address'),
             titleDes: '',
-            placeholder: '输入或长按黏贴地址',
+            placeholder: this.$t('withdraw.inputAddress'),
             value: '',
             des: '',
             disabled: false
           },
           {
-            title: '标签 MEMO',
-            titleDes: '(填写错误可能导致资产损失,请仔细核对)',
-            placeholder: '输入或长按粘贴标签',
+            title: this.$t('withdraw.memo'),
+            titleDes: this.$t('withdraw.memoDes'),
+            placeholder: this.$t('withdraw.inputTag'),
             value: '',
             des: '',
             disabled: false
           },
           {
-            title: '数量',
-            titleDes: '(默认全部，不可修改)',
-            placeholder: '输入或长按黏贴地址',
+            title: this.$t('withdraw.amount'),
+            titleDes: this.$t('withdraw.amountDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
             value: 0,
             des: 'EOS',
             disabled: true
           },
           {
-            title: '手续费',
-            titleDes: '(限时由瞬MATATAKI官方支付)',
-            placeholder: '输入或长按黏贴地址',
+            title: this.$t('withdraw.handlingFee'),
+            titleDes: this.$t('withdraw.handlingFeeDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
             value: 0,
             des: 'EOS',
             disabled: true
           }
         ],
         des: [
-          '最小提币数量为：0.5 EOS。',
-          '提现数量默认为全部EOS余额。',
-          '如需提币到交易所，请填写正确的 memo。',
-          '请务必确认电脑及浏览器安全，防止信息被篡改或泄露。'
+          this.$t('withdraw.eosDes1'),
+          this.$t('withdraw.eosDes2'),
+          this.$t('withdraw.eosDes3'),
+          this.$t('withdraw.eosDes4')
         ]
       },
       ontWithdraw: {
@@ -104,35 +106,31 @@ export default {
         },
         list: [
           {
-            title: '提现地址',
+            title: this.$t('withdraw.address'),
             titleDes: '',
-            placeholder: '输入或长按黏贴地址',
+            placeholder: this.$t('withdraw.inputAddress'),
             value: '',
             des: '',
             disabled: false
           },
           {
-            title: '数量',
-            titleDes: '(默认全部，不可修改)',
-            placeholder: '输入或长按黏贴地址',
+            title: this.$t('withdraw.amount'),
+            titleDes: this.$t('withdraw.amountDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
             value: 0,
             des: 'ONT',
             disabled: true
           },
           {
-            title: '手续费',
-            titleDes: '(限时由瞬MATATAKI官方支付)',
-            placeholder: '输入或长按黏贴地址',
+            title: this.$t('withdraw.handlingFee'),
+            titleDes: this.$t('withdraw.handlingFeeDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
             value: 0.01,
             des: 'ONG',
             disabled: true
           }
         ],
-        des: [
-          '最小提币数量为：1 ONT。',
-          '提现数量默认为全部ONT余额的正整数部分。',
-          '请务必确认电脑及浏览器安全，防止信息被篡改或泄露。'
-        ]
+        des: [this.$t('withdraw.ontDes1'), this.$t('withdraw.ontDes2'), this.$t('withdraw.ontDes3')]
       },
       withdrawData: null
     }
@@ -186,7 +184,7 @@ export default {
         })
         .catch(error => {
           console.error(error)
-          this.$toast.fail({ duration: 1000, message: '获取数据失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('error.getDataError') })
         })
     },
     // 提示
@@ -195,14 +193,15 @@ export default {
       else this.$toast[type]({ duration: 1000, message })
     },
     async withdrawButton() {
-      if (this.withdrawData.head.amount <= 0) return this.toastMessage('没有可以提现的余额')
-      if (!this.withdrawData.list[0].value) return this.toastMessage('请输入提现地址')
+      if (this.withdrawData.head.amount <= 0)
+        return this.toastMessage(this.$t('withdraw.notBalance'))
+      if (!this.withdrawData.list[0].value) return this.toastMessage(this.$t('withdraw.notAddress'))
 
       // 最小金额限制
       if (this.type === 'EOS' && this.withdrawData.head.amount < 0.5)
-        return this.toastMessage('提现EOS不能小于0.5')
+        return this.toastMessage(this.$t('withdraw.withdrawMinBalance', ['EOS', '0.5']))
       if (this.type === 'ONT' && this.withdrawData.head.amount < 1)
-        return this.toastMessage('提现ONT不能小于1')
+        return this.toastMessage(this.$t('withdraw.withdrawMinBalance', ['ONT', '1']))
 
       const beforeClose = async (action, done) => {
         if (action === 'confirm') {
@@ -220,8 +219,8 @@ export default {
               if (res.status === 200 && res.data.code === 0) {
                 //this.toastMessage(res.data.message, 'success');
                 this.$dialog.alert({
-                  title: '请求成功！',
-                  message: '已发起提现请求,请耐心等待提现金额到账'
+                  title: this.$t('promptTitle'),
+                  message: this.$t('withdraw.success')
                 })
                 this.getBalance(this.type).then(() => {
                   this.$navigation.cleanRoutes() // 清除路由记录
@@ -232,15 +231,15 @@ export default {
             .catch(err => {
               console.error(err)
               this.$dialog.alert({
-                title: '提现失败',
-                message: ''
+                title: this.$t('promptTitle'),
+                message: this.$t('withdraw.fail')
               })
               //this.toastMessage('提现失败', 'fail');
               done()
             })
         } else done()
       }
-      this.$dialog.confirm({ message: '确认提现?', beforeClose })
+      this.$dialog.confirm({ message: this.$t('withdraw.prompt'), beforeClose })
       return true
     },
     writeAddres() {

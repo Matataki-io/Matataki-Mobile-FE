@@ -3,15 +3,14 @@
     <div class="flex mt">
       <span class="is-original">
         本文发布于瞬matataki
+        {{ $t('p.publishMatataki') }}
         <template v-if="isOriginal">
-          未经授权禁止转载
+          {{ $t('p.publishMatatakOriginal') }}
         </template>
       </span>
     </div>
     <p class="statement">
-      免责声明：本文由用户「{{
-        article.nickname || article.username
-      }}」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。
+      {{ $t('p.publishMatatakiUser', [article.nickname || article.username]) }}
     </p>
   </div>
 </template>

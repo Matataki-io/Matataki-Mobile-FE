@@ -4,12 +4,12 @@
     <van-search
       v-model="searchVal"
       class="search-input"
-      placeholder="请输入搜索关键词"
+      :placeholder="$t('search.placeholder')"
       show-action
       shape="round"
       @search="onSearch"
     >
-      <div slot="action" @click="onSearch">搜索</div>
+      <div slot="action" @click="onSearch">{{ $t('search.btn') }}</div>
     </van-search>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     onSearch() {
-      if (!this.searchVal.trim()) return this.$toast('搜索内容不能为空')
+      if (!this.searchVal.trim()) return this.$toast(this.$t('warning.searchContent'))
       this.search()
     },
     search() {

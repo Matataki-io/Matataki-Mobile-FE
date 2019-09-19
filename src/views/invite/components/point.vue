@@ -2,29 +2,27 @@
   <div class="point-list">
     <div class="point-head">
       <div class="fl fl-ac fl-js">
-        <span class="point-title">已邀请</span>
+        <span class="point-title">{{ $t('invite.invited') }}</span>
         <span class="point-money">{{ point.res.count }}</span>
       </div>
       <div class="fl fl-ac fl-js">
         <div class="integral-link">
           {{ referralLink }}
         </div>
-        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)"
-          >复制链接</el-button
+        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
+          {{ $t('invite.copyLink') }}</el-button
         >
       </div>
       <p class="point-des">
-        每成功邀请一名好友注册可得{{ $point.regInviteFinished + $point.regInviter }}积分
+        {{ $t('invite.des1', [$point.regInviteFinished + $point.regInviter]) }}
         <br />
-        好友发文你可以获得额外{{ $point.publishReferral }}积分
+        {{ $t('invite.des2', [$point.publishReferral]) }}
         <br />
-        好友阅读获得积分你可得额外1/{{ 1 / $point.readReferralRate }}
+        {{ $t('invite.des3', [1 / $point.readReferralRate]) }}
       </p>
       <br />
       <p class="point-des">
-        注：未激活者阅读{{ $point.readNew }}篇文章并作出评价后即可完成激活，激活后您即可领取额外{{
-          $point.regInviteFinished
-        }}积分。
+        {{ $t('invite.des4', [$point.readNew, $point.regInviteFinished]) }}
       </p>
     </div>
 
@@ -48,8 +46,12 @@
       </BasePull>
     </div>
     <div v-else class="tips">
-      <p>登录查看邀请列表</p>
-      <el-button size="mini" class="integral-btn btn" @click="login">登录</el-button>
+      <p>
+        {{ $t('invite.loginViewList') }}
+      </p>
+      <el-button size="mini" class="integral-btn btn" @click="login">
+        {{ $t('login') }}
+      </el-button>
     </div>
   </div>
 </template>
@@ -85,9 +87,8 @@ export default {
     },
     referralLink1() {
       if (this.currentUserInfo && this.currentUserInfo.id)
-        return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}?referral=${this.currentUserInfo.id}`
-      else
-        return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}`
+        return `${this.$t('referral')}${window.location.origin}?referral=${this.currentUserInfo.id}`
+      else return `${this.$t('referral')}${window.location.origin}`
     }
   },
   created() {},
@@ -101,13 +102,13 @@ export default {
         () => {
           this.$toast({
             duration: 1500,
-            message: '复制成功'
+            message: this.$t('success.copy')
           })
         },
         () => {
           this.$toast({
             duration: 1500,
-            message: '复制失败'
+            message: this.$t('error.copy')
           })
         }
       )

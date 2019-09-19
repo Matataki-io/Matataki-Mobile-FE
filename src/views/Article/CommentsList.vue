@@ -1,11 +1,11 @@
 <template>
   <div>
     <h1 class="comment-title">
-      {{ type === 2 ? '支持队列' : '评论列表' }}
+      {{ type === 2 ? $t('p.likeList') : $t('p.commentList') }}
       {{ commentLength }}
     </h1>
     <BasePull
-      :loading-text="'暂无评论'"
+      :loading-text="$t('notComment')"
       :params="params"
       :api-url="apiUrl"
       :is-refresh="false"
@@ -16,7 +16,7 @@
       @getListData="getListData"
     >
       <template v-if="type === 2">
-        <CommentCard v-for="item in articles" :comment="item" :type="type" :key="item.uid" />
+        <CommentCard v-for="item in articles" :key="item.uid" :comment="item" :type="type" />
       </template>
       <template v-else>
         <articleCard v-for="item in articles" :key="item.uid" :comment="item" :type="type" />
@@ -26,9 +26,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import CommentCard from '@/components/comment/CommentCard.vue'
 import articleCard from '@/components/comment/article_card.vue'
-import { mapGetters } from 'vuex'
 
 export default {
   components: { CommentCard, articleCard },

@@ -1,7 +1,8 @@
-/* eslint-disable no-shadow */
 <template>
   <div class="article" @click.stop="opr = false">
-    <BaseHeader :pageinfo="{ title: article.channel_id === 2 ? '商品详情' : '文章详情' }">
+    <BaseHeader
+      :pageinfo="{ title: article.channel_id === 2 ? $t('p.articleTitle') : $t('p.shopTitle') }"
+    >
       <div v-if="isMe(article.uid)" slot="right" class="more" @click.stop="opr = !opr">
         <img src="@/assets/more.svg" alt="more" />
         <transition name="fade" mode="out-in">
@@ -16,10 +17,14 @@
                 })
               "
             >
-              编辑
+              {{ $t('edit') }}
             </div>
-            <div class="dropdown-item" @click="transferModal = true">转让</div>
-            <div class="dropdown-item" @click="delArticleButton">删除</div>
+            <div class="dropdown-item" @click="transferModal = true">
+              {{ $t('transfer') }}
+            </div>
+            <div class="dropdown-item" @click="delArticleButton">
+              {{ $t('delete') }}
+            </div>
           </div>
         </transition>
       </div>
@@ -56,23 +61,25 @@
                 {{ article.nickname || article.author }}
               </p>
               <p class="other">
-                发布于
+                {{ $t('p.publishFrom') }}
                 {{ articleCreateTimeComputed }}
                 <svg-icon icon-class="view" class="avatar-read" />
-                {{ article.read || 0 }}阅读
+                {{ article.read || 0 }}
+                {{ $t('read') }}
               </p>
             </div>
           </div>
           <template v-if="!isMe(article.uid)">
             <template v-if="!followed">
               <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
-                <van-icon name="plus" /> 关注
+                <van-icon name="plus" />
+                {{ $t('follow') }}
               </div>
             </template>
             <template v-else>
-              <span class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 0 })"
-                >取消关注</span
-              >
+              <span class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 0 })">
+                {{ $t('unFollow') }}
+              </span>
             </template>
           </template>
         </div>
@@ -91,7 +98,9 @@
       </div>
     </template>
     <router-link :to="{ name: 'BuyHistory' }">
-      <div v-if="article.is_buy" class="buy-alert">已购买成功，请前往“购买记录”页面查看！</div>
+      <div v-if="article.is_buy" class="buy-alert">
+        {{ $t('p.buyHistory') }}
+      </div>
     </router-link>
 
     <!-- 内容居中 -->
@@ -118,7 +127,7 @@
         :sign-id="signId"
         :is-request="isRequest"
         :type="article.channel_id"
-        :commentRequest="commentRequest"
+        :comment-request="commentRequest"
         @stopAutoRequest="status => (isRequest = status)"
       />
     </div>
@@ -152,7 +161,7 @@
             </DropdownMenu>
           </Dropdown>
           <div class="amount-text">
-            {{ article.channel_id === 2 ? '总收益' : '投资总额' }}
+            {{ article.channel_id === 2 ? $t('p.totalRevenue') : $t('p.totalInvestment') }}
           </div>
         </div>
         <div v-if="article.channel_id !== 2" class="fission">
@@ -160,7 +169,7 @@
             <div class="amount-img fission"></div>
             <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
           </div>
-          <div class="amount-text">裂变系数</div>
+          <div class="amount-text">{{ $t('p.fissionCoefficient') }}</div>
         </div>
       </div>
       <div class="footer-block footer-btn">
@@ -169,24 +178,25 @@
           class="button-support bg-yellow border-yellow"
           @click="b4support"
         >
-          投资<img src="@/assets/newimg/touzi.svg" />
+          {{ $t('p.investment') }}<img src="@/assets/newimg/touzi.svg" />
         </button>
         <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
-          投资中
+          {{ $t('p.investing') }}
         </button>
         <button
           v-else-if="isSupported === 1"
           class="button-support bg-yellow border-yellow"
           @click="invest"
         >
-          投资<img src="@/assets/newimg/touzi.svg" />
+          {{ $t('p.investment') }}
+          <img src="@/assets/newimg/touzi.svg" />
         </button>
         <button
           v-else-if="isSupported === 2"
           class="button-support bg-yellow border-yellow"
           disabled
         >
-          已投资
+          {{ $t('p.invested') }}
         </button>
 
         <button
@@ -194,14 +204,16 @@
           class="button-support bg-yellow border-yellow"
           @click="b4support"
         >
-          购买<img src="@/assets/newimg/goumai.svg" />
+          {{ $t('p.buy') }}
+          <img src="@/assets/newimg/goumai.svg" />
         </button>
         <button
           v-else-if="isSupported === 0"
           class="button-support bg-yellow border-yellow"
           disabled
         >
-          购买中<img src="@/assets/newimg/goumai.svg" />
+          {{ $t('p.buying') }}
+          <img src="@/assets/newimg/goumai.svg" />
         </button>
         <button
           v-else
@@ -209,10 +221,12 @@
           :disabled="product.stock === 0"
           @click="buyButton"
         >
-          {{ product.stock === 0 ? '售罄' : '购买' }}<img src="@/assets/newimg/goumai.svg" />
+          {{ product.stock === 0 ? $t('p.soldOut') : $t('p.buy') }}
+          <img src="@/assets/newimg/goumai.svg" />
         </button>
         <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
-          分享<img src="@/assets/newimg/share2.svg" />
+          {{ $t('share') }}
+          <img src="@/assets/newimg/share2.svg" />
         </button>
       </div>
       <!-- <button class="button-share" @click="widgetModal = true">
@@ -230,19 +244,25 @@
 
     <van-dialog
       v-model="supportModal"
-      title="投资"
+      :title="$t('p.investment')"
       show-cancel-button
       class="ffff"
       :before-close="support"
       :close-on-click-overlay="true"
       @cancel="supportModal = false"
     >
-      <van-field v-model="comment" type="textarea" placeholder="输入推荐语…" rows="4" autosize />
+      <van-field
+        v-model="comment"
+        type="textarea"
+        :placeholder="$t('p.buyPlaceholder')"
+        rows="4"
+        autosize
+      />
       <van-field v-model="amount" :placeholder="displayPlaceholder" @input="handleChange(amount)" />
     </van-dialog>
 
     <van-popup v-model="buyProductModal" class="buy-product-modal">
-      <h1 class="title">购买商品</h1>
+      <h1 class="title">{{ $t('p.buyShop') }}</h1>
       <div class="info-container">
         <img :src="cover" alt="cover" class="cover" />
         <div class="info-inner">
@@ -257,7 +277,9 @@
             </span>
           </div>
           <div class="product-amount">
-            <span>数量</span>
+            <span>
+              {{ $t('p.amount') }}
+            </span>
             <van-stepper v-model="productNumber" disabled />
           </div>
         </div>
@@ -265,14 +287,18 @@
       <van-field
         v-model="comment"
         type="textarea"
-        placeholder="输入推荐语…"
+        :placeholder="$t('p.buyPlaceholder')"
         rows="4"
         autosize
         class="comment-container"
       />
       <div class="buy-container">
-        <span class="storage">库存还有剩{{ product.stock }}份</span>
-        <div class="buy-btn" @click="buyProduct">购买</div>
+        <span class="storage">
+          {{ $t('p.remainingStock', [product.stock]) }}
+        </span>
+        <div class="buy-btn" @click="buyProduct">
+          {{ $t('p.buy') }}
+        </div>
       </div>
     </van-popup>
 
@@ -281,15 +307,21 @@
       <div class="invest-info">
         <div class="info-item">
           <span class="info-number">{{ getDisplayedFissionFactor }}</span>
-          <span class="info-subtitle">裂变系数</span>
+          <span class="info-subtitle">
+            {{ $t('p.fissionCoefficient') }}
+          </span>
         </div>
         <div class="info-item">
           <span class="info-number percent">{{ article.fission_rate }}</span>
-          <span class="info-subtitle">裂变返利</span>
+          <span class="info-subtitle">
+            {{ $t('p.fissionRebate') }}
+          </span>
         </div>
         <div class="info-item">
           <span class="info-number percent">{{ article.referral_rate }}</span>
-          <span class="info-subtitle">推荐返利</span>
+          <span class="info-subtitle">
+            {{ $t('p.recommendedRebate') }}
+          </span>
         </div>
       </div>
       <van-field
@@ -301,22 +333,30 @@
       <van-field
         v-model="comment"
         type="textarea"
-        placeholder="请输入您的留言"
+        :placeholder="$t('p.recommendedRebate')"
         rows="4"
         autosize
         class="comment-container"
       />
       <div class="invest-container">
-        <div class="invest-btn" @click="investProduct">投资</div>
+        <div class="invest-btn" @click="investProduct">
+          {{ $t('p.investment') }}
+        </div>
       </div>
     </van-popup>
 
     <van-popup v-model="buySuccessModal" class="buy-product-modal">
-      <h1 class="title">购买成功！</h1>
-      <p class="tip">请去“购买记录”页面查看已购商品！</p>
+      <h1 class="title">
+        {{ $t('p.buyDone') }}
+      </h1>
+      <p class="tip">
+        {{ $t('p.buyDoneDes') }}
+      </p>
       <div class="invest-container">
         <router-link :to="{ name: 'BuyHistory' }">
-          <div class="invest-btn">查看</div>
+          <div class="invest-btn">
+            {{ $t('p.view') }}
+          </div>
         </router-link>
       </div>
     </van-popup>
@@ -405,7 +445,7 @@ export default {
   data() {
     return {
       defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
-      investTitle: '投资文章',
+      investTitle: this.$t('p.investArticle'),
       followed: false,
       productNumber: 1,
       buySuccessModal: false,
@@ -460,7 +500,7 @@ export default {
       return null
     },
     displayPlaceholder() {
-      return `请输入 ${this.currentUserInfo.idProvider} 投资金额`
+      return this.$t('p.investmentPlaceholder', [this.currentUserInfo.idProvider])
     },
     compiledMarkdown() {
       return markdownIt.render(xssFilter(this.post.content))
@@ -616,10 +656,10 @@ export default {
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
         () => {
-          this.$toast.success({ duration: 1000, message: '复制成功' })
+          this.$toast.success({ duration: 1000, message: this.$t('success.copy') })
         },
         () => {
-          this.$toast.fail({ duration: 1000, message: '复制失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('error.copy') })
         }
       )
     },
@@ -643,7 +683,7 @@ export default {
         })
         .catch(err => {
           console.error(err)
-          this.$toast({ duration: 1000, message: '获取文章信息失败' })
+          this.$toast({ duration: 1000, message: this.$t('error.getArticleInfoError') })
         })
     },
     // 获取文章内容 from ipfs
@@ -657,7 +697,7 @@ export default {
         })
         .catch(err => {
           console.error(err)
-          this.$Message.error('获取文章内容失败请重试')
+          this.$Message.error(this.$t('error.getArticleInfoError'))
         })
     },
     setSSToken(res) {
@@ -729,24 +769,24 @@ export default {
       const filterBlockchain = findBlockchain(article.prices, idProvider)
       const { stock_quantity: stockQuantity } = filterBlockchain[0]
       if (stockQuantity <= 0) {
-        return this.$toast({ duration: 1000, message: '库存不足' })
+        return this.$toast({ duration: 1000, message: this.$t('warning.inventoryShortage') })
       }
       this.buyProductModal = true
     },
     // 检测能否投资
     detection() {
       if (this.isSupport) {
-        this.$toast({ duration: 1000, message: '已投资' })
+        this.$toast({ duration: 1000, message: this.$t('p.investing') })
         return false
       }
       if (!this.isLogined) {
-        this.$toast({ duration: 1000, message: '登陆后即可投资' })
+        this.$toast({ duration: 1000, message: this.$t('p.loginInvest') })
         return false
       }
       // email github 无法赞赏
       const { idProvider } = this.currentUserInfo
       if (this.$publishMethods.invalidId(idProvider)) {
-        this.$toast({ duration: 1000, message: `${idProvider}账号暂不支持` })
+        this.$toast({ duration: 1000, message: this.$t('p.account', [idProvider]) })
         return false
       }
       return true
@@ -756,7 +796,10 @@ export default {
       if (!this.detection()) return
 
       if (this.currentUserInfo.idProvider === 'GitHub')
-        return this.$toast({ duration: 1000, message: 'Github账号暂不支持投资功能' })
+        return this.$toast({
+          duration: 1000,
+          message: this.$t('p.account', [this.currentUserInfo.idProvider])
+        })
       // 如果是商品 判断库存是否充足
       if (this.article.channel_id === 2) {
         const { currentUserInfo, findBlockchain, article } = this
@@ -764,11 +807,11 @@ export default {
         const filterBlockchain = findBlockchain(article.prices, idProvider)
         const { stock_quantity: stockQuantity } = filterBlockchain[0]
         if (stockQuantity <= 0) {
-          return this.$toast({ duration: 1000, message: '库存不足' })
+          return this.$toast({ duration: 1000, message: this.$t('warning.inventoryShortage') })
         }
-        this.investTitle = '投资商品'
+        this.investTitle = this.$t('p.investShop')
       } else {
-        this.investTitle = '投资文章'
+        this.investTitle = this.$t('p.investArticle')
       }
       this.investProductModal = true
     },
@@ -776,7 +819,7 @@ export default {
       const loading = this.$toast.loading({
         mask: true,
         duration: 0,
-        message: '购买中...'
+        message: this.$t('p.buying')
       })
       const { comment, signId, product } = this
       const { idProvider } = this.currentUserInfo
@@ -830,11 +873,13 @@ export default {
     },
     async support(action, done) {
       if (action !== 'confirm') return done()
-      let action_text = this.article.channel_id === 2 ? '投资' : '投资'
+      // TODO 疑问???
+      let action_text =
+        this.article.channel_id === 2 ? this.$t('p.investing') : this.$t('p.investing')
       const loading = this.$toast.loading({
         mask: true,
         duration: 0,
-        message: `${action_text}中...`
+        message: `${action_text}...`
       })
       const { article, comment, signId } = this
       const { idProvider } = this.currentUserInfo
@@ -861,11 +906,12 @@ export default {
       checkPricesMatch = checkPrices(
         amount,
         minimumAmount(idProvider),
-        `请输入正确的金额 最小${action_text}金额为 ${minimumAmount(idProvider)} ${idProvider}`
+        this.$t('p.minMoney', [action_text, minimumAmount(idProvider), idProvider])
       )
       if (!checkPricesMatch) return done(false)
 
       // 检查商品价格
+      // TODO 疑问???
       const checkCommodityPrices = () => {
         const filterBlockchain = this.findBlockchain(article.prices, idProvider)
         if (filterBlockchain.length !== 0) {
@@ -932,7 +978,7 @@ export default {
         //   if (response.status !== 200) throw new Error(error);
         // }
         this.isSupported = RewardStatus.REWARDED // 按钮状态
-        this.$toast.success({ duration: 1000, message: `${action_text}成功！` })
+        this.$toast.success({ duration: 1000, message: this.$t('success.success') })
         this.isRequest = true // 自动请求
         this.supportModal = false // 关闭dialog
         loading.clear()
@@ -943,7 +989,7 @@ export default {
         this.isSupported = RewardStatus.NOT_REWARD_YET
         this.$toast({
           duration: 1000,
-          message: `${action_text}失败，可能是由于网络故障或账户余额不足等原因。`
+          message: this.$t('p.sponsorFail', [action_text])
         })
         done(false)
       }
@@ -953,28 +999,28 @@ export default {
       const jumpTo = name => this.$router.push({ name })
       const delSuccess = async () => {
         this.$Modal.remove()
-        this.$toast({ duration: 2000, message: '删除成功,三秒后自动跳转到首页' })
-        await sleep(3000)
+        this.$toast({ duration: 2000, message: this.$t('p.deleteArticle') })
+        // await sleep(3000)
         jumpTo('home')
       }
       const fail = err => {
         this.$Modal.remove()
-        this.$toast({ duration: 1000, message: '删除失败' })
+        this.$toast({ duration: 1000, message: this.$t('p.deleteFail') })
         console.log('error', err)
       }
       const delArticleFunc = async id => {
-        if (!id) return fail('没有id')
+        if (!id) return fail(this.$t('p.noId'))
         try {
           const response = await this.$backendAPI.delArticle({ id })
           if (response.status === 200 && response.data.code === 0) delSuccess()
-          else fail(`删除文章错误${error}`)
+          else fail(this.$t('p.deleteFail'))
         } catch (error) {
           return fail(error)
         }
       }
       this.$Modal.confirm({
-        title: '提示',
-        content: '<p>该文章已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示。</p>',
+        title: this.$t('promptTitle'),
+        content: `<p>${this.$t('p.ipfsPrompt')}</p>`,
         loading: true,
         onOk: () => {
           delArticleFunc(this.article.id)
@@ -989,9 +1035,9 @@ export default {
           this.followed = res.data.data.is_follow
           if (res.data.data.avatar)
             this.articleAvatar = this.$backendAPI.getAvatarImage(res.data.data.avatar)
-        } else console.log('获取用户信息错误')
+        } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
-        console.log(`获取用户信息错误${error}`)
+        console.log(`${this.$t('error.getUserInfoError')}${error}`)
       }
     },
     // 切换投资总额显示
@@ -1006,14 +1052,14 @@ export default {
     async followOrUnfollowUser({ id, type }) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         if (type === 1) await this.$backendAPI.follow({ id })
         else await this.$backendAPI.unfollow({ id })
-        this.$toast.success({ duration: 1000, message: `${message}成功` })
+        this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {
-        this.$toast.fail({ duration: 1000, message: `${message}失败` })
+        this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
       }
     }
   }

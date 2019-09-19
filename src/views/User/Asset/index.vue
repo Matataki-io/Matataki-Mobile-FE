@@ -1,6 +1,6 @@
 <template>
   <div class="asset mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: '我的账户', rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ left: 'back', title: $t('withdraw.account'), rightPage: 'home' }" />
     <div class="asset-list">
       <div v-for="(item, index) in assetList" :key="index" class="list" @click="jumpTo(index)">
         <div class="list-left">
@@ -12,13 +12,16 @@
             <div>
               <p class="list-right-text withdraw">
                 <span>{{ item.withdraw }}</span
-                >待提现
+                >{{ $t('withdraw.pendingCash') }}
               </p>
-              <p class="list-right-text total">{{ item.total }}总收益</p>
+              <p class="list-right-text total">
+                {{ item.total }}
+                {{ $t('withdraw.totalRevenue') }}
+              </p>
             </div>
           </template>
           <template v-else>
-            <p class="list-right-unbind">即将上线，敬请期待</p>
+            <p class="list-right-unbind">{{ $t('withdraw.notOnline') }}</p>
           </template>
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
         </div>
@@ -36,13 +39,16 @@
             <div>
               <p class="list-right-text withdraw">
                 <span>{{ item.withdraw }}</span
-                >待提现
+                >{{ $t('withdraw.pendingCash') }}
               </p>
-              <p class="list-right-text total">{{ item.total }}总收益</p>
+              <p class="list-right-text total">
+                {{ item.total }}
+                {{ $t('withdraw.totalRevenue') }}
+              </p>
             </div>
           </template>
           <template v-else>
-            <p class="list-right-unbind">即将上线,敬请期待</p>
+            <p class="list-right-unbind">{{ $t('withdraw.notOnline') }}</p>
           </template>
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
         </div>
@@ -158,7 +164,7 @@ export default {
         })
         .catch(err => {
           console.error(err)
-          this.$toast.fail({ duration: 1000, message: '获取数据失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('error.getDataError') })
         })
     }
   }

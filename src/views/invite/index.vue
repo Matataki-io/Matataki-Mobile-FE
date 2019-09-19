@@ -1,7 +1,7 @@
 <template>
   <div class="point">
     <BaseHeader
-      :pageinfo="{ title: '我的邀请' }"
+      :pageinfo="{ title: $t('invite.headerTitle') }"
       customize-header-bc="#fff"
       :has-bottom-border-line="true"
     />

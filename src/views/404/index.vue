@@ -1,7 +1,7 @@
 <template>
   <div class="error">
     <h1>❗404❗</h1>
-    <a href="/">回到首页</a>
+    <a href="/">{{ $t('backHome') }}</a>
   </div>
 </template>
 

@@ -2,30 +2,30 @@
   <section class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="loginForm.email" :placeholder="$t('rule.loginEmailMessage')"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
           v-model="loginForm.password"
           type="password"
-          placeholder="请输入密码"
+          :placeholder="$t('rule.passwordMessage')"
           show-password
         ></el-input>
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitLoginForm">登录</el-button>
+        <el-button type="primary" @click="submitLoginForm">{{ $t('login') }}</el-button>
         <div class="bottom-tip">
-          <span class="red">首次登录领100积分！</span>
+          <span class="red">{{ $t('auth.firstLogin') }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> | -->
-          <a href="javascript:void(0);" @click="$emit('switch')">注册</a>
+          <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('registered') }}</a>
         </div>
-        <span class="red">在PC版登陆后查看积分详情</span>
+        <span class="red">{{ $t('auth.pcLoginViewPointDetail') }}</span>
       </el-form-item>
     </el-form>
     <div class="oauth-box">
-      <h1 class="oauth-title">第三方账号登录</h1>
+      <h1 class="oauth-title">{{ $t('auth.otherAccount') }}</h1>
       <p class="red" style="margin-bottom: 10px;">
-        不同帐号内容不互通
+        {{ $t('auth.loginWarning') }}
       </p>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
@@ -53,7 +53,7 @@ export default {
   data() {
     const checkEmail = async (rule, value, callback) => {
       if (value === '') {
-        return callback(new Error('请输入邮箱地址'))
+        return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
         // const res = await this.$backendAPI.verifyEmail(value)
         // if (res.data.data) {
@@ -73,11 +73,11 @@ export default {
       loginRules: {
         email: [
           { validator: checkEmail, trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          { type: 'email', message: this.$t('rule.emailMessage'), trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage'), trigger: 'blur' }
         ]
       },
     }
@@ -109,7 +109,7 @@ export default {
           // window.location.reload() // 登陆完成刷新一次
         } catch (err) {
           console.log(err)
-          this.failToast('登陆失败')
+          this.failToast(this.$t('error.loginFail'))
         }
       }
     },
@@ -138,17 +138,17 @@ export default {
               this.$store.commit('setAccessToken', res.data.data)
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
               // localStorage.setItem('idProvider', config.idProvider)
-              this.successToast('登录成功')
+              this.successToast(this.$t('success.loginSuccess'))
               this.$emit('hide')
               window.location.reload() // 登陆完成刷新一次
             } else {
-              this.failToast(`登录失败，账号或密码错误`)
+              this.failToast(this.$t('error.loginFailPasswordOrAccount'))
             }
           } catch (error) {
-            this.failToast('登录失败，请联系管理员')
+            this.failToast(this.$t('error.loginFail'))
           }
         } else {
-          console.log('error submit!!')
+          console.log(this.$t('error.loginFail'))
           return false
         }
       })

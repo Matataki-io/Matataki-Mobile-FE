@@ -1,6 +1,6 @@
 <template>
   <BasePull
-    :loading-text="'暂无明细'"
+    :loading-text="$t('notContent')"
     :params="params"
     :api-url="apiUrl"
     :need-access-token="needAccessToken"

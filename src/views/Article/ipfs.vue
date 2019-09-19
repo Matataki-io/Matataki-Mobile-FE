@@ -1,13 +1,8 @@
 <template>
   <div class="article-ipfs">
     <p>
-      本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。
-      <el-popover
-        placement="top-start"
-        width="300"
-        trigger="click"
-        content="「HASH」是一篇作品上传到 IPFS 后生成的独一无二的 ID，通过HASH可在 IPFS 不同节点访问作品內容。"
-      >
+      {{ $t('p.ipfsTitle') }}
+      <el-popover placement="top-start" width="300" trigger="click" :content="$t('p.ipfsContent')">
         <svg-icon slot="reference" class="help-icon" icon-class="help" />
       </el-popover>
     </p>
@@ -43,10 +38,10 @@ export default {
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
         () => {
-          this.$toast.success({ duration: 1000, message: '复制成功' })
+          this.$toast.success({ duration: 1000, message: this.$t('success.copy') })
         },
         () => {
-          this.$toast.fail({ duration: 1000, message: '复制失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('fail.copy') })
         }
       )
     }

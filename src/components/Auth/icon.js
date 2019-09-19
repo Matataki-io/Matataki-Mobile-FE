@@ -9,6 +9,7 @@ import iconChallte from '@/assets/img/icon_challte.svg'
 import iconMeet from '@/assets/img/icon_meet.svg'
 import iconOnto from '@/assets/img/icon_logo_onto.svg'
 import iconImtoken from '@/assets/img/icon_logo_imtoken.svg'
+import i18n from '../../plugins/i18n'
 
 export const wallet = {
   eos: [
@@ -71,8 +72,8 @@ export const wallet = {
 export const idProvider = [
   {
     url: iconEOS,
-    title: 'EOS登录',
-    type: 'EOS',
+    title: i18n.t('auth.eosTitle'),
+    type: i18n.t('auth.eosType'),
     wallet: [
       {
         url: iconTokenpocket,
@@ -111,14 +112,14 @@ export const idProvider = [
       }
     ],
     doc: {
-      title: '《如何使用EOS登录》',
+      title: i18n.t('auth.eosDoc'),
       href: 'https://www.matataki.io/p/515'
     }
   },
   {
     url: iconONT,
-    title: 'ONT登录',
-    type: 'ONT',
+    title: i18n.t('auth.ontTitle'),
+    type: i18n.t('auth.ontType'),
     wallet: [
       {
         url: iconOnto,
@@ -139,7 +140,7 @@ export const idProvider = [
       }
     ],
     doc: {
-      title: '《如何使用ONT登录》',
+      title: i18n.t('auth.ontDoc'),
       href: 'https://www.matataki.io/p/516'
     }
   }

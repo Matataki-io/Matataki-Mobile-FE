@@ -25,8 +25,8 @@ export default {
     modalText: {
       type: Object,
       default: () => ({
-        text: ['提示'],
-        button: ['确认', '取消']
+        text: [this.$t('promptTitle')],
+        button: [this.$t('confirm'), this.$t('cancel')]
       })
     }
   },

@@ -2,13 +2,17 @@
   <section v-show="!isLogin" class="register">
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="registerForm.email" type="" placeholder="请输入邮箱"></el-input>
+        <el-input
+          v-model="registerForm.email"
+          type=""
+          :placeholder="$t('rule.loginEmailMessage')"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
           v-model="registerForm.password"
           type="password"
-          placeholder="请设置密码"
+          :placeholder="$t('rule.setPassword')"
           show-password
         ></el-input>
       </el-form-item>
@@ -16,7 +20,7 @@
         <el-input
           v-model="registerForm.repassword"
           type="password"
-          placeholder="请再次设置密码"
+          :placeholder="$t('rule.setPasswordAgain')"
           show-password
         ></el-input>
       </el-form-item>
@@ -24,7 +28,7 @@
         <div class="code-contaniner">
           <el-input
             v-model="registerForm.smscode"
-            placeholder="请输入邮箱验证码"
+            :placeholder="$t('rule.emailCode')"
             autocomplete="off"
           ></el-input>
           <el-button
@@ -32,12 +36,12 @@
             :loading="loading"
             :disabled="!!timer || loading"
             @click="sendCode"
-            >{{ timer ? `${count}S` : `获取验证码` }}</el-button
+            >{{ timer ? `${count}S` : $t('auth.getEmailCode') }}</el-button
           >
         </div>
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">注册</el-button>
+        <el-button type="primary" @click="submitRegisterForm">{{ $t('registered') }}</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -52,11 +56,11 @@ export default {
   data() {
     const checkEmail = async (rule, value, callback) => {
       if (value === '') {
-        return callback(new Error('请输入邮箱地址'))
+        return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
         const res = await this.$backendAPI.verifyEmail(value)
         if (res.data.data) {
-          callback(new Error('邮箱已被注册'))
+          callback(new Error(this.$t('rule.emailHasBeenRegistered')))
         } else {
           callback()
         }
@@ -64,23 +68,23 @@ export default {
     }
     const validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'))
+        callback(new Error(this.$t('rule.inputPasswordAgain')))
       } else if (value !== this.registerForm.password) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error(this.$t('rule.twiceInputPasswordInconsistent')))
       } else {
         callback()
       }
     }
     const checkCode = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请输入验证码'))
+        return callback(new Error(this.$t('rule.emailCode')))
       }
 
 
       if (!Number.isInteger(Number(value))) {
-        callback(new Error('请输入数字值'))
+        callback(new Error(this.$t('rule.inputNumber')))
       } else if (value.toString().length !== 6) {
-        callback(new Error('请输入6位数字'))
+        callback(new Error(this.$t('rule.inputLengthNumber')))
       } else {
         callback()
       }
@@ -99,11 +103,11 @@ export default {
       registerRules: {
         email: [
           { validator: checkEmail, trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          { type: 'email', message: this.$t('rule.emailMessage'), trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage'), trigger: 'blur' }
         ],
         repassword: { validator: validatePass2, trigger: 'blur' },
         smscode: { validator: checkCode, trigger: 'blur' }
@@ -130,7 +134,7 @@ export default {
           }).onSuccess(() => {
             const result = captchaObj.getValidate();
             if (!result) {
-              this.$message.error('请先完成校验')
+              this.$message.error(this.$t('rule.pleaseDoneRule'))
             } else {
               cb(result);
             }
@@ -159,9 +163,9 @@ export default {
       }).then(res => {
         if (res.data.code === 0) {
           this.countDown()
-          this.successToast('验证码发送成功，5分钟内使用有效')
+          this.successToast(this.$t('success.codeSendSuccess'))
         } else {
-          this.failToast('验证码发送失败')
+          this.failToast(this.$t('error.codeSendFail'))
         }
       })
     },
@@ -208,18 +212,18 @@ export default {
             const res = await this.$backendAPI.register(params)
             console.log(res)
             if (res.status === 200 && res.data.code === 0) {
-              this.successToast('注册成功，请登录')
+              this.successToast(this.$t('success.registeredSuccess'))
               this.$emit('switch')
             } else {
               this.failToast(res.data.message)
             }
             this.loading = false
           } catch (error) {
-            this.failToast('注册失败，请重试')
+            this.failToast(this.$t('error.registeredFail'))
             this.loading = false
           }
         } else {
-          console.log('error submit!!')
+          console.log(this.$t('error.fail'))
           return false
         }
       })

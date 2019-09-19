@@ -8,12 +8,12 @@
         <p class="user-title search-res" v-html="userTitle" />
       </router-link>
       <p class="user-num">
-        <span>关注: {{ card && card.follows }}</span>
+        <span>{{ $t('follow') }}: {{ card && card.follows }}</span>
         &nbsp;
-        <span>粉丝: {{ card && card.fans }}</span>
+        <span>{{ $t('fans') }}: {{ card && card.fans }}</span>
       </p>
       <p class="user-des">
-        {{ (card && card.introduction) || '暂无简介' }}
+        {{ (card && card.introduction) || $t('notProfile') }}
       </p>
     </div>
     <template v-if="!isMe(card.id)">
@@ -55,7 +55,7 @@ export default {
       return xssFilter(this.card.nickname || this.card.username)
     },
     followBtnText() {
-      return this.card.is_follow ? '已关注' : '关注'
+      return this.card.is_follow ? this.$t('following') : this.$t('follow')
     }
   },
   methods: {
@@ -63,8 +63,8 @@ export default {
       if (this.card.is_follow) {
         this.$dialog
           .confirm({
-            title: '提示',
-            message: '确定取消关注?'
+            title: this.$t('promptTitle'),
+            message: this.$t('searchUserList.confirmMessage')
           })
           .then(() => {
             this.followOrUnfollowUser(this.card.id, 0)
@@ -75,7 +75,7 @@ export default {
     },
     async followOrUnfollowUser(id, type) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         let res = null
         if (type === 1) res = await this.$backendAPI.follow({ id })
@@ -83,19 +83,19 @@ export default {
         if (res.status === 200 && res.data.code === 0) {
           this.$toast.success({
             duration: 1000,
-            message: `${message}成功`
+            message: `${message}${this.$t('success.success')}`
           })
           this.card.is_follow = type === 1
         } else {
           this.$toast.fail({
             duration: 1000,
-            message: `${message}失败`
+            message: `${message}${this.$t('error.fail')}`
           })
         }
       } catch (error) {
         this.$toast.fail({
           duration: 1000,
-          message: `${message}失败`
+          message: `${message}${this.$t('error.fail')}`
         })
       }
     }

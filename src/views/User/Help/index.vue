@@ -1,9 +1,9 @@
 <template>
   <div class="mw help">
-    <BaseHeader :pageinfo="{ title: '设置' }" />
+    <BaseHeader :pageinfo="{ title: $t('setting') }" />
     <div class="help-block">
       <a class="help-list" href="https://matataki.io/article/617">
-        <span class="help-list-title">规则介绍</span>
+        <span class="help-list-title">{{ $t('user.rule') }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
 
@@ -20,7 +20,7 @@
 
     <div class="help-block">
       <div class="help-list">
-        <span class="help-list-title">接受他人文章权限移交</span>
+        <span class="help-list-title">{{ $t('user.transfer') }}</span>
         <span class="help-list-sub">
           <van-switch
             v-model="articleTransfer"
@@ -39,14 +39,14 @@
         href="https://github.com/smart-signature/smart-signature-future"
         target="_blank"
       >
-        <span class="help-list-title">关于我们</span>
+        <span class="help-list-title">{{ $t('user.about') }}</span>
         <div class="help-list-right">
-          <span class="help-list-sub">Github 入口</span>
+          <span class="help-list-sub">{{ $t('user.github') }}</span>
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
       <a class="help-list" href="https://t.me/smartsignature_io" target="_blank">
-        <span class="help-list-title">加入电报</span>
+        <span class="help-list-title">{{ $t('user.tg') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
       <!--<div class="help-list">
@@ -56,7 +56,7 @@
     </div>
     <div class="signout">
       <p class="version">-version2.7.1-</p>
-      <a class="signout-button" href="javascript:;" @click="btnsignOut">登出</a>
+      <a class="signout-button" href="javascript:;" @click="btnsignOut">{{ $t('logout') }}</a>
     </div>
   </div>
 </template>
@@ -71,11 +71,11 @@ export default {
       articleTransfer: false,
       helpDoc: [
         {
-          title: '用户协议',
+          title: this.$t('user.userProtocol'),
           name: ''
         },
         {
-          title: '隐私政策',
+          title: this.$t('user.privacyPolicy'),
           name: ''
         }
       ]
@@ -111,15 +111,15 @@ export default {
         let accept = status ? 1 : 0
         const res = await this.$backendAPI.setProfile({ accept })
         if (res.status === 200 && res.data.code === 0)
-          return this.$toast.success({ duration: 1000, message: '成功' })
+          return this.$toast.success({ duration: 1000, message: this.$t('success.success') })
         else {
-          this.$toast.fail({ duration: 1000, message: '失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('error.fail') })
           this.articleTransfer = !status
         }
       } catch (error) {
         this.articleTransfer = !status
         console.log(`转让状态错误${error}`)
-        this.$toast.fail({ duration: 1000, message: '失败' })
+        this.$toast.fail({ duration: 1000, message: this.$t('error.fail') })
       }
     }
   }

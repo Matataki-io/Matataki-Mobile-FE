@@ -94,23 +94,23 @@ export default {
       // type=其他：只有2，表示成功
       const { status, type } = this.asset
       const switchStatus = {
-        0: '提现待处理',
-        1: '提现待确认',
-        2: '提现成功',
-        3: '提现失败',
-        4: '提现审核中',
-        5: '提现审核失败'
+        0: this.$t('assetCard.0'),
+        1: this.$t('assetCard.1'),
+        2: this.$t('assetCard.2'),
+        3: this.$t('assetCard.3'),
+        4: this.$t('assetCard.4'),
+        5: this.$t('assetCard.5')
       }
       const switchType = {
         withdraw: switchStatus[status],
-        support_expenses: '投资支出',
-        buy_expenses: '购买支出',
-        fission_income: '投资裂变收入',
-        referral_income: '推荐收入',
-        author_sale_income: '销售收入',
-        author_supported_income: '被投资收入',
-        buyad: '公告牌支出',
-        earn: '公告牌收入'
+        support_expenses: this.$t('assetCard.support_expenses'),
+        buy_expenses: this.$t('assetCard.buy_expenses'),
+        fission_income: this.$t('assetCard.fission_income'),
+        referral_income: this.$t('assetCard.referral_income'),
+        author_sale_income: this.$t('assetCard.author_sale_income'),
+        author_supported_income: this.$t('assetCard.author_supported_income'),
+        buyad: this.$t('assetCard.buyad'),
+        earn: this.$t('assetCard.earn')
       }
       return switchType[type]
     },
@@ -125,13 +125,13 @@ export default {
         () => {
           this.$toast.success({
             duration: 1000,
-            message: '复制成功'
+            message: this.$t('success.copy')
           })
         },
         () => {
           this.$toast.fail({
             duration: 1000,
-            message: '复制失败'
+            message: this.$t('error.copy')
           })
         }
       )

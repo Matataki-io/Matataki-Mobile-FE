@@ -5,7 +5,7 @@
       v-model="loading"
       :finished="finished"
       :error.sync="error"
-      error-text="请求失败，点击重新加载"
+      :error-text="$t('error.pullRequestFail')"
       :immediate-check="immediateCheck"
       @load="onLoad"
     >
@@ -27,7 +27,7 @@
     v-model="loading"
     :finished="finished"
     :error.sync="error"
-    error-text="请求失败，点击重新加载"
+    :error-text="$t('error.pullRequestFail')"
     :immediate-check="immediateCheck"
     @load="onLoad"
   >

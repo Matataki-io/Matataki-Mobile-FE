@@ -15,10 +15,12 @@
         <span>{{ tagTitle }}</span>
       </div>
     </div>
-    <p class="tag-title">最新</p>
+    <p class="tag-title">
+      {{ $t('tag.now') }}
+    </p>
     <BasePull
       class="tag-article"
-      :loading-text="'无草稿'"
+      :loading-text="$t('notContent')"
       :params="params"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       :api-url="apiUrl"

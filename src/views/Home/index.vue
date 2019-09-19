@@ -77,7 +77,7 @@
               text-align: center;
               margin-top: 20px;"
         >
-          暂无内容
+          {{ $t('notContent') }}
         </p>
       </BasePull>
     </div>
@@ -111,15 +111,15 @@ export default {
   data() {
     return {
       showSidebar: false,
-      navList: ['文章', '商品'], // head data
+      navList: [this.$t('home.navArticle'), this.$t('home.navShop')], // head data
       nowIndex: 0,
       // 防止数据嵌套太多 把内容提取出来
       content: [
         {
           navMenu: [
             {
-              label: '最热',
-              title: '最热文章',
+              label: this.$t('home.articleNavHot'),
+              title: this.$t('home.articleNavHotTitle'),
               params: {
                 channel: 1
               },
@@ -129,8 +129,8 @@ export default {
               loading: false
             },
             {
-              label: '最新',
-              title: '最新文章',
+              label: this.$t('home.articleNavNow'),
+              title: this.$t('home.articleNavNowTitle'),
               params: {
                 channel: 1
               },
@@ -140,8 +140,8 @@ export default {
               loading: false
             },
             {
-              label: '关注',
-              title: '我的关注',
+              label: this.$t('home.articleNavFollow'),
+              title: this.$t('home.articleNavFollowTitle'),
               params: {
                 channel: 1
               },
@@ -153,15 +153,15 @@ export default {
           ],
           activeIndex: 0,
           recommend: {
-            title: '推荐文章',
+            title: this.$t('home.articleNavRecommend'),
             list: []
           }
         },
         {
           navMenu: [
             {
-              label: '最新',
-              title: '最新商品',
+              label: this.$t('home.articleNavNow'),
+              title: this.$t('home.shopNavHotTitle'),
               params: {
                 channel: 2
               },
@@ -171,8 +171,8 @@ export default {
               loading: false
             },
             {
-              label: '最热',
-              title: '最热商品',
+              label: this.$t('home.articleNavHot'),
+              title: this.$t('home.shopNavNowTitle'),
               params: {
                 channel: 2
               },
@@ -184,7 +184,7 @@ export default {
           ],
           activeIndex: 0,
           recommend: {
-            title: '推荐商品',
+            title: this.$t('home.shopNavRecommend'),
             list: []
           }
         }

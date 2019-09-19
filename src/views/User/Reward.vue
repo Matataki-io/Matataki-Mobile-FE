@@ -1,6 +1,6 @@
 <template>
   <div class="reward mw">
-    <BaseHeader :pageinfo="{ title: pageTitle }" :has-bottom-border-line="true" />
+    <BaseHeader :pageinfo="{ title: $t('user.investment') }" :has-bottom-border-line="true" />
     <ArticlesList :id="id" ref="ArticlesList" :listtype="'reward'" />
   </div>
 </template>
@@ -16,19 +16,13 @@ export default {
   data() {
     return {
       playerincome: null,
-      editing: false,
-      user: '',
-      pageTitle: ''
+      editing: false
     }
   },
   computed: {
     ...mapGetters(['isMe'])
   },
-  created() {
-    const { isMe, id } = this
-    this.user = isMe(id) ? '我的用户页' : `${id} 的用户页`
-    this.pageTitle = isMe(id) ? '我的投资' : `${id} 的投资`
-  },
+  created() {},
   methods: {
     goBack() {
       this.$router.go(-1)

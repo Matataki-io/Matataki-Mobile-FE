@@ -8,7 +8,7 @@
       </van-dropdown-menu>
     </van-sticky>
     <BasePull
-      loading-text="暂无内容"
+      :loading-text="$t('notContent')"
       :params="articleCardData.params"
       :api-url="articleCardData.apiUrl"
       :need-access-token="true"
@@ -58,11 +58,11 @@ export default {
       value1: 0,
       value2: 0,
       option1: [
-        { text: '文章', value: 0, name: 'search' },
-        { text: '商品', value: 1, name: 'search/shop' },
-        { text: '作者', value: 2, name: 'search/user' }
+        { text: this.$t('search.optionText11'), value: 0, name: 'search' },
+        { text: this.$t('search.optionText12'), value: 1, name: 'search/shop' },
+        { text: this.$t('search.optionText13'), value: 2, name: 'search/user' }
       ],
-      option2: [{ text: '默认', value: 0 }],
+      option2: [{ text: this.$t('search.optionText21'), value: 0 }],
       articleCardData: {
         params: {},
         apiUrl: this.apiUrlPath,
@@ -86,7 +86,7 @@ export default {
     },
     query() {
       if (this.$route.query.q) {
-        if (!this.$route.query.q.trim()) return this.$toast('搜索内容不能为空')
+        if (!this.$route.query.q.trim()) return this.$toast(this.$t('warning.searchContent'))
         this.searchQueryVal = this.$route.query.q.trim()
       }
 

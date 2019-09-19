@@ -18,9 +18,9 @@ export default {
       type: Object,
       default: () => {
         return {
-          title: '是否删除草稿？',
-          confirmText: '删除草稿',
-          cancelText: '不删除'
+          title: this.$t('prompt.title'),
+          confirmText: this.$t('prompt.confirmText'),
+          cancelText: this.$t('prompt.cancelText')
         }
       }
     }

@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     displayMessage() {
-      return this.comment.comment !== '' ? this.comment.comment : '用户没有留下评论'
+      return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
     },
     friendlyDate() {
       // const isAppleSlave = navigator.platform.includes('iPhone');
@@ -47,15 +47,15 @@ export default {
     action() {
       if (this.type === 2) {
         if (this.comment.action === 1) {
-          return '投资了'
+          return this.$t('p.investedEnd')
         } else if (this.comment.action === 2) {
-          return '购买了'
+          return this.$t('p.buyEnd')
         } else {
           // 默认返回
-          return '投资了'
+          return this.$t('p.investedEnd')
         }
       } else {
-        return '投资了'
+        return this.$t('p.investedEnd')
       }
     },
     amount() {
@@ -65,7 +65,7 @@ export default {
           this.comment.platform.toUpperCase()
         )
       } else if (this.comment.action === 2) {
-        return `${this.comment.num}份商品`
+        return this.$t('shopAmounts', [this.comment.num])
       } else {
         return ''
       }

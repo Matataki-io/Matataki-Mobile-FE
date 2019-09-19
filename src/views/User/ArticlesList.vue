@@ -70,57 +70,57 @@ export default {
     if (listtype === 'others') {
       this.tabsData = [
         {
-          label: '原创',
+          label: this.$t('user.original'),
           params: { author: id },
           apiUrl: 'homeTimeRanking',
           articles: [],
-          loadingText: '暂无原创',
+          loadingText: this.$t('notOriginal'),
           autoRequestTime: 0
         },
         {
-          label: '投资',
+          label: this.$t('user.support'),
           params: { user: id },
           apiUrl: 'userArticlesSupportedList',
           articles: [],
-          loadingText: '暂无投资',
+          loadingText: this.$t('notSupport'),
           autoRequestTime: 0
         }
       ]
     } else if (listtype === 'original') {
       this.tabsData = [
         {
-          label: '文章',
+          label: this.$t('user.article'),
           params: { author: id, channel: 1 },
           apiUrl: 'homeTimeRanking',
           articles: [],
-          loadingText: '暂无文章',
+          loadingText: this.$t('notArticle'),
           autoRequestTime: 0
         },
         {
-          label: '商品',
+          label: this.$t('user.shop'),
           params: { author: id, channel: 2 },
           apiUrl: 'homeTimeRanking',
           articles: [],
-          loadingText: '暂无商品',
+          loadingText: this.$t('notShop'),
           autoRequestTime: 0
         }
       ]
     } else if (listtype === 'reward') {
       this.tabsData = [
         {
-          label: '文章',
+          label: this.$t('user.article'),
           params: { user: id, channel: 1 },
           apiUrl: 'userArticlesSupportedList',
           articles: [],
-          loadingText: '暂无文章',
+          loadingText: this.$t('notArticle'),
           autoRequestTime: 0
         },
         {
-          label: '商品',
+          label: this.$t('user.shop'),
           params: { user: id, channel: 2 },
           apiUrl: 'userArticlesSupportedList',
           articles: [],
-          loadingText: '暂无商品',
+          loadingText: this.$t('notShop'),
           autoRequestTime: 0
         }
       ]

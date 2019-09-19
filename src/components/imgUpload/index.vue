@@ -10,7 +10,7 @@
       @input-filter="inputFilter"
     >
       <slot name="uploadButton">
-        <Button>上传按钮</Button>
+        <Button>{{ $t('imgUpload.btn') }}</Button>
       </slot>
     </FileUpload>
 
@@ -23,8 +23,8 @@
       :mask-closable="false"
     >
       <div slot="header" class="modal-header">
-        <p class="modal-header-title">编辑图像</p>
-        <p class="modal-header-subtitle">调整图像寸和位置</p>
+        <p class="modal-header-title">{{ $t('imgUpload.title') }}</p>
+        <p class="modal-header-subtitle">{{ $t('imgUpload.subtitle') }}</p>
       </div>
       <div class="modal-content" :style="computedStyleContent">
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
@@ -47,9 +47,9 @@
 <script>
 import VueUploadComponent from 'vue-upload-component'
 import Cropper from 'cropperjs'
-import { ifpsUpload } from '@/api/ipfs'
 import Compressor from 'compressorjs'
 import { mapGetters } from 'vuex'
+import { ifpsUpload } from '@/api/ipfs'
 
 export default {
   name: 'ImgUpload',
@@ -58,7 +58,9 @@ export default {
     // 按钮文字
     buttonText: {
       type: String,
-      default: '保存'
+      default: function() {
+        return this.$t('imgUpload.save')
+      }
     },
     // 显示上传图片大小 单位 M
     imgSize: {
@@ -157,7 +159,7 @@ export default {
         if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
           this.$toast.fail({
             duration: 1000,
-            message: '请选择图片'
+            message: this.$t('imgUpload.selectImg')
           })
           return prevent()
         }
@@ -167,7 +169,7 @@ export default {
         if (newFile.file.size >= 0 && newFile.file.size > 1024 * 1024 * size) {
           this.$toast.fail({
             duration: 1000,
-            message: '图片过大'
+            message: this.$t('imgUpload.imgVeryBIg')
           })
           prevent()
           return false
@@ -190,7 +192,7 @@ export default {
               console.log(err)
               this.$toast.fail({
                 duration: 1000,
-                message: '自动压缩图片失败'
+                message: this.$t('imgUpload.autoCompressionFail')
               })
             }
           })
@@ -235,22 +237,40 @@ export default {
         }
         file = new File([arr], oldFile.name, { type: oldFile.type })
       }
-      // console.log(this.files[0]);
-      const res = await this.$backendAPI.uploadImage(this.updateType, file)
-      if (res.status === 200 && res.data.code === 0) {
-        this.$emit('doneImageUpload', {
-          type: this.updateType,
-          data: res.data
-        })
-      } else {
-        this.modalLoading = false
-        this.$toast.fail({
-          duration: 1000,
-          message: '上传图片失败'
-        })
-      }
 
-      console.log(file)
+      try {
+        const res = await this.$backendAPI.uploadImage(this.updateType, file)
+        // console.log(this.files[0]);
+        if (res.status === 200 && res.data.code === 0) {
+          this.$emit('doneImageUpload', {
+            type: this.updateType,
+            data: res.data
+          })
+        } else {
+          this.modalLoading = false
+          this.$toast.fail({
+            duration: 1000,
+            message: this.$t('imgUpload.uploadImgFail')
+          })
+        }
+
+        console.log(file)
+      } catch (error) {
+        // 捕获错误 未登陆提示
+        console.log(error)
+        this.modalLoading = false
+        if (error.toString().includes('code 401')) {
+          this.$toast.fail({
+            duration: 1000,
+            message: this.$t('error.pleaseLogin')
+          })
+        } else {
+          this.$toast.fail({
+            duration: 1000,
+            message: this.$t('error.uploadImgFail')
+          })
+        }
+      }
     },
     /**
      * Has changed // 上传完的操作写在这里
@@ -269,7 +289,7 @@ export default {
       if (!this.isLogined) {
         this.$toast.fail({
           duration: 1000,
-          message: '请先登录'
+          message: this.$t('imgUpload.pleaseLogin')
         })
         return false
       }

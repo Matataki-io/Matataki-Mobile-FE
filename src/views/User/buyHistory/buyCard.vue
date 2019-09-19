@@ -2,7 +2,7 @@
   <div class="buy-block" @click="jumpPage(buy.sign_id)">
     <div class="head">
       <span class="date">{{ buyTime }}</span>
-      <span class="des">交易已完成</span>
+      <span class="des">{{ $t('user.transactionComplete') }}</span>
     </div>
 
     <div class="container">
@@ -14,7 +14,11 @@
           {{ buy.title }}
         </p>
         <p class="money">
-          单价{{ buyPrice }}{{ buy.symbol }}&nbsp;&nbsp;总价{{ buyAmount }}{{ buy.symbol }}
+          {{ $t('user.unitPrice') }}
+          {{ buyPrice }}{{ buy.symbol }}
+          &nbsp;&nbsp;
+          {{ $t('user.totalPrice') }}
+          {{ buyAmount }}{{ buy.symbol }}
         </p>
       </div>
     </div>
@@ -27,10 +31,10 @@
 </template>
 
 <script>
-import { precision } from '@/common/precisionConversion'
 import moment from 'moment'
 import clampy from '@clampy-js/vue-clampy'
 import Vue from 'vue'
+import { precision } from '@/common/precisionConversion'
 
 Vue.use(clampy)
 export default {
@@ -62,10 +66,10 @@ export default {
     copyText(text) {
       this.$copyText(text).then(
         () => {
-          this.$toast.success({ duration: 1000, message: '复制成功' })
+          this.$toast.success({ duration: 1000, message: this.$t('sucess.copy') })
         },
         () => {
-          this.$toast.fail({ duration: 1000, message: '复制失败' })
+          this.$toast.fail({ duration: 1000, message: this.$t('sucess.fail') })
         }
       )
     },

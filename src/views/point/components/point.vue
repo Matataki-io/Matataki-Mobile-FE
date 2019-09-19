@@ -1,7 +1,7 @@
 <template>
   <div class="point-list">
     <div class="point-head fl fl-ac fl-js">
-      <span class="point-title">积分余额</span>
+      <span class="point-title">{{ $t('point.balance') }}</span>
       <span class="point-money">{{ point.res.amount }}</span>
     </div>
     <!-- 列表 -->
@@ -12,7 +12,7 @@
       :is-obj="{ type: 'newObject', key: 'data', keys: 'logs' }"
       :auto-request-time="point.autoRequestTime"
       :need-access-token="true"
-      loading-text="无邀请"
+      :loading-text="$t('notContent')"
       @getListData="getListData"
     >
       <pointCard

@@ -1,15 +1,15 @@
 <template>
   <div class="assetpage mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: '资产明细', rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ left: 'back', title: $t('withdraw.assetList'), rightPage: 'home' }" />
 
     <div class="topcard">
       <div class="topcard-head">
         <div>
-          <p class="topcard-title">待提现</p>
+          <p class="topcard-title">{{ $t('withdraw.pendingCash') }}</p>
           <p class="topcard-playerincome">{{ playerincome }}</p>
         </div>
         <!-- 控制提现样式 如果修改记得修改class样式 -->
-        <div class="withdraw" @click="withdrawButton">提现</div>
+        <div class="withdraw" @click="withdrawButton">{{ $t('withdraw.title') }}</div>
       </div>
 
       <div class="topcard-list">
@@ -26,7 +26,7 @@
           >
             {{ assetsRewards.totalSignIncome }}
           </p>
-          <p class="topcard-list-title">创作收益</p>
+          <p class="topcard-list-title">{{ $t('withdraw.createIncome') }}</p>
         </div>
         <div class="topcard-list-line">
           <p
@@ -41,7 +41,7 @@
           >
             {{ assetsRewards.totalShareIncome }}
           </p>
-          <p class="topcard-list-title">投资收益</p>
+          <p class="topcard-list-title">{{ $t('withdraw.supportIncome') }}</p>
         </div>
         <div class="topcard-list-line">
           <p
@@ -56,7 +56,7 @@
           >
             {{ assetsRewards.totalShareExpenses }}
           </p>
-          <p class="topcard-list-title">投资支出</p>
+          <p class="topcard-list-title">{{ $t('withdraw.supportExpenditure') }}</p>
         </div>
       </div>
     </div>
@@ -66,8 +66,8 @@
 </template>
 
 <script>
-import AssetList from './AssetList.vue'
 import { mapGetters } from 'vuex'
+import AssetList from './AssetList.vue'
 import { precision } from '@/common/precisionConversion'
 
 export default {
@@ -119,7 +119,7 @@ export default {
     // 提现按钮单击
     withdrawButton() {
       if (this.playerincome <= 0) {
-        this.$toast.fail({ duration: 1000, message: '无提现余额' })
+        this.$toast.fail({ duration: 1000, message: this.$t('withdraw.notBalance') })
         return
       }
       this.$router.push({ name: 'Withdraw', params: { id: this.id, type: this.type } })

@@ -4,7 +4,7 @@
     <template v-if="isMe(id)">
       <!-- 自己 -->
       <!-- 有侧边栏 代替了 -->
-      <BaseHeader :pageinfo="{ title: '个人中心' }">
+      <BaseHeader :pageinfo="{ title: $t('user.title') }">
         <div slot="right" class="help-button" @click="jumpTo({ name: 'Help' })">
           <img src="@/assets/img/icon_user_settings.svg" alt="settings" />
         </div>
@@ -16,16 +16,16 @@
         <div class="texts">
           <p class="user-info">
             <span class="nmae">{{ name }}</span>
-            <router-link class="edit-button" :to="{ name: 'UserEdit', params: { id } }"
-              >编辑</router-link
-            >
+            <router-link class="edit-button" :to="{ name: 'UserEdit', params: { id } }">{{
+              $t('edit')
+            }}</router-link>
           </p>
           <p class="userstatus">
-            <router-link :to="{ name: 'FollowList', params: { listtype: '关注' } }"
-              >关注：{{ follows }}</router-link
+            <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
+              {{ $t('follow') }}：{{ follows }}</router-link
             >
-            <router-link :to="{ name: 'FollowList', params: { listtype: '粉丝' } }"
-              >粉丝：{{ fans }}</router-link
+            <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
+              {{ $t('fans') }}：{{ fans }}</router-link
             >
           </p>
         </div>
@@ -33,43 +33,43 @@
 
       <div class="user-block">
         <div class="user-block-list" @click="jumpTo({ name: 'Asset', params: { id } })">
-          <span class="user-block-list-title">账户资产</span>
+          <span class="user-block-list-title">{{ $t('user.accountTitle') }}</span>
           <span class="user-block-list-des">
-            已绑定{{ stats.accounts }}个账户
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="查看" />
+            {{ $t('user.accountTitle', [stats.accounts]) }}
+            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
           </span>
         </div>
       </div>
 
       <div class="user-block">
         <div class="user-block-list" @click="jumpTo({ name: 'Original', params: { id } })">
-          <span class="user-block-list-title">原创文章</span>
+          <span class="user-block-list-title">{{ $t('user.originalArticle') }}</span>
           <span class="user-block-list-des">
-            {{ stats.articles }}篇
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="查看" />
+            {{ stats.articles }}{{ $t('articleUtil') }}
+            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
           </span>
         </div>
         <div class="user-block-list" @click="jumpTo({ name: 'Reward', params: { id } })">
-          <span class="user-block-list-title">投资文章</span>
+          <span class="user-block-list-title">{{ $t('user.investmentArticle') }}</span>
           <span class="user-block-list-des">
-            {{ stats.supports }}篇
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="查看" />
+            {{ stats.supports }}{{ $t('articleUtil') }}
+            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
           </span>
         </div>
         <div class="user-block-list" @click="jumpTo({ name: 'DraftBox', params: { id } })">
-          <span class="user-block-list-title">草稿箱</span>
+          <span class="user-block-list-title">{{ $t('user.draftArticle') }}</span>
           <span class="user-block-list-des">
-            {{ stats.drafts }}篇
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="查看" />
+            {{ stats.drafts }}{{ $t('articleUtil') }}
+            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
           </span>
         </div>
       </div>
 
       <div class="user-block">
         <div class="user-block-list" @click="jumpTo({ name: 'BuyHistory' })">
-          <span class="user-block-list-title">购买记录</span>
+          <span class="user-block-list-title">{{ $t('user.buyArticle') }}</span>
           <span class="user-block-list-des">
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="查看" />
+            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
           </span>
         </div>
       </div>
@@ -89,11 +89,13 @@
           <template v-if="!followed">
             <span class="follow-button dark" @click="followOrUnfollowUser({ id, type: 1 })">
               <svg-icon icon-class="add" />
-              关注</span
+              {{ $t('follow') }}</span
             >
           </template>
           <template v-else>
-            <span class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">已关注</span>
+            <span class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">{{
+              $t('following')
+            }}</span>
           </template>
         </div>
       </BaseHeader>
@@ -103,15 +105,15 @@
           <img v-if="avatar" v-lazy="avatar" class="userpic" :src="avatar" />
         </div>
         <p class="name">{{ name }}</p>
-        <p class="introduction">简介：{{ introduction || '暂无' }}</p>
+        <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
         <p class="userstatus">
-          <router-link :to="{ name: 'FollowList', params: { listtype: '关注' } }">
+          <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
             <span class="statusNumber">{{ follows }}</span>
-            <span class="statusKey">关注</span>
+            <span class="statusKey">{{ $t('follow') }}</span>
           </router-link>
-          <router-link :to="{ name: 'FollowList', params: { listtype: '粉丝' } }">
+          <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
             <span class="statusNumber">{{ fans }}</span>
-            <span class="statusKey">粉丝</span>
+            <span class="statusKey">{{ $t('fans') }}</span>
           </router-link>
         </p>
 
@@ -123,10 +125,10 @@
               @click="followOrUnfollowUser({ id, type: 1 })"
             >
               <svg-icon icon-class="add" />
-              关注</span
+              {{ $t('follow') }}</span
             >
             <span v-else class="follow-button other" @click="followOrUnfollowUser({ id, type: 0 })">
-              已关注</span
+              {{ $t('following') }}</span
             >
           </transition>
         </template>
@@ -221,14 +223,14 @@ export default {
         this.$store.commit('setLoginModal', true)
         return
       }
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         if (type === 1) await this.$backendAPI.follow({ id })
         else await this.$backendAPI.unfollow({ id })
-        this.$toast.success({ duration: 1000, message: `${message}成功` })
+        this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {
-        this.$toast.fail({ duration: 1000, message: `${message}失败` })
+        this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
         this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
       }
       this.refreshUser()
