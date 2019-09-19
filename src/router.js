@@ -222,6 +222,11 @@ export default new VueRouter({
       path: '*',
       name: 404,
       component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
-    }
+    },
+    {
+      path: '/exchange',
+      name: 'exchange',
+      component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue')
+    },
   ]
 })
