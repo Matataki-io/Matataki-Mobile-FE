@@ -8,14 +8,13 @@
     :closable="false"
     @on-visible-change="change"
   >
-    >
     <div v-if="widgetModalStatus === 0" class="widget-writecontent">
-      <p class="widget-title">转让文章的ownership</p>
+      <p class="widget-title">{{ $t('p.articleTransferTitle') }}</p>
       <div class="widget-input-container">
         <van-field
           v-model="transferUsername"
           class="widget-input"
-          placeholder="请输入想要转让的用户名"
+          :placeholder="$t('p.articleTransferPlaceholder')"
           @input="changeTransferId"
         />
         <div v-if="resultUser" class="widget-input-user" @click="continueUser">
@@ -24,40 +23,51 @@
           </div>
           <span>{{ searchUsernameInfo.nickname || searchUsernameInfo.username }}</span>
         </div>
-        <span v-if="errorMessage" class="error-info">用户不存在</span>
+        <span v-if="errorMessage" class="error-info">
+          {{ $t('p.articleTransferNotUser') }}
+        </span>
       </div>
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">如何转让ownership？</a>
+        <a class="help" href="javascript:;" @click="reviewHelp">
+          {{ $t('p.articleTransferHelp') }}
+        </a>
         <a
           class="create"
           href="javascript:;"
           :class="[!buttonStatus && 'gray']"
           @click="transferArticle"
-          >转让文章</a
         >
+          {{ $t('p.articleTransferBtn') }}
+        </a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-help">
-      <p class="widget-help-title">什么是文章权限转移</p>
+      <p class="widget-help-title">
+        {{ $t('p.articleTransferHelpTitle') }}
+      </p>
       <p class="widget-help-content">
-        使用此功能可以将文章的署名权和收益权转移给另一名用户。接受权限转移的选项默认为关闭状态，需要在设置中手动开启。可转移对象为已发表文章和草稿箱中的文章。请勿滥用此功能！
+        {{ $t('p.articleTransferHelpDes') }}
       </p>
       <br />
-      <p class="widget-help-title">转移步骤</p>
-      <p class="widget-help-content">
-        1.在搜索框中完整输入对方昵称<br />
-        2.请仔细核对被转移账户的信息<br />
-        3.核对后点击“转让文章”来移交权限
+      <p class="widget-help-title">
+        {{ $t('p.articleTransferHelpStepTitle') }}
       </p>
-      <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
+      <p class="widget-help-content">
+        1.{{ $t('p.articleTransferHelpStepDes1') }}<br />
+        2.{{ $t('p.articleTransferHelpStepDes2') }}<br />
+        3.{{ $t('p.articleTransferHelpStepDes3') }}
+      </p>
+      <a class="widget-help-button" href="javascript:;" @click="backPage">
+        {{ $t('p.articleTransferHelpBtn') }}
+      </a>
     </div>
   </Modal>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import { sleep } from '@/common/methods'
 import { strTrim } from '@/common/reg'
-import debounce from 'lodash/debounce'
 
 export default {
   name: 'ArticleTransfer',
@@ -103,15 +113,27 @@ export default {
           transferUsername
         )
         if (res.status === 200 && res.data.code === 0) {
-          this.$toast({ duration: 1000, position: 'bottom', message: '转让成功,自动返回首页' })
+          this.$toast({
+            duration: 1000,
+            position: 'bottom',
+            message: this.$t('p.articleTransferSuccess')
+          })
           this.change(false)
           this.$router.push({ name: 'home' })
         } else {
-          this.$toast({ duration: 1000, position: 'bottom', message: '对方未开启转让权限' })
+          this.$toast({
+            duration: 1000,
+            position: 'bottom',
+            message: this.$t('p.articleTransferNotOpen')
+          })
         }
       } catch (error) {
         console.log(error)
-        this.$toast({ duration: 1000, position: 'bottom', message: '对方未开启转让权限' })
+        this.$toast({
+          duration: 1000,
+          position: 'bottom',
+          message: this.$t('p.articleTransferNotOpen')
+        })
       }
     },
     resetStatus() {

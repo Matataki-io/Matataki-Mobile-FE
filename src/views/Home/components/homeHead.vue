@@ -3,15 +3,18 @@
     <div v-if="isLogined" class="home-head-avatar" @click="$emit('login')">
       <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
     </div>
-    <a v-else href="javascript:void(0);" class="home-head-notlogin" @click="$emit('login')">登录</a>
+    <a v-else href="javascript:void(0);" class="home-head-notlogin" @click="$emit('login')">
+      {{ $t('login') }}
+    </a>
 
     <div class="home-head-nav">
       <router-link
         :class="$route.name === 'index' && 'active'"
         href="javascript:void(0);"
         :to="{ name: 'index' }"
-        >首页</router-link
       >
+        {{ $t('home.navHome') }}
+      </router-link>
       <a
         v-for="(item, index) in nav"
         :key="index"

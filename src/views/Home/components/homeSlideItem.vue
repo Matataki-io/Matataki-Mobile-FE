@@ -3,7 +3,7 @@
     <img v-if="cover" :src="cover" alt="cover" />
     {{ cover }}
     <div class="slide-read">
-      {{ slideIndex === 0 ? '浏览量: ' + slide.read : '总销量: ' + slide.sale }}
+      {{ slideNums }}
     </div>
   </div>
 </template>
@@ -24,6 +24,11 @@ export default {
   computed: {
     cover() {
       return this.slide.cover ? this.$backendAPI.getAvatarImage(this.slide.cover) : ''
+    },
+    slideNums() {
+      return this.slideIndex === 0
+        ? this.$t('home.read') + ':' + this.slide.read
+        : this.$t('home.sale') + ':' + this.slide.sale
     }
   },
   methods: {

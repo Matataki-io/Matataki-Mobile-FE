@@ -33,7 +33,7 @@ export default {
   methods: {
     toggleTitle() {
       const { isMe, id } = this
-      this.pageTitle = isMe(id) ? '我的原创' : '他的原创'
+      this.pageTitle = isMe(id) ? this.$t('user.myOriginal') : this.$t('user.himOriginal')
     }
   }
 }

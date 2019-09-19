@@ -1,10 +1,10 @@
 <template>
   <div class="mw buy">
-    <BaseHeader :pageinfo="{ title: '购买记录' }" />
+    <BaseHeader :pageinfo="{ title: $t('user.buyHistory') }" />
     <BasePull
       :params="params"
       :api-url="apiUrl"
-      :loading-text="'暂无购买记录'"
+      :loading-text="$t('notBuyHistory')"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       :need-access-token="true"
       @getListData="getListData"

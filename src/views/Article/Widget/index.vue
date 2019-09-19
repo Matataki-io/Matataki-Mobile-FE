@@ -14,23 +14,29 @@
         <div class="widget-button-img">
           <img src="@/assets/img/widget/widget.svg" alt="widget" />
         </div>
-        <p>创建widget</p>
+        <p>
+          {{ $t('p.createWidget') }}
+        </p>
       </div>
       <div class="widget-button" @click="widgetModalStatus = 4">
         <div class="widget-button-img">
           <img src="@/assets/img/widget/share.svg" alt="widget" />
         </div>
-        <p>生成长图</p>
+        <p>
+          {{ $t('p.createLongImg') }}
+        </p>
       </div>
       <div class="widget-button" @click="copyCode(getClipboard)">
         <div class="widget-button-img">
           <img src="@/assets/img/widget/link.svg" alt="link" />
         </div>
-        <p>复制邀请链接</p>
+        <p>
+          {{ $t('p.copyInviteLink') }}
+        </p>
       </div>
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
-      <p class="widget-title">创建widget</p>
+      <p class="widget-title">{{ $t('p.createWidget') }}</p>
       <van-field
         v-model="widgetContent"
         class="widget-textarea"
@@ -40,30 +46,40 @@
         autosize
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
-        <a class="create" href="javascript:;" @click="createWidgetContent">创建widget</a>
+        <a class="help" href="javascript:;" @click="reviewHelp">
+          {{ $t('p.widgetHelp') }}
+        </a>
+        <a class="create" href="javascript:;" @click="createWidgetContent">{{
+          $t('p.createWidget')
+        }}</a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 2" class="widget-help">
-      <p class="widget-help-title">什么是文章widget</p>
+      <p class="widget-help-title">
+        {{ $t('p.articleWidgetHelp') }}
+      </p>
       <p class="widget-help-content">
-        widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到瞬MATATAKI的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。
+        {{ $t('p.articleWidgetContent') }}
       </p>
       <br />
-      <p class="widget-help-title">操作步骤</p>
+      <p class="widget-help-title">
+        {{ $t('p.stepTitle') }}
+      </p>
       <p class="widget-help-content">
-        1.你可以选择自定义展示卡片上的简介内容<br />
-        2.点击“创建widget”按钮获取代码<br />
-        3.点击“复制代码”按钮获取widget代码<br />
-        4.粘贴代码到瞬MATATAKI编辑器中即可展示<br />
+        1.{{ $t('p.stepContent1') }}<br />
+        2.{{ $t('p.stepContent2') }}<br />
+        3.{{ $t('p.stepContent3') }}<br />
+        4.{{ $t('p.stepContent4') }}<br />
       </p>
 
-      <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
+      <a class="widget-help-button" href="javascript:;" @click="backPage">{{
+        $t('p.articleTransferHelpBtn')
+      }}</a>
     </div>
     <div v-if="widgetModalStatus === 3" class="widget-review">
-      <p class="widget-title">widget预览</p>
+      <p class="widget-title">{{ $t('p.widgetView') }}</p>
       <div class="widget-review-content" v-html="widgetContentIframe"></div>
-      <p class="widget-review-des">复制下面的代码并黏贴到您的网站来展示</p>
+      <p class="widget-review-des">{{ $t('p.widgetCopyDes') }}</p>
       <van-field
         id="codeIframe"
         v-model="widgetContentIframe"
@@ -75,8 +91,10 @@
         @focus="selectValue($event)"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
-        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">复制代码</a>
+        <a class="help" href="javascript:;" @click="reviewHelp">{{ $t('p.widgetHelp') }}</a>
+        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">{{
+          $t('p.copyCode')
+        }}</a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 4">
@@ -151,13 +169,13 @@ export default {
         () => {
           this.$toast.success({
             duration: 1000,
-            message: '复制成功'
+            message: this.$t('success.copy')
           })
         },
         () => {
           this.$toast.fail({
             duration: 1000,
-            message: '复制失败'
+            message: this.$t('error.copy')
           })
         }
       )

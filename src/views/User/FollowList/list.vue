@@ -5,7 +5,7 @@
     </div>
     <div class="card-list">
       <p class="list-name">{{ list.nickname || list.username || list.followed }}</p>
-      <p class="list-des">{{ list.fans }}粉丝</p>
+      <p class="list-des">{{ list.fans }}{{ this.$t('fans') }}</p>
     </div>
     <span
       v-if="!list.is_follow"
@@ -13,13 +13,13 @@
       @click.stop="$emit('followOrUnfollowUser', { id, type: 1, index, indexList })"
     >
       <svg-icon icon-class="add" />
-      关注
+      {{ this.$t('follow') }}
     </span>
     <span
       v-else
       class="follow-button"
       @click.stop="$emit('followOrUnfollowUser', { id, type: 0, index, indexList })"
-      >已关注</span
+      >{{ this.$t('following') }}</span
     >
   </div>
 </template>

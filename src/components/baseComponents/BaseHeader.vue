@@ -125,7 +125,7 @@ export default {
   },
   watch: {
     isLogined(newState) {
-      if (newState) this.$Message.success('登录成功')
+      if (newState) this.$toast({ duration: 1000, message: this.$t('success.loginSuccess') })
     }
   },
   created() {

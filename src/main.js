@@ -22,6 +22,7 @@ import './plugins/vant'
 import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
+import i18n from './plugins/i18n'
 
 // global css
 import '@/assets/css/index.less'
@@ -71,5 +72,6 @@ router.beforeResolve(async (to, from) => {
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

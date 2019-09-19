@@ -1,10 +1,19 @@
 <template>
   <Modal v-model="showModal" footer-hide class-name="modalCenter signupModal">
     <section v-show="step === 1" class="auth-main">
-      <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请" />
+      <img
+        v-if="referral"
+        class="referral"
+        src="@/assets/img/invite.png"
+        :alt="$t('auth.invite')"
+      />
       <div class="auth-title-container">
-        <span :class="['auth-title', { active: isLogin }]" @click="isLogin = true">登录</span>
-        <span :class="['auth-title', { active: !isLogin }]" @click="isLogin = false">注册</span>
+        <span :class="['auth-title', { active: isLogin }]" @click="isLogin = true">{{
+          $t('login')
+        }}</span>
+        <span :class="['auth-title', { active: !isLogin }]" @click="isLogin = false">{{
+          $t('registered')
+        }}</span>
       </div>
       <div class="loginRegister">
         <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false" />
@@ -16,7 +25,7 @@
       <div v-if="step === 2" class="arrow">
         <van-icon name="arrow-left" />
       </div>
-      <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
+      <span>{{ step === 1 ? $t('auth.viewWallet') : $t('auth.backLogin') }}</span>
       <div v-if="step === 1" class="arrow">
         <van-icon name="arrow" />
       </div>

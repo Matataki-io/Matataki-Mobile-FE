@@ -55,19 +55,19 @@ export default {
     return {
       tabsData: [
         {
-          label: '关注',
+          label: this.$t('follow'),
           params: { uid: this.id },
           apiUrl: 'followsList',
           articles: [],
-          loadingText: '没有关注',
+          loadingText: this.$t('notFollow'),
           autoRequestTime: 0
         },
         {
-          label: '粉丝',
+          label: this.$t('fans'),
           params: { uid: this.id },
           apiUrl: 'fansList',
           articles: [],
-          loadingText: '没有粉丝',
+          loadingText: this.$t('notFans'),
           autoRequestTime: 0
         }
       ],
@@ -79,8 +79,8 @@ export default {
     ...mapGetters(['isLogined'])
   },
   created() {
-    if (this.activeIndexName === '关注') this.activeIndex = 0
-    else if (this.activeIndexName === '粉丝') this.activeIndex = 1
+    if (this.activeIndexName === this.$t('follow')) this.activeIndex = 0
+    else if (this.activeIndexName === this.$t('fans')) this.activeIndex = 1
     else this.activeIndex = 0
   },
   methods: {
@@ -100,23 +100,26 @@ export default {
         this.$store.commit('setLoginModal', true)
         return
       }
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         let res = null
         if (type === 1) res = await this.$backendAPI.follow({ id })
         else res = await this.$backendAPI.unfollow({ id })
         if (res.status === 200 && res.data.code === 0) {
-          this.$toast.success({ duration: 1000, message: `${message}成功` })
+          this.$toast.success({
+            duration: 1000,
+            message: `${message}${this.$t('success.success')}`
+          })
           this.followed = type === 1
           let isFollow = this.tabsData[index].articles[indexList].is_follow
           this.tabsData[index].articles[indexList].is_follow = !isFollow
         } else {
-          throw error(`${message}失败`)
+          throw error(`${message}${this.$t('error.fail')}`)
         }
-        this.$toast.success({ duration: 1000, message: `${message}成功` })
+        this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {
-        this.$toast.fail({ duration: 1000, message: `${message}失败` })
+        this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
         this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
       }
     }

@@ -18,7 +18,7 @@
           <p v-clampy="8" class="markdown-body" v-html="htmlStr" />
         </div>
         <div class="hide-article-box">
-          <span>—— 扫描二维码 免费读全文 ——</span>
+          <span>—— {{ $t('p.sweepCodeView') }} ——</span>
         </div>
         <section class="footer">
           <div class="flex">
@@ -31,9 +31,9 @@
       </div>
       <img v-else :src="downloadLink" alt="" style="width: 100%;" />
     </div>
-    <button v-if="canvas" class="save-btn" disabled>长按图片保存</button>
-    <button v-else class="save-btn" @click="toCanvas">生成图片</button>
-    <button class="save-btn close" @click="close">关闭</button>
+    <button v-if="canvas" class="save-btn" disabled>{{ $t('p.pressImgSave') }}</button>
+    <button v-else class="save-btn" @click="toCanvas">{{ $t('p.createImg') }}</button>
+    <button class="save-btn close" @click="close">{{ $t('close') }}</button>
 
     <!--<a
       :class="['save-btn', { disabled: isAPP }]"
@@ -117,7 +117,7 @@ export default {
         duration: 0,
         forbidClick: true,
         zIndex: 1200,
-        message: `图片生成中...`
+        message: `loading...`
       })
       if (this.canvas) {
         document.querySelector('#downloadImg').click()
@@ -137,13 +137,13 @@ export default {
         .catch(error => {
           console.log(error)
           loading.clear()
-          this.$toast('图片生成失败')
+          this.$toast(this.$t('close'))
         })
     },
     genQRCode() {
       QRCode.toCanvas(this.$refs.qr, this.shareInfo.shareLink, { width: 80 }, error => {
         if (error) console.error(error)
-        console.log('success!')
+        // console.log('success!')
         //this.toCanvas()
       })
     }

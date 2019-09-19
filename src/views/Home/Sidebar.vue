@@ -14,19 +14,27 @@
             </router-link>
           </div>
           <p class="account-name">{{ name }}</p>
-          <p class="wallet-info">{{ displayBalanceSymbol }}钱包余额：{{ displayBalance }}</p>
+          <p class="wallet-info">
+            {{ displayBalanceSymbol }}
+            {{ $t('sidebar.walletName') }}
+            ：{{ displayBalance }}
+          </p>
         </div>
         <div class="follow-info">
-          <router-link :to="{ name: 'FollowList', params: { id, listtype: '关注' } }">
+          <router-link :to="{ name: 'FollowList', params: { id, listtype: $t('sidebar.follow') } }">
             <div class="follow">
               <p>{{ follows }}</p>
-              <p>关注</p>
+              <p>
+                {{ $t('sidebar.follow') }}
+              </p>
             </div>
           </router-link>
-          <router-link :to="{ name: 'FollowList', params: { id, listtype: '粉丝' } }">
+          <router-link :to="{ name: 'FollowList', params: { id, listtype: $t('sidebar.fans') } }">
             <div class="fans">
               <p>{{ fans }}</p>
-              <p>粉丝</p>
+              <p>
+                {{ $t('sidebar.fans') }}
+              </p>
             </div>
           </router-link>
         </div>
@@ -35,10 +43,14 @@
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
-                <span class="left-text">我的账户</span>
+                <span class="left-text">
+                  {{ $t('sidebar.account') }}
+                </span>
               </div>
               <div class="cell-right">
-                <span>已绑定{{ stats.accounts }}个账户</span>
+                <span>
+                  {{ $t('sidebar.accountDes', [stats.accounts]) }}
+                </span>
               </div>
             </div>
           </router-link>
@@ -46,7 +58,9 @@
             <div class="cell">
               <div class="cell-left">
                 <svg-icon class="left-img" icon-class="point" />
-                <span class="left-text">我的积分</span>
+                <span class="left-text">
+                  {{ $t('sidebar.point') }}
+                </span>
               </div>
               <div class="cell-right">
                 <span>{{ stats.points || 0 }}</span>
@@ -57,10 +71,14 @@
             <div class="cell">
               <div class="cell-left">
                 <svg-icon class="left-img" icon-class="box1" />
-                <span class="left-text">我的邀请</span>
+                <span class="left-text">
+                  {{ $t('sidebar.invite') }}
+                </span>
               </div>
               <div class="cell-right">
-                <span>已邀请{{ stats.referral_amount || 0 }}位用户</span>
+                <span>
+                  {{ $t('sidebar.inviteDes', [stats.referral_amount]) }}
+                </span>
               </div>
             </div>
           </router-link>
@@ -70,10 +88,15 @@
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/yuanchuang.svg" alt="article" class="left-img" />
-                <span class="left-text">我的原创</span>
+                <span class="left-text">
+                  {{ $t('sidebar.original') }}
+                </span>
               </div>
               <div class="cell-right">
-                <span>{{ stats.articles }}篇</span>
+                <span
+                  >{{ stats.articles }}
+                  {{ $t('sidebar.article') }}
+                </span>
               </div>
             </div>
           </router-link>
@@ -81,10 +104,15 @@
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/zanshang.svg" alt="article" class="left-img" />
-                <span class="left-text">我的投资</span>
+                <span class="left-text">
+                  {{ $t('sidebar.investment') }}
+                </span>
               </div>
               <div class="cell-right">
-                <span>{{ stats.supports }}篇</span>
+                <span
+                  >{{ stats.supports }}
+                  {{ $t('sidebar.article') }}
+                </span>
               </div>
             </div>
           </router-link>
@@ -92,10 +120,15 @@
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/caogaoxiang.svg" alt="article" class="left-img" />
-                <span class="left-text">我的草稿</span>
+                <span class="left-text">
+                  {{ $t('sidebar.draft') }}
+                </span>
               </div>
               <div class="cell-right">
-                <span>{{ stats.drafts }}篇</span>
+                <span
+                  >{{ stats.drafts }}
+                  {{ $t('sidebar.article') }}
+                </span>
               </div>
             </div>
           </router-link>
@@ -105,7 +138,9 @@
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/goumaijilu.svg" alt="article" class="left-img" />
-                <span class="left-text">购买记录</span>
+                <span class="left-text">
+                  {{ $t('sidebar.buy') }}
+                </span>
               </div>
               <div class="cell-right"><span></span></div>
             </div>
@@ -114,7 +149,7 @@
       </template>
       <template v-else>
         <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">
-          立即登录
+          {{ $t('sidebar.login') }}
         </div>
       </template>
       <div class="cell-container">
@@ -122,7 +157,9 @@
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" />
-              <span class="left-text">规则介绍</span>
+              <span class="left-text">
+                {{ $t('sidebar.rule') }}
+              </span>
             </div>
             <div class="cell-right"><span></span></div>
           </div>
@@ -131,7 +168,9 @@
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/newimg/telegram.svg" alt="article" class="left-img" />
-              <span class="left-text">加入电报</span>
+              <span class="left-text">
+                {{ $t('sidebar.tg') }}
+              </span>
             </div>
             <div class="cell-right"><span></span></div>
           </div>
@@ -142,7 +181,9 @@
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/img/icon_sidebar_sb.svg" alt="article" class="left-img" />
-              <span class="left-text">智能公告牌</span>
+              <span class="left-text">
+                {{ $t('sidebar.billboard') }}
+              </span>
             </div>
             <div class="cell-right"><span></span></div>
           </div>
@@ -153,11 +194,25 @@
           <div class="cell">
             <div class="cell-left">
               <svg-icon icon-class="tgc" class="left-img icon-feedback" />
-              <span class="left-text">吐个槽</span>
+              <span class="left-text">
+                {{ $t('sidebar.feedback') }}
+              </span>
             </div>
             <div class="cell-right"><span></span></div>
           </div>
         </a>
+      </div>
+
+      <div class="cell-container">
+        <div class="cell" @click="toggle">
+          <div class="cell-left">
+            <svg-icon icon-class="toggle" class="left-img icon-feedback" />
+            <span class="left-text">
+              {{ $t('sidebar.language') }}
+            </span>
+          </div>
+          <div class="cell-right"><span></span></div>
+        </div>
       </div>
     </div>
   </van-popup>
@@ -275,6 +330,11 @@ export default {
     },
     changeInfo(status) {
       this.showModal = status
+    },
+    toggle() {
+      // console.log(this.$i18n.locale)
+      if (this.$i18n.locale === 'en') this.$i18n.locale = 'zh'
+      else this.$i18n.locale = 'en'
     }
   }
 }

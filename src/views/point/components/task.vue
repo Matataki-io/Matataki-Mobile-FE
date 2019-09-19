@@ -2,7 +2,7 @@
   <div class="point-task">
     <div class="task-block">
       <div class="task-list">
-        <span class="task-title">我的积分</span>
+        <span class="task-title">{{ $t('point.title') }}</span>
         <span class="task-money">{{ pointStatus.amount || 0 }}</span>
       </div>
     </div>
@@ -11,52 +11,66 @@
       <!-- 隐藏资料积分 -->
       <div v-if="!pointStatus.profile">
         <div class="flex margin-b-10">
-          <span class="task-title">完善个人资料</span>
+          <span class="task-title">
+            {{ $t('point.completeProfile') }}
+          </span>
           <el-button size="mini" class="integral-btn" @click="profile">
-            <svg-icon class="box" icon-class="box" /> 领取</el-button
-          >
+            <svg-icon class="box" icon-class="box" />
+            {{ $t('point.receive') }}
+          </el-button>
         </div>
-        <p class="task-des pdes">前往设置页上传头像+设置昵称即可领取{{ $point.profile }}积分</p>
+        <p class="task-des pdes">
+          {{ $t('point.uploadAvatar', [$point.profile]) }}
+        </p>
       </div>
       <!-- 隐藏资料积分的占位高度 -->
       <div v-if="!pointStatus.profile" class="empty-line"></div>
       <!-- 隐藏回馈积分 -->
       <div v-if="!pointStatus.login">
         <div class="flex margin-b-10">
-          <span class="task-title">用户回馈</span>
+          <span class="task-title">
+            {{ $t('point.feedback') }}
+          </span>
           <el-button size="mini" class="integral-btn" @click="feedback">
-            <svg-icon class="box" icon-class="box" /> 领取</el-button
-          >
+            <svg-icon class="box" icon-class="box" />
+            {{ $t('point.receive') }}
+          </el-button>
         </div>
         <p class="task-des pdes">
-          感谢8月30日前注册的老用户支持，点击领取{{ $point.loginOld }}积分
+          {{ $t('point.oldUser', [$point.loginOld]) }}
           <br />
-          新用户点击领取{{ $point.loginNew }}积分
+          {{ $t('point.oldUser1', [$point.loginNew]) }}
         </p>
       </div>
     </div>
     <div class="task-block padding">
-      <span class="task-title">邀请好友有奖</span>
+      <span class="task-title">
+        {{ $t('point.invite') }}
+      </span>
       <div class="flex">
         <div class="integral-link">
           {{ referralLink }}
         </div>
-        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)"
-          >复制链接</el-button
-        >
+        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
+          {{ $t('point.copyLink') }}
+        </el-button>
       </div>
       <p class="task-des pdes">
-        每成功邀请一名好友注册可得{{ $point.regInviteFinished + $point.regInviter }}积分
+        {{ $t('point.inviteDes1', [$point.regInviteFinished + $point.regInviter]) }}
         <br />
-        好友发文你可以获得额外{{ $point.publishReferral }}积分
+        {{ $t('point.inviteDes2', [$point.publishReferral]) }}
         <br />
-        好友阅读获得积分你可得额外1/{{ 1 / $point.readReferralRate }}
+        {{ $t('point.inviteDes3', [1 / $point.readReferralRate]) }}
       </p>
     </div>
     <div class="task-block padding">
       <div class="task-progress">
-        <span class="task-title">每日发文奖励</span>
-        <span class="task-des">每日发文最高可得{{ $point.publishDailyMax }}积分奖励</span>
+        <span class="task-title">
+          {{ $t('point.dailyPublishPoint') }}
+        </span>
+        <span class="task-des">
+          {{ $t('point.dailyPublishPointDes', [$point.publishDailyMax]) }}
+        </span>
         <div class="integral-progress">
           <el-progress
             class="progress"
@@ -69,8 +83,12 @@
         </div>
       </div>
       <div class="task-progress">
-        <span class="task-title">每日阅读奖励</span>
-        <span class="task-des"> 每日阅读评价文章最高可得{{ $point.readDailyMax }}积分奖励</span>
+        <span class="task-title">
+          {{ $t('point.dailyReadPoint') }}
+        </span>
+        <span class="task-des">
+          {{ $t('point.dailyReadPointDes', [$point.readDailyMax]) }}
+        </span>
         <div class="integral-progress">
           <el-progress
             class="progress"
@@ -105,9 +123,8 @@ export default {
     },
     referralLink1() {
       if (this.currentUserInfo && this.currentUserInfo.id)
-        return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}?referral=${this.currentUserInfo.id}`
-      else
-        return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}`
+        return `${this.$t('referral')}${window.location.origin}?referral=${this.currentUserInfo.id}`
+      else return `${this.$t('referral')}${window.location.origin}`
     },
     pointStatusPost() {
       if (this.pointStatus.publish)
@@ -154,7 +171,7 @@ export default {
       if (!this.isLogined) {
         this.$toast({
           duration: 1500,
-          message: '请先登录'
+          message: this.$t('error.pleaseLogin')
         })
         this.$store.commit('setLoginModal', true)
         return false
@@ -172,7 +189,7 @@ export default {
           if (res.status === 200 && res.data.code === 0) {
             this.$toast({
               duration: 1500,
-              message: '领取成功'
+              message: this.$t('point.receiveSuccess')
             })
             this.getUserPointStatus()
           } else
@@ -182,10 +199,10 @@ export default {
             })
         })
         .catch(err => {
-          console.log('领取设置资料积分失败', err)
+          console.log(this.$t('point.receiveProfileFail'), err)
           this.$toast({
             duration: 1500,
-            message: `领取失败`
+            message: this.$t('point.receiveFail')
           })
         })
     },
@@ -200,7 +217,7 @@ export default {
           if (res.status === 200 && res.data.code === 0) {
             this.$toast({
               duration: 1500,
-              message: '领取成功'
+              message: this.$t('point.receiveSuccess')
             })
             this.getUserPointStatus()
           } else
@@ -210,10 +227,10 @@ export default {
             })
         })
         .catch(err => {
-          console.log('领取老用户回馈积分失败', err)
+          console.log(this.$t('point.receiveFeedbackFail'), err)
           this.$toast({
             duration: 1500,
-            message: '领取失败'
+            message: this.$t('point.receiveFail')
           })
         })
     },
@@ -222,13 +239,13 @@ export default {
         () => {
           this.$toast({
             duration: 1500,
-            message: '复制成功'
+            message: this.$t('success.copy')
           })
         },
         () => {
           this.$toast({
             duration: 1500,
-            message: '复制失败'
+            message: this.$t('error.copy')
           })
         }
       )

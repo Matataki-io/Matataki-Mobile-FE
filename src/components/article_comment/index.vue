@@ -6,16 +6,19 @@
         v-model="comment"
         type="textarea"
         :autosize="{ minRows: 4 }"
-        placeholder="请输入评论内容"
+        :placeholder="$t('p.commentPointPlaceholder')"
         maxlength="500"
         show-word-limit
         @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac">
         <el-button size="small" class="btn" @click="postComment">
-          评论
+          {{ $t('p.commentPointBtn') }}
         </el-button>
-        <span class="btn-des">{{ article.comment_pay_point }}积分/条</span>
+        <span class="btn-des">
+          {{ article.comment_pay_point }}
+          {{ $t('p.commentPointDes') }}
+        </span>
       </div>
     </div>
   </div>
@@ -70,7 +73,7 @@ export default {
     },
     postComment() {
       if (!this.islogin()) return
-      if (!this.comment.trim()) return this.$toast({ duration: 1000, message: '评论内容不能为空' })
+      if (!this.comment.trim()) return this.$toast({ duration: 1000, message: this.$t('p.commentContent') })
       const data = {
         signId: this.article.id,
         comment: this.comment.trim()
@@ -79,14 +82,14 @@ export default {
         .postPointComment(data)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
-            this.$toast({ duration: 1000, message: '评论成功' })
+            this.$toast({ duration: 1000, message: this.$t('p.commentSuccess') })
             this.comment = ''
             this.$emit('doneComment')
           } else this.$toast({ duration: 1000, message: res.message })
         })
         .catch(e => {
-          console.log('评论失败', e)
-          this.$toast({ duration: 1000, message: '评论失败' })
+          console.log(this.$t('p.commentFail'), e)
+          this.$toast({ duration: 1000, message: this.$t('p.commentFail') })
         })
     },
     postCommentKeyup(e) {

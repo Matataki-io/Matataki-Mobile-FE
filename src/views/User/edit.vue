@@ -1,14 +1,16 @@
 /* eslint-disable no-shadow */
 <template>
   <div class="edit-user mw">
-    <BaseHeader :pageinfo="{ title: '编辑', rightPage: 'home' }">
+    <BaseHeader :pageinfo="{ title: $t('edit'), rightPage: 'home' }">
       <div slot="right">
-        <span class="done-button" :class="!setProfile && 'no-modify'" @click="save">完成</span>
+        <span class="done-button" :class="!setProfile && 'no-modify'" @click="save">{{
+          $t('done')
+        }}</span>
       </div>
     </BaseHeader>
     <div class="edit-card">
       <div class="edit-card-list">
-        <span>头像</span>
+        <span>{{ $t('avatar') }}</span>
         <img-upload
           class="imgcard"
           :img-upload-done="imgUploadDone"
@@ -22,26 +24,26 @@
       </div>
 
       <div class="edit-card-list">
-        <span>昵称</span>
-        <input v-model="newNickName" placeholder="1-12位字符,包含中文、英文、数字" />
+        <span>{{ $t('username') }}</span>
+        <input v-model="newNickName" :placeholder="$t('rule.strEnglishNumber', ['1-12'])" />
       </div>
 
       <div class="edit-card-list">
-        <span>简介</span>
-        <input v-model="newIntroduction" placeholder="不能超过20位字符" />
+        <span>{{ $t('profile') }}</span>
+        <input v-model="newIntroduction" :placeholder="$t('rule.notExceedStr', ['20'])" />
       </div>
 
       <div class="edit-card-list">
-        <span>邮箱</span>
-        <input v-model="newEmail" placeholder="请输入邮箱" />
+        <span>{{ $t('email') }}</span>
+        <input v-model="newEmail" :placeholder="$t('rule.loginEmailMessage')" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import imgUpload from '@/components/imgUpload/index.vue'
 import { mapActions } from 'vuex'
+import imgUpload from '@/components/imgUpload/index.vue'
 
 export default {
   name: 'User',
@@ -107,15 +109,15 @@ export default {
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       let canSetProfile = true
       if (!reg.test(this.newNickName)) {
-        this.myToasted('昵称长度为1-12位,中文、英文、数字但不包括下划线等符号')
+        this.myToasted(this.$t('rule.strEnglishNumber', ['1-12']))
         canSetProfile = false
       }
       if (this.newIntroduction.length > 20) {
-        this.myToasted('简介不能超过20个字符')
+        this.myToasted(this.$t('rule.profileNotExceedStr', ['20']))
         canSetProfile = false
       }
       if (this.newEmail !== '' && !regEmail.test(this.newEmail)) {
-        this.myToasted('请输入正确的邮件地址')
+        this.myToasted(this.$t('rule.emailMessage'))
         canSetProfile = false
       }
       return canSetProfile
@@ -152,12 +154,12 @@ export default {
           if (error.response.status === 401) {
             this.$toast.fail({
               duration: 1000,
-              message: '没有登陆'
+              message: this.$t('error.pleaseLogin')
             })
           } else {
             this.$toast.fail({
               duration: 1000,
-              message: '登陆失败'
+              message: this.$t('error.loginFail')
             })
           }
         })
