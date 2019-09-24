@@ -269,8 +269,8 @@ export default {
     articleNavFollowTitle: '我的关注',
     articleNavRecommend: '推荐文章',
     // 商品最新和最热和上面可以公用
-    shopNavHotTitle: '最新商品',
-    shopNavNowTitle: '最热商品',
+    shopNavNowTitle: '最新商品',
+    shopNavHotTitle: '最热商品',
     shopNavRecommend: '推荐商品',
     read: '浏览量',
     sale: '总销量',
