@@ -80,7 +80,7 @@ export default {
     inputNumber: '请输入数字值',
     inputLengthNumber: '请输入6位数字',
     passwordMessage: '请输入密码',
-    passwordLengthMessage: '密码长度在 8 到 16 个字符',
+    passwordLengthMessage: '密码长度在 {0} 到 {1} 个字符',
     setPassword: '请设置密码',
     setPasswordAgain: '请再次设置密码',
     inputPasswordAgain: '请再次输入密码',
