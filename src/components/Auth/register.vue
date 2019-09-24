@@ -107,7 +107,7 @@ export default {
         ],
         password: [
           { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
-          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage'), trigger: 'blur' }
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
         ],
         repassword: { validator: validatePass2, trigger: 'blur' },
         smscode: { validator: checkCode, trigger: 'blur' }
