@@ -161,7 +161,7 @@ export default {
           navMenu: [
             {
               label: this.$t('home.articleNavNow'),
-              title: this.$t('home.shopNavHotTitle'),
+              title: this.$t('home.shopNavNowTitle'),
               params: {
                 channel: 2
               },
@@ -172,7 +172,7 @@ export default {
             },
             {
               label: this.$t('home.articleNavHot'),
-              title: this.$t('home.shopNavNowTitle'),
+              title: this.$t('home.shopNavHotTitle'),
               params: {
                 channel: 2
               },

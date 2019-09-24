@@ -6,13 +6,13 @@
         v-scroll-reveal="{ distance: '20px' }"
         class="logo"
         src="@/assets/img/home/logo_home.png"
-        alt="logo"
+        :alt="$t('about.logo')"
       />
       <img
         v-scroll-reveal="{ distance: '20px', delay: 100 }"
         class="des"
         src="@/assets/img/home/logo_des_home.png"
-        alt="logo"
+        :alt="$t('about.logoDes')"
       />
       <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
         {{ $t('about.homeTitle') }}
