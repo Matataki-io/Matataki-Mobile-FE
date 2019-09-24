@@ -39,7 +39,7 @@
         <p class="task-des pdes">
           {{ $t('point.oldUser', [$point.loginOld]) }}
           <br />
-          {{ $t('point.oldUser1', [$point.loginNew]) }}
+          {{ $t('point.newUser', [$point.loginNew]) }}
         </p>
       </div>
     </div>
