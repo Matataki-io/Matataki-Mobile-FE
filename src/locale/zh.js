@@ -331,7 +331,7 @@ export default {
     btn: '搜索',
     optionText11: '文章',
     optionText12: '商品',
-    optionText13: '作者',
+    optionText13: '用户',
     optionText21: '默认'
   },
   p: {
@@ -421,7 +421,10 @@ export default {
     sweepCodeView: '扫描二维码 免费读全文',
     pressImgSave: '长按图片保存',
     createImg: '生成图片',
-    createFail: '图片生成失败'
+    createFail: '图片生成失败',
+    clipboardText1: '瞬MATATAKI，发布瞬间，灵感永存',
+    clipboardText2: '点击链接首次登入可领取额外',
+    clipboardText3: '积分奖励！'
   },
   invite: {
     headerTitle: '我的邀请',
