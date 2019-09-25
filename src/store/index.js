@@ -25,7 +25,9 @@ export default new Vuex.Store({
       accessToken: null, // 僅為通過 signIn 的
       nickname: ''
     },
-    loginModalShow: false
+    loginModalShow: false,
+    selectTokenShow: false,
+    selectedToken: null
   },
   getters: {
     currentUserInfo: (
@@ -331,6 +333,12 @@ export default new Vuex.Store({
     },
     setLoginModal(state, show) {
       state.loginModalShow = show
+    },
+    setSelectTokenModal(state, show) {
+      state.selectTokenShow = show;
+    },
+    setSelectedToken(state, v) {
+      state.selectedToken = v;
     }
   }
 })
