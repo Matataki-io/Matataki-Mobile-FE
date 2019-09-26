@@ -111,7 +111,6 @@ export default {
   data() {
     return {
       showSidebar: false,
-      navList: [this.$t('home.navArticle'), this.$t('home.navShop')], // head data
       nowIndex: 0,
       // 防止数据嵌套太多 把内容提取出来
       content: [
@@ -192,6 +191,9 @@ export default {
     }
   },
   computed: {
+    navList() {
+      return [this.$t('home.navArticle'), this.$t('home.navShop')] // head data
+    },
     // 内容标题
     contentTitle() {
       const index = this.content[this.nowIndex].activeIndex
@@ -206,6 +208,12 @@ export default {
       const status = this.content[this.nowIndex].navMenu[index].articles.length
       console.log(status)
       return status
+    }
+  },
+  watch: {
+    '$i18n.locale'() {
+      console.log(this.$i18n.locale)
+      this.setContent()
     }
   },
   created() {
@@ -267,6 +275,24 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    setContent() {
+      this.content[0].navMenu[0].label = this.$t('home.articleNavHot')
+      this.content[0].navMenu[0].title = this.$t('home.articleNavHotTitle')
+
+      this.content[0].navMenu[1].label = this.$t('home.articleNavNow')
+      this.content[0].navMenu[1].title = this.$t('home.articleNavNowTitle')
+
+      this.content[0].navMenu[2].label = this.$t('home.articleNavFollow')
+      this.content[0].navMenu[2].title = this.$t('home.articleNavFollowTitle')
+
+      this.content[0].recommend.title = this.$t('home.articleNavRecommend')
+
+      this.content[1].navMenu[0].label = this.$t('home.articleNavNow')
+      this.content[1].navMenu[0].title = this.$t('home.shopNavNowTitle')
+
+      this.content[1].navMenu[1].label = this.$t('home.articleNavHot')
+      this.content[1].recommend.title = this.$t('home.shopNavRecommend')
     }
   }
 }

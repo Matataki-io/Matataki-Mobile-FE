@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <home-head :nav="['文章', '商品']" :now-index="-1" @login="showSidebar = true" />
+    <home-head :nav="navList" :now-index="-1" @login="showSidebar = true" />
     <div class="one">
       <img
         v-scroll-reveal="{ distance: '20px' }"
@@ -174,8 +174,17 @@ export default {
   data() {
     return {
       showSidebar: false,
-      nowIndex: 0,
-      effectList: [
+      nowIndex: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined']),
+    navList() {
+      return [this.$t('home.navArticle'), this.$t('home.navShop')]
+    },
+
+    effectList() {
+      return [
         {
           title: this.$t('about.painPoint'),
           subtitle: this.$t('about.painPointTitle1'),
@@ -212,8 +221,10 @@ export default {
           img: effect5,
           des: this.$t('about.programDes3')
         }
-      ],
-      stageList: [
+      ]
+    },
+    stageList() {
+      return [
         {
           title: this.$t('about.stageTitle1'),
           des: this.$t('about.stageDes11'),
@@ -234,9 +245,6 @@ export default {
         }
       ]
     }
-  },
-  computed: {
-    ...mapGetters(['isLogined'])
   },
   methods: {
     jumpTo() {

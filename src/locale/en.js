@@ -258,14 +258,14 @@ export default {
     stageDes32: '打造区块链永存知识数据库'
   },
   home: {
-    navHome: '首页',
-    navArticle: '文章',
-    navShop: '商品',
-    articleNavHot: '最热',
-    articleNavHotTitle: '最热文章',
-    articleNavNow: '最新',
-    articleNavNowTitle: '最新文章',
-    articleNavFollow: '关注',
+    navHome: 'Home',
+    navArticle: 'Article',
+    navShop: 'Shop',
+    articleNavHot: 'Hot',
+    articleNavHotTitle: 'HotArticle',
+    articleNavNow: 'Now',
+    articleNavNowTitle: 'NowArticle',
+    articleNavFollow: 'Follow',
     articleNavFollowTitle: '我的关注',
     articleNavRecommend: '推荐文章',
     // 商品最新和最热和上面可以公用

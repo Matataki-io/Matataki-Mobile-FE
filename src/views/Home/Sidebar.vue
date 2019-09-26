@@ -220,6 +220,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Cookies from 'js-cookie'
 import defaultAvatar from '@/assets/avatar-default.svg'
 
 export default {
@@ -335,6 +336,11 @@ export default {
       // console.log(this.$i18n.locale)
       if (this.$i18n.locale === 'en') this.$i18n.locale = 'zh'
       else this.$i18n.locale = 'en'
+
+      Cookies.set('language', this.$i18n.locale)
+
+      this.sidebarShow = false
+      // window.location.reload()
     }
   }
 }
