@@ -66,11 +66,11 @@
           <el-input-number
             v-model="commentPayPoint"
             step-strictly
-            style="width: 86px"
+            style="width: 110px"
             controls-position="right"
             class="price-point"
             :min="1"
-            :max="20"
+            :max="99999"
             size="mini"
             :label="$t('publish.commentTitle')"
           />
@@ -154,14 +154,14 @@
     <van-radio-group v-if="isShowEditorMode" v-model="saveType">
       <van-cell-group>
         <van-cell :title="$t('publish.public')" clickable @click="saveType = 'public'">
-          <van-radio name="public">
+          <van-radio class="publish-right" name="public">
             <div slot="icon" slot-scope="props" class="my-radio">
               <div v-if="props.checked" class="radio-active"></div>
             </div>
           </van-radio>
         </van-cell>
         <van-cell :title="$t('publish.draft')" clickable @click="saveType = 'draft'">
-          <van-radio name="draft">
+          <van-radio class="publish-right" name="draft">
             <div slot="icon" slot-scope="props" class="my-radio">
               <div v-if="props.checked" class="radio-active"></div>
             </div>
@@ -170,7 +170,7 @@
       </van-cell-group>
     </van-radio-group>
     <van-cell clickable :title="$t('publish.original')" @click="isOriginal = !isOriginal">
-      <van-checkbox v-model="isOriginal">
+      <van-checkbox v-model="isOriginal"  class="publish-right">
         <div slot="icon" slot-scope="props">
           <div v-if="!props.checked" class="my-checkbox"></div>
           <div v-else class="my-checkbox-active">
