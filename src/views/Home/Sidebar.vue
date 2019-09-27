@@ -203,7 +203,7 @@
         </a>
       </div>
 
-      <div class="cell-container">
+      <!-- <div class="cell-container">
         <div class="cell" @click="toggle">
           <div class="cell-left">
             <svg-icon icon-class="toggle" class="left-img icon-feedback" />
@@ -213,7 +213,7 @@
           </div>
           <div class="cell-right"><span></span></div>
         </div>
-      </div>
+      </div> -->
     </div>
   </van-popup>
 </template>
