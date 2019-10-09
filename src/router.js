@@ -11,7 +11,7 @@ export default new VueRouter({
     {
       path: '/',
       name: 'index',
-      component: () => import(/* webpackChunkName: "index" */ './views/home/index.vue')
+      component: () => import(/* webpackChunkName: "index" */ './views/index/index.vue')
     },
     {
       path: '/article',
