@@ -119,7 +119,7 @@ export default {
             message: this.$t('p.articleTransferSuccess')
           })
           this.change(false)
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'index' })
         } else {
           this.$toast({
             duration: 1000,

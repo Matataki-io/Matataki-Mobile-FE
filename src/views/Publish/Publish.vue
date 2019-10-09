@@ -413,12 +413,12 @@ export default {
           this.setTag(data.data)
         } else {
           this.$toast({ duration: 1000, message: data.message })
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'index' })
         }
       } catch (error) {
         console.error(error)
         this.$toast({ duration: 1000, message: this.$t('error.getArticleInfoError') })
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'index' })
       }
       // 设置文章内容
       const { data } = articleData.data
@@ -765,7 +765,7 @@ export default {
     // 离开页面
     leavePage() {
       if (this.modalMode === 'back') this.$router.go(-1)
-      else if (this.modalMode === 'home') this.$router.push({ name: 'home' })
+      else if (this.modalMode === 'home') this.$router.push({ name: 'index' })
       else this.$router.go(-1)
     },
     // 获取标签

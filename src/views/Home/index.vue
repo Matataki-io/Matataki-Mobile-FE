@@ -21,7 +21,7 @@
         {{ $t('about.homeDes') }}
       </p>
       <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
-        <router-link :to="{ name: 'home' }">
+        <router-link :to="{ name: 'index' }">
           <el-button class="home-btn" icon="el-icon-reading">
             {{ $t('about.homeBtnRead') }}
           </el-button>

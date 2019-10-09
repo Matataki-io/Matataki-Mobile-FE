@@ -8,19 +8,11 @@
     </a>
 
     <div class="home-head-nav">
-      <!-- <router-link
-        :class="$route.name === 'index' && 'active'"
-        href="javascript:void(0);"
-        :to="{ name: 'index' }"
-      >
-        {{ $t('home.navHome') }}
-      </router-link> -->
       <router-link
         v-for="(item, index) in navList"
         :key="index"
         :class="item.name === $route.name && 'active'"
         :to="{ name: item.name }"
-        @click="toggle(index)"
       >
         <span>{{ item.title }}</span>
       </router-link>
@@ -97,18 +89,6 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
-    },
-    toggle(i) {
-      if (this.$route.name === 'index') {
-        this.$router.push({
-          name: 'home',
-          params: {
-            nav: i
-          }
-        })
-      } else {
-        this.$emit('toggleNav', i)
-      }
     }
   }
 }

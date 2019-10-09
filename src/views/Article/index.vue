@@ -2,32 +2,22 @@
   <div class="home mw">
     <bannerMatataki :class="!isShowSlide && 'margin'" />
     <!-- 首页头部 -->
-    <home-head
-      :nav="navList"
-      :now-index="nowIndex"
-      @toggleNav="toggleNav"
-      @login="showSidebar = true"
-    />
+    <home-head :now-index="nowIndex" @login="showSidebar = true" />
 
     <!-- 首页内容 -->
-    <div
-      v-for="(item, index) in content"
-      v-show="nowIndex === index"
-      :key="index"
-      class="home-content"
-    >
+    <div class="home-content">
       <!-- 首页内容导航 -->
       <home-nav
-        :nav-menu="item.navMenu"
-        :active-index="item.activeIndex"
+        :nav-menu="content.navMenu"
+        :active-index="content.activeIndex"
         @toggleNavMenu="toggleNavMenu"
       />
 
       <!-- 推荐内容 -->
       <homeSlide
         v-show="isShowSlide"
-        :recommend="item.recommend"
-        :slide-index="index"
+        :recommend="content.recommend"
+        :slide-index="0"
         :now-index="nowIndex"
       />
 
@@ -36,12 +26,12 @@
 
       <!-- 列表 -->
       <BasePull
-        v-for="(itemList, indexList) in item.navMenu"
-        v-show="item.activeIndex === indexList"
+        v-for="(itemList, indexList) in content.navMenu"
+        v-show="content.activeIndex === indexList"
         :key="indexList"
         :params="itemList.params"
         :api-url="itemList.apiUrl"
-        :active-index="item.activeIndex"
+        :active-index="content.activeIndex"
         :now-index="indexList"
         :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
         :auto-request-time="itemList.autoRequestTime"
@@ -113,82 +103,77 @@ export default {
       showSidebar: false,
       nowIndex: 0,
       // 防止数据嵌套太多 把内容提取出来
-      content: [
-        {
-          navMenu: [
-            {
-              label: this.$t('home.articleNavHot'),
-              title: this.$t('home.articleNavHotTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeScoreRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
+      content: {
+        navMenu: [
+          {
+            label: this.$t('home.articleNavHot'),
+            title: this.$t('home.articleNavHotTitle'),
+            params: {
+              channel: 1
             },
-            {
-              label: this.$t('home.articleNavNow'),
-              title: this.$t('home.articleNavNowTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeTimeRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
+            apiUrl: 'homeScoreRanking',
+            articles: [],
+            autoRequestTime: 0,
+            loading: false
+          },
+          {
+            label: this.$t('home.articleNavNow'),
+            title: this.$t('home.articleNavNowTitle'),
+            params: {
+              channel: 1
             },
-            {
-              label: this.$t('home.articleNavFollow'),
-              title: this.$t('home.articleNavFollowTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'followedPosts',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            }
-          ],
-          activeIndex: 0,
-          recommend: {
-            title: this.$t('home.articleNavRecommend'),
-            list: []
+            apiUrl: 'homeTimeRanking',
+            articles: [],
+            autoRequestTime: 0,
+            loading: false
+          },
+          {
+            label: this.$t('home.articleNavFollow'),
+            title: this.$t('home.articleNavFollowTitle'),
+            params: {
+              channel: 1
+            },
+            apiUrl: 'followedPosts',
+            articles: [],
+            autoRequestTime: 0,
+            loading: false
           }
+        ],
+        activeIndex: 0,
+        recommend: {
+          title: this.$t('home.articleNavRecommend'),
+          list: []
         }
-      ]
+      }
     }
   },
   computed: {
-    navList() {
-      return [this.$t('home.navArticle'), this.$t('home.navShop')] // head data
-    },
     // 内容标题
     contentTitle() {
-      const index = this.content[this.nowIndex].activeIndex
-      return this.content[this.nowIndex].navMenu[index].title
+      const index = this.content.activeIndex
+      return this.content.navMenu[index].title
     },
     // 是否显示推荐文章或者商品
     isShowSlide() {
-      return this.content[this.nowIndex].activeIndex === 0
+      return this.content.activeIndex === 0
     },
     isHaveArticle() {
-      const index = this.content[this.nowIndex].activeIndex
-      const status = this.content[this.nowIndex].navMenu[index].articles.length
-      console.log(status)
+      const index = this.content.activeIndex
+      const status = this.content.navMenu[index].articles.length
+      // console.log(status)
       return status
     }
   },
   watch: {
     '$i18n.locale'() {
-      console.log(this.$i18n.locale)
+      // console.log(this.$i18n.locale)
       this.setContent()
     }
   },
   created() {
     this.initNav()
     this.postsRecommend(1)
-    this.postsRecommend(2)
+    // this.postsRecommend(2)
   },
   mounted() {},
   methods: {
@@ -202,32 +187,27 @@ export default {
       // 如果自动刷新的时间为0 并且 内容长度为0 刷新一次组件
       if (type === 'headNav') {
         // head 的导航切换
-        const index = this.content[this.nowIndex].activeIndex // 当前的聚焦索引
-        const navMenuData = this.content[this.nowIndex].navMenu[index] // 当前聚焦索引的数据
+        const index = this.content.activeIndex // 当前的聚焦索引
+        const navMenuData = this.content.navMenu[index] // 当前聚焦索引的数据
         if (navMenuData.autoRequestTime === 0 && navMenuData.articles.length === 0)
-          this.content[this.nowIndex].navMenu[index].autoRequestTime += Date.now()
+          this.content.navMenu[index].autoRequestTime += Date.now()
       } else if (type === 'nemuNav') {
         // 内容的导航
-        const navMenuData = this.content[this.nowIndex].navMenu[i] // 当前聚焦索引的数据
+        const navMenuData = this.content.navMenu[i] // 当前聚焦索引的数据
         if (navMenuData.autoRequestTime === 0 && navMenuData.articles.length === 0)
-          this.content[this.nowIndex].navMenu[i].autoRequestTime += Date.now()
+          this.content.navMenu[i].autoRequestTime += Date.now()
       }
     },
-    toggleNav(i) {
-      this.nowIndex = i
-      this.increaseTime('headNav', i)
-    },
     toggleNavMenu(i) {
-      let nowIndex = this.nowIndex
-      this.content[nowIndex].activeIndex = i
+      this.content.activeIndex = i
       this.increaseTime('nemuNav', i)
     },
 
     // 获取文章列表数据
     getListData(res) {
       // console.log(this.nowIndex, res.index);
-      this.content[this.nowIndex].navMenu[res.index].loading = true
-      this.content[this.nowIndex].navMenu[res.index].articles = res.list
+      this.content.navMenu[res.index].loading = true
+      this.content.navMenu[res.index].articles = res.list
     },
     // 获取推荐文章或者商品
     async postsRecommend(channel) {
@@ -235,33 +215,24 @@ export default {
         .postsRecommend(channel)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
-            if (channel === 1) this.content[0].recommend.list = res.data.data
-            else if (channel === 2) this.content[1].recommend.list = res.data.data
-          } else {
-            console.log('获取推荐失败')
-          }
+            this.content.recommend.list = res.data.data
+          } else console.log('获取推荐失败')
         })
         .catch(err => {
           console.log(err)
         })
     },
     setContent() {
-      this.content[0].navMenu[0].label = this.$t('home.articleNavHot')
-      this.content[0].navMenu[0].title = this.$t('home.articleNavHotTitle')
+      this.content.navMenu[0].label = this.$t('home.articleNavHot')
+      this.content.navMenu[0].title = this.$t('home.articleNavHotTitle')
 
-      this.content[0].navMenu[1].label = this.$t('home.articleNavNow')
-      this.content[0].navMenu[1].title = this.$t('home.articleNavNowTitle')
+      this.content.navMenu[1].label = this.$t('home.articleNavNow')
+      this.content.navMenu[1].title = this.$t('home.articleNavNowTitle')
 
-      this.content[0].navMenu[2].label = this.$t('home.articleNavFollow')
-      this.content[0].navMenu[2].title = this.$t('home.articleNavFollowTitle')
+      this.content.navMenu[2].label = this.$t('home.articleNavFollow')
+      this.content.navMenu[2].title = this.$t('home.articleNavFollowTitle')
 
-      this.content[0].recommend.title = this.$t('home.articleNavRecommend')
-
-      this.content[1].navMenu[0].label = this.$t('home.articleNavNow')
-      this.content[1].navMenu[0].title = this.$t('home.shopNavNowTitle')
-
-      this.content[1].navMenu[1].label = this.$t('home.articleNavHot')
-      this.content[1].recommend.title = this.$t('home.shopNavRecommend')
+      this.content.recommend.title = this.$t('home.articleNavRecommend')
     }
   }
 }

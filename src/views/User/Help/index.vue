@@ -88,7 +88,7 @@ export default {
     ...mapActions(['signOut']),
     btnsignOut() {
       this.signOut()
-      this.jumpTo({ name: 'home' })
+      this.jumpTo({ name: 'index' })
     },
     jumpTo(params) {
       if (!params.name) return

@@ -13,7 +13,7 @@
       <rect x="320" y="20" rx="20" ry="20" width="280" height="117" />
     </ContentLoader>
 
-    <div v-else :ref="'wrapper' + slideIndex" class="slide-container">
+    <div v-else ref="wrapper" class="slide-container">
       <div class="slide-content">
         <homeSlideItem
           v-for="(item, index) in recommend.list"
@@ -40,35 +40,25 @@ export default {
   props: {
     recommend: {
       type: Object,
-      default: () => {}
+      required: true
     },
     slideIndex: {
       type: Number,
-      default: () => 0
+      default: 0
     },
     nowIndex: {
       type: Number,
-      default: () => 0
+      default: 0
     }
   },
   data() {
-    return {
-      // 是否设置
-      isSetWrapper: true
-    }
+    return {}
   },
   watch: {
-    nowIndex(newVal) {
-      // 为商品 第一次调用执行
-      if (newVal === 1 && this.isSetWrapper) {
-        this.setWrapperScroll(1)
-        this.isSetWrapper = false
-      }
-    },
     recommend: {
       handler() {
         // 默认执行第一个
-        this.setWrapperScroll(0)
+        this.setWrapperScroll()
       },
       deep: true
     }
@@ -77,9 +67,9 @@ export default {
   mounted() {},
   methods: {
     // 设置横向滚动
-    setWrapperScroll(index) {
+    setWrapperScroll() {
       this.$nextTick(() => {
-        new Bscroll(this.$refs[`wrapper${index}`], {
+        new Bscroll(this.$refs.wrapper, {
           click: true,
           scrollX: true,
           scrollY: false
