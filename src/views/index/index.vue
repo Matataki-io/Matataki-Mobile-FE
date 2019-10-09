@@ -152,7 +152,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import homeHead from '../article/components/homeHead.vue'
+import homeHead from '../home/components/homeHead.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
 
 import effect1 from '@/assets/img/home/effect1.png'
