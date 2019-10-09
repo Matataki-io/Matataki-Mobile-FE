@@ -16,12 +16,12 @@ export default new VueRouter({
     {
       path: '/article',
       name: 'article',
-      component: () => import(/* webpackChunkName: "article" */ './views/article/index.vue')
+      component: () => import(/* webpackChunkName: "article" */ './views/home/index.vue')
     },
     {
       path: '/shop',
       name: 'shop',
-      component: () => import(/* webpackChunkName: "shop" */ './views/article/shop.vue')
+      component: () => import(/* webpackChunkName: "shop" */ './views/home/shop.vue')
     },
     {
       path: '/about',
