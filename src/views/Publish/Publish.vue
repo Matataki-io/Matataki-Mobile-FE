@@ -170,7 +170,7 @@
       </van-cell-group>
     </van-radio-group>
     <van-cell clickable :title="$t('publish.original')" @click="isOriginal = !isOriginal">
-      <van-checkbox v-model="isOriginal"  class="publish-right">
+      <van-checkbox v-model="isOriginal" class="publish-right">
         <div slot="icon" slot-scope="props">
           <div v-if="!props.checked" class="my-checkbox"></div>
           <div v-else class="my-checkbox-active">
@@ -464,7 +464,7 @@ export default {
     },
     // 跳转页面
     jumpToArticle(hash) {
-      this.$router.push({ name: 'Article', params: { hash } })
+      this.$router.push({ name: 'p', params: { hash } })
     },
     // 成功提示
     async success(hash) {

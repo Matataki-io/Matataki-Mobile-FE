@@ -8,22 +8,22 @@
     </a>
 
     <div class="home-head-nav">
-      <router-link
+      <!-- <router-link
         :class="$route.name === 'index' && 'active'"
         href="javascript:void(0);"
         :to="{ name: 'index' }"
       >
         {{ $t('home.navHome') }}
-      </router-link>
-      <a
-        v-for="(item, index) in nav"
+      </router-link> -->
+      <router-link
+        v-for="(item, index) in navList"
         :key="index"
-        :class="nowIndex === index && 'active'"
-        href="javascript:void(0);"
+        :class="item.name === $route.name && 'active'"
+        :to="{ name: item.name }"
         @click="toggle(index)"
       >
-        <span>{{ item }}</span>
-      </a>
+        <span>{{ item.title }}</span>
+      </router-link>
     </div>
     <div class="fl ac">
       <svg-icon class="search-icon" icon-class="search" @click="showSearch = true"></svg-icon>
@@ -65,6 +65,22 @@ export default {
     }
   },
   computed: {
+    navList() {
+      return [
+        {
+          title: this.$t('home.navHome'),
+          name: 'index'
+        },
+        {
+          title: this.$t('home.navArticle'),
+          name: 'article'
+        },
+        {
+          title: this.$t('home.navShop'),
+          name: 'shop'
+        }
+      ]
+    },
     ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   watch: {

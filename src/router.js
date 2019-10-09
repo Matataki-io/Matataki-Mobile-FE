@@ -11,12 +11,17 @@ export default new VueRouter({
     {
       path: '/',
       name: 'index',
-      component: () => import(/* webpackChunkName: "index" */ './views/Home/about/index.vue')
+      component: () => import(/* webpackChunkName: "index" */ './views/home/index.vue')
     },
     {
-      path: '/home',
-      name: 'home',
-      component: () => import(/* webpackChunkName: "home" */ './views/Home/index.vue')
+      path: '/article',
+      name: 'article',
+      component: () => import(/* webpackChunkName: "article" */ './views/article/index.vue')
+    },
+    {
+      path: '/shop',
+      name: 'shop',
+      component: () => import(/* webpackChunkName: "shop" */ './views/article/shop.vue')
     },
     {
       path: '/about',
@@ -27,11 +32,11 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/article/:hash', // 支持 hash id 访问
-      name: 'Article',
+      path: '/p/:hash', // 支持 hash id 访问
+      name: 'p',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "Article", webpackPrefetch: true */ './views/Article/index.vue')
+        import(/* webpackChunkName: "p", webpackPrefetch: true */ './views/p/index.vue')
     },
     {
       path: '/tag',
@@ -154,11 +159,11 @@ export default new VueRouter({
       path: '/publish/:id',
       name: 'Publish',
       props: true,
-      component: () => import(/* webpackChunkName: "Publish" */ './views/Publish/Publish.vue'),
-      beforeEnter: (to, from, next) => {
-        if (to.query.from === 'edit' && from.name !== 'Article') next('/')
-        else next()
-      }
+      component: () => import(/* webpackChunkName: "Publish" */ './views/Publish/Publish.vue')
+      // beforeEnter: (to, from, next) => {
+      //   if (to.query.from === 'edit' && from.name !== 'Article') next('/')
+      //   else next()
+      // }
     },
     {
       path: '/followlist/:id',
@@ -227,6 +232,6 @@ export default new VueRouter({
       path: '/exchange',
       name: 'exchange',
       component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue')
-    },
+    }
   ]
 })

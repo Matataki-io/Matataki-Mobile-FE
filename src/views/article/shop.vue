@@ -117,21 +117,10 @@ export default {
         {
           navMenu: [
             {
-              label: this.$t('home.articleNavHot'),
-              title: this.$t('home.articleNavHotTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeScoreRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            },
-            {
               label: this.$t('home.articleNavNow'),
-              title: this.$t('home.articleNavNowTitle'),
+              title: this.$t('home.shopNavNowTitle'),
               params: {
-                channel: 1
+                channel: 2
               },
               apiUrl: 'homeTimeRanking',
               articles: [],
@@ -139,12 +128,12 @@ export default {
               loading: false
             },
             {
-              label: this.$t('home.articleNavFollow'),
-              title: this.$t('home.articleNavFollowTitle'),
+              label: this.$t('home.articleNavHot'),
+              title: this.$t('home.shopNavHotTitle'),
               params: {
-                channel: 1
+                channel: 2
               },
-              apiUrl: 'followedPosts',
+              apiUrl: 'homeSupportsRanking',
               articles: [],
               autoRequestTime: 0,
               loading: false
@@ -152,7 +141,7 @@ export default {
           ],
           activeIndex: 0,
           recommend: {
-            title: this.$t('home.articleNavRecommend'),
+            title: this.$t('home.shopNavRecommend'),
             list: []
           }
         }

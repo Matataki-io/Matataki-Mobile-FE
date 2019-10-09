@@ -1,307 +1,258 @@
 <template>
-  <div class="home mw">
-    <bannerMatataki :class="!isShowSlide && 'margin'" />
-    <!-- 首页头部 -->
-    <home-head
-      :nav="navList"
-      :now-index="nowIndex"
-      @toggleNav="toggleNav"
-      @login="showSidebar = true"
-    />
-
-    <!-- 首页内容 -->
-    <div
-      v-for="(item, index) in content"
-      v-show="nowIndex === index"
-      :key="index"
-      class="home-content"
-    >
-      <!-- 首页内容导航 -->
-      <home-nav
-        :nav-menu="item.navMenu"
-        :active-index="item.activeIndex"
-        @toggleNavMenu="toggleNavMenu"
+  <div class="home-container">
+    <home-head :nav="navList" :now-index="-1" @login="showSidebar = true" />
+    <div class="one">
+      <img
+        v-scroll-reveal="{ distance: '20px' }"
+        class="logo"
+        src="@/assets/img/home/logo_home.png"
+        :alt="$t('about.logo')"
       />
-
-      <!-- 推荐内容 -->
-      <homeSlide
-        v-show="isShowSlide"
-        :recommend="item.recommend"
-        :slide-index="index"
-        :now-index="nowIndex"
+      <img
+        v-scroll-reveal="{ distance: '20px', delay: 100 }"
+        class="des"
+        src="@/assets/img/home/logo_des_home.png"
+        :alt="$t('about.logoDes')"
       />
-
-      <!-- 标题 -->
-      <div class="now-title" :class="!isShowSlide && 'nav-hide'">{{ contentTitle }}</div>
-
-      <!-- 列表 -->
-      <BasePull
-        v-for="(itemList, indexList) in item.navMenu"
-        v-show="item.activeIndex === indexList"
-        :key="indexList"
-        :params="itemList.params"
-        :api-url="itemList.apiUrl"
-        :active-index="item.activeIndex"
-        :now-index="indexList"
-        :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-        :auto-request-time="itemList.autoRequestTime"
-        :need-access-token="true"
-        @getListData="getListData"
-      >
-        <template v-if="!itemList.loading">
-          <!-- 骨架占位 -->
-          <ContentLoader
-            v-for="itemLoader in [0, 1]"
-            :key="itemLoader"
-            :height="80"
-            :speed="2"
-            primary-color="#f3f3f3"
-            secondary-color="#ecebeb"
-          >
-            <rect x="20" y="20" rx="4" ry="4" width="120" height="60" />
-            <rect x="150" y="20" rx="0" ry="0" width="235" height="30" />
-            <rect x="150" y="60" rx="0" ry="0" width="235" height="20" />
-          </ContentLoader>
-        </template>
-        <template v-else>
-          <ArticleCard
-            v-for="itemArticle in itemList.articles"
-            :key="itemArticle.id"
-            :now-index="nowIndex"
-            :article="itemArticle"
-          />
-        </template>
-        <p
-          v-if="itemList.articles.length === 0 && itemList.loading"
-          style="font-size: 14px;
-              text-align: center;
-              margin-top: 20px;"
-        >
-          {{ $t('notContent') }}
-        </p>
-      </BasePull>
+      <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
+        {{ $t('about.homeTitle') }}
+      </h1>
+      <p v-scroll-reveal="{ distance: '20px', delay: 400 }" class="home-text">
+        {{ $t('about.homeDes') }}
+      </p>
+      <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
+        <router-link :to="{ name: 'home' }">
+          <el-button class="home-btn" icon="el-icon-reading">
+            {{ $t('about.homeBtnRead') }}
+          </el-button>
+        </router-link>
+        <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
+          {{ $t('about.homeBtnCreate') }}
+        </el-button>
+      </div>
+      <img
+        v-scroll-reveal="{ distance: '20px', delay: 800 }"
+        class="bg"
+        src="@/assets/img/home/home_bg.png"
+        alt="logo"
+      />
     </div>
-
+    <div class="two">
+      <el-row v-for="(item, index) in effectList" :key="index">
+        <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
+          <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
+        </el-col>
+        <el-col class="margin-t-20" :span="10">
+          <p v-scroll-reveal="{ distance: '20px', delay: 200 * index }" class="title">
+            {{ item.subtitle }}
+          </p>
+          <img
+            v-scroll-reveal="{ distance: '20px', delay: 220 * index }"
+            :src="item.img"
+            alt="Features"
+          />
+        </el-col>
+        <el-col class="margin-t-20" :span="14">
+          <p v-scroll-reveal="{ distance: '20px', delay: 260 * index }" class="content">
+            {{ item.des }}
+          </p>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="three">
+      <h3 v-scroll-reveal="{ distance: '20px' }">
+        {{ $t('about.blockTitle1') }}
+      </h3>
+      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+        {{ $t('about.blockDes1') }}
+      </p>
+      <a
+        v-scroll-reveal="{ distance: '20px', delay: 300 }"
+        target="_blank"
+        href="https://www.matataki.io/p/806"
+      >
+        {{ $t('readMore') }}
+        ></a
+      >
+      <img
+        v-scroll-reveal="{ distance: '20px', delay: 400 }"
+        src="@/assets/img/home/home_bg1.png"
+        alt="block"
+      />
+    </div>
+    <div class="three">
+      <h3 v-scroll-reveal="{ distance: '20px' }">
+        {{ $t('about.blockTitle2') }}
+      </h3>
+      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+        {{ $t('about.blockDes2') }}
+      </p>
+      <a
+        v-scroll-reveal="{ distance: '20px', delay: 300 }"
+        target="_blank"
+        href="
+        https://www.matataki.io/p/807
+        "
+      >
+        {{ $t('readMore') }}
+        ></a
+      >
+      <img
+        v-scroll-reveal="{ distance: '20px', delay: 400 }"
+        src="@/assets/img/home/home_bg2.png"
+        alt="block"
+      />
+    </div>
+    <div class="three">
+      <h3 v-scroll-reveal="{ distance: '20px' }">
+        {{ $t('about.blockTitle3') }}
+      </h3>
+      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+        {{ $t('about.blockDes31') }}
+        <br />
+        <span class="content-empty"></span>
+        {{ $t('about.blockDes32') }}
+        <br />
+        <span class="content-empty"></span>
+        {{ $t('about.blockDes33') }}
+        <br />
+        <span class="content-empty"></span>
+        {{ $t('about.blockDes34') }}
+      </p>
+      <a
+        v-scroll-reveal="{ distance: '20px', delay: 300 }"
+        target="_blank"
+        href="https://www.matataki.io/p/781"
+      >
+        {{ $t('readMore') }}
+        ></a
+      >
+      <img
+        v-scroll-reveal="{ distance: '20px', delay: 400 }"
+        src="@/assets/img/home/home_bg3.png"
+        alt="block"
+      />
+    </div>
+    <div class="four">
+      <div
+        v-for="(item, index) in stageList"
+        :key="index"
+        v-scroll-reveal="{ distance: '20px', delay: 200 * index }"
+        class="stage"
+      >
+        <img :src="item.img" alt="stage" />
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.des }}</p>
+        <p>{{ item.des1 }}</p>
+      </div>
+    </div>
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 <script>
-import { ContentLoader } from 'vue-content-loader'
-import homeHead from './components/homeHead.vue'
-import homeNav from './components/homeNav.vue'
-import homeSlide from './components/homeSlide.vue'
-import Sidebar from './Sidebar.vue'
-import { ArticleCard } from '@/components/'
-// import banner from '@/components/banner/index.vue'
-import bannerMatataki from '@/components/banner/banner_matataki.vue'
+import { mapGetters } from 'vuex'
+import homeHead from '../article/components/homeHead.vue'
+import Sidebar from '@/components/Sidebar/index.vue'
+
+import effect1 from '@/assets/img/home/effect1.png'
+import effect2 from '@/assets/img/home/effect2.png'
+import effect3 from '@/assets/img/home/effect3.png'
+import effect4 from '@/assets/img/home/effect4.png'
+import effect5 from '@/assets/img/home/effect5.png'
+import effect6 from '@/assets/img/home/effect6.png'
+
+import stage1 from '@/assets/img/home/stage1.png'
+import stage2 from '@/assets/img/home/stage2.png'
+import stage3 from '@/assets/img/home/stage3.png'
 
 export default {
-  name: 'Home',
   components: {
     homeHead,
-    homeNav,
-    homeSlide,
-    ArticleCard,
-    ContentLoader,
-    Sidebar,
-    bannerMatataki
-    // banner,
+    Sidebar
   },
   data() {
     return {
       showSidebar: false,
-      nowIndex: 0,
-      // 防止数据嵌套太多 把内容提取出来
-      content: [
+      nowIndex: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined']),
+    navList() {
+      return [this.$t('home.navArticle'), this.$t('home.navShop')]
+    },
+
+    effectList() {
+      return [
         {
-          navMenu: [
-            {
-              label: this.$t('home.articleNavHot'),
-              title: this.$t('home.articleNavHotTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeScoreRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            },
-            {
-              label: this.$t('home.articleNavNow'),
-              title: this.$t('home.articleNavNowTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'homeTimeRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            },
-            {
-              label: this.$t('home.articleNavFollow'),
-              title: this.$t('home.articleNavFollowTitle'),
-              params: {
-                channel: 1
-              },
-              apiUrl: 'followedPosts',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            }
-          ],
-          activeIndex: 0,
-          recommend: {
-            title: this.$t('home.articleNavRecommend'),
-            list: []
-          }
+          title: this.$t('about.painPoint'),
+          subtitle: this.$t('about.painPointTitle1'),
+          img: effect1,
+          des: this.$t('about.painPointDes1')
         },
         {
-          navMenu: [
-            {
-              label: this.$t('home.articleNavNow'),
-              title: this.$t('home.shopNavNowTitle'),
-              params: {
-                channel: 2
-              },
-              apiUrl: 'homeTimeRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            },
-            {
-              label: this.$t('home.articleNavHot'),
-              title: this.$t('home.shopNavHotTitle'),
-              params: {
-                channel: 2
-              },
-              apiUrl: 'homeSupportsRanking',
-              articles: [],
-              autoRequestTime: 0,
-              loading: false
-            }
-          ],
-          activeIndex: 0,
-          recommend: {
-            title: this.$t('home.shopNavRecommend'),
-            list: []
-          }
+          title: this.$t('about.painPoint'),
+          subtitle: this.$t('about.painPointTitle2'),
+          img: effect2,
+          des: this.$t('about.painPointDes2')
+        },
+        {
+          title: this.$t('about.painPoint'),
+          subtitle: this.$t('about.painPointTitle3'),
+          img: effect3,
+          des: this.$t('about.painPointDes3')
+        },
+        {
+          title: this.$t('about.program'),
+          subtitle: this.$t('about.programTitle1'),
+          img: effect6,
+          des: this.$t('about.programDes1')
+        },
+        {
+          title: this.$t('about.program'),
+          subtitle: this.$t('about.programTitle2'),
+          img: effect4,
+          des: this.$t('about.programDes2')
+        },
+        {
+          title: this.$t('about.program'),
+          subtitle: this.$t('about.programTitle3'),
+          img: effect5,
+          des: this.$t('about.programDes3')
+        }
+      ]
+    },
+    stageList() {
+      return [
+        {
+          title: this.$t('about.stageTitle1'),
+          des: this.$t('about.stageDes11'),
+          des1: this.$t('about.stageDes12'),
+          img: stage1
+        },
+        {
+          title: this.$t('about.stageTitle2'),
+          des: this.$t('about.stageDes21'),
+          des1: this.$t('about.stageDes22'),
+          img: stage2
+        },
+        {
+          title: this.$t('about.stageTitle3'),
+          des: this.$t('about.stageDes31'),
+          des1: this.$t('about.stageDes32'),
+          img: stage3
         }
       ]
     }
   },
-  computed: {
-    navList() {
-      return [this.$t('home.navArticle'), this.$t('home.navShop')] // head data
-    },
-    // 内容标题
-    contentTitle() {
-      const index = this.content[this.nowIndex].activeIndex
-      return this.content[this.nowIndex].navMenu[index].title
-    },
-    // 是否显示推荐文章或者商品
-    isShowSlide() {
-      return this.content[this.nowIndex].activeIndex === 0
-    },
-    isHaveArticle() {
-      const index = this.content[this.nowIndex].activeIndex
-      const status = this.content[this.nowIndex].navMenu[index].articles.length
-      console.log(status)
-      return status
-    }
-  },
-  watch: {
-    '$i18n.locale'() {
-      console.log(this.$i18n.locale)
-      this.setContent()
-    }
-  },
-  created() {
-    this.initNav()
-    this.postsRecommend(1)
-    this.postsRecommend(2)
-  },
-  mounted() {},
   methods: {
-    initNav() {
-      if (!this.$route.params) return
-      if (this.$route.params.nav === 0) this.nowIndex = 0
-      else if (this.$route.params.nav === 1) this.nowIndex = 1
-      else this.nowIndex = 0
-    },
-    increaseTime(type, i) {
-      // 如果自动刷新的时间为0 并且 内容长度为0 刷新一次组件
-      if (type === 'headNav') {
-        // head 的导航切换
-        const index = this.content[this.nowIndex].activeIndex // 当前的聚焦索引
-        const navMenuData = this.content[this.nowIndex].navMenu[index] // 当前聚焦索引的数据
-        if (navMenuData.autoRequestTime === 0 && navMenuData.articles.length === 0)
-          this.content[this.nowIndex].navMenu[index].autoRequestTime += Date.now()
-      } else if (type === 'nemuNav') {
-        // 内容的导航
-        const navMenuData = this.content[this.nowIndex].navMenu[i] // 当前聚焦索引的数据
-        if (navMenuData.autoRequestTime === 0 && navMenuData.articles.length === 0)
-          this.content[this.nowIndex].navMenu[i].autoRequestTime += Date.now()
-      }
-    },
-    toggleNav(i) {
-      this.nowIndex = i
-      this.increaseTime('headNav', i)
-    },
-    toggleNavMenu(i) {
-      let nowIndex = this.nowIndex
-      this.content[nowIndex].activeIndex = i
-      this.increaseTime('nemuNav', i)
-    },
-
-    // 获取文章列表数据
-    getListData(res) {
-      // console.log(this.nowIndex, res.index);
-      this.content[this.nowIndex].navMenu[res.index].loading = true
-      this.content[this.nowIndex].navMenu[res.index].articles = res.list
-    },
-    // 获取推荐文章或者商品
-    async postsRecommend(channel) {
-      await this.$backendAPI
-        .postsRecommend(channel)
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            if (channel === 1) this.content[0].recommend.list = res.data.data
-            else if (channel === 2) this.content[1].recommend.list = res.data.data
-          } else {
-            console.log('获取推荐失败')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    setContent() {
-      this.content[0].navMenu[0].label = this.$t('home.articleNavHot')
-      this.content[0].navMenu[0].title = this.$t('home.articleNavHotTitle')
-
-      this.content[0].navMenu[1].label = this.$t('home.articleNavNow')
-      this.content[0].navMenu[1].title = this.$t('home.articleNavNowTitle')
-
-      this.content[0].navMenu[2].label = this.$t('home.articleNavFollow')
-      this.content[0].navMenu[2].title = this.$t('home.articleNavFollowTitle')
-
-      this.content[0].recommend.title = this.$t('home.articleNavRecommend')
-
-      this.content[1].navMenu[0].label = this.$t('home.articleNavNow')
-      this.content[1].navMenu[0].title = this.$t('home.shopNavNowTitle')
-
-      this.content[1].navMenu[1].label = this.$t('home.articleNavHot')
-      this.content[1].recommend.title = this.$t('home.shopNavRecommend')
+    jumpTo() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.$router.push({ name: 'Publish', params: { id: 'create' } })
     }
   }
 }
 </script>
 
-<style scoped lang="less" src="./index.less"></style>
-
-<style lang="less" scoped>
-.margin {
-  margin-top: 60px;
-}
-</style>
+<style lang="less" scoped src="./index.less"></style>

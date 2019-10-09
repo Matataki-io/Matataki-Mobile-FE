@@ -74,7 +74,7 @@ export default {
       )
     },
     jumpPage(id) {
-      this.$router.push({ name: 'Article', params: { hash: id } })
+      this.$router.push({ name: 'p', params: { hash: id } })
     }
   }
 }
