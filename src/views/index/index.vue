@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <home-head :nav="navList" :now-index="-1" @login="showSidebar = true" />
-    <div class="one">
+    <div ref="home" class="one">
       <img
         v-scroll-reveal="{ distance: '20px' }"
         class="logo"
@@ -246,7 +246,16 @@ export default {
       ]
     }
   },
+  created() {
+    this.initPage()
+  },
   methods: {
+    initPage() {
+      this.$nextTick(() => {
+        let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+        this.$refs.home.style.height = `${clientHeight - 48}px`
+      })
+    },
     jumpTo() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       this.$router.push({ name: 'Publish', params: { id: 'create' } })
