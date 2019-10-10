@@ -225,7 +225,7 @@ export default new VueRouter({
     {
       path: '/exchange',
       name: 'exchange',
-      component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue')
+      component: () => import(/* webpackChunkName: "exchange" */ './views/temp.vue')
     },
     {
       // 幽林页面重定向进入 404 页面
