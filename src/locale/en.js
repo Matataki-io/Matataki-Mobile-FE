@@ -142,7 +142,8 @@ export default {
   prompt: {
     title: '是否删除草稿？',
     confirmText: '删除草稿',
-    cancelText: '不删除'
+    cancelText: '不删除',
+    notDraft: '没有草稿'
   },
   searchUserList: {
     confirmMessage: '确定取消关注?'
@@ -433,7 +434,7 @@ export default {
     copyLink: '复制链接',
     des1: '每成功邀请一名好友注册可得{0}积分',
     des2: '好友发文你可以获得额外{0}积分',
-    des3: '好友阅读获得积分你可得额外1{0}',
+    des3: '好友阅读获得积分你可得额外1/{0}',
     des4: '注：未激活者阅读{0}篇文章并作出评价后即可完成激活，激活后您即可领取额外{0}积分。',
     loginViewList: '登录查看邀请列表'
   },

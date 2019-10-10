@@ -172,11 +172,12 @@ export default {
           // 接口新格式 后面统一格式就能去掉一个判断
           // 如果返回的是 Object 根据传进来的字段获取相应的 list
           let resData = []
-
-          // 根据传来的key 和 keys 判断读取的层数 (接口的数据层级有时候一样需要判断)
-          if (!this.isObj.keys) resData = data[this.isObj.key]
-          else resData = data[this.isObj.key][this.isObj.keys]
-
+          // 如果是数组说明是空数据
+          if (!Array.isArray(data[this.isObj.key])) {
+            // 根据传来的key 和 keys 判断读取的层数 (接口的数据层级有时候一样需要判断)
+            if (!this.isObj.keys) resData = data[this.isObj.key]
+            else resData = data[this.isObj.key][this.isObj.keys]
+          }
           resDataList = resData
 
           // 因为接口的数据格式没有统一 这个判断先加在这里 统一格式之后拿出去

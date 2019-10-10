@@ -108,7 +108,7 @@ const setAppDom = ({ title, content, img, ups, read, username }) => {
         'click',
         () => {
           const invite = urlSearchData.invite ? `?invite=${urlSearchData.invite}` : ''
-          window.open(`${url}/article/${urlSearchData.id || ''}${invite}`)
+          window.open(`${url}/p/${urlSearchData.id || ''}${invite}`)
         },
         false
       )

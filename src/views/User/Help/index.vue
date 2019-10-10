@@ -2,7 +2,7 @@
   <div class="mw help">
     <BaseHeader :pageinfo="{ title: $t('setting') }" />
     <div class="help-block">
-      <a class="help-list" href="https://matataki.io/article/617">
+      <a class="help-list" href="https://matataki.io/p/617">
         <span class="help-list-title">{{ $t('user.rule') }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>

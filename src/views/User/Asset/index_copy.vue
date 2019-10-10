@@ -1,6 +1,6 @@
 <template>
   <div class="asset mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: '我的账户', rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ title: '我的账户' }" />
     <div class="asset-list">
       <div v-for="(item, index) in assetList" :key="index" class="list" @click="jumpTo(index)">
         <div class="list-left">
