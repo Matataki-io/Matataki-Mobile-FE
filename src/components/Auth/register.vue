@@ -1,5 +1,6 @@
 <template>
-  <section v-show="!isLogin" class="register">
+  <!-- v-show="!isLogin" -->
+  <section class="register">
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
         <el-input
