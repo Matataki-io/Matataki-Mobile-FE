@@ -55,42 +55,42 @@ export default {
         )
           return
         this.$backendAPI.accessToken = newVal.accessToken
-        console.debug('watch $backendAPI.accessToken :', this.$backendAPI.accessToken)
+        // console.debug('watch $backendAPI.accessToken :', this.$backendAPI.accessToken)
       },
       deep: true
     }
   },
   created() {
-    ;(function() {
-      const isPC = () => {
-        const userAgentInfo = navigator.userAgent
-        const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
-        let flag = true
-        for (let v = 0; v < Agents.length; v++) {
-          if (userAgentInfo.indexOf(Agents[v]) > 0) {
-            flag = false
-            break
-          }
-        }
-        return flag
-      }
+    // ;(function() {
+    //   const isPC = () => {
+    //     const userAgentInfo = navigator.userAgent
+    //     const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
+    //     let flag = true
+    //     for (let v = 0; v < Agents.length; v++) {
+    //       if (userAgentInfo.indexOf(Agents[v]) > 0) {
+    //         flag = false
+    //         break
+    //       }
+    //     }
+    //     return flag
+    //   }
 
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      if (isWeixin()) return
+    //   const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+    //   if (isWeixin()) return
 
-      // 规则只匹配了 文章详情页面 其他直接使用 all
-      const pathname = window.location.pathname.includes('/article/')
-        ? '/p/' + window.location.pathname.slice(9)
-        : window.location.pathname === '/'
-        ? ''
-        : window.location.pathname
+    //   // 规则只匹配了 文章详情页面 其他直接使用 all
+    //   const pathname = window.location.pathname.includes('/article/')
+    //     ? '/p/' + window.location.pathname.slice(9)
+    //     : window.location.pathname === '/'
+    //     ? ''
+    //     : window.location.pathname
 
-      if (isPC() && window.location.pathname !== '/login/github')
-        window.location.href = process.env.VUE_APP_PC_URL + pathname
-    })()
+    //   if (isPC() && window.location.pathname !== '/login/github')
+    //     window.location.href = process.env.VUE_APP_PC_URL + pathname
+    // })()
     // https://juejin.im/post/5bfa4bb951882558ae3c171e
     // console.log(navigator.userAgent.toLowerCase(), window.location)
-    this.tz()
+    // this.tz()
 
     const { signIn, updateNotify } = this
 
@@ -109,7 +109,7 @@ export default {
       }
     }
     this.$backendAPI.accessToken = accessToken
-    console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
+    // console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
 
     window.updateNotify = updateNotify
   },
