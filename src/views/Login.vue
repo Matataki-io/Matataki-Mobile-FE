@@ -24,7 +24,7 @@ export default {
 
     // const redirectUri = `${protocol}//${host}${path}?from=${from}` // 範例值
     // http://localhost:8080/login/github?from=/
-    alert(redirectUri)
+    // alert(redirectUri)
     if (!code) {
       // 跳轉
       window.location = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}`
