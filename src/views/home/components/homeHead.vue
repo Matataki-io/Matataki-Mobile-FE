@@ -40,10 +40,6 @@ export default {
     search
   },
   props: {
-    nav: {
-      type: Array,
-      required: true
-    },
     nowIndex: {
       type: Number,
       required: true
