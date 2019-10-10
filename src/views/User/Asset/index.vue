@@ -1,6 +1,6 @@
 <template>
   <div class="asset mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: $t('withdraw.account'), rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ title: $t('withdraw.account') }" />
     <div class="asset-list">
       <div v-for="(item, index) in assetList" :key="index" class="list" @click="jumpTo(index)">
         <div class="list-left">

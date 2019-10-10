@@ -3,7 +3,7 @@
     <BaseHeader
       ref="baseHeader"
       :is-center="false"
-      :pageinfo="{ title: editorText, rightPage: 'home' }"
+      :pageinfo="{ title: editorText }"
       :customize-back-func="true"
       :customize-home-func="true"
       :customize-header-bc="'#fff'"

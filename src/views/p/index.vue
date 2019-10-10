@@ -427,7 +427,7 @@ const RewardStatus = {
 }
 
 export default {
-  name: 'p',
+  name: 'P',
   components: {
     CommentsList,
     // ArticleInfo,
@@ -509,7 +509,7 @@ export default {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined
         ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
@@ -522,8 +522,8 @@ export default {
 
       const { article, currentUserInfo } = this
       // const { protocol, host } = window.location
-      // const articleUrl = `${protocol}//${host}/article/${article.id}`
-      const articleUrl = `${process.env.VUE_APP_URL}/article/${article.id}`
+      // const articleUrl = `${protocol}//${host}/p/${article.id}`
+      const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
 
       const shareLink = this.isLogined
         ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
@@ -539,7 +539,7 @@ export default {
     getUrl() {
       const { article } = this
       const { protocol, host } = window.location
-      return `${protocol}//${host}/article/${article.id}`
+      return `${protocol}//${host}/p/${article.id}`
     },
     getInvite() {
       const { invite } = this.$route.query
@@ -602,7 +602,7 @@ export default {
       return strTrim(regRemoveMarkdownTagResult)
     },
     setWxShare() {
-      /*const articleUrl = `https://sstest.frontenduse.top/article/${this.article.id}`;
+      /*const articleUrl = `https://sstest.frontenduse.top/p/${this.article.id}`;
       const link = this.isLogined ? `${articleUrl}?invite=${this.currentUserInfo.id}` : articleUrl;*/
       const link = window.location.href
       this.$backendAPI.wxShare(encodeURIComponent(link)).then(res => {
@@ -1003,7 +1003,7 @@ export default {
         this.$Modal.remove()
         this.$toast({ duration: 2000, message: this.$t('p.deleteArticle') })
         // await sleep(3000)
-        jumpTo('home')
+        jumpTo('index')
       }
       const fail = err => {
         this.$Modal.remove()

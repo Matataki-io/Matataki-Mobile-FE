@@ -1,6 +1,6 @@
 <template>
   <div class="draftbox mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: $t('user.myDraft'), rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ title: $t('user.myDraft') }" />
     <BasePull
       :loading-text="$t('prompt.notDraft')"
       :params="params"

@@ -1,6 +1,6 @@
 <template>
   <div class="assetpage mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: $t('withdraw.assetList'), rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ title: $t('withdraw.assetList') }" />
 
     <div class="topcard">
       <div class="topcard-head">

@@ -1,6 +1,6 @@
 <template>
   <div class="about mw">
-    <BaseHeader :pageinfo="{ left: 'back', title: '关于我们', rightPage: 'home' }" />
+    <BaseHeader :pageinfo="{ title: '关于我们' }" />
     <div class="about-card">
       <h1 class="about-title">{{ items.title }}</h1>
       <p class="about-detail">{{ items.detail }}</p>

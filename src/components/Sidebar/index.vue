@@ -153,7 +153,7 @@
         </div>
       </template>
       <div class="cell-container">
-        <a href="https://matataki.io/article/617">
+        <a href="https://matataki.io/p/617">
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" />
@@ -177,7 +177,7 @@
         </a>
       </div>
       <div class="cell-container">
-        <a href="https://matataki.io/article/616">
+        <a href="https://matataki.io/p/616">
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/img/icon_sidebar_sb.svg" alt="article" class="left-img" />

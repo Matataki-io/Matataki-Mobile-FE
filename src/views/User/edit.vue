@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 <template>
   <div class="edit-user mw">
-    <BaseHeader :pageinfo="{ title: $t('edit'), rightPage: 'home' }">
+    <BaseHeader :pageinfo="{ title: $t('edit') }">
       <div slot="right">
         <span class="done-button" :class="!setProfile && 'no-modify'" @click="save">{{
           $t('done')
