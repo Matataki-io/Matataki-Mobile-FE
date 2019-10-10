@@ -96,9 +96,9 @@ module.exports = {
     externals: [
       'axios',
       {
-        vue: 'Vue',
-        'vue-router': 'VueRouter',
-        vuex: 'Vuex',
+        // vue: 'Vue',
+        // 'vue-router': 'VueRouter',
+        // vuex: 'Vuex',
         'mavon-editor': 'MavonEditor'
         // eosjs: 'Eos',
       },
@@ -144,21 +144,21 @@ module.exports = {
             name: 'moment',
             paths: ['min/moment.min.js', 'locale/zh-cn.js']
           },
-          {
-            name: 'vue',
-            var: 'Vue',
-            path: 'dist/vue.runtime.min.js'
-          },
-          {
-            name: 'vue-router',
-            var: 'VueRouter',
-            path: 'dist/vue-router.min.js'
-          },
-          {
-            name: 'vuex',
-            var: 'Vuex',
-            path: 'dist/vuex.min.js'
-          },
+          // {
+          //   name: 'vue',
+          //   var: 'Vue',
+          //   path: 'dist/vue.runtime.min.js'
+          // },
+          // {
+          //   name: 'vue-router',
+          //   var: 'VueRouter',
+          //   path: 'dist/vue-router.min.js'
+          // },
+          // {
+          //   name: 'vuex',
+          //   var: 'Vuex',
+          //   path: 'dist/vuex.min.js'
+          // },
           {
             name: 'mavon-editor',
             var: 'mavonEditor',
