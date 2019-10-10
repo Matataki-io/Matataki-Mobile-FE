@@ -58,6 +58,9 @@ export default {
     }
   },
   created() {
+    if (!this.$route.query.id) {
+      this.$router.push({name: 'index'})
+    }
     this.tagBanner = tagColor()[this.$route.query.id] || '#000'
   },
   methods: {

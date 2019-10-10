@@ -228,6 +228,21 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "exchange" */ './views/temp.vue')
     },
     {
+      path: '/tokens',
+      name: 'tokens',
+      component: () => import(/* webpackChunkName: "tokens" */ './views/temp.vue')
+    },
+    {
+      path: '/minetoken',
+      name: 'minetoken',
+      component: () => import(/* webpackChunkName: "minetoken" */ './views/temp.vue')
+    },
+    {
+      path: '/ipfs/:hash',
+      name: 'ipfs',
+      component: () => import(/* webpackChunkName: "ipfs" */ './views/temp.vue')
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,
