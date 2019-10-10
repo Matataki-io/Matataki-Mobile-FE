@@ -1,4 +1,5 @@
 export default {
+  notPage: '找不到您想访问的页面.',
   readMore: '阅读更多',
   not: '暂无',
   notContent: '暂无内容',
