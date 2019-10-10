@@ -223,15 +223,15 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "search/user" */ './views/search/user.vue')
     },
     {
+      path: '/exchange',
+      name: 'exchange',
+      component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue')
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,
       component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
     },
-    {
-      path: '/exchange',
-      name: 'exchange',
-      component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue')
-    }
   ]
 })
