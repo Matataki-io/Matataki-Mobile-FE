@@ -11,7 +11,8 @@ import {
   Slider,
   Progress,
   Avatar,
-  Popover
+  Popover,
+  InputNumber
 } from 'element-ui'
 
 Vue.use(Input)
@@ -24,3 +25,4 @@ Vue.use(Slider)
 Vue.use(Progress)
 Vue.use(Avatar)
 Vue.use(Popover)
+Vue.use(InputNumber)
