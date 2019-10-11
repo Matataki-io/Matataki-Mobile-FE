@@ -4,6 +4,7 @@
       <span class="is-original">
         本文发布于瞬matataki
         {{ $t('p.publishMatataki') }}
+        <br />
         <template v-if="isOriginal">
           {{ $t('p.publishMatatakOriginal') }}
         </template>
@@ -37,7 +38,7 @@ export default {
   display: flex;
   flex-direction: column;
   .statement {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 1.5;
@@ -48,9 +49,10 @@ export default {
     padding: 0;
     margin: 40px 0 0;
     text-align: right;
-    font-size: 14px;
+    font-size: 12px;
     color: #b2b2b2;
     line-height: 16px;
+    text-align: left;
   }
 }
 

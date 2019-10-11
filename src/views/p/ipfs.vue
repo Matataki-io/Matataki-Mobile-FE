@@ -57,30 +57,31 @@ export default {
   justify-content: center;
   flex-direction: column;
   margin: 20px 20px 0;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
   p {
     padding: 0;
     margin: 0 0 4px;
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(178, 178, 178, 1);
   }
 }
 .ipfs-img {
   position: absolute;
-  width: 80px;
+  width: 60px;
   right: 0;
   bottom: 0;
 }
 .ipfs-hash {
   margin: 4px 0 0;
-  font-size: 14px;
+  font-size: 12px;
   color: #b2b2b2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 0 60px 0 0;
 
   .copy-hash {
     width: 18px;
