@@ -49,6 +49,60 @@
         :placeholder="$t('publish.contentPlaceholder')"
         @imgAdd="$imgAdd"
       />
+
+      <!-- 持币阅读 -->
+      <div class="post-content">
+        <div class="post-list">
+          <span class="post-list-title">持币阅读</span>
+          <div class="post-list-content right">
+            <el-checkbox v-model="readauThority"> </el-checkbox>
+          </div>
+        </div>
+
+        <div v-show="readauThority">
+          <div class="post-list">
+            <span class="post-list-title">持币数量</span>
+            <div class="post-list-content">
+              <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+            </div>
+          </div>
+
+          <div class="post-list">
+            <span class="post-list-title">持币类型</span>
+            <div class="post-list-content">
+              <el-select
+                v-model="readSelectValue"
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+              >
+                <el-option
+                  v-for="item in readSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+          </div>
+
+          <div class="post-list">
+            <span class="post-list-title">内容摘要</span>
+            <div class="post-list-content">
+              <el-input
+                v-model="readSummary"
+                size="small"
+                type="textarea"
+                :autosize="{ minRows: 6, maxRows: 12 }"
+                placeholder="请输入内容"
+                maxlength="300"
+                show-word-limit
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div v-if="editorMode !== 'edit'" class="fission">
         <p>
           {{ $t('publish.commentTitle') }}
@@ -179,59 +233,6 @@
         </div>
       </van-checkbox>
     </van-cell>
-
-    <!-- 持币阅读 -->
-    <div class="post-content">
-      <div class="post-list">
-        <span class="post-list-title">持币阅读</span>
-        <div class="post-list-content right">
-          <el-checkbox v-model="readauThority" size="small"> </el-checkbox>
-        </div>
-      </div>
-
-      <div v-show="readauThority">
-        <div class="post-list">
-          <span class="post-list-title">持币数量</span>
-          <div class="post-list-content">
-            <el-input v-model="readToken" size="small" placeholder="请输入内容" />
-          </div>
-        </div>
-
-        <div class="post-list">
-          <span class="post-list-title">持币类型</span>
-          <div class="post-list-content">
-            <el-select
-              v-model="readSelectValue"
-              size="small"
-              placeholder="请选择"
-              style="width: 100%;"
-            >
-              <el-option
-                v-for="item in readSelectOptions"
-                :key="item.id"
-                :label="item.symbol + '-' + item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </div>
-        </div>
-
-        <div class="post-list">
-          <span class="post-list-title">内容摘要</span>
-          <div class="post-list-content">
-            <el-input
-              v-model="readSummary"
-              size="small"
-              type="textarea"
-              :autosize="{ minRows: 6, maxRows: 12 }"
-              placeholder="请输入内容"
-              maxlength="300"
-              show-word-limit
-            />
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!--<div class="is-original">
       <Checkbox v-model="isOriginal" size="large">&nbsp;确认为原创</Checkbox>
@@ -481,7 +482,11 @@ export default {
           // 持币阅读
           if (data.data.tokens && data.data.tokens.length !== 0) {
             this.readauThority = true
-            this.readToken = precision(data.data.tokens[0].amount, 'cny', data.data.tokens[0].decimals)
+            this.readToken = precision(
+              data.data.tokens[0].amount,
+              'cny',
+              data.data.tokens[0].decimals
+            )
             this.readSummary = data.data.short_content
             // this.readSelectOptions = data.data.tokens
             this.readSelectValue = data.data.tokens[0].id
@@ -713,13 +718,11 @@ export default {
       const isOriginal = Number(this.isOriginal)
       // console.log('sendThePost mode :', editorMode, saveType)
       if (editorMode === 'create' && saveType === 'public') {
-
         if (this.readauThority) {
           if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
-
 
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
@@ -756,7 +759,6 @@ export default {
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
-
 
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })

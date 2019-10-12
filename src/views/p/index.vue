@@ -35,13 +35,13 @@
       </div> -->
     </BaseHeader>
 
-    <!-- <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
+    <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
       <circle cx="36" cy="24" r="12" />
       <rect x="54" y="14" rx="0" ry="0" width="64" height="10" />
       <rect x="54" y="26" rx="0" ry="0" width="30" height="8" />
       <rect x="27" y="46" rx="0" ry="0" width="334" height="240" />
-    </ContentLoader> -->
-    <template>
+    </ContentLoader>
+    <template v-else>
       <img v-if="cover" v-lazy="cover" :src="cover" alt="" class="top-image" />
       <header class="ta_header">
         <h1>{{ article.title }}</h1>
@@ -516,7 +516,7 @@ export default {
       opr: false,
       // infoModa: false, // 文章攻略
       isRequest: false,
-      // articleLoading: true, // 文章加载状态
+      articleLoading: true, // 文章加载状态
       isOriginal: false,
       widgetModal: false, // 分享 widget dialog
       transferModal: false, // 转让
@@ -753,6 +753,7 @@ export default {
             this.currentProfile = res.data.data
             // console.log('article', this.article)
             this.differenceTokenFunc()
+            this.setSSToken(res.data)
           } else if (res.data.code === 401) {
             console.log(res.data.message)
           } else {
@@ -763,7 +764,7 @@ export default {
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
         const tokenName = this.currentProfile.holdMineTokens.filter(
           list => list.id === this.article.tokens[0].id
         )
@@ -793,7 +794,6 @@ export default {
         .getIfpsData(this.article.hash)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
-            console.log(1111111)
             this.post.content = res.data.data.content
           } else {
             console.log(res.data.message)
@@ -813,14 +813,12 @@ export default {
           if (res.status === 200 && res.data.code === 0) {
             // 判断是否为付费阅读文章
             let { data } = res.data
+            this.article = data
+            this.articleLoading = false
             if (data.tokens && data.tokens.length !== 0) {
-              this.article = data
               this.post.content = data.short_content
             } else {
-              this.article = data
               this.setArticle(data, supportDialog)
-              this.setSSToken(res.data)
-
               this.getIfpsData()
 
               // 默认会执行获取文章方法，更新文章调用则不需要获取内容
@@ -829,9 +827,7 @@ export default {
                 this.setAvatar(data.uid)
               }
             }
-
             this.addReadAmount(this.article.hash)
-
           } else {
             this.$toast({ duration: 1000, message: res.data.message })
           }
@@ -856,6 +852,7 @@ export default {
         })
     },
     setSSToken(res) {
+      console.log(856, res)
       this.$refs.articleFooter.postBackendReading(res.data)
       this.ssToken = {
         points: res.data.points || [], // 用户是否喜欢了这篇文章

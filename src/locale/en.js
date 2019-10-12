@@ -456,7 +456,7 @@ export default {
     deleteDraftFail: '自动删除草稿失败,请手动删除',
     original: '原创',
     support: '投资',
-    article: '商品',
+    article: '文章',
     shop: '商品',
     rule: '规则介绍',
     transfer: '接受他人文章权限移交',
