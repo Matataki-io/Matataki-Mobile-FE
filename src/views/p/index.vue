@@ -123,7 +123,7 @@
 
           <router-link :to="{ name: 'exchange' }">
             <el-button size="mini" type="primary">
-              交易粉丝币
+              获取粉丝币
             </el-button>
           </router-link>
         </div>
@@ -774,9 +774,15 @@ export default {
         const tokenName = this.currentProfile.holdMineTokens.filter(
           list => list.id === this.article.tokens[0].id
         )
-        const amount =
-          tokenName.length !== 0 ? precision(tokenName[0].amount, 'CNY', tokenName[0].decimals) : 0
-        const amountToken = amount - this.needTokenAmount
+        // 获取有多少token
+        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+        let needTokenAmount = 0
+        // 获取需要多少token
+        if (this.article.tokens && this.article.tokens.length !== 0) {
+          needTokenAmount = this.article.tokens[0].amount
+        }
+        // 减之后 换算
+        const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
         this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + amountToken
       } else this.differenceToken = '0'
 

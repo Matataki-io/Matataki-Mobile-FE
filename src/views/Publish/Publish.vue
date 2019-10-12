@@ -56,7 +56,7 @@
           <span class="post-list-title">
             持币阅读
           <el-tooltip class="item" effect="dark" placement="top-start">
-            <div slot="content">添加限制条件后，<br/>读者只有在持有特定数量的粉丝币后才可查看全文的。<br/>目前为功能内测阶段，建议使用较低的限制条件。</div>
+            <div slot="content">添加限制条件后，<br>读者只有在持有特定数量的粉丝币后才可查看全文的。</div>
             <svg-icon
               class="help-icon"
               icon-class="help"
