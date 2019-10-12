@@ -35,13 +35,13 @@
       </div> -->
     </BaseHeader>
 
-    <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
+    <!-- <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
       <circle cx="36" cy="24" r="12" />
       <rect x="54" y="14" rx="0" ry="0" width="64" height="10" />
       <rect x="54" y="26" rx="0" ry="0" width="30" height="8" />
       <rect x="27" y="46" rx="0" ry="0" width="334" height="240" />
-    </ContentLoader>
-    <template v-else>
+    </ContentLoader> -->
+    <template>
       <img v-if="cover" v-lazy="cover" :src="cover" alt="" class="top-image" />
       <header class="ta_header">
         <h1>{{ article.title }}</h1>
@@ -84,10 +84,48 @@
           </template>
         </div>
       </header>
-      <ipfs :hash="article.hash"></ipfs>
+      <ipfs v-if="isTokenArticle" :hash="article.hash"></ipfs>
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
-      <statement :article="article"></statement>
+      <statement v-if="isTokenArticle" :article="article"></statement>
+
+      <!-- 解锁按钮 -->
+      <div v-if="tokenArticle" class="lock">
+        <el-divider>
+          <i class="el-icon-lock lock-icon" />
+        </el-divider>
+
+        <div class="lock-info fl ac jsb">
+          <div class="fl ac">
+            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock" />
+            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock" />
+            <div>
+              <h3 class="lock-info-title">
+                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
+              </h3>
+              <p v-if="!isMe(article.uid)" class="lock-info-des">
+                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                <br >
+                <!-- 不显示 - 号 -->
+                <span>
+                  {{ !isTokenArticle ? '还差' : '目前拥有' }}
+                  {{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}
+                </span>
+              </p>
+              <p v-else class="lock-info-des">
+                自己发布的文章
+              </p>
+            </div>
+          </div>
+
+          <router-link :to="{ name: 'exchange' }">
+            <el-button size="mini" type="primary">
+              交易粉丝币
+            </el-button>
+          </router-link>
+        </div>
+      </div>
+
       <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
         <tag-card
           v-for="(item, index) in article.tags"
@@ -401,9 +439,10 @@ import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
 import wx from 'weixin-js-sdk'
 import { xssFilter } from '@/common/xss'
-import { sleep, isNDaysAgo } from '@/common/methods'
+// import { sleep, isNDaysAgo } from '@/common/methods'
+import { isNDaysAgo } from '@/common/methods'
 import { ontAddressVerify } from '@/common/reg'
-import { precision } from '@/common/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
 import ipfs from './ipfs.vue'
@@ -441,9 +480,9 @@ export default {
     ArticleFooter,
     commentInput
   },
-  props: ['hash'],
   data() {
     return {
+      id: this.$route.params.id,
       defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
       investTitle: this.$t('p.investArticle'),
       followed: false,
@@ -480,7 +519,7 @@ export default {
       opr: false,
       // infoModa: false, // 文章攻略
       isRequest: false,
-      articleLoading: true, // 文章加载状态
+      // articleLoading: true, // 文章加载状态
       isOriginal: false,
       widgetModal: false, // 分享 widget dialog
       transferModal: false, // 转让
@@ -490,7 +529,10 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      commentRequest: 0
+      commentRequest: 0,
+      currentProfile: Object.create(null),
+      differenceToken: '0',
+      showLock: false
     }
   },
   computed: {
@@ -562,6 +604,32 @@ export default {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    // 是否为付费文章
+    tokenArticle() {
+      return this.article.tokens && this.article.tokens.length !== 0
+    },
+    isTokenArticle() {
+      // 付费文章
+      if (this.article.tokens && this.article.tokens.length !== 0) {
+        if (this.showLock) return true
+        else return false
+      } else {
+        // 不付费
+        return true
+      }
+    },
+    // 需要多少粉丝币
+    needTokenAmount() {
+      if (this.article.tokens && this.article.tokens.length !== 0) {
+        return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
+      } else return 0
+    },
+    // 需要多少粉丝币名称
+    needTokenSymbol() {
+      if (this.article.tokens && this.article.tokens.length !== 0) {
+        return this.article.tokens[0].symbol
+      } else return ''
     }
   },
   watch: {
@@ -572,19 +640,29 @@ export default {
       this.$emit('updateHead')
     },
     isLogined(newState) {
-      if (newState) this.getArticleInfo(this.hash, false)
+      if (newState) this.getArticleInfo(this.id, false)
     },
     isRequest(newVal) {
       // 监听是否请求默认为false被改变为true下面不执行，请求完毕又被改变为false执行下列方法
       if (!newVal) {
-        this.getArticleInfo(this.hash)
+        this.getArticleInfo(this.id)
       }
     }
   },
   created() {
-    this.getArticleInfo(this.hash) // 得到文章信息
+    this.getArticleInfo(this.id) // 得到文章信息
+  },
+  mounted() {
+    this.getCurrentProfile()
   },
   methods: {
+    ...mapActions(['makeShare', 'makeOrder']),
+    // 增加文章阅读量
+    async addReadAmount(hash) {
+      await this.$backendAPI
+        .addReadAmount(hash)
+        .catch(err => console.log('add read amount error', err))
+    },
     // 提取内容 删除多余的标签
     regRemoveContent(str) {
       // 去除空格
@@ -653,7 +731,6 @@ export default {
         }
       })
     },
-    ...mapActions(['makeShare', 'makeOrder']),
     // 复制hash
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
@@ -665,20 +742,99 @@ export default {
         }
       )
     },
-    // 得到文章信息 hash id, supportDialog 为 true 则只更新文章信息
-    async getArticleInfo(hash, supportDialog = false) {
+    // 获取用户在当前文章的属性
+    async getCurrentProfile() {
+      const data = {
+        id: this.id
+      }
+
       await this.$backendAPI
-        .getArticleInfo(hash)
+        .getCurrentProfile(data)
+        .then(res => {
+          // console.log(res)
+          if (res.status === 200 && res.data.code === 0) {
+            this.currentProfile = res.data.data
+            // console.log('article', this.article)
+            this.differenceTokenFunc()
+          } else if (res.data.code === 401) {
+            console.log(res.data.message)
+          } else {
+            console.log(res.data.message)
+          }
+        })
+        .catch(err => console.log(err))
+    },
+    // 差多少token 变为字符界面显示截取 - 号
+    differenceTokenFunc() {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(
+          list => list.id === this.article.tokens[0].id
+        )
+        const amount =
+          tokenName.length !== 0 ? precision(tokenName[0].amount, 'CNY', tokenName[0].decimals) : 0
+        const amountToken = amount - this.needTokenAmount
+        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + amountToken
+      } else this.differenceToken = '0'
+
+      this.showLockFunc(this.differenceToken)
+    },
+    // 是否显示 Lock
+    showLockFunc(differenceToken) {
+      if (Number(differenceToken) < 0) {
+        if (this.isMe(this.article.uid)) {
+          // 自己的文章
+          this.showLock = true
+          this.getIfpsData()
+        } else this.showLock = false
+      } else {
+        this.showLock = true
+        this.getIfpsData()
+      }
+    },
+    async getIfpsData() {
+      await this.$backendAPI
+        .getIfpsData(this.article.hash)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
-            this.article = res.data.data
-            this.setArticle(res.data.data, supportDialog)
-            this.setSSToken(res.data)
-            // 默认会执行获取文章方法，更新文章调用则不需要获取内容
-            if (!supportDialog) {
-              this.getArticleDatafromIPFS(res.data.data.hash)
-              this.setAvatar(res.data.data.uid)
+            console.log(1111111)
+            this.post.content = res.data.data.content
+          } else {
+            console.log(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$toast({ duration: 1000, message: '获取文章内容失败' })
+        })
+    },
+
+    // 得到文章信息 hash id, supportDialog 为 true 则只更新文章信息
+    async getArticleInfo(id, supportDialog = false) {
+      await this.$backendAPI
+        .getArticleInfo(id)
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0) {
+            // 判断是否为付费阅读文章
+            let { data } = res.data
+            if (data.tokens && data.tokens.length !== 0) {
+              this.article = data
+              this.post.content = data.short_content
+            } else {
+              this.article = data
+              this.setArticle(data, supportDialog)
+              this.setSSToken(res.data)
+
+              this.getIfpsData()
+
+              // 默认会执行获取文章方法，更新文章调用则不需要获取内容
+              if (!supportDialog) {
+                // this.getArticleDatafromIPFS(data.hash)
+                this.setAvatar(data.uid)
+              }
             }
+
+            this.addReadAmount(this.article.hash)
+
           } else {
             this.$toast({ duration: 1000, message: res.data.message })
           }
@@ -713,11 +869,6 @@ export default {
     },
     // 设置文章
     async setArticle(article, supportDialog = false) {
-      try {
-        await this.$backendAPI.addReadAmount({ articlehash: article.hash }) // 增加文章阅读量
-      } catch (error) {
-        console.error('addReadAmount :', error)
-      }
       if (article.channel_id === 2) {
         this.product = {
           eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
@@ -730,7 +881,7 @@ export default {
       this.totalSupportedAmount.eos = article.value ? precision(article.value, 'eos') : 0 // eos
       this.totalSupportedAmount.ont = precision(article.ontvalue, 'ont') // ont
 
-      this.articleLoading = false // 文章加载状态隐藏
+      // this.articleLoading = false // 文章加载状态隐藏
       this.isOriginal = Boolean(article.is_original)
       // 未登录下点击投资会自动登陆并且重新获取文章信息 如果没有打赏并且是点击投资 则显示投资框
       if (!article.is_support && supportDialog) {
@@ -740,7 +891,7 @@ export default {
     // 设置文章内容
     setPost(post) {
       this.post = post
-      this.articleLoading = false // 文章加载状态隐藏
+      // this.articleLoading = false // 文章加载状态隐藏
     },
     handleChange(amount) {
       let amountValue = amount

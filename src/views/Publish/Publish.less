@@ -100,7 +100,7 @@
     }
     .fission-num-slider{
       margin: 0 20px 0 10px;
-      z-index: 99;
+      // z-index: 99;
     }
     .fission-num-Input{
       font-size: 16px;
@@ -121,16 +121,16 @@
     align-items: center;
     justify-content: space-between;
     font-size: 14px;
-     p {
-       color: #323233;
-       font-size: 14px;
-       line-height: 20px;
-       .cover-tip {
-         font-size: 12px;
-         line-height: 20px;
-         color: #B2B2B2;
-         margin-left: 10px;
-       }
+    p {
+      color: #323233;
+      font-size: 14px;
+      line-height: 20px;
+      .cover-tip {
+        font-size: 12px;
+        line-height: 20px;
+        color: #B2B2B2;
+        margin-left: 10px;
+      }
     }
     .cover-upload{
       .cover-add {
@@ -238,4 +238,27 @@
 
 .publish-right {
   justify-content: flex-end;
+}
+
+.post-content {
+  padding: 10px 10px;
+}
+
+
+.post-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  &-title {
+    font-size: 14px;
+    color: #323233;
+  }
+  &-content {
+    flex: 1;
+    padding: 0 0 0 10px;
+    &.right {
+      text-align: right;
+    }
+  }
 }

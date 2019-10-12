@@ -32,7 +32,7 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/p/:hash', // 支持 hash id 访问
+      path: '/p/:id', // 支持 hash id 访问
       name: 'p',
       props: true,
       component: () =>

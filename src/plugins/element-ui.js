@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css'
+import '../assets/theme/index.css'
 
 import {
   Button,
@@ -12,7 +13,9 @@ import {
   Progress,
   Avatar,
   Popover,
-  InputNumber
+  InputNumber,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Input)
@@ -26,3 +29,5 @@ Vue.use(Progress)
 Vue.use(Avatar)
 Vue.use(Popover)
 Vue.use(InputNumber)
+Vue.use(Select)
+Vue.use(Option)

@@ -70,7 +70,18 @@ const API = {
   },
   async sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint },
+    {
+      signId = null,
+      author,
+      hash,
+      title,
+      fissionFactor,
+      cover,
+      isOriginal,
+      tags,
+      commentPayPoint,
+      shortContent
+    },
     signature = null
   ) {
     return this.accessBackend({
@@ -88,7 +99,8 @@ const API = {
         title,
         is_original: isOriginal,
         tags,
-        commentPayPoint
+        commentPayPoint,
+        shortContent
       }
     })
   },
@@ -179,10 +191,10 @@ const API = {
     })
   },
   // be Used in Article Page
-  async addReadAmount({ articlehash }) {
+  async addReadAmount(hash) {
     return this.accessBackend({
       method: 'POST',
-      url: `/post/show/${articlehash}`
+      url: `/post/show/${hash}`
     })
   },
   // 删除文章
@@ -479,6 +491,40 @@ const API = {
   },
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
+  },
+  // 文章持币阅读
+  addMineTokens(data) {
+    return this.accessBackend({
+      method: 'post',
+      url: '/post/addMineTokens',
+      data: data
+    })
+  },
+  allToken({ page = 1, pagesize = 10, search = '' }) {
+    return this.accessBackend({
+      url: '/token/all',
+      method: 'get',
+      noLoading: true,
+      params: {
+        page,
+        pagesize,
+        search
+      }
+    })
+  },
+  // 获取当前用户的文章信息
+  getCurrentProfile(data) {
+    return this.accessBackend({
+      url: '/post/currentProfile',
+      method: 'post',
+      data: data
+    })
+  },
+  // 通过hash获取文章内容
+  getIfpsData(hash) {
+    return this.accessBackend({
+      url: `/post/ipfs/${hash}`
+    })
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <router-link tag="div" class="card" :to="{ name: 'p', params: { hash } }">
+  <router-link tag="div" class="card" :to="{ name: 'p', params: { id: id } }">
     <!-- 他人主页隐藏info -->
     <div v-if="!isOtherUser" class="info">
       <div class="avatar">
@@ -87,8 +87,8 @@ export default {
       const time = moment(this.article.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
-    hash() {
-      return this.article.id // 原来是 hash 现在用id进入
+    id() {
+      return this.article.id // 原来是 id 现在用id进入
     },
     avatar() {
       if (this.article.avatar) return this.$backendAPI.getAvatarImage(this.article.avatar)

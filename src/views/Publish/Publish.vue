@@ -180,6 +180,59 @@
       </van-checkbox>
     </van-cell>
 
+    <!-- 持币阅读 -->
+    <div class="post-content">
+      <div class="post-list">
+        <span class="post-list-title">持币阅读</span>
+        <div class="post-list-content right">
+          <el-checkbox v-model="readauThority" size="small"> </el-checkbox>
+        </div>
+      </div>
+
+      <div v-show="readauThority">
+        <div class="post-list">
+          <span class="post-list-title">持币数量</span>
+          <div class="post-list-content">
+            <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+          </div>
+        </div>
+
+        <div class="post-list">
+          <span class="post-list-title">持币类型</span>
+          <div class="post-list-content">
+            <el-select
+              v-model="readSelectValue"
+              size="small"
+              placeholder="请选择"
+              style="width: 100%;"
+            >
+              <el-option
+                v-for="item in readSelectOptions"
+                :key="item.id"
+                :label="item.symbol + '-' + item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </div>
+        </div>
+
+        <div class="post-list">
+          <span class="post-list-title">内容摘要</span>
+          <div class="post-list-content">
+            <el-input
+              v-model="readSummary"
+              size="small"
+              type="textarea"
+              :autosize="{ minRows: 6, maxRows: 12 }"
+              placeholder="请输入内容"
+              maxlength="300"
+              show-word-limit
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!--<div class="is-original">
       <Checkbox v-model="isOriginal" size="large">&nbsp;确认为原创</Checkbox>
     </div>-->
@@ -209,6 +262,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
 import { defaultImagesUploader } from '@/api'
@@ -216,8 +270,7 @@ import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
-import { sleep } from '@/common/methods'
-import debounce from 'lodash/debounce'
+// import { sleep } from '@/common/methods'
 import { toolbars } from './toolbars' // 编辑器配置
 import imgUpload from '@/components/imgUpload/index.vue' // 图片上传
 import modalPrompt from './components/modalPrompt.vue' // 弹出框提示
@@ -225,6 +278,7 @@ import { Prompt } from '@/components/'
 
 import tagCard from '@/components/tagCard/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
+import { toPrecision, precision } from '@/utils/precisionConversion'
 
 export default {
   name: 'NewPost',
@@ -270,7 +324,12 @@ export default {
       transferModal: false, // 转让弹框
       allowLeave: false, // 允许离开
       saveInfo: {},
-      commentPayPoint: 1
+      commentPayPoint: 1,
+      readauThority: false,
+      readToken: 1,
+      readSelectOptions: [],
+      readSelectValue: '',
+      readSummary: ''
     }
   },
   computed: {
@@ -371,10 +430,25 @@ export default {
   mounted() {
     this.resize()
     this.setToolBar(this.screenWidth)
+    this.getAllTokens()
   },
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    /**
+     * 获取所有token
+     */
+    async getAllTokens() {
+      const pagesize = 999
+      await this.$backendAPI
+        .allToken({ pagesize })
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0) {
+            this.readSelectOptions = res.data.data.list
+          }
+        })
+        .catch(err => console.log(err))
+    },
     unload($event) {
       // 刷新页面 关闭页面有提示
       // https://jsfiddle.net/jbf4vL7h/29/
@@ -386,12 +460,7 @@ export default {
       // 如果允许关闭 或者 内容都为空
       return this.allowLeave || (!strTrim(this.title) && !strTrim(this.markdownData))
     },
-    popstateFunc() {
-      // Your logic
-      alert('pushState')
-    },
     setTag(data) {
-      console.log(data)
       this.articleData = data // 设置文章数据
       // 编辑的时候设置tag状态
       const { from } = this.$route.query
@@ -399,7 +468,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$backendAPI.getArticleDatafromIPFS(hash)
+      const articleData = await this.$backendAPI.getIfpsData(hash)
       try {
         // 获取文章信息
         const { data } = await this.$backendAPI.getMyPost(id)
@@ -409,6 +478,14 @@ export default {
           this.cover = data.data.cover
           this.signId = data.data.id
           this.isOriginal = Boolean(data.data.is_original)
+          // 持币阅读
+          if (data.data.tokens && data.data.tokens.length !== 0) {
+            this.readauThority = true
+            this.readToken = precision(data.data.tokens[0].amount, 'cny', data.data.tokens[0].decimals)
+            this.readSummary = data.data.short_content
+            // this.readSelectOptions = data.data.tokens
+            this.readSelectValue = data.data.tokens[0].id
+          }
 
           this.setTag(data.data)
         } else {
@@ -425,25 +502,6 @@ export default {
       this.title = data.title
       this.markdownData = data.content
     },
-    // 设置文章数据 by hash
-    /* async setArticleData(hash) {
-      const articleData = await getArticleDatafromIPFS(hash);
-      try { // 获取文章信息
-        const { data } = await getArticleInfo(hash);
-        this.fissionNum = data.fission_factor / 1000;
-        this.signature = data.sign;
-        this.cover = data.cover;
-        this.signId = data.id;
-        this.isOriginal = Boolean(data.is_original);
-      } catch (error) {
-        console.log(error);
-        this.$Message.error('获取文章信息发生错误');
-      }
-      // 设置文章内容
-      const { data } = articleData.data;
-      this.title = data.title;
-      this.markdownData = data.content;
-    }, */
     // 得到草稿箱内容 by id
     async getDraft(id) {
       const { data } = await this.$backendAPI.getDraft({ id })
@@ -463,14 +521,14 @@ export default {
       this.$toast({ duration: 1000, message: error })
     },
     // 跳转页面
-    jumpToArticle(hash) {
-      this.$router.push({ name: 'p', params: { hash } })
+    jumpToArticle(id) {
+      this.$router.push({ name: 'p', params: { id: id } })
     },
     // 成功提示
-    async success(hash) {
+    async success(id) {
       this.$toast({ duration: 1000, message: this.$t('success.public') })
       // await sleep(3000) // 休眠三秒
-      this.jumpToArticle(hash)
+      this.jumpToArticle(id)
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
@@ -495,13 +553,53 @@ export default {
       }
       return tags
     },
+    /**
+     * 文章持币阅读
+     */
+    async postMineTokens(id, type) {
+      let tokenArr = []
+      // 持币
+      if (this.readauThority) {
+        // 获取当前选择的币种
+        const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [
+          {
+            tokenId: token[0].id,
+            amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          }
+        ]
+      }
+
+      const data = {
+        signId: id,
+        tokens: tokenArr
+      }
+      await this.$backendAPI
+        .addMineTokens(data)
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0) {
+            if (type === 'publish') {
+              // 删除草稿
+              this.delDraft(this.id)
+                .then(() => {
+                  this.success(id)
+                })
+                .catch(() => {
+                  console.log('删除草稿失败')
+                })
+            } else this.success(id)
+          } else this.failed('设置持币阅读失败')
+        })
+        .catch(err => console.log(err))
+    },
     // 发布文章
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
-      const { failed, success } = this
+      const { failed } = this
       try {
         const { author, hash } = article
         let signature = null
@@ -511,8 +609,8 @@ export default {
         try {
           const response = await this.$backendAPI.publishArticle({ article, signature })
           if (response.data.code !== 0) throw new Error(response.data.message)
-          success(response.data.data)
-          console.log(response)
+          this.postMineTokens(response.data.data, 'publish')
+          // console.log(response)
           return 'success'
         } catch (error) {
           this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
@@ -524,19 +622,24 @@ export default {
         throw error
       }
     },
-    confirmSaveDraft() {
-      this.createDraft(this.saveInfo)
-    },
+    // confirmSaveDraft() {
+    //   this.createDraft(this.saveInfo)
+    // },
     // 创建草稿
     async createDraft(article) {
-      // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
-      // 设置积分
-      article.commentPayPoint = this.commentPayPoint
-      const response = await this.$backendAPI.createDraft(article)
-      if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
-      this.$toast.success({ duration: 1000, message: this.$t('success.save') })
-      this.$router.go(-1)
+      try {
+        // 设置文章标签 🏷️
+        article.tags = this.setArticleTag(this.tagCards)
+        // 设置积分
+        article.commentPayPoint = this.commentPayPoint
+        const response = await this.$backendAPI.createDraft(article)
+        if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
+        this.$toast.success({ duration: 1000, message: this.$t('success.save') })
+        this.$router.go(-1)
+      } catch (error) {
+        console.log(error)
+        this.failed(this.$t('error.failTry'))
+      }
     },
     // 编辑文章
     async editArticle(article) {
@@ -548,7 +651,8 @@ export default {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$backendAPI.editArticle({ article, signature })
-      if (response.status === 200 && response.data.code === 0) this.success(response.data.data)
+      if (response.status === 200 && response.data.code === 0)
+        this.postMineTokens(response.data.data, 'edit')
       else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
@@ -609,6 +713,14 @@ export default {
       const isOriginal = Number(this.isOriginal)
       // console.log('sendThePost mode :', editorMode, saveType)
       if (editorMode === 'create' && saveType === 'public') {
+
+        if (this.readauThority) {
+          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
         // console.log('sendPost result :', hash)
@@ -618,7 +730,8 @@ export default {
           hash,
           fissionFactor,
           cover,
-          isOriginal
+          isOriginal,
+          shortContent: this.readSummary
         })
       } else if (editorMode === 'create' && saveType === 'draft') {
         // 发布到草稿箱
@@ -638,6 +751,13 @@ export default {
           isOriginal
         });*/
       } else if (editorMode === 'edit') {
+        if (this.readauThority) {
+          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
         this.editArticle({
@@ -648,7 +768,8 @@ export default {
           fissionFactor,
           signature: this.signature,
           cover,
-          isOriginal
+          isOriginal,
+          shortContent: this.readSummary
         })
       } else if (editorMode === 'draft' && saveType === 'public') {
         // 草稿箱编辑 发布
@@ -661,12 +782,6 @@ export default {
           cover,
           isOriginal
         })
-          .then(() => {
-            this.delDraft(this.id)
-          })
-          .catch(() => {
-            console.log(this.$t('error.failTry'))
-          })
       } else if (editorMode === 'draft' && saveType === 'draft') {
         // 草稿箱编辑 更新
         await this.updateDraft({
@@ -680,8 +795,6 @@ export default {
       }
     },
     $imgAdd(pos, imgfile) {
-      // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
-      // 不要在页面组件写具体实现，谢谢合作 - Frank
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
       // 不要在页面组件写具体实现，谢谢合作 - Frank
       if (imgfile.type === 'image/gif') {
