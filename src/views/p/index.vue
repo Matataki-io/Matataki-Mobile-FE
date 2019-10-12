@@ -84,16 +84,15 @@
           </template>
         </div>
       </header>
-      <div v-if="!tokenArticle">
-        <ipfs v-if="isTokenArticle" :hash="article.hash"></ipfs>
-      </div>
+      <ipfs :is-hide="tokenArticle":hash="article.hash"></ipfs>
+
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
       <statement v-if="isTokenArticle" :article="article"></statement>
 
       <!-- 解锁按钮 -->
       <div v-if="tokenArticle" class="lock">
-        <el-divider>
+        <el-divider v-if="!isTokenArticle">
           <i class="el-icon-lock lock-icon" />
         </el-divider>
 
@@ -783,7 +782,7 @@ export default {
         }
         // 减之后 换算
         const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
-        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + amountToken
+        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
 
       this.showLockFunc(this.differenceToken)
