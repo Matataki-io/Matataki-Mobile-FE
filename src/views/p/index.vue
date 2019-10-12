@@ -84,7 +84,9 @@
           </template>
         </div>
       </header>
-      <ipfs v-if="isTokenArticle" :hash="article.hash"></ipfs>
+      <div v-if="!tokenArticle">
+        <ipfs v-if="isTokenArticle" :hash="article.hash"></ipfs>
+      </div>
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
       <statement v-if="isTokenArticle" :article="article"></statement>
