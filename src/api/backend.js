@@ -108,8 +108,7 @@ const API = {
     return this.sendArticle('/post/publish', article, signature)
   },
   async editArticle({ article, signature }) {
-    console.log(article, signature)
-
+    // console.log(article, signature)
     return this.sendArticle('/post/edit', article, signature)
   },
   async reportOrder(order) {
@@ -370,7 +369,7 @@ const API = {
   },
   // 文章转让
   async transferOwner(from, articleId, uid) {
-    console.log(from, articleId, uid)
+    // console.log(from, articleId, uid)
     if (from === 'article')
       return this.accessBackend({
         method: 'POST',

@@ -107,7 +107,7 @@ export default {
       }
     },
     clicked() {
-      console.log('this.type', this.type)
+      // console.log('this.type', this.type)
       return this.type !== 'title'
     },
     type() {
@@ -146,7 +146,7 @@ export default {
       this.$backendAPI
         .like(this.article.id, this.timeCount)
         .then(response => {
-          console.log(response)
+          // console.log(response)
           let res = response.data
           if (res.code === 0) {
             clearInterval(this.timer)
@@ -185,7 +185,7 @@ export default {
       this.$backendAPI
         .dislike(this.article.id, this.timeCount)
         .then(response => {
-          console.log(response)
+          // console.log(response)
           let res = response.data
           if (res.code === 0) {
             clearInterval(this.timer)
@@ -224,7 +224,7 @@ export default {
           if (res.code === 0) {
             this.isReading = true
             this.reading()
-            console.log('reading done')
+            // console.log('reading done')
           }
         })
         .catch(err => {

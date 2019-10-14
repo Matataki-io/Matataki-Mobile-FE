@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     onSearch(val) {
-      console.log(val)
+      // console.log(val)
     },
     // 获得推荐
     async getRecommend() {

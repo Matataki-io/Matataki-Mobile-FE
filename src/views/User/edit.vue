@@ -137,12 +137,12 @@ export default {
       if (this.newNickName === this.nickname) delete requestData.nickname
       if (this.newIntroduction === this.introduction) delete requestData.introduction
       if (this.newEmail === this.email) delete requestData.email
-      console.log(requestData)
+      // console.log(requestData)
       // 设置用户信息
       await this.$backendAPI
         .setProfile(requestData)
         .then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200 && res.data.code === 0) {
             this.$toast.success({ duration: 1000, message: res.data.message })
             this.nickname = this.newNickName

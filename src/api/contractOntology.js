@@ -42,7 +42,7 @@ export const recordOrder = async ({
     gasLimit,
     gasPrice
   })
-  console.log(response)
+  // console.log(response)
   return response
 }
 
@@ -84,7 +84,7 @@ export const recordShare = async ({
     gasLimit,
     gasPrice
   })
-  console.log(response)
+  // console.log(response)
   return response
 }
 

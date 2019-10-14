@@ -149,13 +149,13 @@ export default {
     isHaveArticle() {
       const index = this.content.activeIndex
       const status = this.content.navMenu[index].articles.length
-      console.log(status)
+      // console.log(status)
       return status
     }
   },
   watch: {
     '$i18n.locale'() {
-      console.log(this.$i18n.locale)
+      // console.log(this.$i18n.locale)
       this.setContent()
     }
   },

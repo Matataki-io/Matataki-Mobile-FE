@@ -77,7 +77,7 @@ export default {
       }
     },
     isRequest(newVal) {
-      console.log(newVal)
+      // console.log(newVal)
       if (newVal) {
         this.timer = setInterval(() => {
           if (this.autoRequestTime >= 2) {
@@ -99,7 +99,7 @@ export default {
 
   methods: {
     getListData(res) {
-      console.log(res)
+      // console.log(res)
       if (
         this.isRequest &&
         res.data.data.length !== 0 &&

@@ -97,7 +97,7 @@ export default {
 
       this.articleCardData.params = Object.assign(params, this.params)
 
-      console.log(this.articleCardData.params)
+      // console.log(this.articleCardData.params)
     },
     menuChange(val) {
       let name = this.option1[val].name
@@ -110,7 +110,7 @@ export default {
       })
     },
     getListData(res) {
-      console.log(res)
+      // console.log(res)
       this.articleCardData.articles = res.list
     }
   }

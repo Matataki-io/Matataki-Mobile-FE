@@ -393,7 +393,7 @@ export default {
       this.setToolBar(val)
     },
     mavonStyle(newVal) {
-      console.log(newVal)
+      // console.log(newVal)
 
       this.mavonStyle = newVal
     },

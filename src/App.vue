@@ -101,7 +101,7 @@ export default {
       idProvider: localStorage.getItem('idProvider')
     }
     if (data.idProvider && data.accessToken) {
-      console.log('sign in form localStorage')
+      // console.log('sign in form localStorage')
       try {
         accessToken = signIn(data)
       } catch (error) {
