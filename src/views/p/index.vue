@@ -662,6 +662,7 @@ export default {
     this.getArticleInfo(this.id) // 得到文章信息
   },
   mounted() {
+    this.getCurrentProfile()
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
@@ -772,9 +773,6 @@ export default {
           }
         })
         .catch(err => console.log(err))
-        .finally(() => {
-          this.articleLoading = false
-        })
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
@@ -815,6 +813,7 @@ export default {
       }
     },
     async getIfpsData() {
+      if (!this.article.hash) return
       await this.$backendAPI
         .getIfpsData(this.article.hash)
         .then(res => {
@@ -840,13 +839,12 @@ export default {
             let { data } = res.data
             this.article = data
 
-            this.getCurrentProfile()
 
             if (data.tokens && data.tokens.length !== 0) {
               this.post.content = data.short_content
             } else {
               this.setArticle(data, supportDialog)
-              // this.getIfpsData()
+              this.getIfpsData()
 
               // 默认会执行获取文章方法，更新文章调用则不需要获取内容
               if (!supportDialog) {
@@ -862,6 +860,9 @@ export default {
         .catch(err => {
           console.error(err)
           this.$toast({ duration: 1000, message: this.$t('error.getArticleInfoError') })
+        })
+        .finally(() => {
+          this.articleLoading = false
         })
     },
     // 获取文章内容 from ipfs
