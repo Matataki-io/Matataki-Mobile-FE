@@ -128,7 +128,6 @@ export default {
     },
     // 自动请求 通过time++
     autoRequestTime() {
-      console.log('autoRequestTime')
       this.refresh()
     },
     isLogined(newState) {

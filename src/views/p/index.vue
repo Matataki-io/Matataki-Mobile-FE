@@ -84,7 +84,7 @@
           </template>
         </div>
       </header>
-      <ipfs :is-hide="tokenArticle":hash="article.hash"></ipfs>
+      <ipfs :is-hide="tokenArticle" :hash="article.hash"></ipfs>
 
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -104,15 +104,22 @@
               <h3 class="lock-info-title">
                 {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
                 <el-tooltip class="item" effect="dark" placement="top-start">
-                  <div slot="content">阅读本文需要先持有特定数量的粉丝币，<br>满足本文的阅读条件后刷新页面即可阅读全文。</div>
+                  <div slot="content">
+                    阅读本文需要先持有特定数量的粉丝币，<br />满足本文的阅读条件后刷新页面即可阅读全文。
+                  </div>
                   <svg-icon class="help-icon" icon-class="help" />
                 </el-tooltip>
               </h3>
               <p v-if="!isMe(article.uid)" class="lock-info-des">
                 持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                <br >
+                <br />
                 <!-- 不显示 - 号 -->
-                <span>{{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                <span
+                  >{{ !isTokenArticle ? '还差' : '目前拥有'
+                  }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{
+                    needTokenSymbol
+                  }}
+                </span>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
@@ -769,7 +776,11 @@ export default {
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
+      if (
+        this.currentProfile.holdMineTokens &&
+        this.currentProfile.holdMineTokens.length !== 0 &&
+        this.article.tokens
+      ) {
         const tokenName = this.currentProfile.holdMineTokens.filter(
           list => list.id === this.article.tokens[0].id
         )
@@ -782,7 +793,8 @@ export default {
         }
         // 减之后 换算
         const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
-        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
+        this.differenceToken =
+          amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
 
       this.showLockFunc(this.differenceToken)
