@@ -78,7 +78,7 @@ urlSearchData = urlSearchDecodeURIComponent(urlSearch)
 if (urlSearchData.content) urlSearchData.content = regRemoveContent(urlSearchData.content)
 
 // 设置内容
-const setAppDom = ({ title, content, img, ups, read, username }) => {
+const setAppDom = ({ title, content, img, likes, read, username }) => {
   console.log(title)
   const appDomStr = `
       <div class="container">
@@ -94,7 +94,7 @@ const setAppDom = ({ title, content, img, ups, read, username }) => {
           <p class="author">by: ${username || ''}</p>
           <div class="readorups jumpPage">
             <span><img src="${readImg}" alt="read" />${read || 0}</span>
-            <span><img src="${upsImg}" alt="ups" />${ups || 0}</span>
+            <span><img src="${upsImg}" alt="ups" />${likes || 0}</span>
           </di>
         </div>
       </div>`
@@ -130,12 +130,12 @@ const getArticleContent = hash => {
         const { data } = res.data
 
         urlSearchData.content = regRemoveContent(data.content)
-        const { title, content, img, ups, read, username } = urlSearchData
+        const { title, content, img, likes, read, username } = urlSearchData
         setAppDom({
           title,
           content,
           img,
-          ups,
+          likes,
           read,
           username
         })
@@ -159,7 +159,7 @@ const getInfobyId = id => {
       if (response.status === 200 && response.data.code === 0) {
         const { data } = response.data
         urlSearchData.title = data.title
-        urlSearchData.ups = data.ups
+        urlSearchData.likes = data.likes
         urlSearchData.read = data.read
         urlSearchData.username = data.nickname || data.username
         urlSearchData.img = data.cover ? `${imageAddress}${data.cover}` : logoImg
@@ -173,13 +173,13 @@ const getInfobyId = id => {
           urlSearchData.content = data.short_content
         }
 
-        const { title, content, img, ups, read, username } = urlSearchData
+        const { title, content, img, likes, read, username } = urlSearchData
 
         setAppDom({
           title,
           content,
           img,
-          ups,
+          likes,
           read,
           username
         })
