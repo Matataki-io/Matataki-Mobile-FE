@@ -403,8 +403,16 @@ body {
 }
 
 .widget-content .cover {
+  width: 140px;
   height: 70px;
+  flex: 0 0 140px;
   margin-right: 10px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .widget-content .widget-des {

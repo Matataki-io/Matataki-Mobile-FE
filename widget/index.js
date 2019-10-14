@@ -79,13 +79,16 @@ if (urlSearchData.content) urlSearchData.content = regRemoveContent(urlSearchDat
 
 // 设置内容
 const setAppDom = ({ title, content, img, ups, read, username }) => {
+  console.log(title)
   const appDomStr = `
       <div class="container">
         <div class="widget">
           <img class="logo" src="${logoImg}" alt="logo" />
           <h1 class="jumpPage">${title || '标题找不到啦~'}</h1>
           <div class="widget-content">
-            <img class="cover jumpPage" src="${img || logoImg}" alt="cover" />
+            <div class="cover jumpPage">
+              <img src="${img || logoImg}" alt="cover" />
+            </div>
             <p class="widget-des">${content || '没有简介信息'}</p>
           </div>
           <p class="author">by: ${username || ''}</p>
@@ -161,6 +164,7 @@ const getInfobyId = id => {
         urlSearchData.username = data.nickname || data.username
         urlSearchData.img = data.cover ? `${imageAddress}${data.cover}` : logoImg
         const { title, content, img, ups, read, username } = urlSearchData
+
         setAppDom({
           title,
           content,
@@ -170,7 +174,7 @@ const getInfobyId = id => {
           username
         })
         // 没有传递内容请求接口获取
-        if (!urlSearchData.content) getArticleContent(data.hash)
+        if (!urlSearchData.content && !data.require_holdtokens) getArticleContent(data.hash)
       } else {
         console.error('请求失败')
         setAppDom({})
