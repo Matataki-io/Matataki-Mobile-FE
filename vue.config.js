@@ -18,8 +18,6 @@ const { NODE_ENV } = process.env
 if (NODE_ENV === 'test') {
   module.exports = {
     chainWebpack: config => {
-      // 移除 prefetch 插件
-      config.plugins.delete('prefetch')
 
       if (NODE_ENV === 'test') {
         config.merge({
@@ -92,23 +90,30 @@ module.exports = {
         })
     }
   },
-  configureWebpack: {
-    externals: [
+
+  configureWebpack: config => {
+    // todo 后面区分三个端的环境
+    if (NODE_ENV === 'development') {
+      console.log('development')
+    } else {
+      console.log('prod')
+    }
+    config.externals = [
       'axios',
       {
         vue: 'Vue',
         'vue-router': 'VueRouter',
         vuex: 'Vuex',
-        'mavon-editor': 'MavonEditor'
-        // eosjs: 'Eos',
+        'mavon-editor': 'MavonEditor',
+        eosjs: 'Eos'
       },
       'moment',
       'encoding',
       'bufferutil',
       'memcpy',
       'utf-8-validate'
-    ],
-    optimization: {
+    ]
+    config.optimization = {
       splitChunks: {
         chunks: 'async',
         minSize: 30000,
@@ -129,10 +134,8 @@ module.exports = {
           }
         }
       }
-    },
-    plugins: [
-      // 为生产环境修改配置...
-      // new BundleAnalyzerPlugin(),
+    }
+    config.plugins.push(
       new WebpackCdnPlugin({
         modules: [
           {
@@ -179,15 +182,10 @@ module.exports = {
         publicPath: '/node_modules',
         crossOrigin: true
       })
-      /*
-      new webpack.ContextReplacementPlugin( // 减少moment体积
-        /moment[/\\]locale$/,
-        /zh-cn/,
-      ),
-      */
-    ]
+    )
   },
   css: {
+    extract: true, // 是否使用css分离插件
     loaderOptions: {
       stylus: {
         'resolve url': true,
@@ -210,7 +208,8 @@ module.exports = {
       msTileImage: 'favicon.ico'
     }
   },
-  productionSourceMap: NODE_ENV === 'development' // 去掉map文件
+  // productionSourceMap: NODE_ENV === 'development' // 去掉map文件
+  productionSourceMap: false // 去掉map文件
   // 代理
   // devServer: {
   //   proxy: {
