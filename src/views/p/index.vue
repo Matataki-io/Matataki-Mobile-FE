@@ -662,7 +662,6 @@ export default {
     this.getArticleInfo(this.id) // 得到文章信息
   },
   mounted() {
-    this.getCurrentProfile()
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
@@ -773,6 +772,9 @@ export default {
           }
         })
         .catch(err => console.log(err))
+        .finally(() => {
+          this.articleLoading = false
+        })
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
@@ -837,12 +839,14 @@ export default {
             // 判断是否为付费阅读文章
             let { data } = res.data
             this.article = data
-            this.articleLoading = false
+
+            this.getCurrentProfile()
+
             if (data.tokens && data.tokens.length !== 0) {
               this.post.content = data.short_content
             } else {
               this.setArticle(data, supportDialog)
-              this.getIfpsData()
+              // this.getIfpsData()
 
               // 默认会执行获取文章方法，更新文章调用则不需要获取内容
               if (!supportDialog) {
