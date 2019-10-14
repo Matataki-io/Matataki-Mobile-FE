@@ -10,7 +10,7 @@
             {{ $t('home.bannerUser') }}
           </p>
           <p class="data-num">
-            {{ postsStats.users || 0 }}
+            {{ postsStats.users }}
           </p>
         </div>
         <div class="data">
@@ -18,7 +18,7 @@
             {{ $t('home.bannerArticles') }}
           </p>
           <p class="data-num">
-            {{ postsStats.articles || 0 }}
+            {{ postsStats.articles }}
           </p>
         </div>
         <div class="data">
@@ -26,7 +26,7 @@
             {{ $t('home.bannerPoint') }}
           </p>
           <p class="data-num">
-            {{ postsStats.points || 0 }}
+            {{ postsStats.points }}
           </p>
         </div>
       </div>
@@ -38,7 +38,11 @@
 export default {
   data() {
     return {
-      postsStats: Object.create(null)
+      postsStats: {
+        users: 0,
+        articles: 0,
+        points: 0
+      }
     }
   },
   mounted() {
