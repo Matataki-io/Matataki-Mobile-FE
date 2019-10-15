@@ -843,6 +843,7 @@ export default {
 
             if (data.tokens && data.tokens.length !== 0) {
               this.post.content = data.short_content
+              this.setWxShare()
             } else {
               this.setArticle(data, supportDialog)
               this.getIpfsData()
@@ -864,7 +865,6 @@ export default {
         })
         .finally(() => {
           this.articleLoading = false
-          this.setWxShare()
         })
     },
     // 获取文章内容 from ipfs
