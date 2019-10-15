@@ -840,7 +840,6 @@ export default {
             let { data } = res.data
             this.article = data
 
-
             if (data.tokens && data.tokens.length !== 0) {
               this.post.content = data.short_content
               this.setWxShare()
@@ -1247,5 +1246,9 @@ export default {
 /* 覆盖投资框宽度 */
 .article .van-dialog {
   max-width: 350px;
+}
+
+.article .katex-display {
+  overflow: auto;
 }
 </style>
