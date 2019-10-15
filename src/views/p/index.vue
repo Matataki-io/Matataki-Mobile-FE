@@ -863,6 +863,7 @@ export default {
         })
         .finally(() => {
           this.articleLoading = false
+          this.setWxShare()
         })
     },
     // 获取文章内容 from ipfs
@@ -872,7 +873,6 @@ export default {
         .then(({ data }) => {
           // console.log(data);
           this.setPost(data.data)
-          this.setWxShare()
         })
         .catch(err => {
           console.error(err)
