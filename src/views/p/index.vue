@@ -564,7 +564,7 @@ export default {
       const shareLink = this.isLogined
         ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n${this.$t(
+      return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t(
         'p.clipboardText1'
       )} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
