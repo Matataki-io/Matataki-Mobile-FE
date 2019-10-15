@@ -64,7 +64,7 @@
           </el-tooltip>
           </span>
           <div class="post-list-content right">
-            <el-checkbox v-model="readauThority"> </el-checkbox>
+            <el-checkbox v-model="readauThority" ></el-checkbox>
           </div>
         </div>
 
@@ -478,7 +478,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$backendAPI.getIfpsData(hash)
+      const articleData = await this.$backendAPI.getIpfsData(hash)
       try {
         // 获取文章信息
         const { data } = await this.$backendAPI.getMyPost(id)
