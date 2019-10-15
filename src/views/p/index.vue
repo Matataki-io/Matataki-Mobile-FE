@@ -805,20 +805,21 @@ export default {
         if (this.isMe(this.article.uid)) {
           // 自己的文章
           this.showLock = true
-          this.getIfpsData()
+          this.getIpfsData()
         } else this.showLock = false
       } else {
         this.showLock = true
-        this.getIfpsData()
+        this.getIpfsData()
       }
     },
-    async getIfpsData() {
+    async getIpfsData() {
       if (!this.article.hash) return
       await this.$backendAPI
-        .getIfpsData(this.article.hash)
+        .getIpfsData(this.article.hash)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
             this.post.content = res.data.data.content
+            this.setWxShare()
           } else {
             console.log(res.data.message)
           }
@@ -844,7 +845,7 @@ export default {
               this.post.content = data.short_content
             } else {
               this.setArticle(data, supportDialog)
-              this.getIfpsData()
+              this.getIpfsData()
 
               // 默认会执行获取文章方法，更新文章调用则不需要获取内容
               if (!supportDialog) {
