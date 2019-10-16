@@ -37,5 +37,14 @@ export default {
   },
   isEmptyArray(arr){
     return Array.isArray(arr) && arr.length !== 0
+  },
+  toDecimal(v, decimal = 4) {
+    return parseFloat(v) * Math.pow(10, decimal)
+  },
+  fromDecimal(v, decimal = 4) {
+    return (parseFloat(v) / Math.pow(10, decimal))
+  },
+  formatCNY(v) {
+    return Math.ceil((parseFloat(v) / 100)) / Math.pow(10, 2)
   }
 };

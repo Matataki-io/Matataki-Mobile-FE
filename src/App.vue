@@ -42,7 +42,7 @@ export default {
     },
     isPublishPage() {
       // 如果是发布页面隐藏小火箭
-      return this.$route.name === 'Publish'
+      return this.$route.name === 'Publish' || this.$route.name === 'exchange'
     }
   },
   watch: {
