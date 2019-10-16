@@ -3,6 +3,7 @@ import https from 'https'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
 import utils from '../utils/utils'
+import { paginationUrl } from './pagination_url'
 // Doc : https://github.com/axios/axios
 
 export const urlAddress = process.env.VUE_APP_URL
@@ -215,6 +216,10 @@ const API = {
   getAvatarImage(hash) {
     return `${ssImgAddress}${hash}`
   },
+  // todo, 方便复制, 后期两端命名需要统一
+  getImg(hash) {
+    return `${ssImgAddress}${hash}`
+  },
   // 上传图片
   async uploadImage(type, data) {
     const url = {
@@ -231,46 +236,17 @@ const API = {
     })
   },
   // BasePull 分页组件
-  async getBackendData({ url, params }, needAccessToken = false) {
+  getBackendData({ url, params }, needAccessToken = false) {
     // 分页组件接口地址
-    const pullApiUrl = {
-      // home
-      homeTimeRanking: 'posts/timeRanking',
-      homeSupportsRanking: 'posts/supportsRanking',
-      homeScoreRanking: 'posts/scoreRanking',
-      homeAmountRankingEOS: 'posts/amountRanking',
-      homeAmountRankingONT: 'posts/amountRanking',
-      // article comments
-      commentsList: 'comment/comments',
-      // followlist
-      followsList: 'follow/follows',
-      fansList: 'follow/fans',
-      // asset
-      assetList: 'user/tokens',
-      // user articles
-      // 原创文章-使用 homeTimeRanking 接口 地址一样
-      userArticlesSupportedList: 'posts/supported',
-      // draftbox
-      draftboxList: 'draft/drafts',
-      // tag by id
-      getPostByTagById: 'posts/getPostByTag',
-      // buy
-      buyHistory: 'order/products',
-      // 已经关注用户的文章
-      followedPosts: 'posts/followedPosts',
-      // 用户积分日志
-      userPoint: 'user/points',
-      // 搜索文章
-      searchArticleList: 'posts/search',
-      // 搜索用户
-      searchUserList: 'users/search',
-      // 邀请列表，没有统计数据
-      userInvitees: 'user/invitees'
-    }
+    const pullApiUrl = paginationUrl
 
     return !needAccessToken
       ? axiosforApiServer.get(pullApiUrl[url], { params })
-      : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
+      : this.accessBackend({
+          method: 'get',
+          url: pullApiUrl[url],
+          params
+        })
   },
   // 提交积分评论
   postPointComment(data) {

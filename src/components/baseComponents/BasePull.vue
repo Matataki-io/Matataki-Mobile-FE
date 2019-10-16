@@ -85,7 +85,7 @@ export default {
       type: Boolean,
       default: true
     },
-    // 自动请求时间
+    // 自动请求
     autoRequestTime: {
       type: Number,
       default: 0
@@ -104,6 +104,10 @@ export default {
     immediateCheck: {
       type: Boolean,
       default: true
+    },
+    reload: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -128,6 +132,9 @@ export default {
     },
     // 自动请求 通过time++
     autoRequestTime() {
+      this.refresh()
+    },
+    reload() {
       this.refresh()
     },
     isLogined(newState) {

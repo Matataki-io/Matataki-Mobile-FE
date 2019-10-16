@@ -55,16 +55,15 @@
         <div class="post-list">
           <span class="post-list-title">
             持币阅读
-          <el-tooltip class="item" effect="dark" placement="top-start">
-            <div slot="content">添加限制条件后，<br>读者只有在持有特定数量的粉丝币后才可查看全文的。</div>
-            <svg-icon
-              class="help-icon"
-              icon-class="help"
-            />
-          </el-tooltip>
+            <el-tooltip class="item" effect="dark" placement="top-start">
+              <div slot="content">
+                添加限制条件后，<br />读者只有在持有特定数量的粉丝币后才可查看全文的。
+              </div>
+              <svg-icon class="help-icon" icon-class="help" />
+            </el-tooltip>
           </span>
           <div class="post-list-content right">
-            <el-checkbox v-model="readauThority" ></el-checkbox>
+            <el-checkbox v-model="readauThority"></el-checkbox>
           </div>
         </div>
 
@@ -233,7 +232,7 @@
       </van-cell-group>
     </van-radio-group>
     <van-cell clickable :title="$t('publish.original')" @click="isOriginal = !isOriginal">
-      <van-checkbox v-model="isOriginal" class="publish-right">
+      <van-checkbox v-model="isOriginal" class="publish-right" @change="originalChange">
         <div slot="icon" slot-scope="props">
           <div v-if="!props.checked" class="my-checkbox"></div>
           <div v-else class="my-checkbox-active">
@@ -268,6 +267,7 @@
       }"
       @confirm="createDraft(saveInfo)"
     />
+    <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
 
@@ -289,6 +289,7 @@ import { Prompt } from '@/components/'
 import tagCard from '@/components/tagCard/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
+import statement from '@/components/statement/index.vue'
 
 export default {
   name: 'NewPost',
@@ -298,7 +299,8 @@ export default {
     modalPrompt,
     tagCard,
     articleTransfer,
-    Prompt
+    Prompt,
+    statement
   },
   data() {
     return {
@@ -339,7 +341,8 @@ export default {
       readToken: 1,
       readSelectOptions: [],
       readSelectValue: '',
-      readSummary: ''
+      readSummary: '',
+      statementVisible: false // 原创声明
     }
   },
   computed: {
@@ -930,6 +933,16 @@ export default {
         })
       })
       this.tagCards = tagCardsCopy
+    },
+    // 关闭原创声明框
+    closeStatement(val) {
+      // console.log(val)
+      this.isOriginal = val
+      this.statementVisible = false
+    },
+    // 原创改变 true 才显示原创声明
+    originalChange(val) {
+      if (val) this.statementVisible = true
     }
   }
 }

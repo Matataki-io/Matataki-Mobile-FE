@@ -230,12 +230,17 @@ export default new VueRouter({
     {
       path: '/tokens',
       name: 'tokens',
-      component: () => import(/* webpackChunkName: "tokens" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "tokens" */ './views/tokens/index.vue')
+    },
+    {
+      path: '/tokens/:id',
+      name: 'tokensId',
+      component: () => import(/* webpackChunkName: "tokensId" */ './views/tokens/id.vue')
     },
     {
       path: '/minetoken',
       name: 'minetoken',
-      component: () => import(/* webpackChunkName: "minetoken" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "minetoken" */ './views/minetoken/index.vue')
     },
     {
       path: '/ipfs/:hash',
@@ -247,6 +252,6 @@ export default new VueRouter({
       path: '*',
       name: 404,
       component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
-    },
+    }
   ]
 })

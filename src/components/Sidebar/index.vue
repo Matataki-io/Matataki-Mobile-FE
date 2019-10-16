@@ -146,6 +146,31 @@
             </div>
           </router-link>
         </div>
+
+        <div class="cell-container">
+          <router-link :to="{ name: 'tokens' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon icon-class="tokens" class="left-img"></svg-icon>
+                <span class="left-text">
+                  持有的粉丝币
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'minetoken' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon icon-class="minetoken" class="left-img"></svg-icon>
+                <span class="left-text">
+                  发行的粉丝币
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+        </div>
       </template>
       <template v-else>
         <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">

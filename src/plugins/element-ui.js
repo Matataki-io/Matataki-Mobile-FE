@@ -15,19 +15,27 @@ import {
   Popover,
   InputNumber,
   Select,
-  Option
+  Option,
+  Dialog,
+  Loading,
+  MessageBox
 } from 'element-ui'
 
 Vue.use(Input)
-Vue.use(Button)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Row)
-Vue.use(Col)
-Vue.use(Slider)
-Vue.use(Progress)
-Vue.use(Avatar)
-Vue.use(Popover)
-Vue.use(InputNumber)
-Vue.use(Select)
-Vue.use(Option)
+  .use(Button)
+  .use(Form)
+  .use(FormItem)
+  .use(Row)
+  .use(Col)
+  .use(Slider)
+  .use(Progress)
+  .use(Avatar)
+  .use(Popover)
+  .use(InputNumber)
+  .use(Select)
+  .use(Option)
+  .use(Dialog)
+  .use(Loading.directive)
+
+Vue.prototype.$loading = Loading.service
+Vue.prototype.$prompt = MessageBox.prompt

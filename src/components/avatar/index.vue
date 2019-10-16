@@ -50,6 +50,7 @@ export default {
 .g-avatar {
   overflow: hidden;
   border-radius: 50%;
+  border: 1px solid #f1f1f1;
   cursor: pointer;
   display: flex;
   align-items: center;
