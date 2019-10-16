@@ -1,12 +1,12 @@
 <template>
   <div class="outer">
-    <div ref="qr" class="qrcode" />
+    <canvas ref="qr" class="qrcode"></canvas>
     <p>请使用微信扫描二维码进行支付</p>
   </div>
 </template>
 
 <script>
-/* eslint-disable */
+import QRCode from 'qrcode'
 export default {
   name: "QRCode",
   props: {
@@ -31,11 +31,12 @@ export default {
   },
   methods: {
     genQRCode(url) {
-      new QRCode(this.$refs.qr, {
-        text: url,
+      QRCode.toCanvas(this.$refs.qr, url, {
         width: 150,
         height: 150
-      });
+      }, error => {
+        if (error) console.error(error)
+      })
     }
   }
 };
@@ -43,7 +44,6 @@ export default {
 
 <style lang="less" scoped>
 .outer {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;

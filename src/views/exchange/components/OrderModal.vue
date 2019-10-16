@@ -2,7 +2,7 @@
   <el-dialog
     :close-on-click-modal="false"
     :visible.sync="showModal"
-    width="500px"
+    width="90%"
     :lock-scroll="false"
     custom-class="br10"
     :before-close="handleClose"
@@ -37,10 +37,10 @@
             <td>
               ￥ {{ input }}
               <el-tooltip
-                content="交易金额精度大于0.01元会自动进位支付，多余的金额会保留在您的人民币账户中。"
-                placement="bottom"
+                placement="top"
                 effect="light"
               >
+                <div slot="content">交易金额精度大于0.01元会自动进位支付，<br/>多余的金额会保留在您的人民币账户中。</div>
                 <i class="el-icon-question" />
               </el-tooltip>
             </td>
@@ -168,6 +168,7 @@ export default {
       color: #000;
       .order-key {
         color: #666;
+        white-space: nowrap;
       }
     }
   }
