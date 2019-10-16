@@ -262,7 +262,7 @@ export default {
       const { input, inputToken, output, outputToken } = this.form;
       if (parseFloat(input) < 0.01 && inputToken.id === 0) {
         this.$toast.fail({
-          message: "交易金额小于不得小于1分钱",
+          message: "交易金额小于不得小于 0.01 CNY",
           duration: 3000
         });
         return;
