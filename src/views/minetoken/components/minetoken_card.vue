@@ -45,7 +45,7 @@ export default {
   border-top: 1px solid #ececec;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 14px 20px;
   .info {
     display: flex;
     align-items: center;
