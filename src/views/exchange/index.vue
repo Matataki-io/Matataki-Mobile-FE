@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Swap from "./components/Swap";
-import Pool from "./components/Pool";
+import { mapGetters } from 'vuex'
+import Swap from './components/swap'
+import Pool from './components/pool'
 
 export default {
   components: {
@@ -33,32 +33,32 @@ export default {
     Pool
   },
   data() {
-    return {};
+    return {}
   },
   computed: {
-    ...mapGetters(["isLogined"])
+    ...mapGetters(['isLogined'])
   },
   created() {},
   mounted() {
     this.$nextTick(() => {
-      this.checkLogin();
-    });
+      this.checkLogin()
+    })
   },
   methods: {
     onClickLeft() {
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: 'index' })
     },
     checkLogin() {
       if (!this.isLogined) {
-        this.$store.commit("setLoginModal", true);
-        return false;
+        this.$store.commit('setLoginModal', true)
+        return false
       }
     }
   }
-};
+}
 </script>
 <style lang="less">
-@import "./var.less";
+@import './var.less';
 .exchange {
   .el-tabs--border-card {
     border: none;
@@ -127,7 +127,7 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-@import "./var.less";
+@import './var.less';
 .main {
   min-height: 100%;
   background: @bg-color;
