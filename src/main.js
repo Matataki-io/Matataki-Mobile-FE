@@ -12,6 +12,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { backendAPI } from '@/api'
+import API from '@/api/API'
 import errorHandling from '@/common/errorHandling'
 import './registerServiceWorker'
 // import "lib-flexible"; // 适配
@@ -41,6 +42,7 @@ Vue.prototype.$point = point
 // new VConsole()
 
 Vue.prototype.$backendAPI = backendAPI
+Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$publishMethods = publishMethods
 
