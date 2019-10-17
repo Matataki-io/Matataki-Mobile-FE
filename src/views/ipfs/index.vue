@@ -171,3 +171,9 @@ figure {
   max-width: 100%;
 }
 </style>
+
+<style>
+.ipfs .katex-display {
+  overflow: auto;
+}
+</style>
