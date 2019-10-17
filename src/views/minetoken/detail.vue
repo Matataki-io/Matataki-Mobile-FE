@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import tokensManage from './components/tokens_manage.vue'
+import tokensManage from './components/tokens_manage_detail.vue'
 import tokensPublish from './components/tokens_publish.vue'
 
 export default {

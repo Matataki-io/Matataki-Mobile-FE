@@ -13,7 +13,7 @@
       <BasePull
         :params="pull.params"
         :api-url="pull.apiUrl"
-        :loading-text="$t('notBuyHistory')"
+        :loading-text="$t('not')"
         :is-obj="{ type: 'newObject', key: 'data', keys: 'logs' }"
         :need-access-token="true"
         :auto-request-time="0"

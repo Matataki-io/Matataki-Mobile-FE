@@ -27,7 +27,7 @@ export default {
     return {
       pull: {
         params: {},
-        apiUrl: 'tokenUserList',
+        apiUrl: 'tokenTokenLogs',
         list: []
       }
     }

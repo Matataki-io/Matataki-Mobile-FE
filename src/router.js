@@ -249,6 +249,12 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "minetoken" */ './views/minetoken/index.vue')
     },
     {
+      path: '/minetoken/detail',
+      name: 'minetokenDetail',
+      component: () =>
+        import(/* webpackChunkName: "minetokenDetail" */ './views/minetoken/detail.vue')
+    },
+    {
       path: '/ipfs/:hash',
       name: 'ipfs',
       component: () => import(/* webpackChunkName: "ipfs" */ './views/ipfs/index.vue')

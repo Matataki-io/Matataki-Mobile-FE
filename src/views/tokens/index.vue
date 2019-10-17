@@ -8,7 +8,7 @@
     <BasePull
       :params="pointLog.params"
       :api-url="pointLog.apiUrl"
-      :loading-text="$t('notBuyHistory')"
+      :loading-text="$t('not')"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       :need-access-token="true"
       :auto-request-time="0"
