@@ -1,7 +1,7 @@
 <template>
   <router-link class="card" :to="{ name: 'tokensId', params: { id: card.token_id } }">
     <div class="info">
-      <avatar v-if="card.logo" :src="cover(card.logo)" size="30px" />
+      <avatar :src="cover(card.logo)" size="30px" />
       <div class="user-info">
         <h3>{{ card.symbol }}</h3>
         <h4>{{ card.name }}</h4>

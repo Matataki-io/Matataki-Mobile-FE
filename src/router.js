@@ -86,7 +86,7 @@ export default new VueRouter({
         else {
           next()
         }
-      } // 你怎么能随便给别人看到自己的资产明细呢？不怕被人打吗？
+      }
     },
     {
       path: '/user/asset/:id/:type',
@@ -100,7 +100,13 @@ export default new VueRouter({
         else {
           next()
         }
-      } // 你怎么能随便给别人看到自己的资产明细呢？不怕被人打吗？
+      }
+    },
+    // todo 钱包账户路由, 逐步向pc的路由同步名称
+    {
+      path: '/account/cny',
+      name: 'accountCny',
+      component: () => import(/* webpackChunkName: "accountCny" */ './views/account/cny.vue')
     },
     {
       path: '/user/withdraw/:id/:type',
@@ -128,7 +134,7 @@ export default new VueRouter({
         else {
           next()
         }
-      } // 你怎么能随便给别人看到自己的资产明细呢？不怕被人打吗？
+      }
     },
     {
       path: '/user/:id/reward',
@@ -142,7 +148,7 @@ export default new VueRouter({
         else {
           next()
         }
-      } // 你怎么能随便给别人看到自己的资产明细呢？不怕被人打吗？
+      }
     },
     {
       path: '/buyHistory',
@@ -184,7 +190,7 @@ export default new VueRouter({
         else {
           next()
         }
-      } // 你怎么能随便给别人看到自己的资产明细呢？不怕被人打吗？
+      }
     },
     {
       path: '/help',

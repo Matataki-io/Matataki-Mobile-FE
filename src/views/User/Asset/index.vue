@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { precision } from '@/common/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 import iconEOS from '@/assets/img/icon_EOS.svg'
 import iconONT from '@/assets/img/icon_ONT.svg'
 import iconETH from '@/assets/img/icon_ETH.svg'
@@ -84,6 +84,13 @@ export default {
           status: true,
           withdraw: 0,
           total: 0
+        },
+        {
+          type: 'RMB',
+          imgUrl: iconRMB,
+          status: true,
+          withdraw: 0,
+          total: 0
         }
       ],
       // 暂未支持的币种
@@ -101,13 +108,6 @@ export default {
           status: false,
           withdraw: 0,
           total: 0
-        },
-        {
-          type: 'RMB',
-          imgUrl: iconRMB,
-          status: false,
-          withdraw: 0,
-          total: 0
         }
       ]
     }
@@ -119,12 +119,19 @@ export default {
   methods: {
     jumpTo(index) {
       if (!this.assetList[index].status) return
-      this.$router.push({
-        name: 'AssetType',
-        params: {
-          type: this.assetList[index].type
-        }
-      })
+      // todo 逐步拆分页面
+      if (this.assetList[index].type === 'RMB') {
+        this.$router.push({
+          name: 'accountCny'
+        })
+      } else {
+        this.$router.push({
+          name: 'AssetType',
+          params: {
+            type: this.assetList[index].type
+          }
+        })
+      }
     },
     // 获取账户资产列表 暂时没有EOS数据
     async getBalance() {
@@ -137,6 +144,7 @@ export default {
             const filterArr = symbol => res.data.data.filter(i => i.symbol === symbol)
             const filterArrONT = filterArr('ONT')
             const filterArrEOS = filterArr('EOS')
+            const filterArrCNY = filterArr('CNY')
 
             if (filterArrEOS.length !== 0) {
               // eos
@@ -153,6 +161,15 @@ export default {
               this.assetList[1].total = precision(
                 filterArrONT[0].totalIncome,
                 filterArrONT[0].symbol
+              )
+            }
+
+            if (filterArrCNY.length !== 0) {
+              // cny
+              this.assetList[2].withdraw = precision(filterArrCNY[0].amount, filterArrCNY[0].symbol)
+              this.assetList[2].total = precision(
+                filterArrCNY[0].totalIncome,
+                filterArrCNY[0].symbol
               )
             }
           } else {
