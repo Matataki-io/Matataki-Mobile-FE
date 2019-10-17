@@ -22,7 +22,7 @@
         />
       </div>
       <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
-        <el-table :data="tokenList" @row-click="selectToken" style="width: 100%">
+        <el-table height="50vh" :data="tokenList" @row-click="selectToken" style="width: 100%">
           <el-table-column width="180px" label="粉丝币">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -31,7 +31,10 @@
                 </div>
                 <div class="sc-tilXH egNEUM">
                   <span id="symbol">{{ scope.row.symbol }}</span>
-                  <div class="sc-hEsumM iHXZgD">{{ scope.row.name }}</div>
+                  <div class="sc-hEsumM iHXZgD">
+                    <div>{{ scope.row.name }}</div>
+                    <div>流通量 {{scope.row.amount || '暂无'}}</div>
+                  </div>
                 </div>
               </div>
             </template>
@@ -51,12 +54,16 @@
           </el-table-column>
           <el-table-column label>
             <template slot-scope="scope">
-              <n-link
+              <router-link
                 v-if="scope.row.id !== 0"
-                :to="{name: 'user-id', params: {id: scope.row.uid}}"
+                target="_blank"
+                class="gray-btn"
+                :to="{name: 'User', params: {id: scope.row.uid}}"
               >
-                <el-button icon="el-icon-link" circle></el-button>
-              </n-link>
+                <el-button circle>
+                  <svg-icon icon-class="share" style="color: #B2B2B2;"/>
+                </el-button>
+              </router-link>
             </template>
           </el-table-column>
         </el-table>
@@ -74,6 +81,8 @@
 <script>
 /* eslint-disable */
 import { CNY } from "./consts.js";
+import utils from '@/utils/utils'
+
 export default {
   name: "TokenListModal",
   props: {
@@ -116,7 +125,7 @@ export default {
       showModal: false,
       tokenList: [],
       page: 1,
-      pagesize: 10,
+      pagesize: 100,
       count: 0,
       loading: false
     };
@@ -149,34 +158,53 @@ export default {
       this.loading = true;
       this.$API.allToken({ page, pagesize, search }).then(res => {
         this.loading = false;
+        let listFromDecimal = this.listFromDecimal(res.data.list || [])
         if (search === "") {
           if (page === 1) {
             this.count = res.data.count;
             let list = [];
             if (this.addon) {
-              list = [CNY, ...res.data.list];
+              list = [CNY, ...listFromDecimal];
             } else {
-              list = res.data.list;
+              list = listFromDecimal;
             }
             this.tokenList = list;
           } else {
-            this.tokenList.push(...res.data.list);
+            this.tokenList.push(...listFromDecimal);
           }
         } else {
           if (page === 1) {
             this.count = res.data.count;
-            this.tokenList = res.data.list;
+            this.tokenList = listFromDecimal;
           } else {
-            this.tokenList.push(...res.data.list);
+            this.tokenList.push(...listFromDecimal);
           }
         }
       });
+    },
+    listFromDecimal(list) {
+      list.forEach((item) => {
+        item.amount = utils.fromDecimal(item.amount)
+      })
+      return list
     }
   }
 };
 </script>
 
 <style lang="less">
+.cotdDw {
+  .el-table .cell {
+    padding-left: 20px;
+  }
+}
+.gray-btn {
+  .el-button {
+    background-color: #f1f1f1;
+    border-color: #f1f1f1;
+    padding: 10px;
+  }
+}
 .black-theme-dialog {
   background-color: #ffffff;
   .el-dialog__body {
@@ -217,11 +245,7 @@ export default {
     justify-content: center;
   }
   .cotdDw {
-    -webkit-box-flex: 1;
     flex-grow: 1;
-    max-height: 50vh;
-    min-height: 40vh;
-    overflow-y: auto;
   }
   .hDyKIS {
     display: flex;
