@@ -8,10 +8,10 @@
     <div class="tokens-head">
       <div class="fl jsb">
         <div class="info">
-          <avatar v-if="cover" :src="cover" size="30px" />
+          <avatar :src="cover" size="30px" />
           <div class="user-info">
             <h3>{{ tokenDetail.symbol || '' }}</h3>
-            <h4>{{ tokenDetail.name || ''}}</h4>
+            <h4>{{ tokenDetail.name || '' }}</h4>
           </div>
         </div>
         <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}枚</div>
@@ -33,7 +33,7 @@
       :reload="reload"
       @getListData="getListData"
     >
-      <card v-for="item in pointLog.list" :key="item.id" :card="item" ></card>
+      <card v-for="item in pointLog.list" :key="item.id" :card="item"></card>
     </BasePull>
     <div class="fixed-bottom">
       <el-button class="fix-button" @click="showGift">赠送</el-button>
@@ -131,15 +131,14 @@ export default {
   },
   computed: {
     cover() {
-      // return this.userDetail.avatar ? this.$backendAPI.getImg(this.userDetail.avatar) : ''
-      return ''
+      return this.userDetail.avatar ? this.$backendAPI.getImg(this.userDetail.avatar) : ''
     }
   },
   methods: {
     getListData(res) {
       console.log(res)
-      // this.tokenDetail = res.data.data.tokenDetail
-      // this.userDetail = res.data.data.userDetail
+      this.tokenDetail = res.data.data.tokenDetail
+      this.userDetail = res.data.data.userDetail
       this.pointLog.list = res.list
     },
     tokenAmount(amount) {

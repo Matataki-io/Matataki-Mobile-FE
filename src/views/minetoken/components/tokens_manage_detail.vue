@@ -16,7 +16,7 @@
 
 <script>
 import layout from './tokens_manage_layout.vue'
-import card from './minetoken_card.vue'
+import card from './minetoken_card_detail.vue'
 
 export default {
   components: {
