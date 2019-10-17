@@ -251,7 +251,7 @@ export default new VueRouter({
     {
       path: '/ipfs/:hash',
       name: 'ipfs',
-      component: () => import(/* webpackChunkName: "ipfs" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "ipfs" */ './views/ipfs/index.vue')
     },
     {
       // 幽林页面重定向进入 404 页面

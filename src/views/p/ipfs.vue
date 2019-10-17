@@ -8,9 +8,9 @@
     </p>
     <div v-if="!isHide" class="ipfs-hash">
       <svg-icon class="copy-hash" icon-class="copy" @click="copyText(getCopyIpfsHash)" />
-      <n-link class="ipfs" target="_blank" :to="{ name: 'ipfs-hash', params: { hash: hash } }">
+      <router-link class="ipfs" :to="{ name: 'ipfs', params: { hash: hash } }">
         IPFS Hash: {{ hash || 'Loading...' }}
-      </n-link>
+      </router-link>
     </div>
     <img class="ipfs-img" src="@/assets/img/ipfs.png" alt="ipfs" />
   </div>
