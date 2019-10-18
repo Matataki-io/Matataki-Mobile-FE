@@ -18,7 +18,8 @@ import {
   Option,
   Dialog,
   Loading,
-  MessageBox
+  MessageBox,
+  Tooltip
 } from 'element-ui'
 
 Vue.use(Input)
@@ -36,6 +37,7 @@ Vue.use(Input)
   .use(Option)
   .use(Dialog)
   .use(Loading.directive)
+  .use(Tooltip)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$prompt = MessageBox.prompt

@@ -104,7 +104,19 @@
         <div class="user-avatar">
           <img v-if="avatar" v-lazy="avatar" class="userpic" :src="avatar" />
         </div>
-        <p class="name">{{ name }}</p>
+        <p class="name">
+          {{ name }}
+          <el-tooltip
+            v-if="tokenUser"
+            class="item"
+            effect="dark"
+            content="发币用户"
+            placement="top"
+          >
+            <svg-icon class="tokens" icon-class="token" />
+          </el-tooltip>
+        </p>
+
         <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
         <p class="userstatus">
           <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
@@ -168,7 +180,8 @@ export default {
         supports: 0,
         drafts: 0
       },
-      scrollStatus: false // 根据滚动状态判断是否显示按钮
+      scrollStatus: false, // 根据滚动状态判断是否显示按钮
+      tokenUser: false
     }
   },
   computed: {
@@ -181,6 +194,9 @@ export default {
   },
   created() {
     this.refreshUser()
+  },
+  mounted() {
+    this.tokenUserId(this.$route.params.id)
   },
   methods: {
     jumpTo(params) {
@@ -237,6 +253,16 @@ export default {
     },
     setAvatarImage(hash) {
       if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
+    },
+    async tokenUserId(id) {
+      await this.$backendAPI
+        .tokenUserId(id)
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
+            this.tokenUser = true
+          }
+        })
+        .catch(err => console.log('get token user error', err))
     }
   }
 }
