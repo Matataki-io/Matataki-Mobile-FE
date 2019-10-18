@@ -273,7 +273,7 @@ export default {
     flex: 0 0 33.33%;
     margin: 5px 0;
     &-number {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
       color: rgba(84, 45, 224, 1);
       line-height: 28px;
@@ -285,7 +285,7 @@ export default {
       }
     }
     &-title {
-      font-size: 14px;
+      font-size: 12px;
       color: rgba(0, 0, 0, 1);
       line-height: 20px;
       padding: 0;
@@ -346,6 +346,7 @@ export default {
   color: rgba(0, 0, 0, 1);
   line-height: 20px;
   padding: 14px 20px;
+  border-bottom: 1px solid #ececec;
   .minetoken-title {
     width: 70%;
   }

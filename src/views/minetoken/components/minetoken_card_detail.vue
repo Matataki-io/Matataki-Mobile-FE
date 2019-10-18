@@ -64,7 +64,7 @@ export default {
 
 <style scoped lang="less">
 .card {
-  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
   display: flex;
   flex-direction: column;
   padding: 14px 20px;
