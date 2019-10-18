@@ -140,6 +140,7 @@ export default {
   width: 100%;
   margin: auto;
   position: relative;
+  padding-top: 45px;
   .ma-banner {
     width: 100%;
   }
