@@ -1,15 +1,21 @@
 <template>
   <div class="card">
     <div class="fl jsb">
-      <router-link class="info" :to="{ name: 'User', params: { id: card.uid } }">
-        <avatar v-if="true" :src="cover(card.from_avatar)" size="30px" />
-        <h3>{{ card.from_nickname || card.from_username }}</h3>
-      </router-link>
-      <span class="time">{{ time }}</span>
+      <div class="from-to">
+        <router-link class="info" :to="{ name: 'User', params: { id: card.from_uid } }">
+          {{ card.from_nickname || card.from_username }}
+        </router-link>
+        <svg-icon icon-class="transfer" class="info-icon"></svg-icon>
+        <router-link class="info" :to="{ name: 'User', params: { id: card.to_uid } }">
+          {{ card.to_nickname || card.to_username }}
+        </router-link>
+      </div>
+      <span class="amount">{{ tokenAmount(card.amount) }}</span>
     </div>
     <div class="fl jsb">
-      <span class="type">{{ type }}</span>
-      <span class="amount">{{ tokenAmount(card.amount) }}</span>
+      <span class="time">{{ time }}</span>
+      <!-- <span class="type">{{ type }}</span> -->
+      <span class="symbol">{{ card.symbol }}</span>
     </div>
   </div>
 </template>
@@ -17,13 +23,10 @@
 <script>
 import moment from 'moment'
 
-import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
-  components: {
-    avatar
-  },
+  components: {},
   props: {
     card: {
       type: Object,
@@ -74,14 +77,14 @@ export default {
   .info {
     display: flex;
     align-items: center;
-    width: 70%;
-    h3 {
-      margin-left: 10px;
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(0, 0, 0, 1);
-      line-height: 20px;
-    }
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 1);
+    line-height: 20px;
+  }
+  .info-icon {
+    margin: 0 10px;
+    color: #000;
   }
 }
 .time {
@@ -99,7 +102,18 @@ export default {
 .amount {
   font-size: 14px;
   font-weight: 500;
-  color: rgba(251, 104, 119, 1);
+  color: rgba(0, 0, 0, 1);
   line-height: 20px;
+}
+.symbol {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 17px;
+}
+.from-to {
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 </style>
