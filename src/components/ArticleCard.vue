@@ -20,9 +20,15 @@
         <p v-clampy="2" class="title search-res" v-html="xssTitle"></p>
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
-          <p v-if="nowIndex === 0" class="read-ups">
+          <p v-if="type === 'article'" class="read-ups">
             {{ article.read }}{{ $t('articleCard.read') }}
             <!-- &nbsp;&nbsp;{{ article.ups }}投资 -->
+            <img
+              v-if="article.require_holdtokens"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            />
           </p>
           <p v-else class="read-ups">
             {{ article.sale }}{{ $t('articleCard.sale')
@@ -75,6 +81,10 @@ export default {
     isSearchCard: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -178,6 +188,8 @@ export default {
   font-weight: 400;
   color: rgba(178, 178, 178, 1);
   text-align: left;
+  display: flex;
+  align-items: center;
   span {
     font-size: 12px;
     font-weight: 500;
@@ -269,5 +281,10 @@ export default {
   .card .read-ups {
     font-size: 15px;
   }
+}
+
+.lock-img {
+  width: 12px;
+  margin-left: 8px;
 }
 </style>

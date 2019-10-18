@@ -58,6 +58,7 @@
             v-for="itemArticle in itemList.articles"
             :key="itemArticle.id"
             :now-index="nowIndex"
+            type="article"
             :article="itemArticle"
           />
         </template>

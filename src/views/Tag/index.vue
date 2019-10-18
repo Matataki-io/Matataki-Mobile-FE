@@ -26,7 +26,7 @@
       :api-url="apiUrl"
       @getListData="getListData"
     >
-      <ArticleCard v-for="(item, index) in tagList" :key="index" :article="item" />
+      <ArticleCard v-for="(item, index) in tagList" :key="index" :article="item" type="article" />
     </BasePull>
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
   },
   created() {
     if (!this.$route.query.id) {
-      this.$router.push({name: 'index'})
+      this.$router.push({ name: 'index' })
     }
     this.tagBanner = tagColor()[this.$route.query.id] || '#000'
   },

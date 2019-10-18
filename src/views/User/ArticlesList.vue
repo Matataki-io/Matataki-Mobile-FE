@@ -33,6 +33,7 @@
         :article="item"
         :now-index="activeIndex"
         :is-other-user="isOtherUser"
+        type="article"
       />
     </BasePull>
   </div>

@@ -59,6 +59,7 @@
             :key="itemArticle.id"
             :now-index="nowIndex"
             :article="itemArticle"
+            type="shop"
           />
         </template>
         <p
