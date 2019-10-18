@@ -1,6 +1,10 @@
 <template>
   <div class="main exchange">
-    <van-nav-bar title="粉丝币交易所" left-text="返回" left-arrow @click-left="onClickLeft" />
+    <BaseHeader
+      :has-bottom-border-line="true"
+      :pageinfo="{ title: '粉丝币交易所' }"
+      customize-header-bc="#fff"
+    />
     <div class="outer-container">
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner" />
       <div class="p-w">
@@ -136,6 +140,7 @@ export default {
   width: 100%;
   margin: auto;
   position: relative;
+  padding-top: 45px;
   .ma-banner {
     width: 100%;
   }
