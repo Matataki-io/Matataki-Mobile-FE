@@ -143,13 +143,13 @@ export default {
       });
     },
     successNotice(text) {
-      this.$toast.success({
+      this.$message.success({
         message: text,
         duration: 4000
       });
     },
     errorNotice(text) {
-      this.$toast.fail({
+      this.$message.error({
         message: text
       });
     }
