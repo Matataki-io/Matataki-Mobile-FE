@@ -21,7 +21,11 @@
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
           <p v-if="type === 'article'" class="read-ups">
-            {{ article.read }}{{ $t('articleCard.read') }} {{ article.likes }} 推荐
+            {{ article.read }}
+            {{ $t('articleCard.read') }}
+            &nbsp;
+            {{ article.likes }}
+            推荐
             <!-- &nbsp;&nbsp;{{ article.ups }}投资 -->
             <img
               v-if="article.require_holdtokens"
