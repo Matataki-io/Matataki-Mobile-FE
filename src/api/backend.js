@@ -546,6 +546,12 @@ const API = {
       method: 'get',
       url: '/token/minetoken'
     })
+  },
+  tokenUserId(id) {
+    return this.accessBackend({
+      method: 'get',
+      url: `/token/user/${id}`
+    })
   }
 }
 
