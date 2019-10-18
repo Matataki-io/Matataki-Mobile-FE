@@ -27,8 +27,14 @@ export default {
       return moment(this.card.create_time).format('MMMDo HH:mm')
     },
     amount() {
+      const type = {
+        recharge: '+',
+        transfer_out: '',
+        transfer_in: '+'
+      }
+
       const tokenamount = precision(this.card.amount, 'CNY', 4)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+      return type[this.card.type] + this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     color() {
       const type = {
