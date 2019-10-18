@@ -308,14 +308,32 @@ export default {
   padding: 14px 0;
   text-align: center;
   border-bottom: 1px solid #ececec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   a {
+    display: block;
     font-size: 14px;
     font-weight: 500;
     color: #b2b2b2;
     line-height: 20px;
     margin: 0 20px;
+    position: relative;
+    z-index: 1;
     &.active {
       color: #000;
+      &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 4px;
+        background: #542de0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1px;
+        z-index: 0;
+      }
     }
   }
 }
