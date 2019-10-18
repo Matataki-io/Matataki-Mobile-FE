@@ -813,7 +813,12 @@ export default {
       // 不要在页面组件写具体实现，谢谢合作 - Frank
       if (imgfile.type === 'image/gif') {
         defaultImagesUploader(imgfile).then(({ data }) => {
-          const { url } = data.data
+          let url
+          if (!data.data) {
+            url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
+          } else {
+            url = data.data.url
+          }
           this.$refs.md.$img2Url(pos, url)
         })
       } else {
@@ -827,7 +832,12 @@ export default {
           canvas.toBlob(
             blob => {
               defaultImagesUploader(blob).then(({ data }) => {
-                const { url } = data.data
+                let url
+                if (!data.data) {
+                  url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
+                } else {
+                  url = data.data.url
+                }
                 this.$refs.md.$img2Url(pos, url)
               })
             },
