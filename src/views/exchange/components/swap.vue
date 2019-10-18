@@ -374,11 +374,9 @@ export default {
         return;
       }
       this.$API.getUserBalance(tokenId).then(res => {
-        if (res.code === 0 && res.data) {
-          const deciaml = res.data.decimals;
-          this.balance[type] = parseFloat(
-            utils.fromDecimal(res.data.amount, deciaml)
-          );
+
+        if (res.code === 0) {
+          this.balance[type] = parseFloat(utils.fromDecimal(res.data, 4))
           // 检查用户余额
           this.checkBalance();
         }
@@ -404,7 +402,7 @@ export default {
       return true;
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
