@@ -1,51 +1,81 @@
 <template>
-  <!-- <router-link class="card" :to="{ name: 'tokensId', params: { id: card.token_id } }">
-    <div class="info">
-      <avatar v-if="card.logo" :src="cover(card.logo)" size="30px" />
-      <div class="user-info">
-        <h3>{{ card.symbol }}</h3>
-        <h4>{{ card.name }}</h4>
-      </div>
-    </div>
-    <div class="number">
-      <span>{{ tokenAmount(card.amount) }}枚</span>
-      <i class="el-icon-arrow-right icon"></i>
-    </div>
-  </router-link> -->
   <div class="card">
-    <div class="fl jsb">
-      <span class="type">{{ type }}</span>
-      <span class="money">{{ amount }}</span>
-    </div>
-    <div class="fl jsb">
-      <span class="time">{{ time }}</span>
-      <span class="symbol">{{ card.symbol }}</span>
+    <avatar :src="cover" size="30px" />
+    <div class="fl card-info">
+      <div class="fl jsb">
+        <div class="fl fdc">
+          <span class="username">{{ username }}</span>
+          <span class="type">{{ type }}</span>
+        </div>
+        <span class="amount" :style="{ color: color }">{{ amount }}</span>
+      </div>
+      <div class="fl jsb">
+        <span class="time">{{ time }}</span>
+        <span class="symbol">{{ card.symbol }}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
+import avatar from '@/components/avatar/index.vue'
 
 export default {
-  components: {},
+  components: {
+    avatar
+  },
   props: {
     card: {
       type: Object,
       required: true
-    },
-  },
-  created() {
-    console.log(this.card)
+    }
   },
   computed: {
+    ...mapGetters(['isMe']),
     time() {
       return moment(this.card.create_time).format('MMMDo HH:mm')
     },
+    cover() {
+      if (this.isMe(this.card.from_uid)) {
+        return this.card.to_avatar ? this.$backendAPI.getImg(this.card.to_avatar) : ''
+      } else if (this.isMe(this.card.to_uid)) {
+        return this.card.from_avatar ? this.$backendAPI.getImg(this.card.from_avatar) : ''
+      } else {
+        return this.card.from_avatar ? this.$backendAPI.getImg(this.card.from_avatar) : ''
+      }
+    },
+    username() {
+      if (this.isMe(this.card.from_uid)) {
+        return this.card.to_nickname || this.card.to_username
+      } else if (this.isMe(this.card.to_uid)) {
+        return this.card.from_nickname || this.card.from_username
+      } else {
+        return this.card.from_nickname || this.card.from_username
+      }
+    },
     amount() {
       const tokenamount = precision(this.card.amount, 'CNY', this.card.decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+      let amount = this.$publishMethods.formatDecimal(tokenamount, 4)
+
+      if (this.isMe(this.card.from_uid)) {
+        return '-' + amount
+      } else if (this.isMe(this.card.to_uid)) {
+        return '+' + amount
+      } else {
+        return amount
+      }
+    },
+    color() {
+      if (this.isMe(this.card.from_uid)) {
+        return '#44D7B6'
+      } else if (this.isMe(this.card.to_uid)) {
+        return '#FB6877'
+      } else {
+        return '#000000'
+      }
     },
     type() {
       const { type } = this.card
@@ -59,40 +89,53 @@ export default {
       return typeList[type] || '其他'
     }
   },
+  created() {
+    console.log(this.isMe(1046))
+  },
   methods: {}
 }
 </script>
 
 <style scoped lang="less">
 .card {
+  display: flex;
   padding: 10px 20px;
   border-bottom: 1px solid #ececec;
-  &>div {
-    margin: 6px 0;
-  }
+}
+.card-info {
+  flex: 1;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.username {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 17px;
 }
 .type {
-  font-size:14px;
-  font-weight:400;
-  color:rgba(0,0,0,1);
-  line-height:20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 17px;
+  margin: 2px 0;
 }
-.money {
-  font-size:14px;
-  font-weight:500;
-  color:rgba(251,104,119,1);
-  line-height:20px;
+.amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  line-height: 20px;
 }
 .time {
-  font-size:12px;
-  font-weight:400;
-  color:rgba(178,178,178,1);
-  line-height:17px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 17px;
 }
 .symbol {
-  font-size:12px;
-  font-weight:400;
-  color:rgba(178,178,178,1);
-  line-height:17px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 17px;
 }
 </style>
