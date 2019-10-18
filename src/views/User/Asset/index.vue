@@ -86,7 +86,7 @@ export default {
           total: 0
         },
         {
-          type: 'RMB',
+          type: 'CNY',
           imgUrl: iconRMB,
           status: true,
           withdraw: 0,
@@ -120,7 +120,7 @@ export default {
     jumpTo(index) {
       if (!this.assetList[index].status) return
       // todo 逐步拆分页面
-      if (this.assetList[index].type === 'RMB') {
+      if (this.assetList[index].type === 'CNY') {
         this.$router.push({
           name: 'accountCny'
         })

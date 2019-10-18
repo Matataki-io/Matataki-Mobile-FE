@@ -97,7 +97,7 @@ export default {
           total: 0
         },
         {
-          type: 'RMB',
+          type: 'CNY',
           imgUrl: iconRMB,
           status: false,
           withdraw: 0,
