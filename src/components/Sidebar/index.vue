@@ -4,7 +4,7 @@
       <template v-if="isLogined">
         <div class="account">
           <div class="top-container">
-            <router-link :to="{ name: 'UserEdit', params: { id } }">
+            <router-link :to="{ name: 'setting' }">
               <div class="avatar-container">
                 <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
               </div>

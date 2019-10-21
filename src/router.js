@@ -57,22 +57,12 @@ export default new VueRouter({
     {
       path: '/user/:id',
       name: 'User',
-      props: true,
       component: () => import(/* webpackChunkName: "User" */ './views/User/index.vue')
     },
     {
-      path: '/user/edit/:id',
-      name: 'UserEdit',
-      props: true,
-      component: () => import(/* webpackChunkName: "UserEdit" */ './views/User/edit.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
-        else {
-          next()
-        }
-      }
+      path: '/setting',
+      name: 'setting',
+      component: () => import(/* webpackChunkName: "setting" */ './views/setting/index.vue')
     },
     {
       path: '/user/asset/:id',

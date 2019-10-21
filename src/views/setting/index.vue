@@ -46,9 +46,7 @@ import { mapActions } from 'vuex'
 import imgUpload from '@/components/imgUpload/index.vue'
 
 export default {
-  name: 'User',
   components: { imgUpload },
-  props: ['id'],
   data() {
     return {
       defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,

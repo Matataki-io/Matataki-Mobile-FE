@@ -24,7 +24,7 @@
     <!-- <img v-else class="logo" src="@/assets/img/logo.png" alt="logo" /> -->
     <div
       slot="right"
-      :class="[scrollShowTitle && 'scroll', scrollShowTitle && scrollToggleStatus && 'scroll-show']"
+      :class="[scrollShowRight && 'scroll', scrollShowRight && scrollToggleStatus && 'scroll-show']"
       class="header-right"
     >
       <slot name="info" />

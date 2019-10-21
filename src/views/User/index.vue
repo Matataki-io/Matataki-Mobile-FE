@@ -1,172 +1,116 @@
 /* eslint-disable no-shadow */
 <template>
-  <div class="user mw" style="white-space:nowrap;">
-    <template v-if="isMe(id)">
-      <!-- 自己 -->
-      <!-- 有侧边栏 代替了 -->
-      <BaseHeader :pageinfo="{ title: $t('user.title') }">
-        <div slot="right" class="help-button" @click="jumpTo({ name: 'Help' })">
-          <img src="@/assets/img/icon_user_settings.svg" alt="settings" />
-        </div>
-      </BaseHeader>
-      <div class="usercard">
-        <div class="user-avatar">
-          <img v-if="avatar" v-lazy="avatar" :src="avatar" />
-        </div>
-        <div class="texts">
-          <p class="user-info">
-            <span class="nmae">{{ name }}</span>
-            <router-link class="edit-button" :to="{ name: 'UserEdit', params: { id } }">{{
-              $t('edit')
-            }}</router-link>
-          </p>
-          <p class="userstatus">
-            <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
-              {{ $t('follow') }}：{{ follows }}</router-link
-            >
-            <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
-              {{ $t('fans') }}：{{ fans }}</router-link
-            >
-          </p>
-        </div>
-      </div>
-
-      <div class="user-block">
-        <div class="user-block-list" @click="jumpTo({ name: 'Asset', params: { id } })">
-          <span class="user-block-list-title">{{ $t('user.accountTitle') }}</span>
-          <span class="user-block-list-des">
-            {{ $t('user.accountTitle', [stats.accounts]) }}
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
-          </span>
-        </div>
-      </div>
-
-      <div class="user-block">
-        <div class="user-block-list" @click="jumpTo({ name: 'Original', params: { id } })">
-          <span class="user-block-list-title">{{ $t('user.originalArticle') }}</span>
-          <span class="user-block-list-des">
-            {{ stats.articles }}{{ $t('articleUtil') }}
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
-          </span>
-        </div>
-        <div class="user-block-list" @click="jumpTo({ name: 'Reward', params: { id } })">
-          <span class="user-block-list-title">{{ $t('user.investmentArticle') }}</span>
-          <span class="user-block-list-des">
-            {{ stats.supports }}{{ $t('articleUtil') }}
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
-          </span>
-        </div>
-        <div class="user-block-list" @click="jumpTo({ name: 'DraftBox', params: { id } })">
-          <span class="user-block-list-title">{{ $t('user.draftArticle') }}</span>
-          <span class="user-block-list-des">
-            {{ stats.drafts }}{{ $t('articleUtil') }}
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
-          </span>
-        </div>
-      </div>
-
-      <div class="user-block">
-        <div class="user-block-list" @click="jumpTo({ name: 'BuyHistory' })">
-          <span class="user-block-list-title">{{ $t('user.buyArticle') }}</span>
-          <span class="user-block-list-des">
-            <img class="arrow" src="@/assets/img/icon_arrow.svg" :alt="$t('view')" />
-          </span>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <!-- 他人 -->
-      <BaseHeader
-        :pageinfo="{ title: name }"
-        :customize-header-bc="'#542de0'"
-        :scroll-toggle-bc="'#fff'"
-        :is-scroll-emit="true"
-        :scroll-show-title="true"
-        :scroll-show-right="true"
-        @scrollToggleStatus="status => (scrollStatus = status)"
-      >
-        <div v-if="!isMe(id)" slot="right">
-          <template v-if="!followed">
-            <span class="follow-button dark" @click="followOrUnfollowUser({ id, type: 1 })">
-              <svg-icon icon-class="add" />
-              {{ $t('follow') }}</span
-            >
-          </template>
-          <template v-else>
-            <span class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">{{
-              $t('following')
-            }}</span>
-          </template>
-        </div>
-      </BaseHeader>
-
-      <div class="otherUser">
-        <div class="user-avatar">
-          <img v-if="avatar" v-lazy="avatar" class="userpic" :src="avatar" />
-        </div>
-        <p class="name">
-          {{ name }}
-          <el-tooltip
-            v-if="tokenUser"
-            class="item"
-            effect="dark"
-            content="发币用户"
-            placement="top"
+  <div class="user mw">
+    <!-- 他人 -->
+    <BaseHeader
+      :pageinfo="{ title: '个人主页' }"
+      :scroll-toggle-bc="'#fff'"
+      :is-scroll-emit="true"
+      :scroll-show-right="true"
+      @scrollToggleStatus="status => (scrollStatus = status)"
+    >
+      <div v-if="!isMe(id)" slot="right">
+        <template v-if="!followed">
+          <span class="follow-button dark" @click="followOrUnfollowUser({ id, type: 1 })">
+            <svg-icon icon-class="add" />
+            {{ $t('follow') }}</span
           >
-            <svg-icon class="tokens" icon-class="token" />
-          </el-tooltip>
-        </p>
+        </template>
+        <template v-else>
+          <span class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">{{
+            $t('following')
+          }}</span>
+        </template>
+      </div>
+    </BaseHeader>
 
-        <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
-        <p class="userstatus">
-          <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
-            <span class="statusNumber">{{ follows }}</span>
-            <span class="statusKey">{{ $t('follow') }}</span>
-          </router-link>
-          <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
-            <span class="statusNumber">{{ fans }}</span>
-            <span class="statusKey">{{ $t('fans') }}</span>
-          </router-link>
-        </p>
+    <div class="user-head">
+      <img class="user-banner" src="@/assets/img/user_banner.png" alt="banner" />
+      <avatar class="user-avatar" :src="avatar"></avatar>
+      <p class="name">
+        {{ name }}
+        <el-tooltip v-if="tokenUser" class="item" effect="dark" content="发币用户" placement="top">
+          <svg-icon class="tokens" icon-class="token" />
+        </el-tooltip>
+      </p>
 
+      <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
+      <p class="user-status">
+        <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
+          <span class="status-number">{{ follows }}</span>
+          <span class="status-key">{{ $t('follow') }}</span>
+        </router-link>
+        <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
+          <span class="status-number">{{ fans }}</span>
+          <span class="status-key">{{ $t('fans') }}</span>
+        </router-link>
+      </p>
+
+      <div v-if="!isMe(id)" class="fixed-right">
         <template v-if="!scrollStatus">
           <transition name="fade">
             <span
               v-if="!followed"
-              class="follow-button other dark"
+              class="follow-button dark"
               @click="followOrUnfollowUser({ id, type: 1 })"
             >
               <svg-icon icon-class="add" />
               {{ $t('follow') }}</span
             >
-            <span v-else class="follow-button other" @click="followOrUnfollowUser({ id, type: 0 })">
+            <span v-else class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">
               {{ $t('following') }}</span
             >
           </transition>
         </template>
       </div>
-      <ArticlesList
-        :id="id"
-        ref="ArticlesList"
-        :is-other-user="true"
-        class="user-list"
-        :listtype="'others'"
+      <router-link v-else :to="{ name: 'setting' }" class="fixed-right">
+        <el-button size="mini">编辑资料</el-button>
+      </router-link>
+    </div>
+
+    <nav class="user-nav">
+      <a href="javascript:void(0);" class="active">文章</a>
+      <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
+        {{ $t('follow') }}
+      </router-link>
+      <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
+        {{ $t('fans') }}
+      </router-link>
+    </nav>
+
+    <BasePull
+      :params="pull.params"
+      :api-url="pull.apiUrl"
+      :active-index="0"
+      :now-index="index"
+      :auto-request-time="pull.autoRequestTime"
+      :loading-text="pull.loadingText"
+      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+      @getListData="getListDataTab"
+    >
+      <ArticleCard
+        v-for="(itemChild, index) in pull.list"
+        :key="index"
+        :class="listtype !== 'others' && 'card-margin'"
+        :article="itemChild"
+        :now-index="0"
+        type="article"
       />
-    </template>
+    </BasePull>
   </div>
 </template>
 
 <script>
-// 这个页面被改完了 还有一堆没有的方法待删除 -- 希望修改的时候改干净吧 :(
 import { mapGetters } from 'vuex'
-import ArticlesList from './ArticlesList.vue'
+import { ArticleCard } from '@/components/'
+
+import avatar from '@/components/avatar/index.vue'
 
 export default {
-  name: 'User',
-  components: { ArticlesList },
-  props: ['id'],
+  components: { ArticleCard, avatar },
   data() {
     return {
+      id: this.$route.params.id,
       followed: false,
       follows: 0,
       fans: 0,
@@ -181,7 +125,14 @@ export default {
         drafts: 0
       },
       scrollStatus: false, // 根据滚动状态判断是否显示按钮
-      tokenUser: false
+      tokenUser: false,
+      pull: {
+        params: { author: this.$route.params.id },
+        apiUrl: 'homeTimeRanking',
+        list: [],
+        loadingText: this.$t('not'),
+        autoRequestTime: 0
+      }
     }
   },
   computed: {
@@ -263,6 +214,10 @@ export default {
           }
         })
         .catch(err => console.log('get token user error', err))
+    },
+    getListDataTab(res) {
+      // console.log(res)
+      this.pull.list = res.list
     }
   }
 }
