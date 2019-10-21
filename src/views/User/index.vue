@@ -28,8 +28,14 @@
       <img class="user-banner" src="@/assets/img/user_banner.png" alt="banner" />
       <avatar class="user-avatar" :src="avatar"></avatar>
       <p class="name">
-        {{ name }}
-        <el-tooltip v-if="tokenUser" class="item" effect="dark" content="发币用户" placement="top">
+        {{ username }}
+        <el-tooltip
+          v-if="tokenUser"
+          class="tooltip"
+          effect="dark"
+          content="发币用户"
+          placement="top"
+        >
           <svg-icon class="tokens" icon-class="token" />
         </el-tooltip>
       </p>
@@ -136,7 +142,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe'])
+    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe']),
+    username() {
+      return this.name.length < 12 ? this.name : this.name.slice(0, 12) + '...'
+    }
   },
   watch: {
     isLogined() {
