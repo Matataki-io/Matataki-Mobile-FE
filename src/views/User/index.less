@@ -16,13 +16,24 @@
   padding: 0 0 20px;
   position: relative;
   text-align: center;
+  .token-avatar {
+    transform: translate(-50%, 0);
+    margin-left: 50%;
+    margin-top: -35px;
+    margin-bottom: 10px;
+  }
+  .token-link {
+    width: 26px;
+    height: 10px;
+    margin: 0 10px;
+  }
   .user-avatar {
     width: 60px !important;
     height: 60px !important;
+    flex: 0 0 60px;
+    box-sizing: border-box;
     position: relative;
-    transform: translate(-50%, 0);
-    margin-left: 50%;
-    margin-top: -30px;
+    // margin-top: -30px;
     border: 4px solid #fff;
   }
   .name {
@@ -30,7 +41,8 @@
     font-weight:bold;
     display: inline-block;
     color:rgba(0,0,0,1);
-    margin-top: 10px;
+    // margin-top: 10px;
+    margin: 0;
     padding: 0;
     text-align: center;
     line-height:1;

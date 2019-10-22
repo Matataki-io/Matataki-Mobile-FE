@@ -26,7 +26,17 @@
 
     <div class="user-head">
       <img class="user-banner" src="@/assets/img/user_banner.png" alt="banner" />
-      <avatar class="user-avatar" :src="avatar"></avatar>
+      <div class="fl ac jc token-avatar">
+        <avatar class="user-avatar" :src="avatar"></avatar>
+
+        <img
+          v-if="tokenUser"
+          class="token-link"
+          src="@/assets/img/token_link.png"
+          alt="token-link"
+        />
+        <tokenAvatar v-if="tokenUser" :token="tokenData" />
+      </div>
       <p class="name">
         {{ username }}
         <el-tooltip
@@ -109,11 +119,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ArticleCard } from '@/components/'
+import tokenAvatar from './components/token_avatar'
 
 import avatar from '@/components/avatar/index.vue'
 
 export default {
-  components: { ArticleCard, avatar },
+  components: { ArticleCard, avatar, tokenAvatar },
   data() {
     return {
       id: this.$route.params.id,
@@ -132,6 +143,7 @@ export default {
       },
       scrollStatus: false, // 根据滚动状态判断是否显示按钮
       tokenUser: false,
+      tokenData: Object.create(null),
       pull: {
         params: { author: this.$route.params.id },
         apiUrl: 'homeTimeRanking',
@@ -220,6 +232,7 @@ export default {
         .then(res => {
           if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
             this.tokenUser = true
+            this.tokenData = res.data.data
           }
         })
         .catch(err => console.log('get token user error', err))
