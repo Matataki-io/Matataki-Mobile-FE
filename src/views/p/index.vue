@@ -439,7 +439,6 @@
     />
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
@@ -463,6 +462,7 @@ import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
 import commentInput from '@/components/article_comment'
 
+console.log(466, 'dev', wx)
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
 
@@ -564,9 +564,10 @@ export default {
       const shareLink = this.isLogined
         ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
-      return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t(
-        'p.clipboardText1'
-      )} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+      return `《${article.title}》by ${article.nickname ||
+        article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t(
+        'p.clipboardText2'
+      )}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
     getShareLink() {
       // 应产品需求 这里改为移动端的链接
@@ -696,12 +697,19 @@ export default {
         if (res.status === 200 && res.data.code === 0) {
           let { hash, timestamp, nonce } = res.data.data
           wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wx5c94f87f6c670341', // 必填，公众号的唯一标识
             timestamp, // 必填，生成签名的时间戳
             nonceStr: nonce, // 必填，生成签名的随机串
             signature: hash, // 必填，签名
-            jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
+            jsApiList: [
+              'updateAppMessageShareData',
+              'updateTimelineShareData',
+              'onMenuShareAppMessage'
+            ]
+          })
+          wx.error(function(res) {
+            console.log(713, res)
           })
           const title = this.article.title
           const desc = this.regRemoveContent(this.post.content) // .substr(0, 200);
