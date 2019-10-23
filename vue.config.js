@@ -18,7 +18,6 @@ const { NODE_ENV } = process.env
 if (NODE_ENV === 'test') {
   module.exports = {
     chainWebpack: config => {
-
       if (NODE_ENV === 'test') {
         config.merge({
           target: 'node',
@@ -104,8 +103,8 @@ module.exports = {
         vue: 'Vue',
         'vue-router': 'VueRouter',
         vuex: 'Vuex',
-        'mavon-editor': 'MavonEditor',
-        eosjs: 'Eos'
+        'mavon-editor': 'MavonEditor'
+        // eosjs: 'Eos'
       },
       'moment',
       'encoding',
