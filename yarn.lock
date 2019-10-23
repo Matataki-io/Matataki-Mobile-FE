@@ -3835,7 +3835,7 @@ eosjs-ecc@4.0.4:
     ecurve "^1.0.5"
     randombytes "^2.0.5"
 
-eosjs@16.0.9:
+eosjs@^16.0.9:
   version "16.0.9"
   resolved "https://registry.yarnpkg.com/eosjs/-/eosjs-16.0.9.tgz#ee3790f2f038079e71981f20354be8d1d98de873"
   integrity sha512-aYgzbgH2RhnmYVzEmK4AD6UIboJI54PGYQUesv2i8rCqYhWij+xQx7PtALJ481cxZnQgmFn8s2KMkgG07P5/Ug==
@@ -10300,10 +10300,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/vant/-/vant-2.2.1.tgz#1911b8146ef0cf69a1dc035d9397098205782318"
-  integrity sha512-+86dYTNA7IxcAVxQsDRKjGhhkOVU9eLf8HC8xDUPGooMkXA2ARjLKTOmnk+4gPrIIDcjkEIMwzlYD1KmIOW1ew==
+vant@^2.2.6:
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/vant/-/vant-2.2.9.tgz#ac3b5829faec8173896af6fc15864ec33e34fea8"
+  integrity sha512-cODoqzoiYUl/iEqcAyLvwb4DEFdrUsidr99KXxOc0mQW8wPHszjG5z3dQb42OVGlmk3vP6KSPmum+nph7ToZtg==
   dependencies:
     "@babel/runtime" "7.x"
     "@vant/icons" "1.1.14"
