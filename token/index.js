@@ -112,10 +112,16 @@ const getInfobyId = id => {
         })
       } else {
         console.error('请求失败')
+        setAppDom({
+          img: token
+        })
       }
     })
     .catch(error => {
       console.log(error)
+      setAppDom({
+        img: token
+      })
     })
 }
 getInfobyId(urlSearchData.id)
