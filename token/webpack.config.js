@@ -31,13 +31,13 @@ module.exports = {
 
   output: {
     filename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../dist/widget')
+    path: path.resolve(__dirname, '../dist/widget/token')
   },
 
   plugins: [
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
-      filename: '../widget/index.html',
+      filename: '../token/index.html',
       template: './index.html',
       inject: true,
       minify: true
