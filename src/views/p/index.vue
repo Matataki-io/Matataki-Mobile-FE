@@ -128,13 +128,14 @@
           </div>
           <div class="exchangeBtns">
             <el-button
-              class="wxpayBtn"
               v-if="!isTokenArticle"
+              class="wxpayBtn"
               plain
               :disabled="payBtnDisabled"
               type="primary"
               size="mini"
-              @click="wxpay">
+              @click="wxpay"
+            >
               微信支付
             </el-button>
             <router-link :to="{ name: 'exchange' }">
@@ -448,7 +449,10 @@
       :from="'article'"
       @changeTransferModal="status => (transferModal = status)"
     />
-    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
+    <OrderModal
+      v-model="showOrderModal"
+      :form="{ ...form, type: 'buy_token_output', limitValue }"
+    />
   </div>
 </template>
 <script>
@@ -727,7 +731,7 @@ export default {
         if (res.status === 200 && res.data.code === 0) {
           let { hash, timestamp, nonce } = res.data.data
           wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wx5c94f87f6c670341', // 必填，公众号的唯一标识
             timestamp, // 必填，生成签名的时间戳
             nonceStr: nonce, // 必填，生成签名的随机串
@@ -801,7 +805,10 @@ export default {
           // console.log(res)
           if (res.status === 200 && res.data.code === 0) {
             this.currentProfile = res.data.data
-            this.form.outputToken = res.data.data.holdMineTokens && res.data.data.holdMineTokens.length > 0 ? res.data.data.holdMineTokens[0] : {}
+            this.form.outputToken =
+              res.data.data.holdMineTokens && res.data.data.holdMineTokens.length > 0
+                ? res.data.data.holdMineTokens[0]
+                : {}
             // console.log('article', this.article)
             this.differenceTokenFunc()
             this.calPayFormParams()
@@ -1286,8 +1293,14 @@ export default {
     },
     // 微信支付购买
     calPayFormParams() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
-        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
+      if (
+        this.currentProfile.holdMineTokens &&
+        this.currentProfile.holdMineTokens.length !== 0 &&
+        this.article.tokens
+      ) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(
+          list => list.id === this.article.tokens[0].id
+        )
         // 获取有多少token
         const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
         let needTokenAmount = 0
@@ -1306,7 +1319,7 @@ export default {
     getInputAmount(inputTokenId, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
-      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then(res => {
         this.payBtnDisabled = false
         if (res.code === 0) {
           this.getInputAmountError = ''
