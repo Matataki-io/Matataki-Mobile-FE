@@ -49,18 +49,17 @@ const urlSearchDecodeURIComponent = arr => {
 urlSearchData = urlSearchDecodeURIComponent(urlSearch)
 
 // 设置内容
-const setAppDom = ({ symbol, name, username, brief, img }) => {
-  console.log(symbol, name, username, brief, img)
+const setAppDom = ({ symbol, name, username, brief, img, id }) => {
   const appDomStr = `
       <div class="container">
         <div class="widget">
-          <a class="logo" target="_blank" href="https://www.matataki.io/">
+          <a class="logo" target="_blank" href="${url}/token/${id}">
             <img src="${token}" alt="token" />
           </a>
-          <a class="footer" target="_blank" href="https://www.matataki.io/">
+          <a class="footer" target="_blank" href="${url}">
           Powered by 瞬MATATAKI
           </a>
-          <a class="token" target="_blank" href="https://www.matataki.io/">
+          <a class="token" target="_blank" href="${url}/token/${id}">
             <img class="token-cover" src="${img}" alt="cover" />
           </a>
           <div class="token-info">
@@ -100,15 +99,17 @@ const getInfobyId = id => {
         urlSearchData.username = data.user.nickname || data.user.username
         urlSearchData.brief = data.token.brief
         urlSearchData.img = data.token.logo ? `${imageAddress}${data.token.logo}` : token
+        urlSearchData.id = data.token.id
 
-        const { symbol, name, username, brief, img } = urlSearchData
+        const { symbol, name, username, brief, img, id } = urlSearchData
 
         setAppDom({
           symbol,
           name,
           username,
           brief,
-          img
+          img,
+          id
         })
       } else {
         console.error('请求失败')
