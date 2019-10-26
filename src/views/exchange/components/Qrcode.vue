@@ -31,12 +31,14 @@ export default {
   },
   methods: {
     genQRCode(url) {
-      QRCode.toCanvas(this.$refs.qr, url, {
-        width: 150,
-        height: 150
-      }, error => {
-        if (error) console.error(error)
-      })
+      if (url) {
+        QRCode.toCanvas(this.$refs.qr, url, {
+          width: 150,
+          height: 150
+        }, error => {
+          if (error) console.error(error)
+        })
+      }
     }
   }
 };

@@ -112,7 +112,7 @@
     <div class="hGStes">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">交易</button>
     </div>
-    <OrderModal v-model="orderShow" :order="{...order,...form}" />
+    <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
   </div>
 </template>
@@ -153,6 +153,9 @@ export default {
   },
   computed: {
     ...mapGetters(["isLogined"]),
+    type() {
+      return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
+    },
     btnDisabled() {
       const { input, output, outputToken } = this.form;
       if (
@@ -271,30 +274,15 @@ export default {
         });
         return;
       }
-      const loading = this.$loading({
-        lock: false,
-        text: "提交中",
-        background: "rgba(0, 0, 0, 0.4)"
-      });
       // 输入是人民币
       if (inputToken.isCNY) {
-        this.$API
-          .wxpay({
-            total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
-            title: `购买${outputToken.symbol}`,
-            type:
-              this.base === "input" ? "buy_token_input" : "buy_token_output", // type类型见typeOptions：add，buy_token_input，buy_token_output
-            token_id: outputToken.id,
-            token_amount: utils.toDecimal(output, outputToken.decimals),
-            limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
-            decimals: outputToken.decimals
-          })
-          .then(res => {
-            loading.close();
-            this.order = res;
-            this.orderShow = true;
-          });
+        this.orderShow = true
       } else {
+        const loading = this.$loading({
+          lock: false,
+          text: "提交中",
+          background: "rgba(0, 0, 0, 0.4)"
+        });
         // 输入不是人民币
         const amount = this.base === "input" ? input : output;
         this.$API
