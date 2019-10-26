@@ -253,7 +253,8 @@ export default {
     initPage() {
       this.$nextTick(() => {
         let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        this.$refs.home.style.height = `${clientHeight - 48}px`
+        let height = clientHeight - 48
+        if (height > 620) this.$refs.home.style.height = `${clientHeight - 48}px`
       })
     },
     jumpTo() {
