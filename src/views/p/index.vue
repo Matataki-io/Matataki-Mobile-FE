@@ -47,19 +47,13 @@
         <h1>{{ article.title }}</h1>
         <div class="userinfo-container">
           <div class="avatar-info">
-            <div
-              class="avatar"
-              @click="() => $router.push({ name: 'User', params: { id: article.uid } })"
-            >
-              <img :src="articleAvatar" class="avatar-size" alt="avatar" :onerror="defaultAvatar" />
-            </div>
+            <router-link :to="{ name: 'User', params: { id: article.uid } }">
+              <avatar :src="articleAvatar" class="avatar" />
+            </router-link>
             <div class="avatar-right">
-              <p
-                class="author"
-                @click="() => $router.push({ name: 'User', params: { id: article.uid } })"
-              >
+              <router-link class="author" :to="{ name: 'User', params: { id: article.uid } }">
                 {{ article.nickname || article.author }}
-              </p>
+              </router-link>
               <p class="other">
                 {{ $t('p.publishFrom') }}
                 {{ articleCreateTimeComputed }}
@@ -477,10 +471,10 @@ import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
 import commentInput from '@/components/article_comment'
-
 import OrderModal from '../exchange/components/OrderModal'
 import { CNY } from '../exchange/components/consts.js'
 import utils from '@/utils/utils'
+import avatar from '@/components/avatar/index.vue'
 
 console.log(466, 'dev', wx)
 // MarkdownIt 实例
@@ -508,7 +502,8 @@ export default {
     statement,
     ArticleFooter,
     commentInput,
-    OrderModal
+    OrderModal,
+    avatar
   },
   data() {
     return {
@@ -897,9 +892,9 @@ export default {
               // 默认会执行获取文章方法，更新文章调用则不需要获取内容
               if (!supportDialog) {
                 // this.getArticleDatafromIPFS(data.hash)
-                this.setAvatar(data.uid)
               }
             }
+            this.setAvatar(data.uid)
             this.addReadAmount(this.article.hash)
           } else {
             this.$toast({ duration: 1000, message: res.data.message })
@@ -1255,8 +1250,9 @@ export default {
         const res = await this.$backendAPI.getUser({ id })
         if (res.status === 200 && res.data.code === 0) {
           this.followed = res.data.data.is_follow
-          if (res.data.data.avatar)
-            this.articleAvatar = this.$backendAPI.getAvatarImage(res.data.data.avatar)
+          this.articleAvatar = res.data.data.avatar
+            ? this.$backendAPI.getImg(res.data.data.avatar)
+            : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
         console.log(`${this.$t('error.getUserInfoError')}${error}`)
