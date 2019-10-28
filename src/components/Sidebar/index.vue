@@ -159,7 +159,7 @@
               <div class="cell-right"><span></span></div>
             </div>
           </router-link>
-          <router-link :to="{ name: 'minetoken' }">
+          <router-link v-if="tokenUser" :to="{ name: 'minetoken' }">
             <div class="cell">
               <div class="cell-left">
                 <svg-icon icon-class="minetoken1" class="left-img"></svg-icon>
@@ -288,7 +288,8 @@ export default {
         articles: 0,
         supports: 0,
         drafts: 0
-      }
+      },
+      tokenUser: false
     }
   },
   computed: {
@@ -311,12 +312,28 @@ export default {
     },
     isLogined(newState) {
       if (newState) this.refreshUser()
+    },
+    currentUserInfo() {
+      this.tokenUserId(this.currentUserInfo.id)
     }
   },
   created() {
     this.refreshUser()
   },
+  mounted() {
+    // if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+  },
   methods: {
+    async tokenUserId(id) {
+      await this.$backendAPI
+        .tokenUserId(id)
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
+            this.tokenUser = true
+          }
+        })
+        .catch(err => console.log('get token user error', err))
+    },
     async refreshUser() {
       const { isMe } = this
       const id = this.currentUserInfo.id

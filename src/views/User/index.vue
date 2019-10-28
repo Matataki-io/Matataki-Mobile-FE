@@ -62,7 +62,7 @@
         </router-link>
       </p>
 
-      <div v-if="!isMe(id)" class="fixed-right">
+      <div v-if="!isMe(id)" class="fixed-right follow">
         <template v-if="!scrollStatus">
           <transition name="fade">
             <span
@@ -79,8 +79,11 @@
           </transition>
         </template>
       </div>
-      <router-link v-else :to="{ name: 'setting' }" class="fixed-right">
+      <router-link v-else :to="{ name: 'setting' }" class="fixed-right edit">
         <el-button size="mini">编辑资料</el-button>
+      </router-link>
+      <router-link :to="{ name: 'exchange' }" class="fixed-right exchange">
+        <el-button type="primary" size="mini">交易粉丝币</el-button>
       </router-link>
     </div>
 
