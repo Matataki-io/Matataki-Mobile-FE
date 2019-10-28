@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
@@ -98,7 +99,7 @@ export default {
     // 根据本地存储的状态来自动登陆。失败之后再重试一次
     const data = {
       accessToken: accessTokenAPI.get(),
-      idProvider: localStorage.getItem('idProvider')
+      idProvider: Cookies.get('idProvider')
     }
     if (data.idProvider && data.accessToken) {
       // console.log('sign in form localStorage')
