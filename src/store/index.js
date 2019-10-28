@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
 import github from './github'
@@ -192,7 +193,7 @@ export default new Vuex.Store({
 
       // 成功後的處理
       commit('setAccessToken', accessToken)
-      localStorage.setItem('idProvider', state.userConfig.idProvider)
+      Cookies.set('idProvider', state.userConfig.idProvider, { expires: 365 })
       return state.userInfo.accessToken
     },
     /*
@@ -278,6 +279,8 @@ export default new Vuex.Store({
       commit('setUserConfig')
       commit('setAccessToken')
       commit('setNickname')
+      Cookies.remove('ACCESS_TOKEN', { path: '' })
+      Cookies.remove('idProvider', { path: '' })
       localStorage.clear()
     },
     // data: { amount, toaddress, memo }
@@ -324,10 +327,10 @@ export default new Vuex.Store({
     setUserConfig(state, config = null) {
       // only idProvider now
       if (config) {
-        localStorage.setItem('idProvider', config.idProvider)
+        Cookies.set('idProvider', config.idProvider, { expires: 365 })
         state.userConfig.idProvider = config.idProvider
       } else {
-        localStorage.removeItem('idProvider')
+        Cookies.remove('idProvider')
         state.userConfig.idProvider = null
       }
     },

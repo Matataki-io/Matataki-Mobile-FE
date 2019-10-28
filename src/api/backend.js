@@ -1,5 +1,6 @@
 import axios from 'axios'
 import https from 'https'
+import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
 import utils from '../utils/utils'
@@ -22,10 +23,10 @@ const axiosforApiServer = axios.create({
   httpsAgent: new https.Agent({ rejectUnauthorized: false })
 })
 
-// accessToken with localStorage
+// accessToken with Cookies
 export const accessTokenAPI = {
   get() {
-    const token = window.localStorage.getItem('ACCESS_TOKEN')
+    const token = Cookies.get('ACCESS_TOKEN')
     if (token === 'null' || token === 'undefined') {
       this.rm()
       return this.get()
@@ -34,10 +35,10 @@ export const accessTokenAPI = {
   },
   set(token) {
     if (!token) this.rm()
-    else window.localStorage.setItem('ACCESS_TOKEN', token)
+    else Cookies.set('ACCESS_TOKEN', token, { expires: 1 })
   },
   rm() {
-    window.localStorage.removeItem('ACCESS_TOKEN')
+    Cookies.remove('ACCESS_TOKEN')
   },
   /*
    * 拆token，返回json对象
