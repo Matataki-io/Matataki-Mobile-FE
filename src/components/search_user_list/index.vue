@@ -1,10 +1,10 @@
 <template>
   <div class="user-list">
-    <router-link :to="{ name: 'User', params: { id: card.id } }">
+    <router-link :to="{ name: 'user-id', params: { id: card.id } }">
       <avatar size="40px" class="avatar" :src="avatarSrc" />
     </router-link>
     <div class="user-info">
-      <router-link :to="{ name: 'User', params: { id: card.id } }">
+      <router-link :to="{ name: 'user-id', params: { id: card.id } }">
         <p class="user-title search-res" v-html="userTitle" />
       </router-link>
       <p class="user-num">

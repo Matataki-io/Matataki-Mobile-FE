@@ -20,6 +20,7 @@
     "svgof": "svgo -f src/icons/svg_filter --config=src/icons/svgo.yml"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
     "@vant/touch-emulator": "^1.0.0",
     "axios": "^0.19.0",

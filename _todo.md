@@ -8,3 +8,4 @@
 
 // mimetokenId 修改为 minetokenId
 // mimetokenId catch message success 修改为 error
+// 清理mimetoken layout 的多余代码

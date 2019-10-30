@@ -47,11 +47,11 @@
         <h1>{{ article.title }}</h1>
         <div class="userinfo-container">
           <div class="avatar-info">
-            <router-link :to="{ name: 'User', params: { id: article.uid } }">
+            <router-link :to="{ name: 'user-id', params: { id: article.uid } }">
               <avatar :src="articleAvatar" class="avatar" />
             </router-link>
             <div class="avatar-right">
-              <router-link class="author" :to="{ name: 'User', params: { id: article.uid } }">
+              <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
                 {{ article.nickname || article.author }}
               </router-link>
               <p class="other">

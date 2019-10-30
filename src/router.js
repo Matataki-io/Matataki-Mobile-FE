@@ -56,8 +56,8 @@ export default new VueRouter({
     },
     {
       path: '/user/:id',
-      name: 'User',
-      component: () => import(/* webpackChunkName: "User" */ './views/User/index.vue')
+      name: 'user-id',
+      component: () => import(/* webpackChunkName: "user-id" */ './views/User/index.vue')
     },
     {
       path: '/setting',
@@ -72,7 +72,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -86,7 +86,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -106,7 +106,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -120,7 +120,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -134,7 +134,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -176,7 +176,7 @@ export default new VueRouter({
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'User', params: { id } })
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
         else {
           next()
         }
@@ -262,12 +262,18 @@ export default new VueRouter({
     {
       path: '/token',
       name: 'token',
-      component: () => import(/* webpackChunkName: "token" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "token" */ './views/token/index.vue')
     },
     {
       path: '/token/:id',
-      name: 'tokenId',
-      component: () => import(/* webpackChunkName: "tokenId" */ './views/temp.vue')
+      name: 'token-id',
+      component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue')
+    },
+    {
+      path: '/token/detail/:id',
+      name: 'token-detail-id',
+      component: () =>
+        import(/* webpackChunkName: "token-detail-id" */ './views/token/detail/_id.vue')
     },
     {
       // 幽林页面重定向进入 404 页面
@@ -278,12 +284,14 @@ export default new VueRouter({
     {
       path: '/holdliquidity',
       name: 'holdliquidity',
-      component: () => import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue')
+      component: () =>
+        import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue')
     },
     {
       path: '/holdliquidity/:id',
       name: 'holdliquidity-id',
-      component: () => import(/* webpackChunkName: "holdliquidityId" */ './views/holdliquidity/id.vue')
-    },
+      component: () =>
+        import(/* webpackChunkName: "holdliquidityId" */ './views/holdliquidity/id.vue')
+    }
   ]
 })

@@ -89,6 +89,16 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+    /**
+   * 粉丝币详情
+   * @param {Number} id token id
+   */
+  mimetokenId(id) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/${id}`,
+    })
+  },
   /**
    * 获取token详情
    * 请求头：x-access-token

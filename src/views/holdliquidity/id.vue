@@ -18,7 +18,7 @@
       </div>
       <div class="fl jsb publish-tokens">
         <div class="username">发币者：{{ userDetail.nickname || userDetail.username }}</div>
-        <router-link class="jump" :to="{ name: 'User', params: { id: userDetail.id } }">
+        <router-link class="jump" :to="{ name: 'user-id', params: { id: userDetail.id } }">
           <svg-icon icon-class="share"></svg-icon>
         </router-link>
       </div>

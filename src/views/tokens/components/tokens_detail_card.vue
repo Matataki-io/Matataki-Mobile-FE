@@ -1,12 +1,12 @@
 <template>
   <div class="card">
-    <router-link class="username" :to="{ name: 'User', params: { id: id } }">
+    <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
       <avatar :src="cover" size="30px" />
     </router-link>
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
-          <router-link class="username" :to="{ name: 'User', params: { id: id } }">
+          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
             <span class="username">{{ username }}</span>
           </router-link>
           <span class="type">{{ type }}</span>
