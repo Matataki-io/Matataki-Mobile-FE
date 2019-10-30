@@ -274,6 +274,16 @@ export default new VueRouter({
       path: '*',
       name: 404,
       component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
-    }
+    },
+    {
+      path: '/holdliquidity',
+      name: 'holdliquidity',
+      component: () => import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue')
+    },
+    {
+      path: '/holdliquidity/:id',
+      name: 'holdliquidity-id',
+      component: () => import(/* webpackChunkName: "holdliquidityId" */ './views/holdliquidity/id.vue')
+    },
   ]
 })

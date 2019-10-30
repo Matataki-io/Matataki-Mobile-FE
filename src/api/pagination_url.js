@@ -44,5 +44,9 @@ export const paginationUrl = {
   // 用户持有的粉丝币明
   tokenUserLogs: '/token/userlogs',
   // token明细
-  tokenTokenLogs: '/token/tokenlogs'
+  tokenTokenLogs: '/token/tokenlogs',
+  // 我持有的流动金
+  liquidityLogs: 'token/liquidityLogs',
+  // 我持有的流动金详情
+  liquidityLogsDetail: 'token/liquidityLogsDetail'
 }

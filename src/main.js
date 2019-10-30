@@ -32,6 +32,7 @@ import '@/assets/gt.js'
 import './icons'
 
 import publishMethods from './utils/publish_methods'
+import utils from './utils/utils'
 
 // 积分配置
 import point from './config/points'
@@ -45,6 +46,7 @@ Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$publishMethods = publishMethods
+Vue.prototype.$utils = utils
 
 Vue.use(VueClipboard)
 

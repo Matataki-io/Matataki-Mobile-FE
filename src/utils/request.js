@@ -1,8 +1,9 @@
 /* eslint-disable */
 "use strict";
 
-import axios from "axios";
-import { Message } from 'element-ui';
+import axios from "axios"
+import Cookies from 'js-cookie'
+import { Message } from 'element-ui'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -22,7 +23,7 @@ const _axios = axios.create({
 // let loadingInstance = null;
 _axios.interceptors.request.use(
   (config) => {
-    if (window.localStorage.getItem('ACCESS_TOKEN')) config.headers['x-access-token'] = window.localStorage.getItem('ACCESS_TOKEN');
+    if (Cookies.get('ACCESS_TOKEN')) config.headers['x-access-token'] = Cookies.get('ACCESS_TOKEN');
     return config;
   },
   (error) => {
