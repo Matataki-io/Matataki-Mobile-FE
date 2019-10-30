@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     getListData(res) {
-      // console.log(res)
       this.pointLog.list = res.list
     }
   }
