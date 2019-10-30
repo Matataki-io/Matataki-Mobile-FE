@@ -159,6 +159,17 @@
               <div class="cell-right"><span></span></div>
             </div>
           </router-link>
+          <router-link :to="{ name: 'holdliquidity' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon icon-class="tokens1" class="left-img"></svg-icon>
+                <span class="left-text">
+                  持有的流动金
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
           <router-link :to="{ name: 'minetoken' }">
             <div class="cell">
               <div class="cell-left">
