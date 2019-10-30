@@ -208,7 +208,7 @@ export default {
 }
 .header {
   height: 167px;
-  background-color: @purpleDark;
+  background-color: #542DE0;
   position: relative;
   overflow: hidden;
   .info {

@@ -252,12 +252,12 @@ export default new VueRouter({
     {
       path: '/editminetoken',
       name: 'editminetoken',
-      component: () => import(/* webpackChunkName: "editminetoken" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "editminetoken" */ './views/minetoken/token.vue')
     },
     {
       path: '/postminetoken',
       name: 'postminetoken',
-      component: () => import(/* webpackChunkName: "postminetoken" */ './views/temp.vue')
+      component: () => import(/* webpackChunkName: "postminetoken" */ './views/minetoken/token.vue')
     },
     {
       path: '/token',

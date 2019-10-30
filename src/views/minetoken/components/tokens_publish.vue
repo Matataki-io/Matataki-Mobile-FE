@@ -259,8 +259,8 @@ export default {
 .publish-btn {
   display: block;
   width: 100%;
-  // background: @purpleDark;
-  // border-color: @purpleDark;
+  // background: #542DE0;
+  // border-color: #542DE0;
 }
 
 .tokens-image {
