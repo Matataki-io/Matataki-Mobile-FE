@@ -1,9 +1,14 @@
 <template>
   <div class="coins-publish">
+    <BaseHeader
+      :has-bottom-border-line="true"
+      :pageinfo="{ title: isPost ? '申请发行粉丝币' : '编辑粉丝币' }"
+      customize-header-bc="#fff"
+    />
     <div class="fl ac coins-head">
-      <h1>
+      <!-- <h1>
         {{ isPost ? '申请发行粉丝币' : '编辑粉丝币' }}
-      </h1>
+      </h1> -->
       <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
@@ -106,8 +111,10 @@
 
       <el-form-item style="margin:40px 0 0 0;">
         <el-checkbox v-if="isPost" v-model="form.agree">
-          我声明粉丝币为本人自愿发行，由本人承担一切法律责任
+          我声明粉丝币为本人自愿发行，<br />由本人承担一切法律责任
         </el-checkbox>
+      </el-form-item>
+      <div class="publish-btn-fix">
         <el-button
           :disabled="!form.agree"
           type="primary"
@@ -116,7 +123,7 @@
         >
           {{ isPost ? '发币' : '保存' }}
         </el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
@@ -127,7 +134,7 @@ import { toPrecision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 
 import socialIcon from '@/components/social_icon/index.vue'
-import socialTypes from '@/config/social_types.js'
+import socialTypes from '@/config/social_types'
 
 export default {
   components: {
@@ -423,7 +430,9 @@ export default {
 
 <style lang="less" scoped>
 .coins-publish {
-  padding: 10px;
+  background-color: #fff;
+  padding: 45px 20px 80px;
+  min-height: 100%;
 }
 .coins-head {
   margin: 20px 0 20px;
@@ -503,15 +512,25 @@ export default {
 .input-form {
   margin-top: 30px;
   .input {
-    width: 400px;
+    // width: 400px;
   }
   .social-input {
-    width: 340px;
+    // width: 340px;
   }
+}
+.publish-btn-fix {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20px;
+  height: 80px;
+  box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
 }
 .publish-btn {
   display: block;
-  width: 100px;
+  width: 100%;
   // background: #542DE0;
   // border-color: #542DE0;
 }
@@ -526,7 +545,7 @@ export default {
 .about-input-btn {
   width: 24px;
   height: 24px;
-  background-color: #542DE0;
+  background-color: #542de0;
   color: #fff;
   display: flex;
   align-items: center;

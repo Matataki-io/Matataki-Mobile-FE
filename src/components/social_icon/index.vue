@@ -121,24 +121,24 @@ export default {
   color: #fff;
   &:hover {
     &.QQ {
-      background: #5EAADE;
+      background: #5eaade;
     }
-        &.Wechat {
-      background: #00C800;
+    &.Wechat {
+      background: #00c800;
     }
-        &.Weibo {
-      background: #FF003D;
+    &.Weibo {
+      background: #ff003d;
     }
-        &.Telegram {
-      background: #32A8E5;
+    &.Telegram {
+      background: #32a8e5;
     }
-        &.Twitter {
-      background: #5EAADE;
+    &.Twitter {
+      background: #5eaade;
     }
-        &.Facebook {
-      background: #3B5998;
+    &.Facebook {
+      background: #3b5998;
     }
-        &.Github {
+    &.Github {
       background: #882592;
     }
   }

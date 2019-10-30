@@ -5,3 +5,6 @@
 
 //todo 为了两端公用 重复了两个xss 过滤方法 后面移除common里面的xss方法
 // 移动端编辑器替换
+
+// mimetokenId 修改为 minetokenId
+// mimetokenId catch message success 修改为 error

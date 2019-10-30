@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <router-link class="info" :to="{ name: 'User', params: { id: card.uid } }">
-      <avatar v-if="true" :src="cover(card.avatar)" size="30px" />
+      <avatar v-if="true" class="avatar" :src="cover(card.avatar)" />
       <h3>{{ card.nickname || card.username }}</h3>
     </router-link>
     <div class="number">
@@ -46,16 +46,25 @@ export default {
   display: flex;
   align-items: center;
   padding: 14px 20px;
+  .avatar {
+    width: 30px !important;
+    height: 30px !important;
+    flex: 0 0 30px;
+  }
   .info {
     display: flex;
     align-items: center;
     width: 70%;
+    overflow: hidden;
     h3 {
       margin-left: 10px;
       font-size: 14px;
       font-weight: 400;
       color: rgba(0, 0, 0, 1);
       line-height: 20px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
   .number {

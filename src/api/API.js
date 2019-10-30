@@ -49,6 +49,36 @@ export default {
     })
   },
   /**
+   * 修改token详情
+   * @param {Object} data token详情
+   * @param {Number} tokenId token id
+   */
+  minetokenTokenId(data, tokenId) {
+    return request({
+      method: 'PUT',
+      url: `/minetoken/${tokenId}`,
+      data: data
+    })
+  },
+  /**
+  * 修改token资源
+  * @param {Object} data token资源
+  * @param {Number} tokenId token id
+  */
+minetokenResources(data, tokenId) {
+    return request({
+      method: 'PUT',
+      url: `/minetoken/${tokenId}/resources`,
+      data: data
+    })
+  },
+minetokenGetResources(tokenId) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/${tokenId}/resources`,
+    })
+  },
+  /**
    * 转移token
    * @param {*} data tokenId to amount
    */
