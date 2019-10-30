@@ -114,8 +114,13 @@
 
 .fixed-right {
   position: absolute;
-  right: 20px;
-  bottom: 30px;
+  right: 10px;
+  &.edit, &.follow {
+    bottom: 64px;
+  }
+  &.exchange {
+    bottom: 30px;
+  }
 }
 
 .fade-enter-active, .fade-leave-active {

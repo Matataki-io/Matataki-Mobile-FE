@@ -19,7 +19,7 @@
           <!-- <a href="javascript:void(0);">忘记密码</a> | -->
           <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('registered') }}</a>
         </div>
-        <span class="red">{{ $t('auth.pcLoginViewPointDetail') }}</span>
+        <!-- <span class="red">{{ $t('auth.pcLoginViewPointDetail') }}</span> -->
       </el-form-item>
     </el-form>
     <div class="oauth-box">

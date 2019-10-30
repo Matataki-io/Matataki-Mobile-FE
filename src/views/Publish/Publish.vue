@@ -731,7 +731,7 @@ export default {
       // console.log('sendThePost mode :', editorMode, saveType)
       if (editorMode === 'create' && saveType === 'public') {
         if (this.readauThority) {
-          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
@@ -767,7 +767,7 @@ export default {
         });*/
       } else if (editorMode === 'edit') {
         if (this.readauThority) {
-          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
@@ -834,7 +834,10 @@ export default {
               defaultImagesUploader(blob).then(({ data }) => {
                 let url
                 if (!data.data) {
-                  url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
+                  url = data.message.replace(
+                    'Image upload repeated limit, this image exists at: ',
+                    ''
+                  )
                 } else {
                   url = data.data.url
                 }
