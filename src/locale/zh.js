@@ -440,7 +440,9 @@ export default {
     createFail: '图片生成失败',
     clipboardText1: '瞬MATATAKI，发布瞬间，灵感永存',
     clipboardText2: '点击链接首次登入可领取额外',
-    clipboardText3: '积分奖励！'
+    clipboardText3: '积分奖励！',
+    shareWeibo: '微博',
+    shareWechat: '扫一扫，分享到微信'
   },
   invite: {
     headerTitle: '我的邀请',
