@@ -13,12 +13,23 @@
               <img src="@/assets/newimg/setting.svg" alt="setting" class="setting" />
             </router-link>
           </div>
-          <p class="account-name">{{ name }}</p>
-          <p class="wallet-info">
+          <p class="account-name">
+            {{ username }}
+            <el-tooltip
+              v-if="tokenUser"
+              class="tooltip"
+              effect="dark"
+              content="发币用户"
+              placement="top"
+            >
+              <svg-icon class="tokens" icon-class="token" />
+            </el-tooltip>
+          </p>
+          <!-- <p class="wallet-info">
             {{ displayBalanceSymbol }}
             {{ $t('sidebar.walletName') }}
             ：{{ displayBalance }}
-          </p>
+          </p> -->
         </div>
         <div class="follow-info">
           <router-link :to="{ name: 'FollowList', params: { id, listtype: $t('sidebar.follow') } }">
@@ -326,6 +337,10 @@ export default {
     displayBalanceSymbol() {
       const { balance } = this.currentUserInfo
       return balance ? balance.slice(-4) : ''
+    },
+    username() {
+      let name = this.name
+      return name.length > 12 ? name.slice(0, 12) + '...' : name
     }
   },
   watch: {
@@ -446,7 +461,7 @@ export default {
   }
   .container {
     .account {
-      padding: 20px;
+      padding: 20px 20px 10px;
       .top-container {
         display: flex;
         align-items: flex-start;
@@ -471,11 +486,10 @@ export default {
         cursor: pointer;
       }
       .account-name {
-        font-size: 20px;
+        font-size: 18px;
         color: #000000;
         font-weight: 700;
         line-height: 28px;
-        margin-bottom: 5px;
         text-align: left;
       }
       .wallet-info {
