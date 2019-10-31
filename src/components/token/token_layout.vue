@@ -10,7 +10,7 @@
       <div class="fl ac jsb">
         <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
         <el-button
-          size="small"
+          size="mini"
           class="share-btn"
           icon="el-icon-share"
           @click="shareModalShow = true"
@@ -19,7 +19,7 @@
         </el-button>
       </div>
       <div class="fl">
-        <avatar :src="logo" size="120px" />
+        <avatar :src="logo" class="avatar" />
         <div class="token-detail-info">
           <div class="fl info-line">
             <div class="token-info-title bold">
@@ -261,7 +261,7 @@ export default {
       return this.minetokenExchange.price || 0
     },
     name() {
-      if (this.minetokenUser.nickname) {
+      if (this.minetokenUser.nickname || this.minetokenUser.username) {
         let name = this.minetokenUser.nickname || this.minetokenUser.username
         return name.length > 12 ? name.slice(0, 12) + '...' : name
       } else return ''
@@ -342,10 +342,15 @@ export default {
 .info-line {
   margin: 6px 0;
 }
+.avatar {
+  width: 60px !important;
+  height: 60px !important;
+  flex: 0 0 60px;
+}
 .token-detail-info {
-  width: 60%;
+  // width: 60%;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   line-height: 22px;
@@ -355,16 +360,18 @@ export default {
 }
 .token-info-title {
   // width: 70px;
-  flex: 0 0 70px;
+  flex: 0 0 50px;
   &.bold {
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 .token-info-sub {
+  font-size: 12px;
   padding: 0 0 0 10px;
   margin: 0;
   a {
+    font-size: 12px;
     color: #000;
   }
 }
@@ -381,7 +388,7 @@ export default {
 }
 
 .token-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   color: #000;
   line-height: 33px;
@@ -389,7 +396,7 @@ export default {
   margin: 0;
 }
 .token-introduction {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   line-height: 22px;
@@ -475,7 +482,7 @@ export default {
     white-space: nowrap;
     margin: 10px 0;
     a {
-      font-size: 16px;
+      font-size: 12px;
       color: #000;
       line-height: 22px;
       text-decoration: underline;
@@ -529,7 +536,7 @@ export default {
 }
 
 .help-link {
-  font-size: 14px;
+  font-size: 12px;
   color: #868686;
   text-decoration: underline;
 }
