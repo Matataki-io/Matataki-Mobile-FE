@@ -691,8 +691,7 @@ export default {
   created() {
     this.getArticleInfo(this.id) // 得到文章信息
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
     // 增加文章阅读量
@@ -718,62 +717,10 @@ export default {
       return strTrim(regRemoveMarkdownTagResult)
     },
     setWxShare() {
-      /*const articleUrl = `https://sstest.frontenduse.top/p/${this.article.id}`;
-      const link = this.isLogined ? `${articleUrl}?invite=${this.currentUserInfo.id}` : articleUrl;*/
-      const link = window.location.href
-      this.$backendAPI.wxShare(encodeURIComponent(link)).then(res => {
-        if (res.status === 200 && res.data.code === 0) {
-          let { hash, timestamp, nonce } = res.data.data
-          wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: 'wx5c94f87f6c670341', // 必填，公众号的唯一标识
-            timestamp, // 必填，生成签名的时间戳
-            nonceStr: nonce, // 必填，生成签名的随机串
-            signature: hash, // 必填，签名
-            jsApiList: [
-              'updateAppMessageShareData',
-              'updateTimelineShareData',
-              'onMenuShareAppMessage'
-            ]
-          })
-          wx.error(function(res) {
-            console.log(713, res)
-          })
-          const title = this.article.title
-          const desc = this.regRemoveContent(this.post.content) // .substr(0, 200);
-          const imgUrl = this.$backendAPI.getAvatarImage(this.article.cover)
-          wx.ready(function() {
-            //需在用户可能点击分享按钮前就先调用
-            wx.updateAppMessageShareData({
-              title, // 分享标题
-              desc, // 分享描述
-              link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl, // 分享图标
-              success: function() {
-                // 设置成功
-              }
-            })
-            //需在用户可能点击分享按钮前就先调用
-            wx.updateTimelineShareData({
-              title, // 分享标题
-              link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl, // 分享图标
-              success: function() {
-                // 设置成功
-              }
-            })
-            // 即将废弃，适配电脑版微信，参考：https://mp.weixin.qq.com/wiki?action=doc&id=mp1421141115#10
-            wx.onMenuShareAppMessage({
-              title, // 分享标题
-              desc, // 分享描述
-              link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl, // 分享图标
-              success: function() {
-                // 用户点击了分享后执行的回调函数
-              }
-            })
-          })
-        }
+      this.$wechatShare({
+        title: this.article.title,
+        desc: this.regRemoveContent(this.post.content),
+        imgUrl: this.article.cover ? this.$backendAPI.getAvatarImage(this.article.cover) : ''
       })
     },
     // 复制hash

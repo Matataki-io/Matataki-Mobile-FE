@@ -109,7 +109,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f1f1f1;
-  padding: 10px 20px;
+  padding: 10px 10px;
   background-color: #fff;
   box-sizing: border-box;
   &-avatar {

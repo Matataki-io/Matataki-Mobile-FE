@@ -287,6 +287,12 @@ export default {
             this.minetokenToken = res.data.token || Object.create(null)
             this.minetokenUser = res.data.user || Object.create(null)
             this.minetokenExchange = res.data.exchange || Object.create(null)
+
+            this.$wechatShare({
+              title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
+              desc: this.minetokenToken.brief || '暂无',
+              imgUrl: this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+            })
           } else {
             this.$message.success(res.message)
           }
