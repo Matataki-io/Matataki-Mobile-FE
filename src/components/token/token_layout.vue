@@ -192,7 +192,7 @@ import avatar from '@/components/avatar/index.vue'
 // import mineTokensNav from '@/components/minetokens_nav/index.vue'
 import Share from '@/components/token/token_share.vue'
 import socialIcon from '@/components/social_icon/index.vue'
-import socialTypes from '@/config/social_types.js'
+import socialTypes from '@/config/social_types'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
@@ -261,8 +261,10 @@ export default {
       return this.minetokenExchange.price || 0
     },
     name() {
-      let name = this.minetokenUser.nickname || this.minetokenUser.username
-      return name.length > 12 ? name.slice(0, 12) + '...' : name
+      if (this.minetokenUser.nickname) {
+        let name = this.minetokenUser.nickname || this.minetokenUser.username
+        return name.length > 12 ? name.slice(0, 12) + '...' : name
+      } else return ''
     },
     color() {
       // 显示转换
@@ -439,6 +441,7 @@ export default {
   box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
   height: 80px;
   padding: 20px;
+  z-index: 2;
 }
 
 .exchange {

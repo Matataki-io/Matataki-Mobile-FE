@@ -58,7 +58,10 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
-      return this.img || 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
+      return (
+        this.img ||
+        'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
+      )
     },
     socialLink() {
       const title = this.title
@@ -71,10 +74,8 @@ export default {
       }
     }
   },
-  mounted() {
-  },
-  methods: {
-  }
+  mounted() {},
+  methods: {}
 }
 </script>
 
@@ -130,19 +131,19 @@ p {
     width: 50%;
   }
   .weibo {
-    color: #FF5722;
+    color: #ff5722;
   }
   .facebook {
-    color: #3C5999;
+    color: #3c5999;
   }
   .twitter {
-    color: #00ACED;
+    color: #00aced;
   }
 }
 .code {
   margin-top: 30px;
   .icon {
-    color: #24DB5A;
+    color: #24db5a;
     font-size: 22px;
     margin-left: 4px;
   }

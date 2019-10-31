@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-bg" :class="cardStyleComputed">
       <div class="avatar">
-        <img src="https://ssimg.frontenduse.top/image/2019/10/26/2704b1d66dd30587ba310b69270f3f7a.png" alt="avatar">
+        <img :src="cover" alt="avatar" />
       </div>
       <h1 class="title">
         {{ minetokenToken.symbol }}
@@ -24,9 +24,7 @@
         <div class="list-title">
           发行量：
         </div>
-        <div class="list-content">
-          {{ amount }}-{{ minetokenToken.symbol }}
-        </div>
+        <div class="list-content">{{ amount }}-{{ minetokenToken.symbol }}</div>
       </div>
       <div class="list">
         <div class="list-title">
@@ -37,9 +35,9 @@
         </div>
       </div>
 
-      <img class="slogan" src="@/assets/img/token_share_slogan.png" alt="slogan">
+      <img class="slogan" src="@/assets/img/token_share_slogan.png" alt="slogan" />
       <div class="fl ac jc">
-        <img class="logo" src="@/assets/img/token_share_logo.png" alt="logo">
+        <img class="logo" src="@/assets/img/token_share_logo.png" alt="logo" />
         <qrcode class="code" :value="link" :options="{ width: '80' }" />
       </div>
       <el-divider>
@@ -74,8 +72,15 @@ export default {
     }
   },
   computed: {
+    cover() {
+      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+    },
     amount() {
-      const tokenamount = precision(this.minetokenToken.total_supply || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenToken.total_supply || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     link() {
@@ -114,7 +119,7 @@ export default {
   color: #000;
 }
 .card-bg.bg2 .name {
-  color: #542DE0;
+  color: #542de0;
 }
 .avatar {
   border: 2px solid #fff;
@@ -143,8 +148,8 @@ export default {
 }
 .name {
   font-size: 12px;
-  font-weight:normal;
-  color:rgba(247,181,0,1);
+  font-weight: normal;
+  color: rgba(247, 181, 0, 1);
   margin: 0 auto;
   padding: 0;
   text-overflow: ellipsis;
@@ -162,15 +167,15 @@ export default {
   &-title {
     flex: 0 0 60px;
     width: 60px;
-    font-size:12px;
-    color:rgba(178,178,178,1);
-    letter-spacing:1px;
+    font-size: 12px;
+    color: rgba(178, 178, 178, 1);
+    letter-spacing: 1px;
     line-height: 1.5;
   }
   &-content {
-    font-size:12px;
-    color:rgba(0,0,0,1);
-    letter-spacing:2px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 1);
+    letter-spacing: 2px;
     line-height: 1.5;
   }
 }

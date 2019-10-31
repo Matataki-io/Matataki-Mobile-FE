@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import tokenShareCardLayout from './token_share_card_layout'
-import SocialShare from '@/components/share/social_share'
+import tokenShareCardLayout from './token_share_card_layout.vue'
+import SocialShare from '@/components/share/social_share.vue'
 import wechat from '@/components/scan/wechat.vue'
 
 export default {

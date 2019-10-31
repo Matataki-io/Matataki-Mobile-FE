@@ -122,7 +122,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ArticleCard } from '@/components/'
-import tokenAvatar from './components/token_avatar'
+import tokenAvatar from './components/token_avatar.vue'
 
 import avatar from '@/components/avatar/index.vue'
 

@@ -9,6 +9,7 @@
 </template>
 <script>
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+
 export default {
   components: {
     qrcode: VueQrcode
@@ -24,7 +25,7 @@ export default {
     },
     text: {
       type: String,
-      default: function () {
+      default: function() {
         return this.$t('p.shareWechat')
       }
     },
@@ -55,7 +56,7 @@ export default {
   display: inline-block;
   .icon {
     position: absolute;
-    color: #24DB5A;
+    color: #24db5a;
     font-size: 22px;
     margin-left: 4px;
   }
