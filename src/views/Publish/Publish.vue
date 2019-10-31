@@ -114,15 +114,12 @@
       <div v-if="editorMode !== 'edit'" class="fission">
         <p>
           {{ $t('publish.commentTitle') }}
-          <Poptip
-            popper-class="my-poptip"
-            :content="$t('publish.commentContent')"
-            width="250"
-            word-wrap
-            placement="top-start"
-          >
-            <span class="question">?</span>
-          </Poptip>
+          <el-tooltip class="item" effect="dark" placement="top-start">
+            <div slot="content">
+              {{ $t('publish.commentContent') }}
+            </div>
+            <svg-icon class="help-icon" icon-class="help" />
+          </el-tooltip>
         </p>
         <div class="fission-num-slider">
           <el-input-number

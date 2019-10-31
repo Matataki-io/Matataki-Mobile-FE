@@ -269,8 +269,8 @@ export default {
     color() {
       // 显示转换
       const amount = parseFloat(this.change)
-      if (amount < 0) return 'rgb(74, 151, 42)'
-      else if (amount > 0) return 'rgb(266, 70, 69)'
+      if (amount < 0) return 'rgb(266, 70, 69)'
+      else if (amount > 0) return 'rgb(74, 151, 42)'
       else return 'rgb(153, 153, 153)'
     }
   },
