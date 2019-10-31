@@ -21,20 +21,20 @@
 
       <div class="btn">
         <router-link :to="{ name: 'token-id', params: { id: tokenDetailData.token.id || 0 } }">
-          <el-button size="small">
+          <el-button size="mini">
             详情
           </el-button>
         </router-link>
         <router-link :to="{ name: 'editminetoken' }">
-          <el-button size="small">
+          <el-button size="mini">
             编辑
           </el-button>
         </router-link>
-        <el-button size="small" @click="addCoins">
+        <el-button size="mini" @click="addCoins">
           增发
         </el-button>
         <router-link :to="{ name: 'exchange' }">
-          <el-button size="small" type="primary">
+          <el-button size="mini" type="primary">
             交易
           </el-button>
         </router-link>
@@ -312,12 +312,12 @@ export default {
 
 <style lang="less" scoped>
 .coins-publish {
-  padding: 10px;
+  padding: 10px 20px;
 }
 .coins-head {
   margin: 0 0 20px;
   h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     color: rgba(0, 0, 0, 1);
     line-height: 33px;
@@ -330,29 +330,29 @@ export default {
     margin-right: 10px;
   }
   .help-link {
-    font-size: 14px;
+    font-size: 12px;
     color: #868686;
-    line-height: 20px;
     text-decoration: underline;
-    margin-left: 10px;
+    margin: 6px 0;
+    display: block;
   }
 }
 
 .token-title {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
   color: rgba(0, 0, 0, 1);
   line-height: 33px;
   padding: 0;
-  margin: 14px 0 0;
+  margin: 10px 0 0;
 }
 .token-sub {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
   line-height: 22px;
   padding: 0;
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
 .coins-info {
@@ -364,47 +364,6 @@ export default {
   height: 40px;
   background: #dbdbdb;
   margin: 0 40px;
-}
-.info-block {
-  flex: 1;
-  .info-data {
-    text-align: center;
-    &-number {
-      font-size: 24px;
-      font-weight: bold;
-      color: rgba(84, 45, 224, 1);
-      line-height: 28px;
-      padding: 0;
-      margin: 0;
-      sub {
-        bottom: 0;
-        font-size: 70%;
-      }
-    }
-    &-title {
-      font-size: 14px;
-      color: rgba(0, 0, 0, 1);
-      line-height: 20px;
-      padding: 0;
-      margin: 0;
-    }
-  }
-}
-.info-btn {
-  margin-left: 40px;
-  .info-button {
-    margin: 4px 0;
-  }
-}
-
-.pagination {
-  margin-top: 40px;
-}
-
-.tokens-tab {
-  padding: 20px 0;
-  border-top: 1px solid #ececec;
-  border-bottom: 1px solid #ececec;
 }
 
 .line {
@@ -423,7 +382,7 @@ export default {
     white-space: nowrap;
     margin: 10px 0;
     a {
-      font-size: 16px;
+      font-size: 12px;
       color: #000;
       line-height: 22px;
       text-decoration: underline;
@@ -431,7 +390,7 @@ export default {
   }
 }
 .social {
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .social-btn {
   display: flex;
@@ -444,7 +403,7 @@ export default {
 }
 .token-widget {
   // width: 400px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .not {
