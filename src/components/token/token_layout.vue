@@ -1,6 +1,6 @@
 <template>
   <div class="token">
-        <BaseHeader
+    <BaseHeader
       :has-bottom-border-line="true"
       customize-header-bc="#fff"
       :pageinfo="{ title: '粉丝币详情' }"
@@ -8,12 +8,13 @@
 
     <div class="token-detail">
       <div class="fl ac jsb">
-        <a
-          class="help-link"
-          href="https://www.matataki.io/p/977"
-          target="_blank"
-        >什么是粉丝币?</a>
-        <el-button size="small" class="share-btn" icon="el-icon-share" @click="shareModalShow = true">
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
+        <el-button
+          size="small"
+          class="share-btn"
+          icon="el-icon-share"
+          @click="shareModalShow = true"
+        >
           分享
         </el-button>
       </div>
@@ -36,7 +37,7 @@
             </div>
             <div>
               <p class="token-info-sub">
-                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
+                <router-link :to="{ name: 'user-id', params: { id: minetokenToken.uid } }">
                   {{ name }}
                 </router-link>
               </p>
@@ -98,8 +99,8 @@
         </div>
 
         <div class="token-data">
-          <p class="token-num">
-            {{ change }}</sub>
+          <p class="token-num" :style="{ color: color }">
+            {{ change }}
           </p>
           <p class="token-name">
             24h涨跌幅
@@ -107,9 +108,7 @@
         </div>
 
         <div class="token-data">
-          <p class="token-num">
-            {{ price || 0 }}<sub>CNY</sub>
-          </p>
+          <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
           <p class="token-name">
             现价
           </p>
@@ -178,17 +177,14 @@
       :img="logo"
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
-      @input="val => shareModalShow = val"
+      @input="val => (shareModalShow = val)"
     />
-  <div class="fixed-bottom">
-        <router-link class="exchange" :to="{name: 'exchange'}">
-      <svg-icon
-        class="tokens"
-        icon-class="token"
-      />
-      粉丝币交易所
-    </router-link>
-  </div>
+    <div class="fixed-bottom">
+      <router-link class="exchange" :to="{ name: 'exchange' }">
+        <svg-icon class="tokens" icon-class="token" />
+        粉丝币交易所
+      </router-link>
+    </div>
   </div>
 </template>
 <script>
@@ -223,19 +219,35 @@ export default {
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
     },
     amount() {
-      const tokenamount = precision(this.minetokenToken.total_supply || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenToken.total_supply || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     tokenReserve() {
-      const tokenamount = precision(this.minetokenExchange.token_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.token_reserve || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     cnyReserve() {
-      const tokenamount = precision(this.minetokenExchange.cny_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.cny_reserve || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     volume() {
-      const tokenamount = precision(this.minetokenExchange.volume_24h || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.volume_24h || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     change() {
@@ -251,6 +263,13 @@ export default {
     name() {
       let name = this.minetokenUser.nickname || this.minetokenUser.username
       return name.length > 12 ? name.slice(0, 12) + '...' : name
+    },
+    color() {
+      // 显示转换
+      const amount = parseFloat(this.change)
+      if (amount < 0) return 'rgb(74, 151, 42)'
+      else if (amount > 0) return 'rgb(266, 70, 69)'
+      else return 'rgb(153, 153, 153)'
     }
   },
   created() {
@@ -259,30 +278,34 @@ export default {
   },
   methods: {
     async mimetokenId(id) {
-      await this.$API.mimetokenId(id).then(res => {
-        if (res.code === 0) {
-          this.minetokenToken = res.data.token || Object.create(null)
-          this.minetokenUser = res.data.user || Object.create(null)
-          this.minetokenExchange = res.data.exchange || Object.create(null)
-        } else {
-          this.$message.success(res.message)
-        }
-      })
+      await this.$API
+        .mimetokenId(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.minetokenToken = res.data.token || Object.create(null)
+            this.minetokenUser = res.data.user || Object.create(null)
+            this.minetokenExchange = res.data.exchange || Object.create(null)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
         .catch(err => {
           console.log(err)
         })
     },
     async minetokenGetResources(id) {
-      await this.$API.minetokenGetResources(id).then(res => {
-        if (res.code === 0) {
-          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
-          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
-          this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
-        } else {
-          this.$message.success(res.message)
-        }
-      })
+      await this.$API
+        .minetokenGetResources(id)
+        .then(res => {
+          if (res.code === 0) {
+            const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+            const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+            this.resourcesSocialss = socialFilterEmpty
+            this.resourcesWebsites = res.data.websites
+          } else {
+            this.$message.success(res.message)
+          }
+        })
         .catch(err => {
           console.log(err)
         })
@@ -291,7 +314,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
 .token {
   background-color: #f1f1f1;
   padding: 45px 0 80px;
@@ -304,7 +326,7 @@ export default {
   background: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
-  &>div:nth-child(1) {
+  & > div:nth-child(1) {
     margin-bottom: 10px;
   }
 }
@@ -315,10 +337,10 @@ export default {
 .token-detail-info {
   width: 60%;
   margin-left: 10px;
-  font-size:16px;
-  font-weight:400;
+  font-size: 16px;
+  font-weight: 400;
   color: #000;
-  line-height:22px;
+  line-height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -339,7 +361,6 @@ export default {
   }
 }
 
-
 .token-container {
   margin: 10px 0 0;
 }
@@ -352,18 +373,18 @@ export default {
 }
 
 .token-title {
-  font-size:20px;
-  font-weight:bold;
-  color:#000;
-  line-height:33px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  line-height: 33px;
   padding: 0;
   margin: 0;
 }
 .token-introduction {
-  font-size:14px;
-  font-weight:400;
-  color:#000;
-  line-height:22px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  line-height: 22px;
   padding: 0;
   margin: 10px 0 0;
 }
@@ -394,17 +415,17 @@ export default {
   }
 }
 .token-num {
-  font-size:14px;
-  font-weight:bold;
-  color: #542DE0;
-  line-height:28px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #542de0;
+  line-height: 28px;
   padding: 0;
   margin: 0;
 }
 .token-name {
-  font-size:12px;
+  font-size: 12px;
   color: #000;
-  line-height:20px;
+  line-height: 20px;
   padding: 0;
   margin: 6px 0 0;
 }
@@ -421,9 +442,9 @@ export default {
 }
 
 .exchange {
-  border-radius:20px;
+  border-radius: 20px;
   display: block;
-  background: #542DE0;
+  background: #542de0;
   text-align: center;
   color: #fff;
   font-size: 16px;
@@ -445,9 +466,9 @@ export default {
     white-space: nowrap;
     margin: 10px 0;
     a {
-      font-size:16px;
-      color:#000;
-      line-height:22px;
+      font-size: 16px;
+      color: #000;
+      line-height: 22px;
       text-decoration: underline;
     }
   }
