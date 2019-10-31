@@ -114,9 +114,7 @@ export default {
 
     window.updateNotify = updateNotify
   },
-  mounted() {
-    this.$wechatShare({})
-  },
+  mounted() {},
   methods: {
     tz() {
       const { href, origin } = window.location

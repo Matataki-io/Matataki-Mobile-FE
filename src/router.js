@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { accessTokenAPI } from '@/api'
+// wechat share
+import wechatShare from './utils/wechat_share'
 
 if (!window.VueRouter) Vue.use(VueRouter)
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -295,3 +297,9 @@ export default new VueRouter({
     }
   ]
 })
+
+router.afterEach((to, from) => {
+  wechatShare({})
+})
+
+export default router
