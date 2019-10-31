@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     width() {
-      return '90%'
+      return '92%'
     },
     shareLink() {
       return `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
