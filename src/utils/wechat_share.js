@@ -5,13 +5,15 @@ export default ({ title, desc, link, imgUrl }) => {
   let defaultTitle = '瞬MATATAKI—发布瞬间，灵感永存'
   let defaultDesc =
     '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
-  const regCache = str => {
-    let reg = /CACHE=(.*?)*$/
-    return str.replace(reg, '')
-  }
+  // const regCache = str => {
+  //   let reg = /CACHE=(.*?)*$/
+  //   return str.replace(reg, '')
+  // }
   // 非history, 但是我们用的是history 加上多一层保障吧
-  let regStr = regCache(window.location.href.split('#')[0])
-  let defaultLink = regStr.substring(0, regStr.length - 1) //为了去掉 CACHE=xxxxxx
+  // let regStr = regCache(window.location.href.split('#')[0])
+  // let defaultLink = regStr.substring(0, regStr.length - 1) //为了去掉 CACHE=xxxxxx
+  let defaultLink = window.location.href
+
   let defaultimgUrl =
     'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
   axios

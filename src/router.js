@@ -299,7 +299,9 @@ const router = new VueRouter({
 })
 
 router.afterEach((to, from) => {
-  wechatShare({})
+  Vue.nextTick(() => {
+    wechatShare({})
+  })
 })
 
 export default router
