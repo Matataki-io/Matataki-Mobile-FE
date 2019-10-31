@@ -42,22 +42,24 @@ export default {
   },
   data() {
     return {
-      sort: 'id',
+      sort: this.$route.query.id || 'id',
       pull: {
         params: {
           pagesize: 20,
-          sort: this.$route.params.sort || 'id-desc'
+          sort: this.$route.query.sort || 'id-desc'
         },
         apiUrl: 'tokenAll',
         list: []
       },
-      currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
       total: 0,
       assets: {},
       viewStatus: 0, // 0 1
       amount: 0
     }
+  },
+  computed() {
+    console.log(111, this.$route.query)
   },
   methods: {
     toggleSort(name) {
@@ -69,10 +71,10 @@ export default {
         this.pull.params.sort =
           this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
       }
-      this.$router.push({
+      this.$router.replace({
         query: {
-          sort: this.pull.params.sort,
-          page: this.currentPage
+          id: this.sort,
+          sort: this.pull.params.sort
         }
       })
     },

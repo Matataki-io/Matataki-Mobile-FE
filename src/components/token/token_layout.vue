@@ -37,7 +37,7 @@
             <div>
               <p class="token-info-sub">
                 <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
-                  {{ minetokenUser.nickname || minetokenUser.username }}
+                  {{ name }}
                 </router-link>
               </p>
             </div>
@@ -247,8 +247,11 @@ export default {
       // const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
       // return this.$publishMethods.formatDecimal(tokenamount, 4)
       return this.minetokenExchange.price || 0
+    },
+    name() {
+      let name = this.minetokenUser.nickname || this.minetokenUser.username
+      return name.length > 12 ? name.slice(0, 12) + '...' : name
     }
-
   },
   created() {
     this.mimetokenId(this.$route.params.id)
@@ -462,7 +465,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 8px 10px 8px 0;
-  &:nth-child(5n) {
+  &:nth-last-child(1) {
     margin-right: 0;
   }
 }

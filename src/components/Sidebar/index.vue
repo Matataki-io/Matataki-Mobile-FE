@@ -199,6 +199,20 @@
           {{ $t('sidebar.login') }}
         </div>
       </template>
+      <div v-if="!isLogined" class="cell-container">
+        <router-link :to="{ name: 'exchange' }">
+          <div class="cell">
+            <div class="cell-left">
+              <svg-icon icon-class="exchange" class="left-img"></svg-icon>
+              <span class="left-text">
+                粉丝币交易所
+              </span>
+            </div>
+            <div class="cell-right"><span></span></div>
+          </div>
+        </router-link>
+      </div>
+
       <div class="cell-container">
         <a href="https://matataki.io/p/617">
           <div class="cell">
