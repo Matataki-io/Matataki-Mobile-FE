@@ -254,7 +254,9 @@ export default {
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        return (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+        const amount = (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+        if (parseInt(amount) > 0) return '+' + amount
+        return amount
       } else return '0%'
     },
     price() {
