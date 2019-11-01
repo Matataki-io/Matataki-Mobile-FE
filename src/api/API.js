@@ -93,7 +93,7 @@ minetokenGetResources(tokenId) {
    * 粉丝币详情
    * @param {Number} id token id
    */
-  mimetokenId(id) {
+  minetokenId(id) {
     return request({
       method: 'GET',
       url: `/minetoken/${id}`,
