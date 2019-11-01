@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.userDetail.avatar ? this.$backendAPI.getImg(this.userDetail.avatar) : ''
+      return this.tokenDetail.logo ? this.$backendAPI.getImg(this.tokenDetail.logo) : ''
     }
   },
   methods: {
