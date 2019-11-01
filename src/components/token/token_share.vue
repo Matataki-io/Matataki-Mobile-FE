@@ -6,7 +6,7 @@
     custom-class="gray-bg br10 p-share"
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
-    :top="widgetModalStatus === 0 ? '15vh' : '20px'"
+    top="20px"
     @close="change"
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
