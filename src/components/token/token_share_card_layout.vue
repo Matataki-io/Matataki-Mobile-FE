@@ -23,7 +23,9 @@
     <div class="token-content">
       <div class="share">
         <div ref="tokenCard">
+          <img v-if="tokenImg" :src="tokenImg" alt="tokenImg" />
           <tokenShareCard
+            v-else
             :minetoken-token="minetokenToken"
             :minetoken-user="minetokenUser"
             :card-style="shareCardCheckedOne ? 1 : 2"
@@ -31,6 +33,7 @@
         </div>
       </div>
     </div>
+    <p class="doc">如果图片无法下载, 点击保存后长按保存图片</p>
     <el-button class="save" type="primary" @click="save">
       保存
     </el-button>
@@ -56,11 +59,16 @@ export default {
   },
   data() {
     return {
-      shareCardCheckedOne: true
+      shareCardCheckedOne: true,
+      tokenImg: ''
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    shareCardCheckedOne() {
+      this.tokenImg = ''
+    }
+  },
   mounted() {
     console.log(document.querySelector('.p-share').offsetLeft)
     console.log(document.querySelector('.p-share').offsetTop)
@@ -70,6 +78,7 @@ export default {
       this.toCanvas('tokenCard')
     },
     saveLocal(canvas) {
+      this.tokenImg = canvas.toDataURL()
       const linkTag = document.querySelector('#downloadImg')
       if (linkTag) {
         linkTag.href = canvas.toDataURL()
@@ -135,9 +144,18 @@ export default {
   transition: border 0.3s;
   box-sizing: border-box;
   border: 2px solid #f1f1f1;
+  img {
+    width: 100%;
+  }
 }
 .check {
   margin: 10px 0 0;
+}
+.doc {
+  font-size: 12px;
+  text-align: center;
+  margin: 4px 0;
+  color: #909090;
 }
 .save {
   width: 300px;
