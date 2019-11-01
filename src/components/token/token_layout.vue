@@ -7,16 +7,12 @@
     />
 
     <div class="token-detail">
-      <div class="fl ac jsb">
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
-        <el-button
-          size="mini"
-          class="share-btn"
-          icon="el-icon-share"
-          @click="shareModalShow = true"
-        >
-          分享
-        </el-button>
+      <div class="link">
+        <svg-icon class="detail-btn" icon-class="share1" @click="shareModalShow = true" />
+
+        <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
+          <svg-icon class="detail-btn" icon-class="setting" />
+        </router-link>
       </div>
       <div class="fl">
         <avatar :src="logo" class="avatar" />
@@ -54,6 +50,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="link">
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
       </div>
     </div>
 
@@ -188,6 +187,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 // import mineTokensNav from '@/components/minetokens_nav/index.vue'
 import Share from '@/components/token/token_share.vue'
@@ -210,10 +210,12 @@ export default {
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
-      resourcesWebsites: []
+      resourcesWebsites: [],
+      showTokenSetting: false
     }
   },
   computed: {
+    ...mapGetters(['currentUserInfo']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
@@ -274,9 +276,18 @@ export default {
       else return 'rgb(153, 153, 153)'
     }
   },
+  watch: {
+    currentUserInfo() {
+      // 第一次会重复请求两次接口
+      if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    }
+  },
   created() {
     this.minetokenId(this.$route.params.id)
     this.minetokenGetResources(this.$route.params.id)
+  },
+  mounted() {
+    if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
   },
   methods: {
     async minetokenId(id) {
@@ -317,6 +328,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    async tokenUserId(id) {
+      await this.$backendAPI
+        .tokenUserId(id)
+        .then(res => {
+          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
+            this.showTokenSetting = res.data.data.id === Number(this.$route.params.id)
+          }
+        })
+        .catch(err => console.log('get token user error', err))
     }
   }
 }
@@ -535,13 +556,21 @@ export default {
   padding-top: 20px;
   display: inline-block;
 }
-
+.link {
+  text-align: right;
+}
 .help-link {
   font-size: 12px;
   color: #868686;
   text-decoration: underline;
 }
-.share-btn {
+.detail-btn {
+  color: #000;
+  font-size: 20px;
+  margin: 0 0 0 16px;
+  :nth-child(1) {
+    margin-left: 0;
+  }
 }
 
 .minetoken-card {
