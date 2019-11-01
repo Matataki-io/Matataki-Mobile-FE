@@ -86,11 +86,13 @@ export default {
     margin: 12px auto;
     cursor: pointer;
     &.success {
-      background-color: #478970;
+      background-color: #542de0;
       margin-top: 30px;
     }
     &.cancel {
-      background-color: #d7d7d7;
+      color: #542de0;
+      background-color: #ffffff;
+      border: 1px solid #542de0;
     }
   }
 }
