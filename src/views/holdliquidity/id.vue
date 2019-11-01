@@ -8,7 +8,9 @@
     <div class="tokens-head">
       <div class="fl jsb">
         <div class="info">
-          <avatar :src="cover" size="30px" />
+          <router-link :to="{ name: 'token-id', params: { id: tokenDetail.id } }">
+            <avatar :src="cover" size="30px" />
+          </router-link>
           <div class="user-info">
             <h3>{{ tokenDetail.symbol || '' }}</h3>
             <h4>{{ tokenDetail.name || '' }}</h4>
@@ -131,7 +133,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.userDetail.avatar ? this.$backendAPI.getImg(this.userDetail.avatar) : ''
+      return this.tokenDetail.logo ? this.$backendAPI.getImg(this.tokenDetail.logo) : ''
     }
   },
   methods: {
