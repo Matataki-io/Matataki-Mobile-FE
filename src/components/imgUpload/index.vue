@@ -30,7 +30,7 @@
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
         <img v-if="files.length && modal" ref="editImage" :src="files[0].url" />
       </div>
-      <Button
+      <el-button
         slot="footer"
         class="save-button"
         type="primary"
@@ -39,7 +39,7 @@
         @click.prevent="uploadButton"
       >
         {{ buttonText }}
-      </Button>
+      </el-button>
     </Modal>
   </div>
 </template>
