@@ -461,29 +461,27 @@ export default {
   width: 90px;
   height: 90px;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   border-radius: 4px;
   box-sizing: border-box;
   background: #ececec;
   border: 1px solid #ececec;
-  &:hover .cover-full {
-    display: flex;
-  }
+  // &:hover .cover-full {
+  //   display: flex;
+  // }
   .cover-full {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    // display: flex;
+    top: -4px;
+    right: -34px;
+    // background: rgba(0, 0, 0, 0.5);
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    display: none;
+    // display: none;
     .remove {
       font-size: 26px;
-      color: #fff;
+      color: #858689;
     }
   }
 }
