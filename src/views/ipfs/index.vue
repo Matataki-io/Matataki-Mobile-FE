@@ -1,5 +1,5 @@
 <template>
-  <main class="ipfs">
+  <main class="ipfs ipfs-page">
     <BaseHeader
       :has-bottom-border-line="true"
       :pageinfo="{ title: 'IPFS' }"
@@ -114,6 +114,8 @@ export default {
         if (res.status === 200 && res.data.code === 0) this.articleData = res.data.data
       })
 
+      this.addReadAmount(this.articleData.hash)
+
       if (this.articleData.require_holdtokens) {
         this.showContent = false
       } else {
@@ -122,6 +124,12 @@ export default {
         })
         this.showContent = true
       }
+    },
+    // 增加文章阅读量
+    async addReadAmount(hash) {
+      await this.$backendAPI
+        .addReadAmount(hash)
+        .catch(err => console.log('add read amount error', err))
     }
   }
 }
@@ -175,5 +183,8 @@ figure {
 <style>
 .ipfs .katex-display {
   overflow: auto;
+}
+.ipfs-page img {
+  width: 100%;
 }
 </style>

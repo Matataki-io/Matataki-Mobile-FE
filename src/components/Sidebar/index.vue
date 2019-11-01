@@ -262,7 +262,7 @@
         </a>
       </div>
       <div class="cell-container">
-        <a href="https://support.qq.com/product/84254" target="_blank">
+        <a href="https://support.qq.com/product/98576" target="_blank">
           <div class="cell">
             <div class="cell-left">
               <svg-icon icon-class="tgc" class="left-img icon-feedback" />
