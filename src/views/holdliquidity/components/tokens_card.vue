@@ -31,6 +31,9 @@ export default {
   },
   methods: {
     percent(balance, total) {
+      if (balance === 0 || total === 0) {
+        return '0%'
+      }
       return ((parseFloat(balance) / parseFloat(total)) * 100).toFixed(2) + '%'
     },
     liquidity(balance, decimals = 4) {

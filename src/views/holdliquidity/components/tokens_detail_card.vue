@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="user-info">
-      <router-link class="avatar" :to="{ name: 'user-id', params: { id: id } }">
+      <router-link class="avatar" :to="{ name: 'token-id', params: { id: card.token_id } }">
         <avatar :src="cover" size="30px" />
       </router-link>
       <div>
@@ -12,15 +12,15 @@
     </div>
     <div class="token-info">
       <div>
-        <div :class="[ 'fall-rise', amountType(card.cny_amount) ]">{{ cnyAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.cny_amount) ]">{{ cnyAmount }}</div>
         <div class="gray">CNY</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', amountType(card.token_amount) ]">{{ tokenAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.token_amount) ]">{{ tokenAmount }}</div>
         <div class="gray">{{ card.symbol }}</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', amountType(card.liquidity) ]">{{ liquidityAmount }}</div>
+        <div :class="[ 'fall-rise', tokenClass(card.liquidity) ]">{{ liquidityAmount }}</div>
         <div class="gray">流动金Token</div>
       </div>
     </div>
@@ -67,49 +67,28 @@ export default {
       return moment(this.card.create_time).format('MMMDo HH:mm')
     },
     cnyAmount() {
-      const { cny_amount, decimals } = this.card
+      const { liquidity, cny_amount, decimals } = this.card
       let type = ''
-      if (cny_amount > 0) {
-        type = '+'
-      }
-      if (cny_amount < 0) {
-        type = '-'
-      }
+      if (liquidity > 0) type = '-'
+      if (liquidity < 0) type = '+'
       return type + this.$utils.fromDecimal(cny_amount, decimals)
     },
     tokenAmount() {
-      const { token_amount, decimals } = this.card
+      const { liquidity, token_amount, decimals } = this.card
       let type = ''
-      if (token_amount > 0) {
-        type = '+'
-      }
-      if (token_amount < 0) {
-        type = '-'
-      }
+      if (liquidity > 0) type = '-'
+      if (liquidity < 0) type = '+'
       return type + this.$utils.fromDecimal(token_amount, decimals)
     },
     liquidityAmount() {
       const { liquidity, decimals } = this.card
       let type = ''
-      if (liquidity > 0) {
-        type = '+'
-      }
-      if (liquidity < 0) {
-        type = '-'
-      }
+      if (liquidity > 0) type = '+'
+      // 不需要判断负数
       return type + this.$utils.fromDecimal(liquidity, decimals)
     },
-    id() {
-      if (this.isMe(this.card.from_uid)) {
-        return this.card.to_uid
-      } else if (this.isMe(this.card.to_uid)) {
-        return this.card.from_uid
-      } else {
-        return this.card.from_uid
-      }
-    },
     cover() {
-      return this.card.logo
+      return this.card.logo ? this.$backendAPI.getImg(this.card.logo) : ''
     },
     username() {
       if (this.isMe(this.card.from_uid)) {
@@ -153,7 +132,16 @@ export default {
     // console.log('card', this.card)
   },
   methods: {
-    amountType(amount) {
+    tokenClass(amount) {
+      if (amount > 0) {
+        return 'green'
+      } else if (amount < 0) {
+        return 'red'
+      } else {
+        return 'black'
+      }
+    },
+    amountClass(amount) {
       if (amount > 0) {
         return 'red'
       } else if (amount < 0) {
@@ -170,7 +158,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px;
+  padding: 14px 5px;
   border-bottom: 1px solid #ececec;
 }
 .user-info {
@@ -182,7 +170,7 @@ export default {
     font-weight:400;
     color:rgba(0,0,0,1);
     line-height:28px;
-    margin-right: 20px;
+    margin-right: 5px;
   }
 }
 .token-info {
@@ -190,7 +178,7 @@ export default {
   align-items: center;
   justify-content: flex-end;
   div {
-    margin-left: 10px;
+    margin-left: 5px;
     text-align: center;
   }
 }
