@@ -58,7 +58,7 @@
                 v-if="scope.row.id !== 0"
                 target="_blank"
                 class="gray-btn"
-                :to="{name: 'user-id', params: {id: scope.row.uid}}"
+                :to="{name: 'token-id', params: {id: scope.row.id}}"
               >
                 <el-button circle>
                   <svg-icon icon-class="share" style="color: #B2B2B2;"/>
