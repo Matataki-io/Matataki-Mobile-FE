@@ -354,14 +354,16 @@ export default {
       if (newState) this.refreshUser()
     },
     currentUserInfo() {
-      this.tokenUserId(this.currentUserInfo.id)
+      // 第一次会重复请求两次接口
+      if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
     }
   },
   created() {
     this.refreshUser()
   },
   mounted() {
-    // if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    // 保证切换正常显示状态
+    if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
   },
   methods: {
     async tokenUserId(id) {

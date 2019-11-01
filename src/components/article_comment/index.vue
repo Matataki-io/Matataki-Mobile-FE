@@ -61,7 +61,6 @@ export default {
     async getUser(id) {
       // 获取用户头像
       await this.$backendAPI.getUser({ id }).then(res => {
-        console.log(64, res)
         if (res.status === 200 && res.data.code === 0)
           this.avatarSrc = res.data.data.avatar ? this.$backendAPI.getImg(res.data.data.avatar) : ''
       })
