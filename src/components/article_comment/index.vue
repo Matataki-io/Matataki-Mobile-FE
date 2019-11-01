@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 // import avatar from '@/components/avatar/index.vue'
 
@@ -46,23 +46,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined'])
+    ...mapGetters(['isLogined', 'currentUserInfo'])
   },
   watch: {
     isLogined(val) {
       // 监听登陆 重新获取头像
-      if (val) this.getUser()
+      if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
     }
   },
   mounted() {
-    this.getUser() // 加载完成 获取头像
+    if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
   },
   methods: {
-    ...mapActions(['getCurrentUser']),
-    async getUser() {
+    async getUser(id) {
       // 获取用户头像
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatarSrc = this.$backendAPI.getAvatarImage(avatar)
+      await this.$backendAPI.getUser({ id }).then(res => {
+        if (res.status === 200 && res.data.code === 0)
+          this.avatarSrc = res.data.data.avatar ? this.$backendAPI.getImg(res.data.data.avatar) : ''
+      })
     },
     islogin() {
       if (!this.isLogined) {
@@ -73,7 +74,8 @@ export default {
     },
     postComment() {
       if (!this.islogin()) return
-      if (!this.comment.trim()) return this.$toast({ duration: 1000, message: this.$t('p.commentContent') })
+      if (!this.comment.trim())
+        return this.$toast({ duration: 1000, message: this.$t('p.commentContent') })
       const data = {
         signId: this.article.id,
         comment: this.comment.trim()

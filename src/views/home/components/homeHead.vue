@@ -14,7 +14,9 @@
         :class="item.name === $route.name && 'active'"
         :to="{ name: item.name }"
       >
-        <span>{{ item.title }}</span>
+        <span>
+          {{ item.title }}
+        </span>
       </router-link>
     </div>
     <div class="fl ac">
@@ -66,6 +68,10 @@ export default {
         {
           title: this.$t('home.navShop'),
           name: 'shop'
+        },
+        {
+          title: '粉丝币',
+          name: 'token'
         }
       ]
     },
@@ -103,7 +109,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f1f1f1;
-  padding: 10px 20px;
+  padding: 10px 10px;
   background-color: #fff;
   box-sizing: border-box;
   &-avatar {
@@ -129,11 +135,12 @@ export default {
   }
   &-nav {
     a {
-      font-size: 18px;
+      font-size: 16px;
       color: rgba(178, 178, 178, 1);
-      margin: 0 10px;
+      margin: 0 6px;
       position: relative;
       text-align: center;
+      display: inline-block;
       transition: all 0.18s ease-in-out;
       span {
         z-index: 2;
@@ -141,14 +148,15 @@ export default {
       }
       &.active {
         font-weight: bold;
+        z-index: 1;
         color: rgba(0, 0, 0, 1);
       }
       &.active::after {
         content: '';
         position: absolute;
         bottom: 2px;
-        left: -2px;
-        right: -2px;
+        left: 0px;
+        right: 0px;
         display: block;
         height: 4px;
         background-color: #542de0;

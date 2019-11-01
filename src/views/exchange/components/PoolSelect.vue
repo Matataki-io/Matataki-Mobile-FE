@@ -80,17 +80,17 @@ export default {
   .cwefbr.MODE {
     background-color: #ffffff;
     font-weight: 500;
-    color: @purpleDark;
+    color: #542DE0;
     border-radius: 3rem;
     border-width: 1px;
     border-style: solid;
-    border-color: @purpleDark;
+    border-color: #542DE0;
     border-image: initial;
   }
   .cwefbr {
     display: flex;
     cursor: pointer;
-    color: @purpleDark;
+    color: #542DE0;
     font-size: 1rem;
     flex-flow: row nowrap;
     padding: 1rem;

@@ -1,10 +1,10 @@
 <template>
   <div class="card">
     <div class="info">
-      <router-link :to="{ name: 'User', params: { id: card.id } }">
+      <router-link :to="{ name: 'user-id', params: { id: card.id } }">
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
       </router-link>
-      <router-link :to="{ name: 'User', params: { id: card.id } }">
+      <router-link :to="{ name: 'user-id', params: { id: card.id } }">
         <span class="username">{{ card.username }}</span>
       </router-link>
     </div>

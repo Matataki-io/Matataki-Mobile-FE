@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click.stop="$router.push({ name: 'User', params: { id } })">
+  <div class="card" @click.stop="$router.push({ name: 'user-id', params: { id } })">
     <div class="avatar">
       <img v-if="avatarList" v-lazy="avatarList" :src="avatarList" alt="avatar" />
     </div>

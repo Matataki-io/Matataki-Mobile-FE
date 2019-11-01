@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="user-info">
-      <router-link class="avatar" :to="{ name: 'User', params: { id: id } }">
+      <router-link class="avatar" :to="{ name: 'user-id', params: { id: id } }">
         <avatar :src="cover" size="30px" />
       </router-link>
       <div>
@@ -24,13 +24,13 @@
         <div class="gray">流动金Token</div>
       </div>
     </div>
-    <!-- <router-link class="username" :to="{ name: 'User', params: { id: id } }">
+    <!-- <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
       <avatar :src="cover" size="30px" />
     </router-link>
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
-          <router-link class="username" :to="{ name: 'User', params: { id: id } }">
+          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
             <span class="username">{{ username }}</span>
           </router-link>
           <span class="type">{{ type }}</span>

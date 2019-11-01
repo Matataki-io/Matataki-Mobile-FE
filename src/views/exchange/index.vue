@@ -77,7 +77,7 @@ export default {
   }
   .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
     color: white;
-    background-color: @purpleDark;
+    background-color: #542DE0;
   }
   .el-tabs__nav {
     display: flex;
@@ -103,13 +103,13 @@ export default {
     justify-content: center;
     height: 2.5rem;
     cursor: pointer;
-    color: @purpleDark;
+    color: #542DE0;
     font-size: 1rem;
     box-sizing: border-box;
     flex-flow: row nowrap;
     border-width: 1px;
     border-style: solid;
-    border-color: @purpleDark;
+    border-color: #542DE0;
     border-image: initial;
     flex: 1 0 auto;
     outline: none;
@@ -124,8 +124,8 @@ export default {
     }
   }
   .el-tabs--border-card > .el-tabs__header .el-tabs__item {
-    border-color: @purpleDark;
-    color: @purpleDark;
+    border-color: #542DE0;
+    color: #542DE0;
     width: 100px;
   }
 }

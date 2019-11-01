@@ -355,7 +355,7 @@ export default {
     padding: 15px 20px;
   }
   .money {
-    color: @purpleDark;
+    color: #542DE0;
   }
   .payBtnBox {
     padding: 20px 0;

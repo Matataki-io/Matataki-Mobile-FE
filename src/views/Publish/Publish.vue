@@ -114,15 +114,12 @@
       <div v-if="editorMode !== 'edit'" class="fission">
         <p>
           {{ $t('publish.commentTitle') }}
-          <Poptip
-            popper-class="my-poptip"
-            :content="$t('publish.commentContent')"
-            width="250"
-            word-wrap
-            placement="top-start"
-          >
-            <span class="question">?</span>
-          </Poptip>
+          <el-tooltip class="item" effect="dark" placement="top-start">
+            <div slot="content">
+              {{ $t('publish.commentContent') }}
+            </div>
+            <svg-icon class="help-icon" icon-class="help" />
+          </el-tooltip>
         </p>
         <div class="fission-num-slider">
           <el-input-number
@@ -731,7 +728,7 @@ export default {
       // console.log('sendThePost mode :', editorMode, saveType)
       if (editorMode === 'create' && saveType === 'public') {
         if (this.readauThority) {
-          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
@@ -767,7 +764,7 @@ export default {
         });*/
       } else if (editorMode === 'edit') {
         if (this.readauThority) {
-          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }

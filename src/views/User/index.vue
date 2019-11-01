@@ -122,7 +122,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ArticleCard } from '@/components/'
-import tokenAvatar from './components/token_avatar'
+import tokenAvatar from './components/token_avatar.vue'
 
 import avatar from '@/components/avatar/index.vue'
 
@@ -201,6 +201,12 @@ export default {
         this.name = nickname || username
         this.setAvatarImage(avatar)
         this.stats = { accounts, articles, supports, drafts }
+
+        this.$wechatShare({
+          title: `${nickname || username}的个人主页`,
+          desc: introduction || '暂无',
+          imgUrl: avatar ? this.$API.getImg(avatar) : ''
+        })
       }
 
       const {

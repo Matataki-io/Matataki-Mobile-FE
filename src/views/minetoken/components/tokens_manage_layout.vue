@@ -1,111 +1,140 @@
 <template>
   <div v-if="isPublishCoins" class="coins-publish">
-    <div class="block-border">
-      <div class="fl ac coins-head">
-        <div class="fl ac">
-          <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
-          <h1>
-            {{ tokenDetailData.token.symbol }}
-            ({{ tokenDetailData.token.name }})
-          </h1>
-        </div>
-        <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
-        <svg-icon
-          class="help-icon"
-          icon-class="help"
+    <!-- <div class="line" /> -->
+    <div class="coins-head">
+      <div class="fl ac">
+        <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
+        <h1>
+          {{ tokenDetailData.token.symbol }}
+          ({{ tokenDetailData.token.name }})
+        </h1>
+      </div>
+      <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip> -->
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/979"
+        >如何管理你的粉丝币?</a
+      >
+
+      <div class="btn">
+        <router-link :to="{ name: 'token-id', params: { id: tokenDetailData.token.id || 0 } }">
+          <el-button size="mini">
+            详情
+          </el-button>
+        </router-link>
+        <router-link :to="{ name: 'editminetoken' }">
+          <el-button size="mini">
+            编辑
+          </el-button>
+        </router-link>
+        <el-button size="mini" @click="addCoins">
+          增发
+        </el-button>
+        <router-link :to="{ name: 'exchange' }">
+          <el-button size="mini" type="primary">
+            交易
+          </el-button>
+        </router-link>
+      </div>
+    </div>
+    <div class="line" />
+
+    <h2 class="token-title">
+      简介
+    </h2>
+    <p class="token-sub">
+      {{ tokenDetailData.token.brief || '暂无' }}
+    </p>
+    <div class="line" />
+
+    <h2 class="token-title">
+      介绍
+    </h2>
+    <p class="token-sub">
+      {{ tokenDetailData.token.introduction || '暂无' }}
+    </p>
+
+    <div class="line" />
+
+    <h2 class="token-title">
+      相关网站
+    </h2>
+    <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
+      <li v-for="(item, index) in resourcesWebsites" :key="index">
+        <a target="_blank" :href="item">{{ item }}</a>
+      </li>
+    </ul>
+    <span v-else class="not">暂无</span>
+    <div class="line" />
+
+    <h2 class="token-title">
+      社交账号
+    </h2>
+
+    <div v-if="resourcesSocialss.length !== 0" class="fl social">
+      <div class="social-btn">
+        <socialIcon
+          v-for="(item, index) in resourcesSocialss"
+          :key="index"
+          :show-tooltip="true"
+          :icon="item.type"
+          :content="item.content"
         />
-      </el-tooltip> -->
-        <!-- <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a> -->
-      </div>
-
-      <div class="coins-info">
-        <div class="info-block">
-          <div class="info-data">
-            <p class="info-data-number">{{ totalAmount }}<sub>枚</sub></p>
-            <p class="info-data-title">
-              发行总量
-            </p>
-          </div>
-          <div class="info-data">
-            <p class="info-data-number">{{ tokenReserve }}<sub>枚</sub></p>
-            <p class="info-data-title">
-              流通量
-            </p>
-          </div>
-          <div class="info-data">
-            <p class="info-data-number">{{ cnyReserve }}<sub>元</sub></p>
-            <p class="info-data-title">
-              资金池
-            </p>
-          </div>
-          <div class="info-data">
-            <p class="info-data-number">{{ balance }}<sub>枚</sub></p>
-            <p class="info-data-title">
-              我的持仓总量
-            </p>
-          </div>
-          <div class="info-data">
-            <p class="info-data-number">{{ nowPrice }}<sub>元</sub></p>
-            <p class="info-data-title">
-              现价
-            </p>
-          </div>
-        </div>
       </div>
     </div>
+    <span v-else class="not">暂无</span>
+    <div class="line" />
 
-    <div class="minetoken-card">
-      <div class="minetoken-tab">
-        <router-link :to="{ name: 'minetoken' }" :class="$route.name === 'minetoken' && 'active'">
-          持仓详情
-        </router-link>
-        <router-link
-          :to="{ name: 'minetokenDetail' }"
-          :class="$route.name === 'minetokenDetail' && 'active'"
-        >
-          流水明细
-        </router-link>
-      </div>
-      <div v-if="$route.name === 'minetoken'" class="minetoken-head">
-        <div class="minetoken-title">持仓者</div>
-        <div class="minetoken-number">持仓量</div>
-      </div>
-      <slot></slot>
-    </div>
+    <h2 class="token-title">
+      分享挂件
+    </h2>
 
-    <div class="fixed-bottom">
-      <el-button class="fix-button" @click="addCoins">增发</el-button>
-      <router-link :to="{ name: 'exchange' }">
-        <el-button class="fix-button" type="primary">交易</el-button>
-      </router-link>
-    </div>
+    <el-input
+      v-model="tokenWidget"
+      class="token-widget"
+      type="textarea"
+      :rows="4"
+      placeholder="请输入内容"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-// import card from './minetoken_card.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
-// import { testDecimal } from '@/utils/reg'
+import socialTypes from '@/config/social_types'
+import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
   components: {
-    avatar
-    // card
-  },
-  props: {
-    listType: {
-      // 持仓 明细 details detail
-      type: String,
-      required: true
-    }
+    avatar,
+    socialIcon
   },
   data() {
     return {
+      tokenId: null,
       isPublishCoins: false,
-      tokenDetailData: Object.create(null)
+      tokenDetailData: Object.create(null),
+      pointLog: {
+        params: {
+          pagesize: 10
+        },
+        apiUrl: 'tokenUserList',
+        list: []
+      },
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false, // 加载数据
+      total: 0,
+      assets: {},
+      viewStatus: 0, // 0 1
+      amount: 0,
+      resourcesSocialss: [],
+      resourcesWebsites: []
     }
   },
   computed: {
@@ -161,41 +190,68 @@ export default {
     tokenCover() {
       if (this.tokenDetailData.token) {
         const logo = this.tokenDetailData.token.logo
-        return logo ? this.$backendAPI.getImg(logo) : ''
+        return logo ? this.$API.getImg(logo) : ''
       } else return ''
+    },
+    tokenWidget() {
+      return `<iframe width="100%" height="200px" src='${
+        process.env.VUE_APP_URL
+      }/widget/token/?id=${this.tokenId || 0}' frameborder=0></iframe>`
     }
   },
   created() {
     this.tokenDetail()
+
     // 根据token判断是否有币 如果有显示当前页面并且调用list
     // 否则修改界面显示
   },
   mounted() {},
   methods: {
     async tokenDetail() {
-      await this.$backendAPI.tokenDetail().then(res => {
-        if (res.status === 200 && res.data.code === 0) {
-          if (res.data.data.token) {
+      await this.$API.tokenDetail().then(res => {
+        if (res.code === 0) {
+          if (res.data.token) {
             this.isPublishCoins = true
-            this.tokenDetailData = res.data.data
+            this.tokenDetailData = res.data
+            this.tokenId = res.data.token.id
+            this.minetokenGetResources(res.data.token.id)
           } else {
-            this.$emit('notToken')
+            this.$router.push({
+              name: 'postminetoken'
+            })
           }
         } else {
           this.$message.error(res.message)
         }
       })
     },
+    async minetokenGetResources(id) {
+      await this.$API
+        .minetokenGetResources(id)
+        .then(res => {
+          if (res.code === 0) {
+            const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+            const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+            this.resourcesSocialss = socialFilterEmpty
+            this.resourcesWebsites = res.data.websites
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     async minetokenMint(amount) {
       const data = {
         amount: toPrecision(amount, 'CNY', this.tokenDetailData.token.decimals)
       }
-      await this.$backendAPI.minetokenMint(data).then(res => {
-        if (res.status === 200 && res.data.code === 0) {
+      await this.$API.minetokenMint(data).then(res => {
+        if (res.code === 0) {
           this.tokenDetail()
-          this.$message.success(res.data.message)
+          this.$message.success(res.message)
         } else {
-          this.$message.error(res.data.message)
+          this.$message.error(res.message)
         }
       })
     },
@@ -206,7 +262,7 @@ export default {
         inputErrorMessage: '请输入数字(总量最多发行一亿)',
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        customClass: 'mimetokens-prompt'
+        customClass: 'add-minetoken'
       }).then(({ value }) => {
         if (Number(value) + Number(this.totalAmount) > 100000000)
           return this.$message.warning('发行总量不能超过一亿')
@@ -216,9 +272,30 @@ export default {
     createTime(time) {
       return moment(time).format('MMMDo HH:mm')
     },
-    getListData(res) {
+    // cover(cover) {
+    //   return cover ? this.$API.getImg(cover) : ''
+    // },
+    // tokenAmount(amount) {
+    //   const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)
+    //   return this.$publishMethods.formatDecimal(tokenamount, 4)
+    // },
+    paginationData(res) {
       // console.log(res)
-      this.pointLog.list = res.list
+      this.pointLog.list = res.data.list
+      this.assets = res.data
+      this.total = res.data.count || 0
+      this.amount = res.data.amount || 0
+      this.loading = false
+    },
+    togglePage(i) {
+      this.loading = true
+      this.pointLog.list = []
+      this.currentPage = i
+      this.$router.push({
+        query: {
+          page: i
+        }
+      })
     }
   }
 }
@@ -226,21 +303,17 @@ export default {
 
 <style lang="less" scoped>
 .coins-publish {
-  // padding: 10px;\
-}
-.block-border {
-  background-color: #fff;
-  // border-bottom: 1px solid #ececec;
+  padding: 10px 20px;
 }
 .coins-head {
-  padding: 20px 20px 10px;
+  margin: 0 0 20px;
   h1 {
+    font-size: 22px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 1);
+    line-height: 33px;
     padding: 0;
     margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 20px;
   }
   .help-icon {
     color: rgba(219, 219, 219, 1);
@@ -248,11 +321,29 @@ export default {
     margin-right: 10px;
   }
   .help-link {
-    font-size: 14px;
-    color: rgba(178, 178, 178, 1);
-    line-height: 20px;
+    font-size: 12px;
+    color: #868686;
     text-decoration: underline;
+    margin: 6px 0;
+    display: block;
   }
+}
+
+.token-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 1);
+  line-height: 33px;
+  padding: 0;
+  margin: 10px 0 0;
+}
+.token-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 22px;
+  padding: 0;
+  margin: 10px 0;
 }
 
 .coins-info {
@@ -265,115 +356,63 @@ export default {
   background: #dbdbdb;
   margin: 0 40px;
 }
-.info-block {
-  display: flex;
-  flex-wrap: wrap;
-  .info-data {
-    text-align: center;
-    flex: 0 0 33.33%;
-    margin: 5px 0;
-    &-number {
-      font-size: 18px;
-      font-weight: bold;
-      color: rgba(84, 45, 224, 1);
-      line-height: 28px;
-      padding: 0;
-      margin: 0;
-      sub {
-        bottom: 0;
-        font-size: 70%;
-      }
-    }
-    &-title {
+
+.line {
+  height: 1px;
+  background: #ececec;
+}
+
+.about-nav {
+  padding: 0;
+  margin: 10px 0 0;
+  overflow: hidden;
+  li {
+    list-style: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 10px 0;
+    a {
       font-size: 12px;
-      color: rgba(0, 0, 0, 1);
-      line-height: 20px;
-      padding: 0;
-      margin: 0;
-    }
-  }
-}
-.info-btn {
-  margin-left: 40px;
-  .info-button {
-    margin: 4px 0;
-  }
-}
-
-.minetoken-card {
-  background: #fff;
-  padding: 0 0 130px 0;
-}
-.minetoken-tab {
-  padding: 14px 0;
-  text-align: center;
-  border-bottom: 1px solid #ececec;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  a {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #b2b2b2;
-    line-height: 20px;
-    margin: 0 20px;
-    position: relative;
-    z-index: 1;
-    &.active {
       color: #000;
-      &::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 4px;
-        background: #542de0;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 1px;
-        z-index: 0;
-      }
+      line-height: 22px;
+      text-decoration: underline;
     }
   }
 }
-
-.minetoken-head {
+.social {
+  margin: 10px 0;
+}
+.social-btn {
   display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 1);
-  line-height: 20px;
-  padding: 14px 20px;
-  border-bottom: 1px solid #ececec;
-  .minetoken-title {
-    width: 70%;
-  }
-  .minetoken-number {
-    width: 30%;
-    text-align: center;
+  & > div {
+    margin-right: 8px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
   }
 }
+.token-widget {
+  // width: 400px;
+  margin-top: 10px;
+}
 
-.fixed-bottom {
-  background: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 15px 20px 15px 20px;
-  box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
-  height: 130px;
-  .fix-button {
-    width: 100%;
-    margin: 5px 0;
+.not {
+  color: #333;
+  font-style: 14px;
+  padding-top: 20px;
+  display: inline-block;
+}
+.btn {
+  margin: 10px 0 0;
+  a {
+    margin: 0 4px;
   }
 }
 </style>
 
 <style>
-.mimetokens-prompt {
+.add-minetoken {
   width: 90%;
 }
 </style>

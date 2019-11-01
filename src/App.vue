@@ -114,6 +114,7 @@ export default {
 
     window.updateNotify = updateNotify
   },
+  mounted() {},
   methods: {
     tz() {
       const { href, origin } = window.location

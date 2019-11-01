@@ -1,5 +1,5 @@
 <template>
-  <layout @notToken="$emit('notToken')">
+  <layout>
     <BasePull
       :params="pull.params"
       :api-url="pull.apiUrl"
@@ -15,28 +15,38 @@
 </template>
 
 <script>
-import layout from './tokens_manage_layout.vue'
-import card from './minetoken_card.vue'
+import card from '@/components/minetoken_detail_card/index.vue'
+import layout from '@/components/token/token_layout.vue'
 
 export default {
   components: {
-    layout,
-    card
+    card,
+    layout
   },
   data() {
     return {
       pull: {
-        params: {},
-        apiUrl: 'tokenUserList',
+        params: {
+          pagesize: 20
+        },
+        apiUrl: 'tokenTokenLogs',
         list: []
-      }
+      },
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false, // 加载数据
+      total: 0
     }
   },
   methods: {
     getListData(res) {
-      // console.log(res)
       this.pull.list = res.list
     }
   }
 }
 </script>
+
+<style scoped>
+.pagination {
+  margin-top: 40px;
+}
+</style>

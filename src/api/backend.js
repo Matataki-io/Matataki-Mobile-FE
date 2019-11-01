@@ -7,6 +7,8 @@ import utils from '../utils/utils'
 import { paginationUrl } from './pagination_url'
 // Doc : https://github.com/axios/axios
 
+import { replaceStr } from '@/utils/reg'
+
 export const urlAddress = process.env.VUE_APP_URL
 // 获取图片直接使用接口地址
 export const apiServer = process.env.VUE_APP_API
@@ -237,17 +239,27 @@ const API = {
     })
   },
   // BasePull 分页组件
-  getBackendData({ url, params }, needAccessToken = false) {
-    // 分页组件接口地址
-    const pullApiUrl = paginationUrl
-
-    return !needAccessToken
-      ? axiosforApiServer.get(pullApiUrl[url], { params })
-      : this.accessBackend({
-          method: 'get',
-          url: pullApiUrl[url],
-          params
-        })
+  getBackendData({ url, params, urlReplace }, needAccessToken = false) {
+    if (!urlReplace) {
+      const pullApiUrl = paginationUrl
+      return !needAccessToken
+        ? axiosforApiServer.get(pullApiUrl[url], { params })
+        : this.accessBackend({
+            method: 'get',
+            url: pullApiUrl[url],
+            params
+          })
+    } else {
+      const pullApiUrl = paginationUrl
+      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+      return !needAccessToken
+        ? axiosforApiServer.get(pullApiUrl[url], { params })
+        : this.accessBackend({
+            method: 'get',
+            url: urlReg,
+            params
+          })
+    }
   },
   // 提交积分评论
   postPointComment(data) {

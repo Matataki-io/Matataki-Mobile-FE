@@ -108,6 +108,11 @@ export default {
     reload: {
       type: Number,
       default: 0
+    },
+    // 需要替换的url
+    urlReplace: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -207,7 +212,10 @@ export default {
       const getDataFail = () => (this.error = true)
       // 获取数据
       try {
-        const res = await this.$backendAPI.getBackendData({ url, params }, this.needAccessToken)
+        const res = await this.$backendAPI.getBackendData(
+          { url, params, urlReplace: this.urlReplace },
+          this.needAccessToken
+        )
         if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data, isEmptyArray)
         else getDataFail()
       } catch (error) {

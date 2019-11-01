@@ -25,6 +25,9 @@ import './plugins/baseComponents'
 import './plugins/vue_plugins'
 import i18n from './plugins/i18n'
 
+// wechat share
+import wechatShare from './utils/wechat_share'
+
 // global css
 import '@/assets/css/index.less'
 import '@/assets/gt.js'
@@ -47,6 +50,7 @@ Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$publishMethods = publishMethods
 Vue.prototype.$utils = utils
+Vue.prototype.$wechatShare = wechatShare
 
 Vue.use(VueClipboard)
 
