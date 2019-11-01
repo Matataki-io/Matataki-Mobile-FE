@@ -17,7 +17,7 @@
         <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}枚</div>
       </div>
       <div class="fl jsb publish-tokens">
-        <div class="username">发币者：{{ userDetail.nickname || userDetail.username }}</div>
+        <div class="username">创始人：{{ userDetail.nickname || userDetail.username }}</div>
         <router-link class="jump" :to="{ name: 'user-id', params: { id: userDetail.id } }">
           <svg-icon icon-class="share"></svg-icon>
         </router-link>

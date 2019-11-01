@@ -47,7 +47,7 @@
               </span>
             </template>
           </el-table-column>-->
-          <el-table-column label="发币者">
+          <el-table-column label="创始人">
             <template slot-scope="scope">
               <span style="white-space: nowrap;">{{scope.row.nickname || scope.row.email}}</span>
             </template>
