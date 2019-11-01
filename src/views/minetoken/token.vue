@@ -558,7 +558,7 @@ export default {
 .social-title {
   padding: 0;
   margin: 12px 0 10px 60px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
   line-height: 20px;

@@ -275,13 +275,13 @@ export default {
     }
   },
   created() {
-    this.mimetokenId(this.$route.params.id)
+    this.minetokenId(this.$route.params.id)
     this.minetokenGetResources(this.$route.params.id)
   },
   methods: {
-    async mimetokenId(id) {
+    async minetokenId(id) {
       await this.$API
-        .mimetokenId(id)
+        .minetokenId(id)
         .then(res => {
           if (res.code === 0) {
             this.minetokenToken = res.data.token || Object.create(null)
