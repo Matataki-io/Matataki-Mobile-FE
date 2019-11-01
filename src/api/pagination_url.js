@@ -46,7 +46,7 @@ export const paginationUrl = {
   // token明细
   tokenTokenLogs: '/token/tokenlogs',
   // 我持有的流动金
-  liquidityLogs: 'token/liquidityLogs',
+  liquidityLogs: 'token/holdLiquidity',
   // 我持有的流动金详情
-  liquidityLogsDetail: 'token/liquidityLogsDetail'
+  liquidityLogsDetail: 'token/myLiquidityLogs'
 }
