@@ -357,6 +357,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex: 1;
 }
 .token-info-title {
   // width: 70px;

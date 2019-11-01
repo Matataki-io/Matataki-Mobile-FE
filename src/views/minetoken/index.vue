@@ -5,19 +5,16 @@
       :pageinfo="{ title: '发行的粉丝币' }"
       customize-header-bc="#fff"
     />
-    <!-- <tokensPublish v-if="!isPublishCoins" @publishToken="isPublishCoins = true"></tokensPublish> -->
-    <tokensManage list-type="detail" @notToken="isPublishCoins = false"></tokensManage>
+    <minetoken></minetoken>
   </div>
 </template>
 
 <script>
-import tokensManage from './components/tokens_manage.vue'
-// import tokensPublish from './components/tokens_publish.vue'
+import minetoken from './components/tokens_manage_layout.vue'
 
 export default {
   components: {
-    tokensManage
-    // tokensPublish
+    minetoken
   },
   data() {
     return {

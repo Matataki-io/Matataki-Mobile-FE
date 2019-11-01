@@ -325,15 +325,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/minetoken/detail',
-      name: 'minetokenDetail',
-      component: () =>
-        import(/* webpackChunkName: "minetokenDetail" */ './views/minetoken/detail.vue'),
-      meta: {
-        title: '粉丝币-瞬MATATAKI'
-      }
-    },
-    {
       path: '/ipfs/:hash',
       name: 'ipfs',
       component: () => import(/* webpackChunkName: "ipfs" */ './views/ipfs/index.vue'),

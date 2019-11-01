@@ -105,24 +105,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-// import mineTokensNav from '@/components/user/minetokens_nav.vue'
-// import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
-import { testDecimal } from '@/utils/reg'
-// import minetokenCard from '@/components/user/minetoken_card'
-// import minetokenDetailCard from '@/components/user/minetoken_card_detail'
 import socialTypes from '@/config/social_types'
 import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
   components: {
-    // userPagination,
     avatar,
     socialIcon
-    // mineTokensNav
-    // minetokenCard,
-    // minetokenDetailCard
   },
   data() {
     return {
