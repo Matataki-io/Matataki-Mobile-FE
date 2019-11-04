@@ -9,7 +9,11 @@
       </div>
     </div>
     <div class="number">
-      <span>{{ liquidity(card.liquidity_balance, card.decimals) }} ({{ percent(card.liquidity_balance, card.total_supply) }})</span>
+      <span
+        >{{ liquidity(card.liquidity_balance, card.decimals) }} ({{
+          percent(card.liquidity_balance, card.total_supply)
+        }})</span
+      >
       <i class="el-icon-arrow-right icon"></i>
     </div>
   </router-link>

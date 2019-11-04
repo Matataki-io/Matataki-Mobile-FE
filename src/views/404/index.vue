@@ -11,33 +11,35 @@
     <div class="info">
       <p>{{ $t('notPage') }}</p>
       <a href="/" class="btn">{{ $t('backHome') }}</a>
-      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{ $t('sidebar.feedback') }}</a>
+      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{
+        $t('sidebar.feedback')
+      }}</a>
     </div>
   </div>
 </template>
 
 <style scoped>
-.btn{
-    font-size: 18px;
-    font-weight: 300;
-    color: #ffffff;
-    /* border: 0px solid;
+.btn {
+  font-size: 18px;
+  font-weight: 300;
+  color: #ffffff;
+  /* border: 0px solid;
     border-bottom: 2px solid;
     border-color: #12172e; */
-    /* padding: 10px 10px; */
-    /* border-radius: 5px; */
-    background: none;
-    display: inline-block;
-    margin: 10px;
-    /* background-color: #00a9e1; */
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    text-decoration: none;
-    cursor: pointer;
-    text-decoration: underline;
+  /* padding: 10px 10px; */
+  /* border-radius: 5px; */
+  background: none;
+  display: inline-block;
+  margin: 10px;
+  /* background-color: #00a9e1; */
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  text-decoration: none;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 /* .btn:hover{
@@ -46,127 +48,157 @@
     text-decoration: none;
 } */
 
-.container{
+.container {
   min-height: 100%;
   height: 100%;
   width: 100%;
   background-color: #23294b;
 }
 
-.brick{
-    position: absolute;
-    top: 135px;
-    left: -20px;
-    width: 435px;
-    height: 210px;
-    background-image: url("../../assets/img/404/wall-1.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
+.brick {
+  position: absolute;
+  top: 135px;
+  left: -20px;
+  width: 435px;
+  height: 210px;
+  background-image: url('../../assets/img/404/wall-1.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.number{
-    position: relative;
-    z-index: 100;
-    text-align: center;
-    /* margin-top: 79px; */
-    padding-top: 50%;
+.number {
+  position: relative;
+  z-index: 100;
+  text-align: center;
+  /* margin-top: 79px; */
+  padding-top: 50%;
 }
 
-.number .four{
-    width: 100px;
-    height: 127px;
-    display: inline-block;
-    background-image: url("../../assets/img/404/four.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    z-index: 19;
-    position: relative;
+.number .four {
+  width: 100px;
+  height: 127px;
+  display: inline-block;
+  background-image: url('../../assets/img/404/four.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  z-index: 19;
+  position: relative;
 }
 
-.number .zero{
-    width: 100px;
-    height: 127px;
-    display: inline-block;
-    background-image: url("../../assets/img/404/zero.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: 0px 20px;
-    position: relative;
-    z-index: 18;
-    -moz-animation: 4s ease 0s normal none infinite zero;
-    -moz-transform-origin: center top;
-    -webkit-animation:zero 4s infinite ease-in-out;
-    -webkit-transform-origin:top;
-    -o-animation: 4s ease 0s normal none infinite zero;
-    -o-transform-origin: center top;
-    -o-animation:zero 4s infinite ease-in-out;
-    -o-transform-origin:top;
-    -ms-animation: 4s ease 0s normal none infinite zero;
-    -ms-transform-origin: center top;
-    -ms-animation:zero 4s infinite ease-in-out;
-    -ms-transform-origin:top;
-    animation: 4s ease 0s normal none infinite zero;
-    transform-origin: center top;
-    animation:zero 4s infinite ease-in-out;
-    transform-origin:top;
+.number .zero {
+  width: 100px;
+  height: 127px;
+  display: inline-block;
+  background-image: url('../../assets/img/404/zero.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: 0px 20px;
+  position: relative;
+  z-index: 18;
+  -moz-animation: 4s ease 0s normal none infinite zero;
+  -moz-transform-origin: center top;
+  -webkit-animation: zero 4s infinite ease-in-out;
+  -webkit-transform-origin: top;
+  -o-animation: 4s ease 0s normal none infinite zero;
+  -o-transform-origin: center top;
+  -o-animation: zero 4s infinite ease-in-out;
+  -o-transform-origin: top;
+  -ms-animation: 4s ease 0s normal none infinite zero;
+  -ms-transform-origin: center top;
+  -ms-animation: zero 4s infinite ease-in-out;
+  -ms-transform-origin: top;
+  animation: 4s ease 0s normal none infinite zero;
+  transform-origin: center top;
+  animation: zero 4s infinite ease-in-out;
+  transform-origin: top;
 }
 
-.number .zero .nail{
-    width:15px;
-    height: 25px;
-    top: 10px;
-    left: 45px;
-    background-image: url("../../assets/img/404/nail.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    position: absolute;
+.number .zero .nail {
+  width: 15px;
+  height: 25px;
+  top: 10px;
+  left: 45px;
+  background-image: url('../../assets/img/404/nail.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  position: absolute;
 }
 
 @-moz-keyframes zero {
-    0%{-moz-transform:rotate(-2deg)}
-    50%{-moz-transform:rotate(2deg)}
-    100%{-moz-transform:rotate(-2deg)}
+  0% {
+    -moz-transform: rotate(-2deg);
+  }
+  50% {
+    -moz-transform: rotate(2deg);
+  }
+  100% {
+    -moz-transform: rotate(-2deg);
+  }
 }
 
 @-webkit-keyframes zero {
-    0%{-webkit-transform:rotate(-2deg)}
-    50%{-webkit-transform:rotate(2deg)}
-    100%{-webkit-transform:rotate(-2deg)}
+  0% {
+    -webkit-transform: rotate(-2deg);
+  }
+  50% {
+    -webkit-transform: rotate(2deg);
+  }
+  100% {
+    -webkit-transform: rotate(-2deg);
+  }
 }
 
 @-o-keyframes zero {
-    0%{-o-transform:rotate(-2deg)}
-    50%{-o-transform:rotate(2deg)}
-    100%{-o-transform:rotate(-2deg)}
+  0% {
+    -o-transform: rotate(-2deg);
+  }
+  50% {
+    -o-transform: rotate(2deg);
+  }
+  100% {
+    -o-transform: rotate(-2deg);
+  }
 }
 
 @-ms-keyframes zero {
-    0%{-ms-transform:rotate(-2deg)}
-    50%{-ms-transform:rotate(2deg)}
-    100%{-ms-transform:rotate(-2deg)}
+  0% {
+    -ms-transform: rotate(-2deg);
+  }
+  50% {
+    -ms-transform: rotate(2deg);
+  }
+  100% {
+    -ms-transform: rotate(-2deg);
+  }
 }
 
 @keyframes zero {
-    0%{transform:rotate(-2deg)}
-    50%{transform:rotate(2deg)}
-    100%{transform:rotate(-2deg)}
+  0% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
 }
 
-.info{
-    position: relative;
-    z-index: 999;
-    text-align: center;
+.info {
+  position: relative;
+  z-index: 999;
+  text-align: center;
 }
 
-.info h2{
-    font-size: 50px;
-    font-weight: 300;
-    color: #ffc938;
+.info h2 {
+  font-size: 50px;
+  font-weight: 300;
+  color: #ffc938;
 }
 
-.info p{
-    font-size: 20px;
-    color: #ffffff;
+.info p {
+  font-size: 20px;
+  color: #ffffff;
 }
 </style>

@@ -58,9 +58,9 @@
 
 <script>
 import moment from 'moment'
-import { isNDaysAgo } from '@/common/methods'
 import clampy from '@clampy-js/vue-clampy'
 import Vue from 'vue'
+import { isNDaysAgo } from '@/common/methods'
 
 Vue.use(clampy)
 

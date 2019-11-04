@@ -10,9 +10,11 @@
       <button
         v-for="(item, i) in poolOptions"
         :key="item.id"
-        :class="[ 'cwefbr', i === currentPool ? 'MODE' : '']"
+        :class="['cwefbr', i === currentPool ? 'MODE' : '']"
         @click="selectPool(i)"
-      >{{ item.text }}</button>
+      >
+        {{ item.text }}
+      </button>
     </div>
   </el-dialog>
 </template>

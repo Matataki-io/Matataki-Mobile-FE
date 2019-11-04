@@ -338,10 +338,10 @@ export default new Vuex.Store({
       state.loginModalShow = show
     },
     setSelectTokenModal(state, show) {
-      state.selectTokenShow = show;
+      state.selectTokenShow = show
     },
     setSelectedToken(state, v) {
-      state.selectedToken = v;
+      state.selectedToken = v
     }
   }
 })

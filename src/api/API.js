@@ -246,4 +246,16 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  /**
+   * 文章导入
+   * @param {String} url 导入地址
+   */
+  importArticle(url) {
+    return request({
+      method: 'post',
+      url: '/posts/importer',
+      data:{ url },
+      timeout: 40000,
+    })
+  },
 }

@@ -403,7 +403,7 @@ const router = new VueRouter({
 })
 
 router.afterEach((to, from) => {
-  console.log(to, from)
+  // console.log(to, from)
   Vue.nextTick(() => {
     wechatShare({
       title: to.meta.title

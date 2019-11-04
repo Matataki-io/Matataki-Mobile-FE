@@ -7,41 +7,47 @@
 
 <script>
 import QRCode from 'qrcode'
+
 export default {
-  name: "QRCode",
+  name: 'QRCode',
+  components: {},
   props: {
     payLink: {
       type: String,
-      default: ""
+      default: ''
     }
   },
-  components: {},
   data() {
-    return {};
+    return {}
   },
   computed: {},
   watch: {
     payLink(url) {
-      this.$refs.qr.innerHTML = "";
-      this.genQRCode(url);
+      this.$refs.qr.innerHTML = ''
+      this.genQRCode(url)
     }
   },
   mounted() {
-    this.genQRCode(this.payLink);
+    this.genQRCode(this.payLink)
   },
   methods: {
     genQRCode(url) {
       if (url) {
-        QRCode.toCanvas(this.$refs.qr, url, {
-          width: 150,
-          height: 150
-        }, error => {
-          if (error) console.error(error)
-        })
+        QRCode.toCanvas(
+          this.$refs.qr,
+          url,
+          {
+            width: 150,
+            height: 150
+          },
+          error => {
+            if (error) console.error(error)
+          }
+        )
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

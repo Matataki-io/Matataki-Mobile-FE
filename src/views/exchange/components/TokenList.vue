@@ -22,7 +22,7 @@
         />
       </div>
       <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
-        <el-table height="50vh" :data="tokenList" @row-click="selectToken" style="width: 100%">
+        <el-table height="50vh" :data="tokenList" style="width: 100%" @row-click="selectToken">
           <el-table-column width="180px" label="粉丝币">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -33,7 +33,7 @@
                   <span id="symbol">{{ scope.row.symbol }}</span>
                   <div class="sc-hEsumM iHXZgD">
                     <div>{{ scope.row.name }}</div>
-                    <div>流通量 {{scope.row.amount || '暂无'}}</div>
+                    <div>流通量 {{ scope.row.amount || '暂无' }}</div>
                   </div>
                 </div>
               </div>
@@ -49,7 +49,7 @@
           </el-table-column>-->
           <el-table-column label="创始人">
             <template slot-scope="scope">
-              <span style="white-space: nowrap;">{{scope.row.nickname || scope.row.email}}</span>
+              <span style="white-space: nowrap;">{{ scope.row.nickname || scope.row.email }}</span>
             </template>
           </el-table-column>
           <el-table-column label>
@@ -58,10 +58,10 @@
                 v-if="scope.row.id !== 0"
                 target="_blank"
                 class="gray-btn"
-                :to="{name: 'token-id', params: {id: scope.row.id}}"
+                :to="{ name: 'token-id', params: { id: scope.row.id } }"
               >
                 <el-button circle>
-                  <svg-icon icon-class="share" style="color: #B2B2B2;"/>
+                  <svg-icon icon-class="share" style="color: #B2B2B2;" />
                 </el-button>
               </router-link>
             </template>

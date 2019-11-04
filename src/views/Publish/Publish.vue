@@ -11,7 +11,14 @@
       @headerHomeFunc="headerHomeFunc"
     >
       <div slot="right" class="header-right-slot">
-        <span class="send-button" @click="sendThePost">{{ sendBtnText }}</span>
+        <div class="post-button" @click="importVisible = true">
+          <svg-icon class="import-icon" icon-class="import" />
+          导入
+        </div>
+
+        <div class="post-button" @click="sendThePost">{{ sendBtnText }}</div>
+
+        <!-- <span class="send-button" @click="sendThePost">{{ sendBtnText }}</span> -->
         <div
           v-if="isShowTransfer"
           slot="right"
@@ -265,6 +272,7 @@
       @confirm="createDraft(saveInfo)"
     />
     <statement :visible="statementVisible" @close="closeStatement" />
+    <articleImport v-model="importVisible" />
   </div>
 </template>
 
@@ -287,6 +295,7 @@ import tagCard from '@/components/tagCard/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 import statement from '@/components/statement/index.vue'
+import articleImport from '@/components/article_import/index.vue'
 
 export default {
   name: 'NewPost',
@@ -297,7 +306,8 @@ export default {
     tagCard,
     articleTransfer,
     Prompt,
-    statement
+    statement,
+    articleImport
   },
   data() {
     return {
@@ -339,7 +349,8 @@ export default {
       readSelectOptions: [],
       readSelectValue: '',
       readSummary: '',
-      statementVisible: false // 原创声明
+      statementVisible: false, // 原创声明
+      importVisible: false // 导入
     }
   },
   computed: {
