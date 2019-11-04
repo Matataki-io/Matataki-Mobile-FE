@@ -315,7 +315,7 @@ export default {
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
-      saveDraft: '自动存为草稿',
+      saveDraft: '文章发布', // 自动存为草稿
       readauThority: false,
       readToken: 1,
       readSelectOptions: [],
