@@ -259,7 +259,7 @@ export default {
     },
     jumpTo() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$router.push({ name: 'Publish', params: { id: 'create' } })
+      this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
   }
 }

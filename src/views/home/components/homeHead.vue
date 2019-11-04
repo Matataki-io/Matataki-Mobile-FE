@@ -25,7 +25,7 @@
         class="home-head-create"
         src="@/assets/img/icon_home_create.svg"
         alt="create"
-        @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
+        @click="$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })"
       />
     </div>
     <search :show-search="showSearch" @showSearchStatus="showSearch = false"></search>

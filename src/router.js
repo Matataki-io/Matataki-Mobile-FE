@@ -194,22 +194,13 @@ const router = new VueRouter({
       }
     },
     {
-      // id 用于编辑文章或者草稿的时候动态传值使用
-      // 发布文章后面可以为  publish/create
-      // 编辑文章后面接id publish/id？from=”edit“ 通过query来区分
-      // 草稿箱编辑 publish/id？from=”draft“ 通过query来区分
-      // 统一发布、编辑、草稿箱，解决出现多套样式和重复代码的问题，并且减少工作量和不必要的错误
-      path: '/publish/:id',
-      name: 'Publish',
+      path: '/publish/:type/:id',
+      name: 'publish-type-id',
       props: true,
-      component: () => import(/* webpackChunkName: "Publish" */ './views/Publish/Publish.vue'),
+      component: () => import(/* webpackChunkName: "publish-type-id" */ './views/publish/index.vue'),
       meta: {
         title: '编辑文章-瞬MATATAKI'
       }
-      // beforeEnter: (to, from, next) => {
-      //   if (to.query.from === 'edit' && from.name !== 'Article') next('/')
-      //   else next()
-      // }
     },
     {
       path: '/followlist/:id',

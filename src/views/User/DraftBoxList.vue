@@ -4,9 +4,8 @@
     @click="
       () => {
         this.$router.push({
-          name: 'Publish',
-          params: { id: draftbox.id },
-          query: { from: 'draft' }
+          name: 'publish-type-id',
+          params: { type: 'draft', id: draftbox.id },
         })
       }
     "

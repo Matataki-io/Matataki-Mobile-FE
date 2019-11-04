@@ -11,9 +11,9 @@
               class="dropdown-item"
               @click="
                 $router.push({
-                  name: 'Publish',
-                  params: { id: article.id },
-                  query: { from: 'edit', hash: article.hash }
+                  name: 'publish-type-id',
+                  params: { type: 'edit', id: article.id },
+                  query: { hash: article.hash }
                 })
               "
             >

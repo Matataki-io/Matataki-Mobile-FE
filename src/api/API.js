@@ -2,6 +2,8 @@
 import request from '@/utils/request'
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
+import { getCookie } from '@/utils/cookie'
+
 
 export default {
   getImg(hash) {
@@ -258,4 +260,87 @@ minetokenGetResources(tokenId) {
       timeout: 40000,
     })
   },
+  /**
+   * 发布文章接口 通用方法 私有方法
+   * @param {String} url 接口地址
+   * @param {Object} param1 文章参数
+   * @param {String || null} signature 签名
+   */
+  _sendArticle(
+    url,
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
+    signature = null
+  ) {
+    // 账号类型
+    let idProvider = (getCookie('idProvider')).toLocaleLowerCase()
+    return request({
+      method: 'POST',
+      url,
+      data: {
+        author,
+        cover,
+        fissionFactor,
+        hash,
+        platform: idProvider,
+        publickey: signature ? signature.publicKey : null,
+        sign: signature ? signature.signature : null,
+        signId,
+        title,
+        is_original: isOriginal,
+        tags,
+        commentPayPoint,
+        shortContent
+      }
+    })
+  },
+  /**
+   * 发布文章
+   * @param {Object} params 参数, 签名 非钱包用户需要签名
+   */
+  publishArticle({ article, signature }) {
+    return this._sendArticle('/post/publish', article, signature)
+  },
+  /**
+   * 编辑文章
+   * @param {Object} params 参数, 签名 非钱包用户需要签名
+   */
+  editArticle({ article, signature }) {
+    return this._sendArticle('/post/edit', article, signature)
+  },
+  // 创建草稿
+  createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+    return request({
+      method: 'POST',
+      url: '/draft/save',
+      data: {
+        title,
+        content,
+        cover,
+        fissionFactor,
+        is_original: isOriginal,
+        tags,
+        commentPayPoint
+      }
+    })
+  },
+  // 更新草稿
+  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+    return request({
+      method: 'POST',
+      url: '/draft/save',
+      data: {
+        id,
+        title,
+        content,
+        cover,
+        fissionFactor,
+        is_original: isOriginal,
+        tags,
+        commentPayPoint
+      }
+    })
+  },
+  getDraft({ id }) {
+    return request({ url: `/draft/${id}` })
+  }
 }

@@ -3,7 +3,7 @@
     <BaseHeader
       ref="baseHeader"
       :is-center="false"
-      :pageinfo="{ title: editorText }"
+      :pageinfo="{ title: saveDraft }"
       :customize-back-func="true"
       :customize-home-func="true"
       :customize-header-bc="'#fff'"
@@ -16,9 +16,7 @@
           导入
         </div>
 
-        <div class="post-button" @click="sendThePost">{{ sendBtnText }}</div>
-
-        <!-- <span class="send-button" @click="sendThePost">{{ sendBtnText }}</span> -->
+        <div class="post-button" @click="sendThePost">发布</div>
         <div
           v-if="isShowTransfer"
           slot="right"
@@ -118,7 +116,7 @@
         </div>
       </div>
 
-      <div v-if="editorMode !== 'edit'" class="fission">
+      <div v-if="$route.params.type !== 'edit'" class="fission">
         <p>
           {{ $t('publish.commentTitle') }}
           <el-tooltip class="item" effect="dark" placement="top-start">
@@ -146,7 +144,7 @@
         </div>
         <!-- <span class="set-des"></span> -->
       </div>
-      <!-- <div v-if="editorMode !== 'edit'" class="fission">
+      <!-- <div v-if="$route.params.type !== 'edit'" class="fission">
         <p>
           裂变系数
           <Poptip
@@ -159,7 +157,7 @@
             <span class="question">?</span>
           </Poptip>
         </p>
-        <div v-if="editorMode !== 'edit'" class="fission-num-slider">
+        <div v-if="$route.params.type !== 'edit'" class="fission-num-slider">
           <el-slider
             v-model="fissionNum"
             class="slider"
@@ -204,6 +202,9 @@
         </div>
       </div>
     </div>
+    <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
+      我声明此文章为原创
+    </el-checkbox>
     <div class="tag">
       <p>
         {{ $t('publish.tagTitle') }}
@@ -217,38 +218,7 @@
         />
       </div>
     </div>
-    <van-radio-group v-if="isShowEditorMode" v-model="saveType">
-      <van-cell-group>
-        <van-cell :title="$t('publish.public')" clickable @click="saveType = 'public'">
-          <van-radio class="publish-right" name="public">
-            <div slot="icon" slot-scope="props" class="my-radio">
-              <div v-if="props.checked" class="radio-active"></div>
-            </div>
-          </van-radio>
-        </van-cell>
-        <van-cell :title="$t('publish.draft')" clickable @click="saveType = 'draft'">
-          <van-radio class="publish-right" name="draft">
-            <div slot="icon" slot-scope="props" class="my-radio">
-              <div v-if="props.checked" class="radio-active"></div>
-            </div>
-          </van-radio>
-        </van-cell>
-      </van-cell-group>
-    </van-radio-group>
-    <van-cell clickable :title="$t('publish.original')" @click="isOriginal = !isOriginal">
-      <van-checkbox v-model="isOriginal" class="publish-right" @change="originalChange">
-        <div slot="icon" slot-scope="props">
-          <div v-if="!props.checked" class="my-checkbox"></div>
-          <div v-else class="my-checkbox-active">
-            <img src="../../assets/newimg/select.svg" alt="select" />
-          </div>
-        </div>
-      </van-checkbox>
-    </van-cell>
 
-    <!--<div class="is-original">
-      <Checkbox v-model="isOriginal" size="large">&nbsp;确认为原创</Checkbox>
-    </div>-->
     <modal-prompt
       :show-modal="showModal"
       :modal-text="modalText"
@@ -296,6 +266,7 @@ import articleTransfer from '@/components/articleTransfer/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 import statement from '@/components/statement/index.vue'
 import articleImport from '@/components/article_import/index.vue'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'NewPost',
@@ -327,8 +298,6 @@ export default {
       signature: '',
       signId: '',
       id: '',
-      editorMode: 'create', // 默认是创建文章
-      saveType: 'public', // 发布文章模式， 公开 || 草稿
       isOriginal: false, // 是否原创
       imgUploadDone: 0,
       showModal: false, // 弹框显示
@@ -344,6 +313,9 @@ export default {
       allowLeave: false, // 允许离开
       saveInfo: {},
       commentPayPoint: 1,
+      autoUpdateDfaft: false, // 是否自动更新草稿
+      autoUpdateDfaftTags: false, // 是否自动更新草稿标签
+      saveDraft: '自动存为草稿',
       readauThority: false,
       readToken: 1,
       readSelectOptions: [],
@@ -355,43 +327,6 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
-    isShowEditorMode() {
-      // 创建和草稿的时候是否可以显示编辑器模式（单选按钮显示
-      return !!(this.editorMode === 'create' || this.editorMode === 'draft')
-    },
-    editorText() {
-      let text = this.$t('publish.editorText')
-      if (this.editorMode === 'create') {
-        // 发布文章
-        text = this.$t('publish.editorTextArticlePublic')
-      }
-      if (this.editorMode === 'edit') {
-        // 编辑文章
-        text = this.$t('publish.editorTextArticleEditor')
-      } else if (this.editorMode === 'draft') {
-        // 草稿箱
-        text = this.$t('publish.editorTextDraftEditor')
-      }
-      return text
-    },
-    sendBtnText() {
-      let text = this.$t('publish.sendBtnText')
-      if (this.editorMode === 'create') {
-        // 发布文章
-        text = this.$t('publish.sendBtnText')
-      }
-      if (this.editorMode === 'edit') {
-        // 编辑文章
-        text = this.$t('publish.sendBtnTextEditor')
-      } else if (this.editorMode === 'draft' && this.saveType === 'public') {
-        // 草稿箱  发布
-        text = this.$t('publish.sendBtnText')
-      } else if (this.editorMode === 'draft' && this.saveType === 'draft') {
-        // 草稿箱 修改
-        text = this.$t('publish.sendBtnTextEditor')
-      }
-      return text
-    },
     coverEditor() {
       return this.$backendAPI.getAvatarImage(this.cover)
     },
@@ -410,29 +345,33 @@ export default {
     },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
+    },
+    title() {
+      this.updateDraftWatch()
+    },
+    markdownData() {
+      this.updateDraftWatch()
+    },
+    commentPayPoint() {
+      this.updateDraftWatch()
+    },
+    cover() {
+      this.updateDraftWatch()
+    },
+    isOriginal() {
+      this.updateDraftWatch()
+    },
+    tagCards: {
+      deep: true,
+      handler() {
+        if (!this.autoUpdateDfaftTags) return
+        this.updateDraftWatch()
+      }
     }
   },
   created() {
-    const { id } = this.$route.params
-    const { from, hash } = this.$route.query
-    // console.log(id, from);
-    if (id === 'create' && !from) {
-      // 发布文章 from 为 undefined
-      // console.log('发布文章');
-    } else if (from === 'edit') {
-      // 编辑文章
-      this.editorMode = from
-      this.setArticleDataById(hash, id)
-    } else if (from === 'draft') {
-      // 草稿箱
-      this.editorMode = from
-      this.saveType = 'draft'
-      this.getDraft(id)
-    } else {
-      this.editorMode = 'create' // 当作发布文章处理
-    }
-
-    this.getTags()
+    // 编辑文章不会自动保存
+    if (this.$route.params.type === 'edit') this.saveDraft = ''
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) next()
@@ -449,13 +388,69 @@ export default {
     window.removeEventListener('beforeunload', this.unload)
   },
   mounted() {
+    // 没有登录 通过isLogined获取在页面刷新后会获取较慢 无法通过它来判断
+    if (!getCookie('ACCESS_TOKEN')) return this.$router.go(-1)
+
+    const { type, id } = this.$route.params
+
+    if (type === 'draft' && id === 'create') {
+      // 创建新草稿
+      this.autoUpdateDfaft = true
+    } else if (type === 'draft' && id !== 'create') {
+      // 编辑草稿
+      this.getDraft(id)
+    } else if (type === 'edit') {
+      const { hash } = this.$route.query
+      // 编辑文章
+      this.setArticleDataById(hash, id)
+    } else {
+      console.log('路由错误')
+    }
+
+    this.getTags()
     this.resize()
     this.setToolBar(this.screenWidth)
+
     this.getAllTokens()
   },
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // watch 监听草稿更新
+    updateDraftWatch() {
+      if (!this.autoUpdateDfaft) return
+      this.updateDraftFunc()
+    },
+    // 更新草稿方法
+    updateDraftFunc: debounce(function() {
+      const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
+      const isOriginal = Number(this.isOriginal)
+      const { type, id } = this.$route.params
+
+      console.log(this.$route)
+
+      if (type === 'draft' && id === 'create') {
+        // console.log('创建草稿')
+        this.autoCreateDraft({
+          title,
+          content,
+          fissionFactor,
+          cover,
+          isOriginal
+        })
+      } else if (type === 'draft' && id !== 'create') {
+        // console.log('更新草稿')
+        // 草稿箱编辑 更新
+        this.autoUpdateDraft({
+          id: this.id,
+          title,
+          content,
+          fissionFactor,
+          cover,
+          isOriginal
+        })
+      }
+    }, 500),
     /**
      * 获取所有token
      */
@@ -484,8 +479,8 @@ export default {
     setTag(data) {
       this.articleData = data // 设置文章数据
       // 编辑的时候设置tag状态
-      const { from } = this.$route.query
-      if ((from && from === 'edit') || from === 'draft') this.setTagStatus()
+      const { id } = this.$route.params
+      if (id !== 'edit') this.setTagStatus()
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
@@ -529,16 +524,26 @@ export default {
     },
     // 得到草稿箱内容 by id
     async getDraft(id) {
-      const { data } = await this.$backendAPI.getDraft({ id })
-      this.fissionNum = data.fission_factor ? data.fission_factor / 1000 : 2
-      this.cover = data.cover
-      this.title = data.title
-      this.markdownData = data.content
-      this.id = id
-      this.isOriginal = Boolean(data.is_original)
-      this.commentPayPoint = data.comment_pay_point
+      await this.$API
+        .getDraft({ id })
+        .then(res => {
+          this.fissionNum = res.fission_factor ? res.fission_factor / 1000 : 2
+          this.cover = res.cover
+          this.title = res.title
+          this.markdownData = res.content
+          this.id = id
+          this.isOriginal = Boolean(res.is_original)
+          this.commentPayPoint = res.comment_pay_point
 
-      this.setTag(data)
+          this.setTag(res)
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('获取草稿内容失败')
+        })
+        .finally(() => {
+          this.autoUpdateDfaft = true
+        })
     },
     // 错误提示
     failed(error) {
@@ -632,9 +637,10 @@ export default {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
         try {
-          const response = await this.$backendAPI.publishArticle({ article, signature })
-          if (response.data.code !== 0) throw new Error(response.data.message)
-          this.postMineTokens(response.data.data, 'publish')
+          const response = await this.$API.publishArticle({ article, signature })
+
+          if (response.code !== 0) throw new Error(response.message)
+          this.postMineTokens(response.data, 'publish')
           // console.log(response)
           return 'success'
         } catch (error) {
@@ -651,20 +657,47 @@ export default {
     //   this.createDraft(this.saveInfo)
     // },
     // 创建草稿
-    async createDraft(article) {
-      try {
-        // 设置文章标签 🏷️
-        article.tags = this.setArticleTag(this.tagCards)
-        // 设置积分
-        article.commentPayPoint = this.commentPayPoint
-        const response = await this.$backendAPI.createDraft(article)
-        if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
-        this.$toast.success({ duration: 1000, message: this.$t('success.save') })
-        this.$router.go(-1)
-      } catch (error) {
-        console.log(error)
-        this.failed(this.$t('error.failTry'))
-      }
+    // async createDraft(article) {
+    //   try {
+    //     // 设置文章标签 🏷️
+    //     article.tags = this.setArticleTag(this.tagCards)
+    //     // 设置积分
+    //     article.commentPayPoint = this.commentPayPoint
+    //     const response = await this.$backendAPI.createDraft(article)
+    //     if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
+    //     this.$toast.success({ duration: 1000, message: this.$t('success.save') })
+    //     this.$router.go(-1)
+    //   } catch (error) {
+    //     console.log(error)
+    //     this.failed(this.$t('error.failTry'))
+    //   }
+    // },
+    // 自动创建草稿
+    async autoCreateDraft(article) {
+      console.log(111, article)
+      this.saveDraft = '保存中...'
+      // 设置文章标签 🏷️
+      this.allowLeave = true
+      article.tags = this.setArticleTag(this.tagCards)
+      // 设置积分
+      article.commentPayPoint = this.commentPayPoint
+      await this.$API
+        .createDraft(article)
+        .then(res => {
+          if (res.code === 0) {
+            this.saveDraft = '自动存为草稿'
+            // console.log(this.$route)
+            this.$route.params.id = res.data
+            this.id = res.data
+            // console.log(this.$route)
+            const url = window.location.origin + '/publish/draft/' + res.data
+            history.pushState({}, '', url)
+          } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
+        })
+        .catch(err => {
+          console.log(err)
+          this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
+        })
     },
     // 编辑文章
     async editArticle(article) {
@@ -675,9 +708,8 @@ export default {
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
-      const response = await this.$backendAPI.editArticle({ article, signature })
-      if (response.status === 200 && response.data.code === 0)
-        this.postMineTokens(response.data.data, 'edit')
+      const response = await this.$API.editArticle({ article, signature })
+      if (response.code === 0) this.postMineTokens(response.data, 'edit')
       else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
@@ -694,22 +726,40 @@ export default {
       }
     },
     // 更新草稿
-    async updateDraft(article) {
+    async autoUpdateDraft(article) {
+      this.allowLeave = true
+
+      this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       try {
-        const response = await this.$backendAPI.updateDraft(article)
-        if (response.status === 200 && response.data.code === 0) {
-          this.$toast({ duration: 1000, message: this.$t('success.draftUpdate') })
-          this.$navigation.cleanRoutes() // 清除路由记录
-          this.$router.go(-1)
-        } else this.failed(this.$t('error.failTry'))
+        const res = await this.$API.updateDraft(article)
+        if (res.code === 0) {
+          this.saveDraft = '自动存为草稿'
+        } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       } catch (error) {
-        this.failed(this.$t('error.failTry'))
+        this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }
     },
+    // // 更新草稿
+    // async updateDraft(article) {
+    //   // 设置文章标签 🏷️
+    //   article.tags = this.setArticleTag(this.tagCards)
+    //   // 设置积分
+    //   article.commentPayPoint = this.commentPayPoint
+    //   try {
+    //     const response = await this.$backendAPI.updateDraft(article)
+    //     if (response.status === 200 && response.data.code === 0) {
+    //       this.$toast({ duration: 1000, message: this.$t('success.draftUpdate') })
+    //       this.$navigation.cleanRoutes() // 清除路由记录
+    //       this.$router.go(-1)
+    //     } else this.failed(this.$t('error.failTry'))
+    //   } catch (error) {
+    //     this.failed(this.$t('error.failTry'))
+    //   }
+    // },
     // 发布||修改按钮
     async sendThePost() {
       // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page
@@ -719,25 +769,20 @@ export default {
       if (!strTrim(this.title) || !strTrim(this.markdownData))
         return this.$toast(this.$t('warning.titleOrContent'))
 
-      if (this.saveType === 'public' && !this.cover)
-        return this.$toast({ duration: 1000, message: this.$t('warning.cover') })
+      if (!this.cover) return this.$toast({ duration: 1000, message: this.$t('warning.cover') })
 
       if (this.fissionFactor === '') this.fissionFactor = 2 // 用户不填写裂变系数则默认为2
 
       this.allowLeave = true
-      const {
-        currentUserInfo,
-        title,
-        markdownData: content,
-        fissionFactor,
-        cover,
-        editorMode,
-        saveType
-      } = this
+      const { type, id } = this.$route.params
+
+      const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
-      // console.log('sendThePost mode :', editorMode, saveType)
-      if (editorMode === 'create' && saveType === 'public') {
+
+      // url draft edit
+      // 草稿发送
+      const draftPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
@@ -756,24 +801,9 @@ export default {
           isOriginal,
           shortContent: this.readSummary
         })
-      } else if (editorMode === 'create' && saveType === 'draft') {
-        // 发布到草稿箱
-        this.prompt = true
-        this.saveInfo = {
-          title,
-          content,
-          fissionFactor,
-          cover,
-          isOriginal
-        }
-        /*this.createDraft({
-          title,
-          content,
-          fissionFactor,
-          cover,
-          isOriginal
-        });*/
-      } else if (editorMode === 'edit') {
+      }
+      // 编辑发送
+      const editPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
@@ -793,28 +823,10 @@ export default {
           isOriginal,
           shortContent: this.readSummary
         })
-      } else if (editorMode === 'draft' && saveType === 'public') {
-        // 草稿箱编辑 发布
-        const { hash } = await this.sendPost({ title, author, content })
-        this.publishArticle({
-          author,
-          title,
-          hash,
-          fissionFactor,
-          cover,
-          isOriginal
-        })
-      } else if (editorMode === 'draft' && saveType === 'draft') {
-        // 草稿箱编辑 更新
-        await this.updateDraft({
-          id: this.id,
-          title,
-          content,
-          fissionFactor,
-          cover,
-          isOriginal
-        })
       }
+      if (type === 'draft') draftPost()
+      else if (type === 'edit') editPost()
+      else draftPost() // 错误的路由, 当发布文章处理
     },
     $imgAdd(pos, imgfile) {
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
@@ -935,6 +947,9 @@ export default {
         })
         .catch(err => {
           console.log(err)
+        })
+        .finally(() => {
+          this.autoUpdateDfaftTags = true
         })
     },
     // 切换状态

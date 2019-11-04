@@ -55,7 +55,7 @@ Vue.prototype.$wechatShare = wechatShare
 Vue.use(VueClipboard)
 
 // 记录路由并缓存页面，像原生APP导航一样。
-Vue.use(Navigation, { router, store, keyName: 'CACHE' })
+Vue.use(Navigation, { router, store, keyName: 'c' })
 ;[VueHead].map(c => Vue.use(c))
 
 Vue.config.productionTip = false

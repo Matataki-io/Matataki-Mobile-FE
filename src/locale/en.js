@@ -323,7 +323,7 @@ export default {
     draftTitle: '是否保存为草稿？',
     draftText: '保存草稿',
     draftCancel: '不保存',
-    modalTextText: '文章尚未保存，是否退出？',
+    modalTextText: '确认退出？',
     modalTextButton1: '再想想',
     modalTextButton2: '退出',
     // article import
