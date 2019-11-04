@@ -90,9 +90,8 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser']),
     writeP() {
-      if (this.isLogined)
-        this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
-      this.$store.commit('setLoginModal', true)
+      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      else this.$store.commit('setLoginModal', true)
 
     },
     async refreshUser() {
