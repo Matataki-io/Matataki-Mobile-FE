@@ -984,7 +984,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less" src="./Publish.less"></style>
+<style scoped lang="less" src="./publish.less"></style>
 <style lang="less">
 /* 全局覆盖组件样式 */
 .v-note-wrapper .v-note-op {
