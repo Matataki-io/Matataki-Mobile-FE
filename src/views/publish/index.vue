@@ -256,7 +256,7 @@ import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
 // import { sleep } from '@/common/methods'
-import { toolbars } from './toolbars.js' // 编辑器配置
+import { toolbars } from '@/config/toolbars' // 编辑器配置
 import imgUpload from '@/components/imgUpload/index.vue' // 图片上传
 import modalPrompt from './components/modal_prompt.vue' // 弹出框提示
 import { Prompt } from '@/components/'
