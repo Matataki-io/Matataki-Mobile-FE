@@ -80,6 +80,7 @@
           <div>应付：<span class="money">{{needPay}} CNY</span></div>
         </div>
       </div>
+      <el-button type="success" @click="loginAndPay">立即支付</el-button>
       <QRCode v-if="needPay > 0" :pay-link="order.code_url"/>
       <div v-else class="payBtnBox">
         <el-button type="primary" @click="confirmPay">确认支付</el-button>
@@ -165,7 +166,7 @@ export default {
     },
     value(val) {
       if (val) {
-        this.createOrder()
+        // this.createOrder()
         this.getCNYBalance()
       }
       this.showModal = val
@@ -232,8 +233,53 @@ export default {
       this.createOrder();
       clearInterval(this.timer)
     },
-    createOrder() {
-      this.loading = true
+    loginAndPay() {
+      const code = this.$route.query.code
+      this.$API.wxlogin(code).then(res => {
+        const { accessToken } = res
+        const openid = res.accessToken.openid
+        const requestParams = this.makeOrderParams(openid)
+        console.log(requestParams);
+        this.$API.wxpay(requestParams).then(res => {
+          console.log(res)
+          this.pay(res)
+        })
+      })
+    },
+    pay(order) {
+      const { appId, timeStamp, nonceStr, signType, paySign } = order
+      function onBridgeReady(){
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+              appId,
+              timeStamp,
+              nonceStr,
+              package: order.package,
+              signType,
+              paySign
+            },
+            function(res){
+            if(res.err_msg == "get_brand_wcpay_request:ok" ){
+              // 使用以上方式判断前端返回,微信团队郑重提示：
+              //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+              console.log('支付成功')
+              alert('支付成功')
+            } 
+        }); 
+      }
+      if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+      }else{
+        onBridgeReady();
+      }
+    },
+    // 构造参数
+    makeOrderParams(openid = null) {
       const { input, inputToken, output, outputToken, limitValue, type } = this.form
       let requestParams = {
         total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
@@ -245,11 +291,14 @@ export default {
         decimals: outputToken.decimals,
         pay_cny_amount: utils.toDecimal(this.needPay)
       }
+      if (openid) {
+        requestParams = {
+          ...requestParams,
+          trade_type: 'JSAPI',
+          openid
+        }
+      }
       console.log(requestParams);
-      // 添加out_trade_no参数
-      // if (!needCreate) {
-      //   requestParams.out_trade_no = this.order.trade_no
-      // }
       if (type === 'add') {
         requestParams = {
           ...requestParams,
@@ -262,6 +311,11 @@ export default {
           title: `购买${outputToken.symbol}`
         }
       }
+      return requestParams
+    },
+    createOrder(openid = null) {
+      this.loading = true
+      const requestParams = this.makeOrderParams(openid)
       this.$API
         .wxpay(requestParams)
         .then(res => {

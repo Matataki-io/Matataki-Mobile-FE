@@ -28,8 +28,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Swap from './components/swap'
-import Pool from './components/pool'
+import Swap from './components/swap.vue'
+import Pool from './components/pool.vue'
 
 export default {
   components: {
