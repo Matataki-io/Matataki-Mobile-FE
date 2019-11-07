@@ -12,6 +12,11 @@ export default {
   name: 'WeixinLogin',
   computed: {},
   created() {
+    /* const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+    if (!isWeixin()) {
+      this.$router.push({ name: 'index' })
+      return
+    } */
     const { code, state } = this.$route.query
     const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
     const appid = 'wx95829b6a2307300b'
@@ -30,4 +35,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.login {
+  text-align: center;
+  margin-top: 50%;
+}
+</style>
