@@ -23,7 +23,7 @@ export default {
     const scope = 'snsapi_userinfo'
     const redirectUri = `${VUE_APP_WX_URL}/login/weixin`
     if (!code || state !== 'weixin') {
-      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid${appid}=&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
+      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
     } else {
       this.$API.loginWeixin(code).then(res => {
         this.$store.commit('setAccessToken', res.data)
