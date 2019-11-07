@@ -11,7 +11,17 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="widgetModalStatus = 1">
+        <div v-if="pageType === 1" class="widget-button" @click="$message.success('暂未开放')">
+          <div class="widget-button-img">
+            <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget" />
+          </div>
+          <p>{{ $t('p.createWidget') }}</p>
+        </div>
+        <div
+          v-else-if="minetokenToken !== null"
+          class="widget-button"
+          @click="widgetModalStatus = 1"
+        >
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget" />
           </div>
@@ -27,7 +37,10 @@
       <SocialShare :img="img" :title="shareLink" />
       <wechat style="margin: 60px 0 0 0;" :link="link" />
     </div>
-    <div v-if="widgetModalStatus === 1" class="padding2">
+    <div
+      v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0"
+      class="padding2"
+    >
       <tokenShareCardLayout :minetoken-token="minetokenToken" :minetoken-user="minetokenUser" />
     </div>
   </el-dialog>
@@ -47,7 +60,7 @@ export default {
   props: {
     minetokenToken: {
       type: Object,
-      required: true
+      default: null
     },
     minetokenUser: {
       type: Object,
@@ -56,6 +69,11 @@ export default {
     shareModalShow: {
       type: Boolean,
       default: false
+    },
+    /** 0:粉丝币， 1:个人主页 */
+    pageType: {
+      type: Number,
+      default: 0
     },
     img: {
       type: String,
@@ -74,7 +92,11 @@ export default {
       return '92%'
     },
     shareLink() {
-      return `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
+      const slogan = [
+        `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`,
+        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
+      ]
+      return slogan[this.pageType]
     },
     link() {
       if (process.browser) return window.location.href

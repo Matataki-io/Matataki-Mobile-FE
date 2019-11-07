@@ -62,6 +62,12 @@
         </router-link>
       </p>
 
+      <span class="fixed-right share">
+        <el-button class="narrowing" size="mini" @click="shareModalShow = true">
+          <svg-icon icon-class="share1" />
+          {{ $t('share') }}
+        </el-button>
+      </span>
       <div v-if="!isMe(id)" class="fixed-right follow">
         <template v-if="!scrollStatus">
           <transition name="fade">
@@ -116,6 +122,12 @@
         type="article"
       />
     </BasePull>
+    <Share
+      :share-modal-show="shareModalShow"
+      :minetoken-user="{ nickname: username }"
+      :page-type="1"
+      @input="val => (shareModalShow = val)"
+    />
   </div>
 </template>
 
@@ -124,10 +136,11 @@ import { mapGetters } from 'vuex'
 import { ArticleCard } from '@/components/'
 import tokenAvatar from './components/token_avatar.vue'
 
+import Share from '@/components/token/token_share.vue'
 import avatar from '@/components/avatar/index.vue'
 
 export default {
-  components: { ArticleCard, avatar, tokenAvatar },
+  components: { ArticleCard, avatar, tokenAvatar, Share },
   data() {
     return {
       id: this.$route.params.id,
@@ -153,7 +166,8 @@ export default {
         list: [],
         loadingText: this.$t('not'),
         autoRequestTime: 0
-      }
+      },
+      shareModalShow: false
     }
   },
   computed: {
