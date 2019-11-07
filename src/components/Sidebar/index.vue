@@ -340,7 +340,7 @@ export default {
     },
     username() {
       let name = this.name
-      return name.length > 12 ? name.slice(0, 12) + '...' : name
+      return name.length > 16 ? name.slice(0, 16) + '...' : name
     }
   },
   watch: {
