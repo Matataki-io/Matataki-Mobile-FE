@@ -24,7 +24,8 @@ import {
   TabPane,
   Table,
   TableColumn,
-  Image
+  Image,
+  Checkbox
 } from 'element-ui'
 
 Vue.use(Input)
@@ -48,6 +49,7 @@ Vue.use(Input)
   .use(Table)
   .use(TableColumn)
   .use(Image)
+  .use(Checkbox)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$prompt = MessageBox.prompt
