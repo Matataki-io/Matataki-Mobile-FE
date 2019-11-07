@@ -9,7 +9,7 @@ export default {
   getImg(hash) {
     return `${ssImgAddress}${hash}`
   },
-  wxlogin(code) {
+  getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
   wxpay(order) {
@@ -342,5 +342,15 @@ minetokenGetResources(tokenId) {
   },
   getDraft({ id }) {
     return request({ url: `/draft/${id}` })
+  },
+  // 微信登录数据保存到数据库
+  loginWeixin(code) {
+    return request({
+      method: 'POST',
+      url: '/login/weixin',
+      data: {
+        code
+      }
+    })
   }
 }

@@ -235,9 +235,8 @@ export default {
     },
     loginAndPay() {
       const code = this.$route.query.code
-      this.$API.wxlogin(code).then(res => {
-        const { accessToken } = res
-        const openid = res.accessToken.openid
+      this.$API.getWeixinOpenId(code).then(res => {
+        const openid = res.openid
         const requestParams = this.makeOrderParams(openid)
         console.log(requestParams);
         this.$API.wxpay(requestParams).then(res => {

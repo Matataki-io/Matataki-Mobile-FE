@@ -37,6 +37,9 @@
         <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
           <svg-icon class="github" icon-class="github" />
         </div>
+        <div class="oauth-bg bg-green" @click="getWeixinCode">
+          <svg-icon class="github" icon-class="weixin" />
+        </div>
       </div>
     </div>
   </section>
@@ -88,6 +91,14 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
+    getWeixinCode() {
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+      if(isWeixin()) {
+        this.$router.push({ name: 'WeixinLogin' })
+      } else {
+        this.$message.error('请在微信中打开此网页')
+      }
+    },
     async walletLogin(type) {
       if (type === 'GitHub') {
         this.$router.push({ name: 'Login' })
@@ -219,6 +230,9 @@ export default {
 }
 .bg-purple {
   background: #882592;
+}
+.bg-green {
+  background: #44b549;
 }
 
 .flexCenter {
