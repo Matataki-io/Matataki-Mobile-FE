@@ -28,12 +28,12 @@
                 交易数量：
               </td><td>{{ form.output }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="order-key">
                 创建时间：
               </td><td>{{ friendlyTime }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <tr v-if="!isWeixin">
               <td class="order-key">
                 订单编号：
               </td><td>{{ order.trade_no }}</td>
@@ -80,8 +80,16 @@
           <div>应付：<span class="money">{{needPay}} CNY</span></div>
         </div>
       </div>
-      <el-button type="success" @click="loginAndPay">立即支付</el-button>
-      <QRCode v-if="needPay > 0" :pay-link="order.code_url"/>
+      
+      <template v-if="needPay > 0">
+        <div v-if="isWeixin" class="wxpay-btn">
+          <el-button type="success" @click="loginAndPay">
+            使用微信支付
+            <svg-icon icon-class="wxpay" class="wxpay-icon"/>
+          </el-button>
+        </div>
+        <QRCode v-else :pay-link="order.code_url"/>
+      </template>
       <div v-else class="payBtnBox">
         <el-button type="primary" @click="confirmPay">确认支付</el-button>
       </div>
@@ -123,6 +131,13 @@ export default {
         "YYYY-MM-DD HH:mm:ss"
       );
     },
+    isWeixin() {
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+      if (this.currentUserInfo.idProvider === 'weixin' && isWeixin()) {
+        return true
+      }
+      return false
+    },
     input() {
       if (this.form.input) {
         return parseFloat(this.form.input).toFixed(2)
@@ -130,6 +145,7 @@ export default {
         return 0
       }
     },
+    // 扣除
     deduction() {
       let input = parseFloat(this.form.input)
       let balance = parseFloat(this.balance)
@@ -166,7 +182,7 @@ export default {
     },
     value(val) {
       if (val) {
-        // this.createOrder()
+        if (!this.isWeixin) this.createOrder()
         this.getCNYBalance()
       }
       this.showModal = val
@@ -230,22 +246,19 @@ export default {
     },
     // 是否使用余额修改
     useBalanceChange(v) {
-      this.createOrder();
+      if (!this.isWeixin) this.createOrder()
       clearInterval(this.timer)
     },
     loginAndPay() {
-      const code = this.$route.query.code
-      this.$API.getWeixinOpenId(code).then(res => {
-        const openid = res.openid
-        const requestParams = this.makeOrderParams(openid)
-        console.log(requestParams);
-        this.$API.wxpay(requestParams).then(res => {
-          console.log(res)
-          this.pay(res)
-        })
+      const openid = this.currentUserInfo.name
+      const requestParams = this.makeOrderParams(openid)
+      console.log(requestParams);
+      this.$API.wxpay(requestParams).then(res => {
+        console.log(res)
+        this.weakWeixinPay(res)
       })
     },
-    pay(order) {
+    weakWeixinPay(order) {
       const { appId, timeStamp, nonceStr, signType, paySign } = order
       function onBridgeReady(){
         WeixinJSBridge.invoke(
@@ -413,6 +426,13 @@ export default {
   .payBtnBox {
     padding: 20px 0;
     text-align: center;
+  }
+  .wxpay-btn {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .wxpay-icon {
+    font-size: 18px;
   }
 }
 </style>

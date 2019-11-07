@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <canvas ref="qr" class="qrcode"></canvas>
-    <p>请使用微信扫描二维码进行支付</p>
+    <p>请使用微信扫描二维码进行支付<svg-icon icon-class="wxpay" /></p>
   </div>
 </template>
 
