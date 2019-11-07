@@ -8,7 +8,7 @@ export default {
    */
   invalidId(id) {
     const lowerId = id.toLocaleLowerCase()
-    if (lowerId === 'github' || lowerId === 'email') return true
+    if (lowerId === 'github' || lowerId === 'email' || lowerId === 'weixin') return true
     return false
   },
   /**
