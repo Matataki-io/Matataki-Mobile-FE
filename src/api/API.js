@@ -9,11 +9,11 @@ export default {
   getImg(hash) {
     return `${ssImgAddress}${hash}`
   },
-  wxlogin(code) {
+  getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
-  wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount }) {
-    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount })
+  wxpay(order) {
+    return request.post('/wx/pay', order)
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
@@ -342,5 +342,15 @@ minetokenGetResources(tokenId) {
   },
   getDraft({ id }) {
     return request({ url: `/draft/${id}` })
+  },
+  // 微信登录数据保存到数据库
+  loginWeixin(code) {
+    return request({
+      method: 'POST',
+      url: '/login/weixin',
+      data: {
+        code
+      }
+    })
   }
 }

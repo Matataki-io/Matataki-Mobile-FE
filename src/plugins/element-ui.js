@@ -19,7 +19,12 @@ import {
   Dialog,
   Loading,
   MessageBox,
-  Tooltip
+  Tooltip,
+  Tabs,
+  TabPane,
+  Table,
+  TableColumn,
+  Image
 } from 'element-ui'
 
 Vue.use(Input)
@@ -38,6 +43,11 @@ Vue.use(Input)
   .use(Dialog)
   .use(Loading.directive)
   .use(Tooltip)
+  .use(Tabs)
+  .use(TabPane)
+  .use(Table)
+  .use(TableColumn)
+  .use(Image)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$prompt = MessageBox.prompt

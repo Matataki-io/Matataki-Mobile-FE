@@ -117,4 +117,9 @@ export default {
     }
   }
 }
+.signupModal {
+  .ivu-modal-body {
+    padding: 0;
+  }
+}
 </style>

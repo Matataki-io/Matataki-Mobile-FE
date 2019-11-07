@@ -152,7 +152,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isLogined"]),
+    ...mapGetters(['isLogined', 'currentUserInfo']),
     type() {
       return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
     },

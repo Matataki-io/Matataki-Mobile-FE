@@ -75,6 +75,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/login/weixin',
+      name: 'WeixinLogin',
+      component: () => import(/* webpackChunkName: "Login" */ './views/weixinLogin.vue'),
+      mata: {
+        title: '微信登录'
+      }
+    },
+    {
       path: '/user/:id',
       name: 'user-id',
       component: () => import(/* webpackChunkName: "user-id" */ './views/User/index.vue'),
