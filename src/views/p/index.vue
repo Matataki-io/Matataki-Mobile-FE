@@ -125,7 +125,7 @@
               v-if="!isTokenArticle"
               class="wxpayBtn"
               plain
-              :disabled="payBtnDisabled"
+              :disabled="payBtnDisabled && isLogined"
               type="primary"
               size="mini"
               @click="wxpay"
@@ -827,7 +827,6 @@ export default {
             // 判断是否为付费阅读文章
             let { data } = res.data
             this.article = data
-
             this.getCurrentProfile()
 
             if (data.tokens && data.tokens.length !== 0) {
@@ -1229,6 +1228,10 @@ export default {
       }
     },
     wxpay() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
       if (this.getInputAmountError) {
         this.$message.error(this.getInputAmountError)
         return
