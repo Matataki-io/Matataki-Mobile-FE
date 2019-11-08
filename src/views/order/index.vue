@@ -1,0 +1,469 @@
+<template>
+  <div class="container" v-loading="loading">
+    <div class="padding20">
+      <img src="@/assets/img/m_logo.png" alt="logo" />
+      <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
+      <table class="order-table">
+        <tbody>
+          <tr>
+            <td class="order-key">交易账号：</td>
+            <td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">交易内容：</td>
+            <td>{{ form.outputToken.symbol }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">交易数量：</td>
+            <td>{{ form.output }}</td>
+          </tr>
+          <!-- <tr>
+              <td class="order-key">
+                创建时间：
+              </td><td>{{ friendlyTime }}</td>
+          </tr>-->
+          <tr v-if="!isWeixin">
+            <td class="order-key">订单编号：</td>
+            <td>{{ order.trade_no }}</td>
+          </tr>
+          <!-- <tr>
+              <td class="order-key">
+                交易金额：
+              </td>
+              <td>
+                ￥ {{ input }}
+                <el-tooltip  placement="bottom" effect="light">
+                  <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
+                  <i class="el-icon-question" />
+                </el-tooltip>
+              </td>
+          </tr>-->
+        </tbody>
+      </table>
+    </div>
+    <div class="balanceBox">
+      <div class="flexBox padding20">
+        <div>
+          <el-tooltip placement="bottom" effect="light">
+            <div slot="content">
+              您的交易可能由于正常的价格波动而失败，
+              <br />预置币格波动区间将有助于您的交易成功。
+              <br />交易成功后，多支付的金额会退回。
+            </div>
+            <i class="el-icon-question" />
+          </el-tooltip>预期价格波动：1%
+        </div>
+        <div>
+          <el-tooltip placement="bottom" effect="light">
+            <div slot="content">
+              CNY 交易金额精度大于 0.01 时会自动进位支付，
+              <br />多支付的金额会保留在您的CNY账户中。
+            </div>
+            <i class="el-icon-question" />
+          </el-tooltip>合计：
+          <span class="money">{{input}} CNY</span>
+        </div>
+      </div>
+      <div class="flexBox padding20 bgGray">
+        <div>
+          <el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox>
+        </div>
+        <div>
+          抵扣：
+          <span class="money">{{deduction}} CNY</span>
+        </div>
+      </div>
+      <div class="flexBox padding20">
+        <div></div>
+        <div>
+          应付：
+          <span class="money">{{needPay}} CNY</span>
+        </div>
+      </div>
+    </div>
+
+    <template v-if="needPay > 0">
+      <div v-if="isWeixin" class="wxpay-btn">
+        <el-button type="primary" @click="loginAndPay">
+          使用微信支付
+          <svg-icon icon-class="wxpay" class="wxpay-icon" />
+        </el-button>
+      </div>
+      <QRCode v-else :pay-link="order.code_url" />
+    </template>
+    <div v-else class="payBtnBox">
+      <el-button type="primary" @click="confirmPay">确认支付</el-button>
+    </div>
+  </div>
+</template>
+
+<script>
+/* eslint-disable */
+import QRCode from "./components/Qrcode";
+import { mapGetters } from "vuex";
+import utils from "@/utils/utils";
+import moment from "moment";
+const interval = 5000;
+export default {
+  name: "Order",
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+    form: {
+      type: Object,
+      default: () => ({
+        input: '',
+        inputToken: {},
+        output: '',
+        outputToken: {},
+        base: '',
+        limitValue: ''
+      })
+    }
+  },
+  components: { QRCode },
+  computed: {
+    ...mapGetters(["currentUserInfo"]),
+    friendlyTime() {
+      return moment(parseInt(this.order.timeStamp) * 1000).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+    },
+    isWeixinUser() {
+      return this.currentUserInfo.idProvider === "weixin";
+    },
+    isWeixin() {
+      const isWeixin = () =>
+        /micromessenger/.test(navigator.userAgent.toLowerCase());
+      if (isWeixin()) {
+        return true;
+      }
+      return false;
+    },
+    input() {
+      if (this.form.input) {
+        return parseFloat(this.form.input).toFixed(2);
+      } else {
+        return 0;
+      }
+    },
+    // 扣除
+    deduction() {
+      let input = parseFloat(this.form.input);
+      let balance = parseFloat(this.balance);
+      let result = 0;
+      if (this.useBalance) {
+        if (balance >= input) {
+          result = input;
+        } else {
+          result = balance;
+        }
+      } else {
+        result = 0;
+      }
+      return utils.down2points(result);
+    },
+    needPay() {
+      // 支付金额向上取整
+      let input = utils.up2points(this.form.input);
+      let deduction = this.deduction;
+      if (this.useBalance) {
+        if (deduction >= input) {
+          return 0;
+        } else {
+          return input - deduction;
+        }
+      } else {
+        return input;
+      }
+    }
+  },
+  watch: {
+    showModal(val) {
+      this.$emit("input", val);
+    },
+    value(val) {
+      if (val) {
+        if (!this.isWeixin) this.createOrder();
+        this.getCNYBalance();
+      }
+      this.showModal = val;
+    }
+  },
+  data() {
+    return {
+      showModal: false,
+      timer: null,
+      order: {},
+      balance: 0,
+      loading: false,
+      useBalance: false
+    };
+  },
+  mounted() {},
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+  methods: {
+    confirmPay() {
+      const handler = res => {
+        this.loading = false;
+        if (res === 0) {
+          this.successNotice("交易成功，即将刷新页面");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          this.errorNotice("交易失败，请重试");
+          this.showModal = false;
+        }
+      };
+      this.loading = true;
+      const deadline = Math.floor(Date.now() / 1000) + 300;
+      const {
+        input,
+        inputToken,
+        output,
+        outputToken,
+        limitValue,
+        type,
+        youMintTokenAmount
+      } = this.form;
+      if (type === "add") {
+        this.$API
+          .addLiquidityBalance({
+            tokenId: outputToken.id,
+            cny_amount: utils.toDecimal(input),
+            token_amount: utils.toDecimal(output),
+            min_liquidity: utils.toDecimal(youMintTokenAmount),
+            max_tokens: utils.toDecimal(limitValue),
+            deadline
+          })
+          .then(res => handler(res));
+      } else if (type === "buy_token_input") {
+        this.$API
+          .cnyToTokenInputBalance({
+            tokenId: outputToken.id,
+            cny_sold: utils.toDecimal(input),
+            min_tokens: utils.toDecimal(limitValue),
+            deadline
+          })
+          .then(res => handler(res));
+      } else if (type === "buy_token_output") {
+        this.$API
+          .cnyToTokenOutputBalance({
+            tokenId: outputToken.id,
+            tokens_bought: utils.toDecimal(output),
+            max_cny: utils.toDecimal(limitValue),
+            deadline
+          })
+          .then(res => handler(res));
+      }
+    },
+    // 是否使用余额修改
+    useBalanceChange(v) {
+      if (!this.isWeixin) this.createOrder();
+      clearInterval(this.timer);
+    },
+    loginAndPay() {
+      const openid = this.currentUserInfo.name;
+      const requestParams = this.makeOrderParams(openid);
+      console.log(requestParams);
+      this.$API.wxpay(requestParams).then(res => {
+        console.log(res);
+        this.weakWeixinPay(res);
+      });
+    },
+    weakWeixinPay(order) {
+      const { appId, timeStamp, nonceStr, signType, paySign } = order;
+      const self = this;
+      function onBridgeReady() {
+        WeixinJSBridge.invoke(
+          "getBrandWCPayRequest",
+          {
+            appId,
+            timeStamp,
+            nonceStr,
+            package: order.package,
+            signType,
+            paySign
+          },
+          function(res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+              // 使用以上方式判断前端返回,微信团队郑重提示：
+              //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+              self.successNotice("交易成功，即将刷新页面");
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000);
+            }
+          }
+        );
+      }
+      if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+          document.addEventListener(
+            "WeixinJSBridgeReady",
+            onBridgeReady,
+            false
+          );
+        } else if (document.attachEvent) {
+          document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
+          document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
+        }
+      } else {
+        onBridgeReady();
+      }
+    },
+    // 构造参数
+    makeOrderParams(openid = null) {
+      const {
+        input,
+        inputToken,
+        output,
+        outputToken,
+        limitValue,
+        type
+      } = this.form;
+      let requestParams = {
+        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+        title: `购买${outputToken.symbol}`,
+        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
+        token_id: outputToken.id,
+        token_amount: utils.toDecimal(output, outputToken.decimals),
+        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
+        decimals: outputToken.decimals,
+        pay_cny_amount: utils.toDecimal(this.needPay)
+      };
+      if (openid) {
+        requestParams = {
+          ...requestParams,
+          trade_type: "JSAPI",
+          openid
+        };
+      }
+      console.log(requestParams);
+      if (type === "add") {
+        requestParams = {
+          ...requestParams,
+          title: `添加流动金`,
+          min_liquidity: utils.toDecimal(this.form.youMintTokenAmount)
+        };
+      } else {
+        requestParams = {
+          ...requestParams,
+          title: `购买${outputToken.symbol}`
+        };
+      }
+      return requestParams;
+    },
+    createOrder(openid = null) {
+      this.loading = true;
+      const requestParams = this.makeOrderParams(openid);
+      this.$API.wxpay(requestParams).then(res => {
+        this.loading = false;
+        this.order = res;
+        if (this.needPay > 0) {
+          this.timer = setInterval(() => {
+            this.getOrderStatus(this.order.trade_no);
+          }, interval);
+        }
+      });
+    },
+    getCNYBalance() {
+      this.$API.getCNYBalance().then(res => {
+        this.balance = utils.fromDecimal(res);
+      });
+    },
+    handleClose() {
+      clearInterval(this.timer);
+      this.showModal = false;
+    },
+    getOrderStatus(tradeNo) {
+      this.$API.getOrderStatus(tradeNo).then(res => {
+        if (res.code === 0) {
+          if (res.data === 7 || res.data === 8) {
+            this.errorNotice("交易失败，等待退款，请重试");
+            clearInterval(this.timer);
+            this.showModal = false;
+          }
+          if (res.data === 6 || res.data === 9) {
+            this.successNotice("交易成功，即将刷新页面");
+            clearInterval(this.timer);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+        }
+      });
+    },
+    successNotice(text) {
+      this.$message.success({
+        message: text,
+        duration: 4000
+      });
+    },
+    errorNotice(text) {
+      this.$message.error({
+        message: text
+      });
+    }
+  }
+};
+</script>
+
+<style lang="less">
+.nopadding {
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+</style>
+<style scoped lang="less">
+.container {
+  .bgGray {
+    background: #f0f0f0;
+  }
+  .padding20 {
+    padding: 0 20px;
+  }
+  img {
+    width: 200px;
+  }
+  .order-table {
+    tr {
+      border: 1px solid #ccc;
+      color: #000;
+      .order-key {
+        color: #666;
+        white-space: nowrap;
+      }
+    }
+  }
+  .balanceBox {
+    margin-top: 30px;
+  }
+  .flexBox {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 15px 20px;
+  }
+  .money {
+    color: #542de0;
+  }
+  .payBtnBox {
+    padding: 20px 0;
+    text-align: center;
+  }
+  .wxpay-btn {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .wxpay-icon {
+    font-size: 18px;
+  }
+}
+</style>
