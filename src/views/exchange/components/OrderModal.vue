@@ -136,7 +136,7 @@ export default {
     },
     isWeixin() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      return isWeixn()
+      return isWeixin()
     },
     input() {
       if (this.form.input) {
