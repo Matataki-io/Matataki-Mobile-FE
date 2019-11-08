@@ -61,13 +61,6 @@
           <span class="status-key">{{ $t('fans') }}</span>
         </router-link>
       </p>
-
-      <span class="fixed-right share">
-        <el-button class="narrowing" size="mini" @click="shareModalShow = true">
-          <svg-icon icon-class="share1" />
-          {{ $t('share') }}
-        </el-button>
-      </span>
       <div v-if="!isMe(id)" class="fixed-right follow">
         <template v-if="!scrollStatus">
           <transition name="fade">
@@ -86,11 +79,14 @@
         </template>
       </div>
       <router-link v-else :to="{ name: 'setting' }" class="fixed-right edit">
-        <el-button size="mini">编辑资料</el-button>
+        <el-button class="edit-button" size="mini">编辑资料</el-button>
       </router-link>
-      <router-link :to="{ name: 'exchange' }" class="fixed-right exchange">
-        <el-button type="primary" size="mini">交易粉丝币</el-button>
-      </router-link>
+      <span class="fixed-right share">
+        <el-button class="narrowing" size="mini" @click="shareModalShow = true">
+          <svg-icon icon-class="share1" />
+          {{ $t('share') }}
+        </el-button>
+      </span>
     </div>
 
     <nav class="user-nav">
