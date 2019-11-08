@@ -131,12 +131,12 @@ export default {
         "YYYY-MM-DD HH:mm:ss"
       );
     },
+    isWeixinUser() {
+      return this.currentUserInfo.idProvider === 'weixin'
+    },
     isWeixin() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      if (this.currentUserInfo.idProvider === 'weixin' && isWeixin()) {
-        return true
-      }
-      return false
+      return isWeixn()
     },
     input() {
       if (this.form.input) {
@@ -250,7 +250,7 @@ export default {
       clearInterval(this.timer)
     },
     loginAndPay() {
-      const openid = this.currentUserInfo.name
+      const openid = this.isWeixinUser() ? this.currentUserInfo.name : window.localStorage.getItem('WX_OPENID')
       const requestParams = this.makeOrderParams(openid)
       console.log(requestParams);
       this.$API.wxpay(requestParams).then(res => {

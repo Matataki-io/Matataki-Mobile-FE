@@ -52,6 +52,24 @@ export default {
     onClickLeft() {
       this.$router.push({ name: 'index' })
     },
+    getWeixinCode() {
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+      // 微信逻辑处理
+      if (isWeixin()) {
+        const { code, state } = this.$route.query
+        const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
+        const appid = 'wx95829b6a2307300b'
+        const scope = 'snsapi_base'
+        const redirectUri = `${VUE_APP_WX_URL}/exchange`
+        if (!code || state !== 'weixin') {
+          window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
+        } else {
+          this.$API.getWeixinOpenId(code).then(res => {
+            window.localStorage.setItem('WX_OPENID', res.openid)
+          })
+        }
+      }
+    },
     checkLogin() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
