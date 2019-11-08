@@ -250,7 +250,7 @@ export default {
       clearInterval(this.timer)
     },
     loginAndPay() {
-      const openid = this.isWeixinUser() ? this.currentUserInfo.name : window.localStorage.getItem('WX_OPENID')
+      const openid = this.isWeixinUser ? this.currentUserInfo.name : window.localStorage.getItem('WX_OPENID')
       const requestParams = this.makeOrderParams(openid)
       console.log(requestParams);
       this.$API.wxpay(requestParams).then(res => {
