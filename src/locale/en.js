@@ -433,6 +433,7 @@ export default {
     createLongImg: '生成长图',
     copyInviteLink: '复制邀请链接',
     widgetHelp: '如何使用widget？',
+    confirmPopover: 'know it',
     articleWidgetHelp: '什么是文章widget',
     articleWidgetContent:
       'widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到瞬MATATAKI的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。',
