@@ -357,14 +357,14 @@ const router = new VueRouter({
         title: '粉丝币-瞬MATATAKI'
       }
     },
-    // {
-    //   path: '/order/:id',
-    //   name: 'order-id',
-    //   component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
-    //   meta: {
-    //     title: '订单详情页-瞬MATATAKI'
-    //   }
-    // },
+    {
+      path: '/order/:id',
+      name: 'order-id',
+      component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
+      meta: {
+        title: '订单详情页-瞬MATATAKI'
+      }
+    },
     {
       path: '/token/:id',
       name: 'token-id',
