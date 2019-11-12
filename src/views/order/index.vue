@@ -1,8 +1,8 @@
 <template>
-  <div class="order" v-loading="loading">
+  <div class="order">
     <BaseHeader
       :has-bottom-border-line="true"
-      :pageinfo="{ title: '确认订单' }"
+      :pageinfo="{ title: '支付订单' }"
       customize-header-bc="#fff"
     />
     <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
@@ -11,24 +11,20 @@
       <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
       <van-cell title="交易内容" :value="tokenContent" />
       <van-cell title="交易数量" :value="tokenAmount" />
+      <van-cell title="交易类型" :value="tradeType" />
       <van-cell title="创建时间" :value="friendlyTime" />
       <van-cell title="订单编号" :value="tradeNo" />
     </van-cell-group>
     <div class="flexBox">
       <span>预期价格波动：1%
       </span>
-      <div>合计：
-        <span class="money">¥ {{cnyAmount.toFixed(2)}}</span>
-      </div>
+      <div>合计：<span class="money">¥ {{cnyAmount.toFixed(2)}}</span></div>
     </div>
     <div class="flexBox">
       <div>
         <el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（¥ {{balance}}）</el-checkbox>
       </div>
-      <div>
-        抵扣：
-        <span class="money">¥ {{deduction.toFixed(2)}}</span>
-      </div>
+      <div>抵扣：<span class="money">¥ {{deduction.toFixed(2)}}</span></div>
     </div>
     <!-- <div class="flexBox">
       <div></div>
@@ -54,7 +50,8 @@
       button-text="确认支付"
       tip="请仔细核对订单信息，如果有误请取消后再次尝试"
       tip-icon="info-o"
-      @submit="weixinPay"
+      :loading="loading"
+      @submit="onSubmit"
     />
     <!-- <template v-if="needPay > 0">
       <div v-if="isWeixin" class="wxpay-btn">
@@ -73,6 +70,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="qrcodeShow"
+      :before-close="handleClose"
       width="300px">
       <QRCode :pay-link="payLink" />
     </el-dialog>
@@ -111,6 +109,12 @@ export default {
   components: { QRCode },
   computed: {
     ...mapGetters(["currentUserInfo"]),
+    tradeType() {
+      const type = this.order.type
+      if (type === 'add') return '添加流动性'
+      if (type === 'buy_token_input' || type === 'buy_token_output') return '交易粉丝币'
+      return ''
+    },
     tokenContent() {
       if (this.token.symbol) return `${this.token.symbol}(${this.token.name})`
       return ''
@@ -171,24 +175,50 @@ export default {
   mounted() {
     this.getOrderData()
     this.getUserBalance()
+    this.getWeixinOpenId()
   },
   beforeDestroy() {
-    clearInterval(this.timer);
+    clearInterval(this.timer)
   },
   methods: {
+    handleClose() {
+      clearInterval(this.timer)
+      this.qrcodeShow = false
+    },
     onSubmit() {
+      this.loading = true
+      console.log(this.needPay);
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
         this.balancePay()
       }
     },
+    alert(message) {
+      this.$dialog.alert({
+        title: '温馨提示',
+        message: `${message}，点击确定返回`
+      }).then(() => {
+        this.$router.go(-1)
+      });
+    },
     getOrderData() {
       const id = this.$route.params.id
       this.tradeNo = id
       this.$API.getOrderData(id).then(res => {
-        this.order = res.data.order,
-        this.token = res.data.token
+        if (res.code === 0) {
+          const status = res.data.order.status
+          if(status === 7 || status === 8) {
+            this.alert('订单支付已失败')
+          }
+          if(status === 6 || status === 9) {
+            this.alert('订单已支付')
+          }
+          this.order = res.data.order
+          this.token = res.data.token
+        } else {
+          this.alert('订单不存在')
+        }
       })
     },
     // 是否使用余额修改
@@ -208,43 +238,44 @@ export default {
           this.errorNotice("交易失败，请重试");
         }
       };
-      this.loading = true;
-      const deadline = Math.floor(Date.now() / 1000) + 300;
+      // const deadline = Math.floor(Date.now() / 1000) + 300;
       const {
-        input,
-        inputToken,
-        output,
-        outputToken,
-        limitValue,
-        type,
-        youMintTokenAmount
-      } = this.form;
+        token_id,
+        cny_amount,
+        pay_cny_amount,
+        token_amount,
+        min_liquidity,
+        min_tokens,
+        max_tokens,
+        deadline,
+        type
+      } = this.order
       if (type === "add") {
         this.$API
           .addLiquidityBalance({
-            tokenId: outputToken.id,
-            cny_amount: utils.toDecimal(input),
-            token_amount: utils.toDecimal(output),
-            min_liquidity: utils.toDecimal(youMintTokenAmount),
-            max_tokens: utils.toDecimal(limitValue),
+            tokenId: token_id,
+            cny_amount,
+            token_amount,
+            min_liquidity,
+            max_tokens,
             deadline
           })
           .then(res => handler(res));
       } else if (type === "buy_token_input") {
         this.$API
           .cnyToTokenInputBalance({
-            tokenId: outputToken.id,
-            cny_sold: utils.toDecimal(input),
-            min_tokens: utils.toDecimal(limitValue),
+            tokenId: token_id,
+            cny_sold: cny_amount,
+            min_tokens,
             deadline
           })
           .then(res => handler(res));
       } else if (type === "buy_token_output") {
         this.$API
           .cnyToTokenOutputBalance({
-            tokenId: outputToken.id,
-            tokens_bought: utils.toDecimal(output),
-            max_cny: utils.toDecimal(limitValue),
+            tokenId: token_id,
+            tokens_bought: token_amount,
+            max_cny: min_tokens,
             deadline
           })
           .then(res => handler(res));
@@ -265,6 +296,7 @@ export default {
         }
       } else { // 弹出NATIVE支付二维码
         this.$API.nativePay(tradeNo).then(res => {
+          this.loading = false
           this.payLink = res.code_url
           this.qrcodeShow = true
           this.timer = setInterval(() => {
@@ -275,6 +307,7 @@ export default {
       const openid = this.currentUserInfo.name;
     },
     getWeixinOpenId() {
+      if (!this.isInWeixin) return
       const { code, state } = this.$route.query
       if (!code || state !== 'weixin') {
         const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
@@ -440,7 +473,9 @@ export default {
     border: 0.0625rem solid @purple;
   }
 }
-  
+.van-dialog {
+  border-radius: 10px;
+}
 </style>
 <style scoped lang="less">
 .order {
@@ -467,6 +502,7 @@ export default {
     justify-content: space-between;
     align-content: center;
     padding: 10px 16px;
+    font-size: 14px;
   }
   .money {
     color: #542de0;

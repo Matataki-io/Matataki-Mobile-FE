@@ -374,5 +374,9 @@ minetokenGetResources(tokenId) {
       method: 'get',
       url: `/order/get/${id}`
     })
+  },
+  // 创建订单
+  createOrder(order) {
+    return request.post('/order/create', order)
   }
 }
