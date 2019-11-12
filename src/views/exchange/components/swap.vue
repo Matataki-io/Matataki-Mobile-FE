@@ -114,6 +114,7 @@
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
+     <TradeLog :tokensId="tokensId" />
   </div>
 </template>
 
@@ -122,13 +123,15 @@ import { mapGetters } from "vuex";
 import debounce from "lodash/debounce";
 import OrderModal from "./OrderModal";
 import TokenListModal from "./TokenList";
+import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from "./consts.js";
 import utils from "@/utils/utils";
 
 export default {
   components: {
     OrderModal,
-    TokenListModal
+    TokenListModal,
+    TradeLog
   },
   data() {
     return {
@@ -153,6 +156,17 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined', 'currentUserInfo']),
+    tokensId() {
+      const result = []
+      const { inputToken, outputToken } = this.form
+      if (!utils.isNull(inputToken) && inputToken.id !== 0) {
+        result.push(inputToken.id)
+      }
+      if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+        result.push(outputToken.id)
+      }
+      return result
+    },
     type() {
       return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
     },

@@ -10,13 +10,13 @@
         {{ articleData.title }}
       </h1>
       <figure>
-        <n-link
+        <router-link
           :to="{ name: 'user-id', params: { id: articleData.uid } }"
           target="_blank"
           itemprop="author"
         >
           {{ articleData.author }}
-        </n-link>
+        </router-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{
           articleCreateTime
         }}</time>
