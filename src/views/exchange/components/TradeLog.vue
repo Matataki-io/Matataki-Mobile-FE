@@ -16,7 +16,7 @@
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="content">
-          <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录'}}</span>
+          <!-- <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录'}}</span> -->
           <router-link v-if="currentId" target='_blank' class="gray-btn btn" :to="{name: 'token-id', params: {id: currentId}}">
             <div class="link">
               <svg-icon icon-class="share" class="icon"/>
