@@ -27,7 +27,8 @@ import {
   DropdownMenu,
   DropdownItem,
   Sticky,
-  NavBar
+  NavBar,
+  SubmitBar
 } from 'vant'
 
 // 增加前缀 区分多个组件库 防止冲突
@@ -56,3 +57,4 @@ Vue.use(Search)
 Vue.use(DropdownMenu).use(DropdownItem)
 Vue.use(Sticky)
 Vue.use(NavBar)
+Vue.use(SubmitBar)

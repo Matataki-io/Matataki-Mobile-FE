@@ -12,6 +12,22 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
+  nativePay(tradeNo) {
+    return this.orderWxPay({
+      tradeNo,
+      trade_type: 'NATIVE'
+    })
+  },
+  jsapiPay(tradeNo, openid) {
+    return this.orderWxPay({
+      tradeNo,
+      trade_type: 'JSAPI',
+      openid
+    })
+  },
+  orderWxPay(order) {
+    return request.post('/order/pay', order)
+  },
   wxpay(order) {
     return request.post('/wx/pay', order)
   },
@@ -352,5 +368,15 @@ minetokenGetResources(tokenId) {
         code
       }
     })
+  },
+  getOrderData(id) {
+    return request({
+      method: 'get',
+      url: `/order/get/${id}`
+    })
+  },
+  // 创建订单
+  createOrder(order) {
+    return request.post('/order/create', order)
   }
 }

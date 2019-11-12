@@ -426,8 +426,47 @@ export default {
         this.addLiquidity();
       }
     },
+    // 构造参数
+    makeOrderParams() {
+      const { input, inputToken, output, outputToken } = this.form;
+      const limitValue = this.limitValue
+      let requestParams = {
+        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+        title: `添加流动金`,
+        type: 'add', // type类型见typeOptions：add，buy_token_input，buy_token_output
+        token_id: outputToken.id,
+        token_amount: utils.toDecimal(output, outputToken.decimals),
+        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
+        decimals: outputToken.decimals,
+        pay_cny_amount: utils.toDecimal(input),
+        min_liquidity: utils.toDecimal(this.youMintTokenAmount)
+      };
+      return requestParams;
+    },
+    // 创建订单
+    createOrder() {
+      const loading = this.$loading({
+        lock: false,
+        text: "订单创建中...",
+        background: "rgba(0, 0, 0, 0.4)"
+      });
+      const requestParams = this.makeOrderParams()
+      this.$API
+        .createOrder(requestParams)
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            this.$router.push({ name: 'order-id', params: {id: res.data}})
+          } else {
+             this.$dialog.alert({
+              title: '温馨提示',
+              message: '订单创建失败'
+            })
+          }
+        })
+    },
     addLiquidity() {
-      this.orderShow = true
+      this.createOrder()
     },
     getCurrentPoolSize(tokenId) {
       this.$API.getCurrentPoolSize(tokenId).then(res => {
