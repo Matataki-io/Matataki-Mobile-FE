@@ -286,14 +286,15 @@ export default {
       const { tradeNo } = this
       // 当前是否处于微信浏览器中
       if (this.isInWeixin) {
+        let openid = ''
         if (this.isWeixinAccount) { // 微信账号直接使用JSAPI微信支付
-          const openid = this.currentUserInfo.name;
-          this.$API.jsapiPay(tradeNo, openid).then(res => {
-            this.weakWeixinPay(res)
-          })
+          openid = this.currentUserInfo.name
         } else { // 不是微信账号需要先获取openid
-          this.getWeixinOpenId()
+          openid = window.localStorage.getItem('WX_OPENID')
         }
+        this.$API.jsapiPay(tradeNo, openid).then(res => {
+          this.weakWeixinPay(res)
+        })
       } else { // 弹出NATIVE支付二维码
         this.$API.nativePay(tradeNo).then(res => {
           this.loading = false
@@ -308,6 +309,8 @@ export default {
     },
     getWeixinOpenId() {
       if (!this.isInWeixin) return
+      if (this.isWeixinAccount) return
+      if (window.localStorage.getItem('WX_OPENID')) return
       const { code, state } = this.$route.query
       if (!code || state !== 'weixin') {
         const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
@@ -318,9 +321,7 @@ export default {
       } else {
         this.$API.getWeixinOpenId(code).then(res => {
           if (res.openid) {
-            this.$API.jsapiPay(this.$route.params.id, res.openid).then(res => {
-              this.weakWeixinPay(res)
-            })
+            window.localStorage.setItem('WX_OPENID', res.openid)
           }
         })
       }
@@ -344,10 +345,7 @@ export default {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
               // 使用以上方式判断前端返回,微信团队郑重提示：
               //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-              self.successNotice("交易成功，即将刷新页面");
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
+              this.alert('交易成功')
             }
           }
         );

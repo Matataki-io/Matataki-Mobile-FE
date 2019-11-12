@@ -366,6 +366,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/pay/weixin',
+      name: 'WeixinPay',
+      component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
+      mata: {
+        title: '微信支付'
+      }
+    },
+    {
       path: '/token/:id',
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
