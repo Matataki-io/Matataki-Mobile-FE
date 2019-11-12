@@ -1,6 +1,7 @@
 <template>
   <layout>
     <BasePull
+      :url-replace="$route.params.id + ''"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :loading-text="$t('not')"
@@ -29,7 +30,7 @@ export default {
         params: {
           pagesize: 20
         },
-        apiUrl: 'tokenUserList',
+        apiUrl: 'tokenIdBalances',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
