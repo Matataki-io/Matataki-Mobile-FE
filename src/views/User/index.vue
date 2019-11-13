@@ -90,16 +90,22 @@
     </div>
 
     <nav class="user-nav">
-      <a href="javascript:void(0);" class="active">文章</a>
+      <a href="javascript:void(0);" :class="numPage === 1 && 'active'" @click="numPage = 1">
+        文章
+      </a>
       <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
         {{ $t('follow') }}
       </router-link>
       <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
         {{ $t('fans') }}
       </router-link>
+      <a href="javascript:void(0);" :class="numPage === 2 && 'active'" @click="numPage = 2">
+        个人信息
+      </a>
     </nav>
 
     <BasePull
+      v-if="numPage === 1"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :active-index="0"
@@ -118,6 +124,30 @@
         type="article"
       />
     </BasePull>
+
+    <div v-if="numPage === 2" slot="list" v-loading="loading" class="information">
+      <div class="websites">
+        <h3 class="inline h3">
+          相关网站
+        </h3>
+        <div class="inline url">
+          <p v-for="(item, index) in urls" :key="index">
+            <a :href="item">{{ item }} </a>
+          </p>
+        </div>
+      </div>
+      <div class="social">
+        <h3 class="inline h3">
+          社交账号
+        </h3>
+        <div class="inline">
+          <div v-for="(item, index) in social" :key="index" class="social-icons inline">
+            <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <Share
       :share-modal-show="shareModalShow"
       :minetoken-user="{ nickname: username }"
@@ -134,9 +164,10 @@ import tokenAvatar from './components/token_avatar.vue'
 
 import Share from '@/components/token/token_share.vue'
 import avatar from '@/components/avatar/index.vue'
+import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
-  components: { ArticleCard, avatar, tokenAvatar, Share },
+  components: { ArticleCard, avatar, tokenAvatar, Share, socialIcon },
   data() {
     return {
       id: this.$route.params.id,
@@ -163,7 +194,42 @@ export default {
         loadingText: this.$t('not'),
         autoRequestTime: 0
       },
-      shareModalShow: false
+      shareModalShow: false,
+      numPage: 1,
+      loading: false,
+      social: [
+        {
+          icon: 'QQ',
+          name: 'QQ：',
+          content: '185446975'
+        },
+        {
+          icon: 'Wechat',
+          name: '微信：',
+          content: '185446975'
+        },
+        {
+          icon: 'Weibo',
+          name: '微博：',
+          content: '185446975'
+        },
+        {
+          icon: 'Telegram',
+          name: 'Telegram：',
+          content: '185446975'
+        },
+        {
+          icon: 'Twitter',
+          name: 'Twitter：',
+          content: '185446975'
+        },
+        {
+          icon: 'Github',
+          name: 'Github：',
+          content: '185446975'
+        }
+      ],
+      urls: ['http://www.dibibi.com', 'http://www.abcdefg.com', 'http://www.efig.com']
     }
   },
   computed: {
