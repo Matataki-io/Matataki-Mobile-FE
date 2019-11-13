@@ -78,7 +78,7 @@
           </template>
         </div>
       </header>
-      <ipfs :is-hide="tokenArticle" :hash="article.hash"></ipfs>
+      <ipfs :is-hide="isHideIpfsHash" :hash="article.hash"></ipfs>
 
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -669,6 +669,11 @@ export default {
     limitValue() {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
+    },
+    // 如果是自己的文章 显示hash 否则走 持币阅读
+    isHideIpfsHash() {
+      if (this.isMe(this.article.uid)) return false
+      else return this.tokenArticle
     }
   },
   watch: {
