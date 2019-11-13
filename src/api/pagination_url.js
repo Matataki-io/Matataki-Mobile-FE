@@ -54,5 +54,9 @@ export const paginationUrl = {
   // 我持有的流动金
   liquidityLogs: 'token/holdLiquidity',
   // 我持有的流动金详情
-  liquidityLogsDetail: 'token/myLiquidityLogs'
+  liquidityLogsDetail: 'token/myLiquidityLogs',
+  // 流动金持仓用户列表
+  liquidityUserList: 'token/:id/liquidity/balances',
+  // 流动金流水列表
+  liquidityTransactions: 'token/:id/liquidity/transactions',
 }
