@@ -114,6 +114,7 @@
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
+     <TradeLog :tokensId="tokensId" />
   </div>
 </template>
 
@@ -122,13 +123,15 @@ import { mapGetters } from "vuex";
 import debounce from "lodash/debounce";
 import OrderModal from "./OrderModal";
 import TokenListModal from "./TokenList";
+import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from "./consts.js";
 import utils from "@/utils/utils";
 
 export default {
   components: {
     OrderModal,
-    TokenListModal
+    TokenListModal,
+    TradeLog
   },
   data() {
     return {
@@ -153,6 +156,17 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined', 'currentUserInfo']),
+    tokensId() {
+      const result = []
+      const { inputToken, outputToken } = this.form
+      if (!utils.isNull(inputToken) && inputToken.id !== 0) {
+        result.push(inputToken.id)
+      }
+      if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+        result.push(outputToken.id)
+      }
+      return result
+    },
     type() {
       return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
     },
@@ -264,6 +278,44 @@ export default {
         this.getInputAmount(inputToken.id, outputToken.id, output);
       }
     },
+    // 构造参数
+    makeOrderParams() {
+      const { input, inputToken, output, outputToken } = this.form
+      const limitValue = this.limitValue
+      const type = this.type
+      let requestParams = {
+        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+        title: `购买${outputToken.symbol}`,
+        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
+        token_id: outputToken.id,
+        token_amount: utils.toDecimal(output, outputToken.decimals),
+        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
+        decimals: outputToken.decimals,
+        pay_cny_amount: utils.toDecimal(input) // this.needPay
+      }
+      return requestParams
+    },
+    createOrder() {
+      const loading = this.$loading({
+        lock: false,
+        text: "订单创建中...",
+        background: "rgba(0, 0, 0, 0.4)"
+      });
+      const requestParams = this.makeOrderParams()
+      this.$API
+        .createOrder(requestParams)
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            this.$router.push({ name: 'order-id', params: {id: res.data}})
+          } else {
+             this.$dialog.alert({
+              title: '温馨提示',
+              message: '订单创建失败'
+            })
+          }
+        })
+    },
     onSubmit() {
       if (!this.checkLogin()) return;
       const { input, inputToken, output, outputToken } = this.form;
@@ -276,7 +328,7 @@ export default {
       }
       // 输入是人民币
       if (inputToken.isCNY) {
-        this.orderShow = true
+        this.createOrder()
       } else {
         const loading = this.$loading({
           lock: false,

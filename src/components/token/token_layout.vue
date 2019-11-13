@@ -156,16 +156,19 @@
     <div class="minetoken-card">
       <div class="minetoken-tab">
         <router-link :to="{ name: 'token-id' }" :class="$route.name === 'token-id' && 'active'">
-          持仓详情
+          粉丝币持仓
         </router-link>
-        <router-link
-          :to="{ name: 'token-detail-id' }"
-          :class="$route.name === 'token-detail-id' && 'active'"
-        >
-          流水明细
+        <router-link :to="{ name: 'token-liquidity-id' }" :class="$route.name === 'token-liquidity-id' && 'active'">
+          流动金持仓
+        </router-link>
+        <router-link :to="{ name: 'token-detail-id' }" :class="$route.name === 'token-detail-id' && 'active'">
+          粉丝币流水
+        </router-link>
+        <router-link :to="{ name: 'token-liquidity-detail-id' }" :class="$route.name === 'token-liquidity-detail-id' && 'active'">
+          流动金流水
         </router-link>
       </div>
-      <div v-if="$route.name === 'token-id'" class="minetoken-head">
+      <div v-if="$route.name === 'token-id' || $route.name === 'token-liquidity-id'" class="minetoken-head">
         <div class="minetoken-title">持仓者</div>
         <div class="minetoken-number">持仓量</div>
       </div>
@@ -580,7 +583,7 @@ export default {
   padding: 0;
 }
 .minetoken-tab {
-  padding: 14px 0;
+  padding: 7px 0;
   text-align: center;
   border-bottom: 1px solid #ececec;
   display: flex;
@@ -592,7 +595,7 @@ export default {
     font-weight: 500;
     color: #b2b2b2;
     line-height: 20px;
-    margin: 0 20px;
+    margin: 0 10px;
     position: relative;
     z-index: 1;
     &.active {

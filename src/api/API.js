@@ -12,6 +12,22 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
+  nativePay(tradeNo) {
+    return this.orderWxPay({
+      tradeNo,
+      trade_type: 'NATIVE'
+    })
+  },
+  jsapiPay(tradeNo, openid) {
+    return this.orderWxPay({
+      tradeNo,
+      trade_type: 'JSAPI',
+      openid
+    })
+  },
+  orderWxPay(order) {
+    return request.post('/order/pay', order)
+  },
   wxpay(order) {
     return request.post('/wx/pay', order)
   },
@@ -248,6 +264,42 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  getPurchaseLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/purchaseLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getMyPurchaseLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/myPurchaseLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getLiquidityLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/liquidityLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getMyLiquidityLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/myLiquidityLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
   /**
    * 文章导入
    * @param {String} url 导入地址
@@ -352,5 +404,15 @@ minetokenGetResources(tokenId) {
         code
       }
     })
+  },
+  getOrderData(id) {
+    return request({
+      method: 'get',
+      url: `/order/get/${id}`
+    })
+  },
+  // 创建订单
+  createOrder(order) {
+    return request.post('/order/create', order)
   }
 }
