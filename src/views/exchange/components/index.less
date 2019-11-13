@@ -208,6 +208,7 @@ button {
   color: #542DE0;
   text-align: center;
   margin-top: 1rem;
+  margin-bottom: 1rem;
   padding-top: 1rem;
   cursor: pointer;
   -webkit-box-align: center;
@@ -229,7 +230,7 @@ button {
   font-size: 0.8rem;
   color: black;
   border-radius: @borderRadius6;
-  margin: 1rem 0.5rem 0px;
+  margin: 1rem 0.5rem 1rem 0px;
 }
 .hRyusy {
   padding: 1.25rem 1.25rem 1rem;
@@ -262,12 +263,12 @@ button {
 .jBltiI {
   cursor: pointer;
   user-select: none;
-  font-size: 1rem;
+  font-size: 16px;
   background-color: #542DE0;
   color: rgb(255, 255, 255);
   width: 100%;
-  padding: 1rem 2rem;
-  border-radius: 3rem;
+  padding: 10px 0;
+  border-radius: 20px;
   border-width: initial;
   border-style: none;
   border-color: initial;
@@ -300,4 +301,19 @@ button {
 }
 ::placeholder {
   color: #542DE0;
+}
+.fixed-bottom {
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 20px 15px 20px;
+  box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
+  height: 80px;
+  padding: 20px;
+  z-index: 2;
+}
+.exchange-container {
+  padding-bottom: 80px;
 }

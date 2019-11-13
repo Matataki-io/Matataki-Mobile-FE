@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="exchange-container">
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="OpDFW">
@@ -109,12 +109,12 @@
         </div>
       </div>
     </div>
-    <div class="hGStes">
+    <div class="fixed-bottom">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">交易</button>
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
-     <TradeLog :tokensId="tokensId" />
+    <TradeLog :tokensId="tokensId" />
   </div>
 </template>
 
