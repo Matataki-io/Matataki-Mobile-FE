@@ -103,6 +103,7 @@ module.exports = {
         vue: 'Vue',
         'vue-router': 'VueRouter',
         vuex: 'Vuex',
+        'element-ui': 'ELEMENT',
         'mavon-editor': 'MavonEditor'
         // eosjs: 'Eos'
       },
@@ -160,6 +161,12 @@ module.exports = {
             name: 'vuex',
             var: 'Vuex',
             path: 'dist/vuex.min.js'
+          },
+          {
+            name: 'element-ui',
+            var: 'ELEMENT',
+            path: 'lib/index.js',
+            style: 'lib/theme-chalk/index.css'
           },
           {
             name: 'mavon-editor',
