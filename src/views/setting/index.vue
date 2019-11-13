@@ -37,6 +37,25 @@
         <span>{{ $t('email') }}</span>
         <input v-model="newEmail" :placeholder="$t('rule.loginEmailMessage')" />
       </div>
+
+      <div v-for="(item, index) in about" :key="index" class="edit-card-list">
+        <span>{{ '相关网站' + (index + 1) }}</span>
+        <input v-model="about[index]" placeholder="请填写网站链接，包含http(s)://" />
+        <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+          <i class="el-icon-minus" />
+        </div>
+      </div>
+      <div v-if="about.length < 5" class="edit-card-list">
+        <span>{{ '相关网站' + (about.length + 1) }}</span>
+        <div class="about-input-btn add" @click="aboutAdd">
+          <i class="el-icon-plus" />
+        </div>
+      </div>
+
+      <div v-for="(item, index) in social" :key="index" class="edit-card-list">
+        <span>{{ item.name }}</span>
+        <input v-model="item.value" :placeholder="item.placeholder" />
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +63,7 @@
 <script>
 import { mapActions } from 'vuex'
 import imgUpload from '@/components/imgUpload/index.vue'
+// import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
   components: { imgUpload },
@@ -60,7 +80,66 @@ export default {
       newIntroduction: '', // 简介
       email: '',
       newEmail: '',
-      setProfile: false // 是否编辑信息
+      setProfile: false, // 是否编辑信息
+      about: [''],
+      social: [
+        {
+          symbol: 'QQ',
+          icon: 'qq1',
+          name: 'QQ：',
+          placeholder: 'QQ帐号',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Wechat',
+          icon: 'wechat',
+          name: '微信：',
+          placeholder: '微信号',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Weibo',
+          icon: 'weibo1',
+          name: '微博：',
+          placeholder: '微博用户名(不需要完整URL)',
+          url: 'https://www.weibo.com',
+          value: ''
+        },
+        {
+          symbol: 'Telegram',
+          icon: 'tg',
+          name: 'Telegram：',
+          placeholder: 'Telegram用户名',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Twitter',
+          icon: 'twitter1',
+          name: 'Twitter：',
+          placeholder: 'Twitter用户名(不需要完整URL)',
+          url: 'https://twitter.com',
+          value: ''
+        },
+        {
+          symbol: 'Facebook',
+          icon: 'fb',
+          name: 'Facebook：',
+          placeholder: 'Facebook用户名(不需要完整URL)',
+          url: 'https://facebook.com',
+          value: ''
+        },
+        {
+          symbol: 'Github',
+          icon: 'github1',
+          name: 'Github：',
+          placeholder: 'Github用户名(不需要完整URL)',
+          url: 'https://github.com',
+          value: ''
+        }
+      ]
     }
   },
   computed: {},
@@ -183,6 +262,14 @@ export default {
       console.log(res)
       this.refreshUser()
       this.imgUploadDone += Date.now()
+    },
+    aboutAdd() {
+      if (this.about.length >= 5) return
+      this.about.push('')
+    },
+    abountLess(i) {
+      if (this.about.length <= 1) return
+      this.about.splice(i, 1)
     }
   }
 }
@@ -271,6 +358,21 @@ export default {
   cursor: pointer;
   &.no-modify {
     color: rgba(0, 0, 0, 1);
+  }
+}
+.about-input-btn {
+  width: 24px;
+  height: 24px;
+  background-color: #542de0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 0 0 0 10px;
+  cursor: pointer;
+  &.add {
+    margin-left: 56px;
   }
 }
 </style>
