@@ -5,7 +5,7 @@
       <h3>{{ card.nickname || card.username }}</h3>
     </router-link>
     <div class="number">
-      <span>{{ tokenAmount(card.liquidity_balance) }} ({{ percentage(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
+      <span>{{ tokenAmount(card.liquidity_balance) }} ({{ percentage(card.liquidity_balance, card.total_supply) }})</span>
     </div>
   </div>
 </template>
