@@ -5,7 +5,7 @@
       <h3>{{ card.nickname || card.username }}</h3>
     </router-link>
     <div class="number">
-      <span>{{ tokenAmount(card.amount) }}</span>
+      <span>{{ tokenAmount(card.amount) }} ({{ percentage(card.amount, card.total_supply) }})</span>
     </div>
   </div>
 </template>
@@ -35,6 +35,13 @@ export default {
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    percentage(amount, total) {
+      if (total <= 0) {
+        return '0%'
+      }
+
+      return (amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
     }
   }
 }

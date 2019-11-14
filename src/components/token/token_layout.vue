@@ -160,11 +160,11 @@
         <router-link :to="{ name: 'token-id' }" :class="$route.name === 'token-id' && 'active'">
           粉丝币持仓
         </router-link>
-        <router-link :to="{ name: 'token-liquidity-id' }" :class="$route.name === 'token-liquidity-id' && 'active'">
-          流动金持仓
-        </router-link>
         <router-link :to="{ name: 'token-detail-id' }" :class="$route.name === 'token-detail-id' && 'active'">
           粉丝币流水
+        </router-link>
+        <router-link :to="{ name: 'token-liquidity-id' }" :class="$route.name === 'token-liquidity-id' && 'active'">
+          流动金持仓
         </router-link>
         <router-link :to="{ name: 'token-liquidity-detail-id' }" :class="$route.name === 'token-liquidity-detail-id' && 'active'">
           流动金流水
