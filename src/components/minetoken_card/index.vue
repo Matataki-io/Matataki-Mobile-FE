@@ -42,7 +42,7 @@ export default {
       }
 
       return (amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
-    },
+    }
   }
 }
 </script>
