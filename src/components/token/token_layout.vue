@@ -115,6 +115,8 @@
       </div>
     </div>
 
+    <tokenBuyCard :token="minetokenToken"/>
+
     <div class="about">
       <h2 class="token-title">
         相关网站
@@ -181,12 +183,12 @@
       :minetoken-user="minetokenUser"
       @input="val => (shareModalShow = val)"
     />
-    <div class="fixed-bottom">
+    <!-- <div class="fixed-bottom">
       <router-link class="exchange" :to="{ name: 'exchange' }">
         <svg-icon class="tokens" icon-class="token" />
         粉丝币交易所
       </router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -194,6 +196,7 @@ import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 // import mineTokensNav from '@/components/minetokens_nav/index.vue'
 import Share from '@/components/token/token_share.vue'
+import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types'
 import { precision } from '@/utils/precisionConversion'
@@ -203,7 +206,8 @@ export default {
     avatar,
     // mineTokensNav,
     Share,
-    socialIcon
+    socialIcon,
+    tokenBuyCard
   },
   data() {
     return {
