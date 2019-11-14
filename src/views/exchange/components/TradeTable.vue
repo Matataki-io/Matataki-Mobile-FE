@@ -1,5 +1,5 @@
 <template>
-  <el-table height="200" :data="list" style="width: 100%" header-cell-class-name="trade-log-header" cell-class-name="trade-log-row">
+  <el-table height="300" :data="list" style="width: 100%" header-cell-class-name="trade-log-header" cell-class-name="trade-log-row">
     <el-table-column label="方向" width="50">
       <template slot-scope="scope">
         <span :class="scope.row.direction">{{ scope.row.direction === 'buy' ? '买' : '卖' }}</span>

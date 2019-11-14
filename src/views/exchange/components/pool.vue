@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="exchange-container">
     <div class="hYLPFg">
       <div class="caRvnP" @click="psShow = true">
         <span class="gclSjj">{{ poolSelected.text }}</span>
@@ -163,8 +163,7 @@
         </div>
       </div>
     </div>
-    <!-- 提交 -->
-    <div class="hGStes">
+    <div class="fixed-bottom">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
     </div>
     <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
