@@ -5,7 +5,7 @@
       <h3>{{ card.nickname || card.username }}</h3>
     </router-link>
     <div class="number">
-      <span>{{ tokenAmount(card.liquidity_balance) }} ({{ percentage(card.liquidity_balance / card.total_supply) }})</span>
+      <span>{{ tokenAmount(card.liquidity_balance) }} ({{ percentage(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
     </div>
   </div>
 </template>
@@ -32,12 +32,16 @@ export default {
     cover(cover) {
       return cover ? this.$backendAPI.getImg(cover) : ''
     },
-    percentage(percentage) {
-      return percentage.toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
-    },
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    percentage(amount, total) {
+      if (total <= 0) {
+        return '0%'
+      }
+
+      return (amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
     }
   }
 }
