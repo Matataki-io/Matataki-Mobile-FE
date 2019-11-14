@@ -242,7 +242,7 @@
       @confirm="createDraft(saveInfo)"
     />
     <statement :visible="statementVisible" @close="closeStatement" />
-    <articleImport v-model="importVisible" />
+    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
   </div>
 </template>
 
@@ -953,6 +953,11 @@ export default {
     // 原创改变 true 才显示原创声明
     originalChange(val) {
       if (val) this.statementVisible = true
+    },
+    importRes(res) {
+      this.title = res.title
+      this.markdownData = res.content
+      this.cover = res.cover
     }
   }
 }
