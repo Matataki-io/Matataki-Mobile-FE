@@ -74,7 +74,7 @@ export default {
       // console.log(res)
       if (res.code === 0) {
         this.$message.success(this.$t('publish.importSuccess'))
-        const templateLink = `<br />${this.$t('publish.importAddress')}[${url}](${url})`
+        const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
         res.data.content += templateLink
         const { title, content, cover } = res.data
         this.createDraft({
