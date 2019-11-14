@@ -50,7 +50,7 @@
         :toolbars="toolbars"
         :box-shadow="false"
         :autofocus="false"
-        :style="mavonStyle"
+        :subfield="false"
         :placeholder="$t('publish.contentPlaceholder')"
         @imgAdd="$imgAdd"
       />
@@ -242,7 +242,7 @@
       @confirm="createDraft(saveInfo)"
     />
     <statement :visible="statementVisible" @close="closeStatement" />
-    <articleImport v-model="importVisible" />
+    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
   </div>
 </template>
 
@@ -288,11 +288,6 @@ export default {
       markdownData: '',
       fissionFactor: 2000,
       toolbars: {},
-      screenWidth: document.body.clientWidth || document.documentElement.clientWidth,
-      mavonStyle: {
-        minHeight: `${(document.body.clientHeight || document.documentElement.clientHeight) -
-          174}px`
-      },
       fissionNum: 2,
       cover: '',
       signature: '',
@@ -335,14 +330,6 @@ export default {
     }
   },
   watch: {
-    screenWidth(val) {
-      this.setToolBar(val)
-    },
-    mavonStyle(newVal) {
-      // console.log(newVal)
-
-      this.mavonStyle = newVal
-    },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
@@ -408,10 +395,8 @@ export default {
     }
 
     this.getTags()
-    this.resize()
-    this.setToolBar(this.screenWidth)
-
     this.getAllTokens()
+    this.setToolBar()
   },
 
   methods: {
@@ -427,7 +412,7 @@ export default {
       const isOriginal = Number(this.isOriginal)
       const { type, id } = this.$route.params
 
-      console.log(this.$route)
+      // console.log(this.$route)
 
       if (type === 'draft' && id === 'create') {
         // console.log('创建草稿')
@@ -871,19 +856,8 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar(val) {
-      if (val > 750) this.toolbars = Object.assign(toolbars.pc, toolbars.public)
-      else this.toolbars = Object.assign(toolbars.mobile, toolbars.public)
-    },
-    resize() {
-      window.onresize = debounce(() => {
-        const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        this.screenWidth = clientWidth
-        this.mavonStyle = {
-          minHeight: `${clientHeight - 174}px`
-        }
-      }, 150)
+    setToolBar() {
+      this.toolbars = Object.assign(toolbars.public, toolbars.mobile)
     },
     // 上传完成
     doneImageUpload(res) {
@@ -979,6 +953,11 @@ export default {
     // 原创改变 true 才显示原创声明
     originalChange(val) {
       if (val) this.statementVisible = true
+    },
+    importRes(res) {
+      this.title = res.title
+      this.markdownData = res.content
+      this.cover = res.cover
     }
   }
 }

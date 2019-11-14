@@ -32,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined', 'currentUserInfo']),
+    ...mapGetters(['currentUserInfo']),
     loginModalShow: {
       get() {
         return this.$store.state.loginModalShow
@@ -60,9 +60,9 @@ export default {
       },
       deep: true
     },
-    $route(route) {
+    /* $route(route) {
       this.getWeixinOpenId(route)
-    }
+    } */
   },
   created() {
     // ;(function() {
@@ -119,7 +119,7 @@ export default {
   },
   mounted() {},
   methods: {
-    getWeixinOpenId(route) {
+    /* getWeixinOpenId(route) {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       // 微信逻辑处理
       const openid = window.localStorage.getItem('WX_OPENID')
@@ -138,7 +138,7 @@ export default {
           })
         }
       }
-    },
+    }, */
     tz() {
       const { href, origin } = window.location
       const wxOrigin =

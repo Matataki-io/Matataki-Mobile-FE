@@ -1,12 +1,12 @@
 <template>
   <div class="comment">
     <div class="comment-info">
-      <n-link
+      <router-link
         class="comment-avatar"
         :to="{name: 'user-id', params: {id : comment.uid}}"
       >
         <avatar :src="avatar" size="30px" /></avatar>
-      </n-link>
+      </router-link>
       <div>
         <router-link class="comment-author" :to="`/user/${comment.uid}`">
           {{ comment.nickname || comment.username }}

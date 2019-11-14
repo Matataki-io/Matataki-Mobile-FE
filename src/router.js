@@ -357,14 +357,22 @@ const router = new VueRouter({
         title: '粉丝币-瞬MATATAKI'
       }
     },
-    // {
-    //   path: '/order/:id',
-    //   name: 'order-id',
-    //   component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
-    //   meta: {
-    //     title: '订单详情页-瞬MATATAKI'
-    //   }
-    // },
+    {
+      path: '/order/:id',
+      name: 'order-id',
+      component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
+      meta: {
+        title: '订单详情页-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/pay/weixin',
+      name: 'WeixinPay',
+      component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
+      mata: {
+        title: '微信支付'
+      }
+    },
     {
       path: '/token/:id',
       name: 'token-id',
@@ -374,10 +382,27 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/token/liquditity/:id',
+      name: 'token-liquidity-id',
+      component: () => import(/* webpackChunkName: "token-liquidity-id" */ './views/token/liquidity/_id.vue'),
+      meta: {
+        title: '粉丝币-瞬MATATAKI'
+      }
+    },
+    {
       path: '/token/detail/:id',
       name: 'token-detail-id',
       component: () =>
         import(/* webpackChunkName: "token-detail-id" */ './views/token/detail/_id.vue'),
+      meta: {
+        title: '粉丝币-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/token/liquditity/detail/:id',
+      name: 'token-liquidity-detail-id',
+      component: () =>
+        import(/* webpackChunkName: "token-liquidity-detail-id" */ './views/token/liquidity/detail/_id.vue'),
       meta: {
         title: '粉丝币-瞬MATATAKI'
       }

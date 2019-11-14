@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="exchange-container">
     <div class="hYLPFg">
       <div class="caRvnP" @click="psShow = true">
         <span class="gclSjj">{{ poolSelected.text }}</span>
@@ -163,13 +163,13 @@
         </div>
       </div>
     </div>
-    <!-- 提交 -->
-    <div class="hGStes">
+    <div class="fixed-bottom">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
     </div>
     <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
     <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
     <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
+    <TradeLog :tokensId="tokensId" type="liquidity"/>
   </div>
 </template>
 
@@ -179,6 +179,7 @@ import debounce from "lodash/debounce";
 import OrderModal from "./OrderModal";
 import TokenListModal from "./TokenList";
 import PoolSelectModal from "./PoolSelect";
+import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from "./consts.js";
 import utils from "@/utils/utils";
 
@@ -186,7 +187,8 @@ export default {
   components: {
     OrderModal,
     TokenListModal,
-    PoolSelectModal
+    PoolSelectModal,
+    TradeLog
   },
   data() {
     return {
@@ -232,6 +234,14 @@ export default {
   },
   computed: {
     ...mapGetters(["isLogined"]),
+    tokensId() {
+      const result = []
+      const { outputToken } = this.form
+      if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+        result.push(outputToken.id)
+      }
+      return result
+    },
     yourPercent() {
       const yourSupply = parseFloat(this.yourPoolSize.your_supply)
       const totalSupply = parseFloat(this.currentPoolSize.total_supply)
@@ -426,8 +436,47 @@ export default {
         this.addLiquidity();
       }
     },
+    // 构造参数
+    makeOrderParams() {
+      const { input, inputToken, output, outputToken } = this.form;
+      const limitValue = this.limitValue
+      let requestParams = {
+        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+        title: `添加流动金`,
+        type: 'add', // type类型见typeOptions：add，buy_token_input，buy_token_output
+        token_id: outputToken.id,
+        token_amount: utils.toDecimal(output, outputToken.decimals),
+        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
+        decimals: outputToken.decimals,
+        pay_cny_amount: utils.toDecimal(input),
+        min_liquidity: utils.toDecimal(this.youMintTokenAmount)
+      };
+      return requestParams;
+    },
+    // 创建订单
+    createOrder() {
+      const loading = this.$loading({
+        lock: false,
+        text: "订单创建中...",
+        background: "rgba(0, 0, 0, 0.4)"
+      });
+      const requestParams = this.makeOrderParams()
+      this.$API
+        .createOrder(requestParams)
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            this.$router.push({ name: 'order-id', params: {id: res.data}})
+          } else {
+             this.$dialog.alert({
+              title: '温馨提示',
+              message: '订单创建失败'
+            })
+          }
+        })
+    },
     addLiquidity() {
-      this.orderShow = true
+      this.createOrder()
     },
     getCurrentPoolSize(tokenId) {
       this.$API.getCurrentPoolSize(tokenId).then(res => {

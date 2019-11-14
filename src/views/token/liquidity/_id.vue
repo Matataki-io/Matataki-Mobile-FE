@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import card from '@/components/minetoken_detail_card/index.vue'
+import card from '@/components/minetoken_liquidity_card/index.vue'
 import layout from '@/components/token/token_layout.vue'
 
 export default {
@@ -30,7 +30,7 @@ export default {
         params: {
           pagesize: 20
         },
-        apiUrl: 'tokenIdTransactions',
+        apiUrl: 'liquidityUserList',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
