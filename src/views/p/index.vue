@@ -85,11 +85,15 @@
       <statement v-if="isTokenArticle" :article="article"></statement>
 
       <!-- 解锁按钮 -->
-      <div v-if="tokenArticle" class="lock">
-        <el-divider v-if="!isTokenArticle">
-          <i class="el-icon-lock lock-icon" />
+      <div v-if="!isTokenArticle" class="lock-line">
+        <el-divider>
+          <span class="lock-text">达成条件即可阅读全文</span>
         </el-divider>
+        <svg-icon class="icon-arrow" icon-class="arrow_down" />
+        <div class="lock-line-full" />
+      </div>
 
+      <div v-if="tokenArticle" class="lock">
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
             <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock" />
@@ -455,7 +459,6 @@ import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
-import wx from 'weixin-js-sdk'
 import { xssFilter } from '@/common/xss'
 // import { sleep, isNDaysAgo } from '@/common/methods'
 import { isNDaysAgo } from '@/common/methods'
@@ -470,13 +473,12 @@ import Widget from './Widget/index.vue'
 import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
-import commentInput from '@/components/article_comment'
-import OrderModal from '../exchange/components/OrderModal'
-import { CNY } from '../exchange/components/consts.js'
+import commentInput from '@/components/article_comment/index.vue'
+import OrderModal from '../exchange/components/OrderModal.vue'
+import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 
-console.log(466, 'dev', wx)
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
 
