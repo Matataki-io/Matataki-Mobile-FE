@@ -140,9 +140,15 @@
         <h3 class="inline h3">
           社交账号
         </h3>
-        <div class="inline">
-          <div v-for="(item, index) in social" :key="index" class="social-icons inline">
-            <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+        <div class="inline social">
+          <div v-for="(item, index) in social" :key="index">
+            <div class="social-icons">
+              <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+            </div>
+            <a v-if="item.url" class="url-text" :href="item.url + '/' + item.content">
+              {{ item.url + '/' + item.content }}
+            </a>
+            <span v-else class="url-text">{{ item.content }}</span>
           </div>
         </div>
       </div>
@@ -220,6 +226,7 @@ export default {
         {
           icon: 'Weibo',
           type: 'weibo',
+          url: 'https://www.weibo.com',
           content: ''
         },
         {
@@ -230,16 +237,19 @@ export default {
         {
           icon: 'Twitter',
           type: 'twitter',
+          url: 'https://twitter.com',
           content: ''
         },
         {
           icon: 'Facebook',
           type: 'facebook',
+          url: 'https://facebook.com',
           content: ''
         },
         {
           icon: 'Github',
           type: 'github',
+          url: 'https://github.com',
           content: ''
         }
       ],
@@ -348,7 +358,9 @@ export default {
     async getMyUserLinks() {
       this.loading = true
       try {
-        const { data: resLinks } = await this.$backendAPI.getUserLinks({ id: this.$route.params.id })
+        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+          id: this.$route.params.id
+        })
         if (resLinks.code === 0) {
           const data = resLinks.data
           this.urls = data.websites
@@ -357,7 +369,7 @@ export default {
           })
           this.social = this.socialTemplate.filter(age => age.content !== '' && age.content != null)
           this.loading = false
-        } else console.log('获取用户信息失败,',resLinks)
+        } else console.log('获取用户信息失败,', resLinks)
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
       }

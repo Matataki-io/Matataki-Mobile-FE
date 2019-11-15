@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 <template>
-  <div class="edit-user mw">
+  <div v-loading="loading" class="edit-user mw">
     <BaseHeader :pageinfo="{ title: $t('edit') }">
       <div slot="right">
         <span class="done-button" :class="!setProfile && 'no-modify'" @click="save">{{
@@ -10,66 +10,76 @@
     </BaseHeader>
     <div class="edit-card">
       <div class="edit-card-list">
-        <span>{{ $t('avatar') }}</span>
-        <img-upload
-          class="imgcard"
-          :img-upload-done="imgUploadDone"
-          :update-type="'avatar'"
-          @doneImageUpload="doneImageUpload"
-        >
-          <div slot="uploadButton" class="user-avatar">
-            <img slot="description" :src="avatar" alt="" :onerror="defaultAvatar" />
+        <div class="card-block">
+          <span>{{ $t('avatar') }}</span>
+          <img-upload
+            class="imgcard"
+            :img-upload-done="imgUploadDone"
+            :update-type="'avatar'"
+            @doneImageUpload="doneImageUpload"
+          >
+            <div slot="uploadButton" class="user-avatar">
+              <img slot="description" :src="avatar" alt="" :onerror="defaultAvatar" />
+            </div>
+          </img-upload>
+        </div>
+
+        <div class="card-block">
+          <span>{{ $t('username') + '*' }}</span>
+          <input v-model="newNickName" :placeholder="$t('rule.strEnglishNumber', ['1-12'])" />
+        </div>
+
+        <div class="card-block">
+          <span>{{ $t('profile') + '*' }}</span>
+          <input v-model="newIntroduction" :placeholder="$t('rule.notExceedStr', ['20'])" />
+        </div>
+
+        <div class="card-block">
+          <span>{{ $t('email') + '*' }}</span>
+          <input v-model="newEmail" :placeholder="$t('rule.loginEmailMessage')" />
+        </div>
+      </div>
+
+      <div class="edit-card-list">
+        <div v-for="(item, index) in about" :key="index" class="card-block">
+          <span>{{ '相关网站' + (index + 1) }}</span>
+          <input v-model="about[index]" placeholder="请填写网站链接，包含http(s)://" />
+          <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+            <i class="el-icon-minus" />
           </div>
-        </img-upload>
-      </div>
-
-      <div class="edit-card-list">
-        <span>{{ $t('username') }}</span>
-        <input v-model="newNickName" :placeholder="$t('rule.strEnglishNumber', ['1-12'])" />
-      </div>
-
-      <div class="edit-card-list">
-        <span>{{ $t('profile') }}</span>
-        <input v-model="newIntroduction" :placeholder="$t('rule.notExceedStr', ['20'])" />
-      </div>
-
-      <div class="edit-card-list">
-        <span>{{ $t('email') }}</span>
-        <input v-model="newEmail" :placeholder="$t('rule.loginEmailMessage')" />
-      </div>
-
-      <div v-for="(item, index) in about" :key="index" class="edit-card-list">
-        <span>{{ '相关网站' + (index + 1) }}</span>
-        <input v-model="about[index]" placeholder="请填写网站链接，包含http(s)://" />
-        <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
-          <i class="el-icon-minus" />
         </div>
-      </div>
-      <div v-if="about.length < 5" class="edit-card-list">
-        <span>{{ '相关网站' + (about.length + 1) }}</span>
-        <div class="about-input-btn add" @click="aboutAdd">
-          <i class="el-icon-plus" />
+        <div v-if="about.length < 5" class="card-block">
+          <span>{{ '相关网站' + (about.length + 1) }}</span>
+          <div class="about-input-btn add" @click="aboutAdd">
+            <i class="el-icon-plus" />
+          </div>
         </div>
       </div>
 
-      <div v-for="(item, index) in social" :key="index" class="edit-card-list">
-        <span>{{ item.name }}</span>
-        <input v-model="item.value" :placeholder="item.placeholder" />
+      <div class="edit-card-list">
+        <div v-for="(item, index) in social" :key="index" class="card-block">
+          <div class="social-icons">
+            <socialIcon :icon="item.symbol" />
+          </div>
+          <span>{{ item.name }}</span>
+          <input v-model="item.value" :placeholder="item.placeholder" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import imgUpload from '@/components/imgUpload/index.vue'
-// import socialIcon from '@/components/social_icon/index.vue'
+import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
-  components: { imgUpload },
+  components: { imgUpload, socialIcon },
   data() {
     return {
       defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
+      loading: false,
       playerincome: 0,
       editing: false,
       nickname: '', // 昵称
@@ -81,60 +91,63 @@ export default {
       email: '',
       newEmail: '',
       setProfile: false, // 是否编辑信息
+      linksData: null,
+      aboutModify: false,
+      socialModify: false,
       about: [''],
       social: [
         {
           symbol: 'QQ',
-          icon: 'qq1',
-          name: 'QQ：',
+          type: 'qq',
+          name: 'QQ',
           placeholder: 'QQ帐号',
           url: '',
           value: ''
         },
         {
           symbol: 'Wechat',
-          icon: 'wechat',
-          name: '微信：',
+          type: 'wechat',
+          name: '微信',
           placeholder: '微信号',
           url: '',
           value: ''
         },
         {
           symbol: 'Weibo',
-          icon: 'weibo1',
-          name: '微博：',
+          type: 'weibo',
+          name: '微博',
           placeholder: '微博用户名(不需要完整URL)',
           url: 'https://www.weibo.com',
           value: ''
         },
         {
           symbol: 'Telegram',
-          icon: 'tg',
-          name: 'Telegram：',
+          type: 'telegram',
+          name: 'Telegram',
           placeholder: 'Telegram用户名',
           url: '',
           value: ''
         },
         {
           symbol: 'Twitter',
-          icon: 'twitter1',
-          name: 'Twitter：',
+          type: 'twitter',
+          name: 'Twitter',
           placeholder: 'Twitter用户名(不需要完整URL)',
           url: 'https://twitter.com',
           value: ''
         },
         {
           symbol: 'Facebook',
-          icon: 'fb',
-          name: 'Facebook：',
+          type: 'facebook',
+          name: 'Facebook',
           placeholder: 'Facebook用户名(不需要完整URL)',
           url: 'https://facebook.com',
           value: ''
         },
         {
           symbol: 'Github',
-          icon: 'github1',
-          name: 'Github：',
+          type: 'github',
+          name: 'Github',
           placeholder: 'Github用户名(不需要完整URL)',
           url: 'https://github.com',
           value: ''
@@ -142,7 +155,9 @@ export default {
       ]
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['currentUserInfo'])
+  },
   watch: {
     // 监听内容修改 如果内容改动则改变setProfile
     newNickName(newVal) {
@@ -173,6 +188,32 @@ export default {
       )
         this.setProfile = true
       else this.setProfile = false
+    },
+    about: {
+      deep: true,
+      handler() {
+        if (JSON.stringify(this.linksData.websites) !== JSON.stringify(this.about))
+          this.aboutModify = true
+        else this.aboutModify = false
+      }
+    },
+    social: {
+      deep: true,
+      handler() {
+        for (const item of this.social) {
+          const oSocial = this.linksData.socialAccounts.find(age => age.type === item.type)
+          if (oSocial == null) {
+            if (item.value !== '') {
+              this.socialModify = true
+              return
+            }
+          } else if (oSocial.value !== item.value) {
+            this.socialModify = true
+            return
+          }
+        }
+        this.socialModify = false
+      }
     }
   },
   created() {
@@ -202,9 +243,10 @@ export default {
     myToasted(message) {
       this.$toast({ duration: 1000, message })
     },
-    async save() {
+    save() {
       // 如果没有改动返回上一页
-      if (!this.setProfile) return this.$router.go(-1)
+      if (!(this.setProfile || this.aboutModify || this.socialModify)) return this.$router.go(-1)
+      if (this.loading) return
       if (!this.checkSaveParams()) return
       const requestData = {
         nickname: this.newNickName,
@@ -215,33 +257,71 @@ export default {
       if (this.newIntroduction === this.introduction) delete requestData.introduction
       if (this.newEmail === this.email) delete requestData.email
       // console.log(requestData)
+      const filterRequestLinks = () => {
+        const requestData = {
+          websites: this.about.filter(age => age !== '' && age !== null),
+          socialAccounts: (() => {
+            const nSocial = {}
+            this.social.forEach(item => {
+              if (item.value && item.value !== '') nSocial[item.type] = item.value
+            })
+            return nSocial
+          })()
+        }
+        return requestData
+      }
+      const successError = error => {
+        console.log(error)
+        this.loading = false
+        if (error.response.status === 401) {
+          this.$toast.fail({
+            duration: 1000,
+            message: this.$t('error.pleaseLogin')
+          })
+        } else {
+          this.$toast.fail({
+            duration: 1000,
+            message: this.$t('error.loginFail')
+          })
+        }
+      }
+      let thenEnd = false
+      this.loading = true
       // 设置用户信息
-      await this.$backendAPI
-        .setProfile(requestData)
-        .then(res => {
-          // console.log(res)
-          if (res.status === 200 && res.data.code === 0) {
-            this.$toast.success({ duration: 1000, message: res.data.message })
-            this.nickname = this.newNickName
-            this.$navigation.cleanRoutes() // 清除路由记录
-          } else this.myToasted(res.data.message)
-        })
-        .catch(error => {
-          console.log(error)
-          if (error.response.status === 401) {
-            this.$toast.fail({
-              duration: 1000,
-              message: this.$t('error.pleaseLogin')
-            })
-          } else {
-            this.$toast.fail({
-              duration: 1000,
-              message: this.$t('error.loginFail')
-            })
-          }
-        })
+      if (this.setProfile) {
+        this.$backendAPI
+          .setProfile(requestData)
+          .then(res => {
+            if (res.status === 200 && res.data.code === 0) {
+              this.nickname = this.newNickName
+              this.$navigation.cleanRoutes() // 清除路由记录
+              if (thenEnd) {
+                this.$toast.success({ duration: 1000, message: res.data.message })
+                this.refreshUser({ id: this.currentUserInfo.id })
+              }
+            } else this.myToasted(res.data.message)
+            thenEnd = true
+          })
+          .catch(successError)
+      } else thenEnd = true
+      // 社交账号和相关网页
+      if (this.aboutModify || this.socialModify) {
+        this.$backendAPI
+          .setUserLinks(filterRequestLinks())
+          .then(res => {
+            if (res.status === 200 && res.data.code === 0) {
+              if (thenEnd) {
+                this.$toast.success({ duration: 1000, message: res.data.message })
+                this.refreshUser({ id: this.currentUserInfo.id })
+              }
+            } else this.$message.error(this.$t('error.fail'))
+            thenEnd = true
+          })
+          .catch(successError)
+      } else thenEnd = true
     },
     async refreshUser() {
+      this.loading = true
       const setUser = data => {
         this.nickname = data.nickname
         this.newNickName = this.nickname || data.username
@@ -251,15 +331,33 @@ export default {
         this.newIntroduction = this.introduction
         this.setAvatarImage(data.avatar)
       }
+      const setLinks = data => {
+        this.linksData = data
+        this.about = [...(data.websites.length !== 0 ? data.websites : [''])]
+        data.socialAccounts.forEach(item => {
+          this.social.find(age => age.type === item.type).value = item.value
+        })
+      }
 
       setUser(await this.getCurrentUser())
+
+      try {
+        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+          id: this.currentUserInfo.id
+        })
+        if (resLinks.code === 0) {
+          setLinks(resLinks.data)
+        } else console.log('获取用户信息失败')
+      } catch (error) {
+        console.log(`获取用户信息失败${error}`)
+      }
+      this.loading = false
     },
     setAvatarImage(hash) {
       if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
     },
     // 完成上传
     async doneImageUpload(res) {
-      console.log(res)
       this.refreshUser()
       this.imgUploadDone += Date.now()
     },
@@ -284,43 +382,35 @@ export default {
 .edit-card {
   //background:rgba(255,255,255,1);
   &-list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    padding: 18px 20px;
     margin-bottom: 10px;
     background: #ffffff;
-    /* &:nth-child(n+2)::before{
-      content: '';
-      display: block;
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      top: 0;
-      height: 1px;
-      background-color: #f1f1f1;
-    }*/
-    span {
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(0, 0, 0, 1);
-    }
-    input {
-      flex: 1;
-      text-align: right;
-      border: none;
-      background: transparent;
-      outline: none;
-      overflow: hidden;
-      padding-left: 10px;
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(0, 0, 0, 0.7);
-      &::placeholder {
+    .card-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 18px 20px;
+      span {
         font-size: 14px;
-        font-weight: 500;
-        color: #b2b2b2;
+        font-weight: 400;
+        color: rgba(0, 0, 0, 1);
+      }
+      input {
+        flex: 1;
+        text-align: right;
+        border: none;
+        background: transparent;
+        outline: none;
+        overflow: hidden;
+        padding-left: 10px;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(0, 0, 0, 0.7);
+        &::placeholder {
+          font-size: 14px;
+          font-weight: 500;
+          color: #b2b2b2;
+        }
       }
     }
   }
@@ -373,6 +463,14 @@ export default {
   cursor: pointer;
   &.add {
     margin-left: 56px;
+  }
+}
+.social-icons {
+  div {
+    width: 25px;
+    height: 25px;
+    font-size: 17px;
+    margin-right: 10px;
   }
 }
 </style>

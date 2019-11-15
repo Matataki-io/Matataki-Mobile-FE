@@ -167,17 +167,26 @@
   margin: 10px 20px;
   min-height: 200px;
   .social-icons {
-    width: 60px;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
   .inline {
-    display: flex;
     &.h3 {
       margin-right: 20px;
     }
     &.url {
       display: inline-table;
       p {
-        margin: 15px;
+        margin: 15px 5px;
+      }
+    }
+    &.social {
+      margin: 15px 5px;
+      .url-text {
+        color: black;
+        position: relative;
+        top: -8px;
       }
     }
     a:link {color:black}
