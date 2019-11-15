@@ -132,7 +132,7 @@
               :disabled="payBtnDisabled && isLogined"
               type="primary"
               size="mini"
-              @click="wxpay"
+              @click="wxpayArticle"
             >
               微信支付
             </el-button>
@@ -1233,6 +1233,39 @@ export default {
       } catch (error) {
         this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
       }
+    },
+    makeOrderParams() {
+      const { output, outputToken } = this.form;
+      const requestParams = {
+        items: [{
+            signId: this.id,
+            type: "buy_post"
+          },
+          {
+            tokenId: outputToken.id,
+            type: "buy_minetoken",
+            amount: utils.toDecimal(output, outputToken.decimals)
+          }]
+      }
+      return requestParams;
+    },
+    wxpayArticle() {
+      this.$API.getArticleOrder('423IJODm4wt6UX8OR7kT3YFotspTTph').then(res => {
+        console.log(res)
+      })
+      return
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
+      }
+      const requestParams = this.makeOrderParams()
+      this.$API.createArticleOrder(requestParams).then(res => {
+        console.log(res)
+      })
     },
     wxpay() {
       if (!this.isLogined) {

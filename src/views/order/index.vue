@@ -5,7 +5,9 @@
       :pageinfo="{ title: '支付订单' }"
       customize-header-bc="#fff"
     />
-    <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
+    <div class="img-container">
+      <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
+    </div>
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
       <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
@@ -475,10 +477,14 @@ export default {
 </style>
 <style scoped lang="less">
 .order {
-  padding-top: 50px;
-  .logo {
-    padding: 16px;
-    width: 300px;
+  padding-top: 45px;
+  .img-container {
+    width: 100%;
+    background: #ffffff;
+    .logo {
+      padding: 16px;
+      width: 300px;
+    }
   }
   .bgGray {
     background: #f0f0f0;

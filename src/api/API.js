@@ -414,5 +414,18 @@ minetokenGetResources(tokenId) {
   // 创建订单
   createOrder(order) {
     return request.post('/order/create', order)
+  },
+  createArticleOrder(order) {
+    return request({
+      method: 'PUT',
+      url: '/orders',
+      data: order
+    })
+  },
+  getArticleOrder(tradeNo) {
+    return request({
+      method: 'get',
+      url: `/orders/${tradeNo}`
+    })
   }
 }
