@@ -2,43 +2,46 @@
   <div class="home-container">
     <home-head :nav="navList" :now-index="-1" @login="showSidebar = true" />
     <div ref="home" class="one">
-      <img
-        v-scroll-reveal="{ distance: '20px' }"
-        class="logo"
-        src="@/assets/img/home/logo_home.png"
-        :alt="$t('about.logo')"
-      />
-      <img
-        v-scroll-reveal="{ distance: '20px', delay: 100 }"
-        class="des"
-        src="@/assets/img/home/logo_des_home.png"
-        :alt="$t('about.logoDes')"
-      />
-      <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
-        {{ $t('about.homeTitle') }}
-      </h1>
-      <p v-scroll-reveal="{ distance: '20px', delay: 400 }" class="home-text">
-        {{ $t('about.homeDes') }}
-      </p>
-      <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
-        <router-link :to="{ name: 'article' }">
-          <el-button class="home-btn" icon="el-icon-reading">
-            {{ $t('about.homeBtnRead') }}
+      <div class="container">
+        <img
+          v-scroll-reveal="{ distance: '20px' }"
+          class="logo"
+          src="@/assets/img/home/logo_home.png"
+          :alt="$t('about.logo')"
+        />
+        <img
+          v-scroll-reveal="{ distance: '20px', delay: 100 }"
+          class="des"
+          src="@/assets/img/home/logo_des_home.png"
+          :alt="$t('about.logoDes')"
+        />
+        <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
+          {{ $t('about.homeTitle') }}
+        </h1>
+        <p v-scroll-reveal="{ distance: '20px', delay: 400 }" class="home-text">
+          {{ $t('about.homeDes') }}
+        </p>
+        <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
+          <router-link :to="{ name: 'article' }">
+            <el-button class="home-btn" icon="el-icon-reading">
+              {{ $t('about.homeBtnRead') }}
+            </el-button>
+          </router-link>
+          <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
+            {{ $t('about.homeBtnCreate') }}
           </el-button>
-        </router-link>
-        <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
-          {{ $t('about.homeBtnCreate') }}
-        </el-button>
+        </div>
+        <img
+          v-scroll-reveal="{ distance: '20px', delay: 800 }"
+          class="bg"
+          src="@/assets/img/home/home_bg.png"
+          alt="logo"
+        />
       </div>
-      <img
-        v-scroll-reveal="{ distance: '20px', delay: 800 }"
-        class="bg"
-        src="@/assets/img/home/home_bg.png"
-        alt="logo"
-      />
     </div>
     <div class="two">
-      <el-row v-for="(item, index) in effectList" :key="index">
+      <div class="container">
+        <el-row v-for="(item, index) in effectList" :key="index">
         <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
           <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
         </el-col>
@@ -58,9 +61,11 @@
           </p>
         </el-col>
       </el-row>
+      </div>
     </div>
     <div class="three">
-      <h3 v-scroll-reveal="{ distance: '20px' }">
+     <div class="container">
+        <h3 v-scroll-reveal="{ distance: '20px' }">
         {{ $t('about.blockTitle1') }}
       </h3>
       <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
@@ -79,9 +84,11 @@
         src="@/assets/img/home/home_bg1.png"
         alt="block"
       />
+     </div>
     </div>
     <div class="three">
-      <h3 v-scroll-reveal="{ distance: '20px' }">
+      <div class="container">
+              <h3 v-scroll-reveal="{ distance: '20px' }">
         {{ $t('about.blockTitle2') }}
       </h3>
       <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
@@ -102,9 +109,11 @@
         src="@/assets/img/home/home_bg2.png"
         alt="block"
       />
+      </div>
     </div>
     <div class="three">
-      <h3 v-scroll-reveal="{ distance: '20px' }">
+      <div class="container">
+        <h3 v-scroll-reveal="{ distance: '20px' }">
         {{ $t('about.blockTitle3') }}
       </h3>
       <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
@@ -132,6 +141,7 @@
         src="@/assets/img/home/home_bg3.png"
         alt="block"
       />
+      </div>
     </div>
     <div class="four">
       <div
