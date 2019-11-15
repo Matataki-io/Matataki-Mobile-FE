@@ -6,9 +6,11 @@
         <nav class="tokens-list-nav">
           <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
             发布顺序
+            <i class="el-icon-d-caret" />
           </div>
           <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
             字母顺序
+            <i class="el-icon-d-caret" />
           </div>
         </nav>
         <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
