@@ -83,7 +83,7 @@
       </router-link>
       <span class="fixed-right share">
         <el-button class="narrowing" size="mini" @click="shareModalShow = true">
-          <svg-icon icon-class="share1" />
+          <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>
       </span>
