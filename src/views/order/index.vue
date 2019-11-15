@@ -230,12 +230,10 @@ export default {
       const handler = res => {
         this.loading = false;
         if (res === 0) {
-          this.successNotice("交易成功，即将刷新页面");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          this.alert('交易成功')
         } else {
-          this.errorNotice("交易失败，请重试");
+          this.alert('交易失败，请重试')
+          // this.errorNotice("交易失败，请重试");
         }
       };
       // const deadline = Math.floor(Date.now() / 1000) + 300;

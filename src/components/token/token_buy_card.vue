@@ -12,7 +12,7 @@
       <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
-      <el-button class="btn1" @click="pay">立即支付</el-button>
+      <el-button class="btn1" @click="pay" :disabled="payBtnDisabled && isLogined">立即支付</el-button>
       <router-link class="link1" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
         <el-button class="btn2" type="primary">交易粉丝币</el-button>        
       </router-link>
@@ -41,7 +41,8 @@ export default {
       },
       type: 'buy_token_output',
       priceSlippage: 0.01,
-      currentPoolSize: {}
+      currentPoolSize: {},
+      payBtnDisabled: true
     }
   },
   computed: {
@@ -120,7 +121,9 @@ export default {
     getInputAmount(inputTokenId = 0, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = this.$utils.toDecimal(outputAmount, deciaml)
+      this.payBtnDisabled = true
       this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        this.payBtnDisabled = false
         if (res.code === 0) {
           // rmb向上取整
           if (parseFloat(res.data) >= 100) {

@@ -129,6 +129,7 @@
                 v-model="paymentToken"
                 :min="1"
                 :max="100000000"
+                v-on:keypress.native="isNumber"
                 size="small"
                 placeholder="请输入内容"
               />
@@ -1004,6 +1005,11 @@ export default {
       this.title = res.title
       this.markdownData = res.content
       this.cover = res.cover
+    },
+    isNumber(event) {
+      if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
+      }
     }
   }
 }
