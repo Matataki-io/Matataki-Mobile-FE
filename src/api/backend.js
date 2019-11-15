@@ -565,6 +565,9 @@ const API = {
       method: 'get',
       url: `/token/user/${id}`
     })
+  },
+  async getUserLinks({ id }) {
+    return this.accessBackend({ url: `/user/${id}/links` })
   }
 }
 
