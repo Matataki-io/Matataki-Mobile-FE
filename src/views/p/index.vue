@@ -85,11 +85,15 @@
       <statement v-if="isTokenArticle" :article="article"></statement>
 
       <!-- 解锁按钮 -->
-      <div v-if="tokenArticle" class="lock">
-        <el-divider v-if="!isTokenArticle">
-          <i class="el-icon-lock lock-icon" />
+      <div v-if="!isTokenArticle" class="lock-line">
+        <el-divider>
+          <span class="lock-text">达成条件即可阅读全文</span>
         </el-divider>
+        <svg-icon class="icon-arrow" icon-class="arrow_down" />
+        <div class="lock-line-full" />
+      </div>
 
+      <div v-if="tokenArticle" class="lock">
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
             <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock" />
