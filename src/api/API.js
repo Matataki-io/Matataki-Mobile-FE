@@ -43,6 +43,13 @@ export default {
       }
     })
   },
+  // 通过hash获取文章内容
+  getIpfsData(hash) {
+    return request.get(`/post/ipfs/${hash}`)
+  },
+  getMyPost(id) {
+    return request.get(`/mypost/${id}`)
+  },
   /**
    * 创建我的token
    * // TODO 有字段后可移除注释
@@ -312,6 +319,22 @@ minetokenGetResources(tokenId) {
       timeout: 40000,
     })
   },
+    // 文章持币阅读
+    addMineTokens(data) {
+      return request({
+        method: 'post',
+        url: '/post/addMineTokens',
+        data: data,
+      })
+    },
+    // 文章持币支付
+    articlePrices(id, data) {
+      return request({
+        method: 'PUT',
+        url: `/posts/${id}/prices`,
+        data: data,
+      })
+    },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
