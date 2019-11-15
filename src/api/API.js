@@ -28,6 +28,24 @@ export default {
   orderWxPay(order) {
     return request.post('/order/pay', order)
   },
+  //-------------文章支付使用开始-----------------
+  articleNativePay(tradeNo) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'NATIVE'
+    })
+  },
+  articleJsapiPay(tradeNo, openid) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'JSAPI',
+      openid
+    })
+  },
+  articleWxPay(order) {
+    return request.post('/order/articlepay', order)
+  },
+  //-------------文章支付使用结束-----------------
   wxpay(order) {
     return request.post('/wx/pay', order)
   },
@@ -426,6 +444,13 @@ minetokenGetResources(tokenId) {
     return request({
       method: 'get',
       url: `/orders/${tradeNo}`
+    })
+  },
+  updateArticleOrder(tradeNo, order) {
+    return request({
+      method: 'put',
+      url: `/orders/${tradeNo}`,
+      data: order
     })
   }
 }

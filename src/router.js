@@ -366,6 +366,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/porder/:id',
+      name: 'porder-id',
+      component: () => import(/* webpackChunkName: "porder-id" */ './views/p/order/index.vue'),
+      meta: {
+        title: '订单详情页-瞬MATATAKI'
+      }
+    },
+    {
       path: '/pay/weixin',
       name: 'WeixinPay',
       component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
@@ -384,7 +392,8 @@ const router = new VueRouter({
     {
       path: '/token/liquditity/:id',
       name: 'token-liquidity-id',
-      component: () => import(/* webpackChunkName: "token-liquidity-id" */ './views/token/liquidity/_id.vue'),
+      component: () =>
+        import(/* webpackChunkName: "token-liquidity-id" */ './views/token/liquidity/_id.vue'),
       meta: {
         title: '粉丝币-瞬MATATAKI'
       }
@@ -402,7 +411,9 @@ const router = new VueRouter({
       path: '/token/liquditity/detail/:id',
       name: 'token-liquidity-detail-id',
       component: () =>
-        import(/* webpackChunkName: "token-liquidity-detail-id" */ './views/token/liquidity/detail/_id.vue'),
+        import(
+          /* webpackChunkName: "token-liquidity-detail-id" */ './views/token/liquidity/detail/_id.vue'
+        ),
       meta: {
         title: '粉丝币-瞬MATATAKI'
       }
