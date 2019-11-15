@@ -25,8 +25,7 @@
         class="home-head-create"
         src="@/assets/img/icon_home_create.svg"
         alt="create"
-                    @click="writeP"
-
+        @click="writeP"
       />
     </div>
     <search :show-search="showSearch" @showSearchStatus="showSearch = false"></search>
@@ -42,12 +41,7 @@ export default {
   components: {
     search
   },
-  props: {
-    nowIndex: {
-      type: Number,
-      required: true
-    }
-  },
+  props: {},
   data() {
     return {
       avatar: '',
@@ -90,9 +84,9 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser']),
     writeP() {
-      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      if (this.isLogined)
+        this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
       else this.$store.commit('setLoginModal', true)
-
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()

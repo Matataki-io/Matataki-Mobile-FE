@@ -1,6 +1,6 @@
 <template>
   <div class="token">
-    <BaseHeader :has-bottom-border-line="true" :pageinfo="{ title: '粉丝币' }" />
+    <home-head @login="showSidebar = true" />
     <div class="tokens-list">
       <div class="fl jsb">
         <nav class="tokens-list-nav">
@@ -26,22 +26,28 @@
     >
       <tokenCard v-for="(item, index) in pull.list" :key="index" :card="item" />
     </BasePull>
+    <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 <script>
 // import avatar from '@/components/avatar/index.vue'
+import homeHead from '../home/components/homeHead.vue'
 import tokenCard from '@/components/token_card/index.vue'
 // import userPagination from '@/components/user/user_pagination.vue'
+import Sidebar from '@/components/Sidebar/index.vue'
 
 export default {
   components: {
     // avatar,
-    tokenCard
+    tokenCard,
+    homeHead,
+    Sidebar
     // userPagination
   },
   data() {
     return {
+      showSidebar: false,
       sort: this.$route.query.id || 'id',
       pull: {
         params: {
@@ -58,9 +64,7 @@ export default {
       amount: 0
     }
   },
-  computed() {
-    console.log(111, this.$route.query)
-  },
+  computed: {},
   methods: {
     toggleSort(name) {
       if (name === 'id') {
