@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <home-head :nav="navList" :now-index="-1" @login="showSidebar = true" />
+    <home-head @login="showSidebar = true" />
     <div ref="home" class="one">
       <div class="container">
         <img
@@ -42,105 +42,105 @@
     <div class="two">
       <div class="container">
         <el-row v-for="(item, index) in effectList" :key="index">
-        <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
-          <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
-        </el-col>
-        <el-col class="margin-t-20" :span="10">
-          <p v-scroll-reveal="{ distance: '20px', delay: 200 * index }" class="title">
-            {{ item.subtitle }}
-          </p>
-          <img
-            v-scroll-reveal="{ distance: '20px', delay: 220 * index }"
-            :src="item.img"
-            alt="Features"
-          />
-        </el-col>
-        <el-col class="margin-t-20" :span="14">
-          <p v-scroll-reveal="{ distance: '20px', delay: 260 * index }" class="content">
-            {{ item.des }}
-          </p>
-        </el-col>
-      </el-row>
+          <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
+            <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
+          </el-col>
+          <el-col class="margin-t-20" :span="10">
+            <p v-scroll-reveal="{ distance: '20px', delay: 200 * index }" class="title">
+              {{ item.subtitle }}
+            </p>
+            <img
+              v-scroll-reveal="{ distance: '20px', delay: 220 * index }"
+              :src="item.img"
+              alt="Features"
+            />
+          </el-col>
+          <el-col class="margin-t-20" :span="14">
+            <p v-scroll-reveal="{ distance: '20px', delay: 260 * index }" class="content">
+              {{ item.des }}
+            </p>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="three">
-     <div class="container">
+      <div class="container">
         <h3 v-scroll-reveal="{ distance: '20px' }">
-        {{ $t('about.blockTitle1') }}
-      </h3>
-      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-        {{ $t('about.blockDes1') }}
-      </p>
-      <a
-        v-scroll-reveal="{ distance: '20px', delay: 300 }"
-        target="_blank"
-        href="https://www.matataki.io/p/806"
-      >
-        {{ $t('readMore') }}
-        ></a
-      >
-      <img
-        v-scroll-reveal="{ distance: '20px', delay: 400 }"
-        src="@/assets/img/home/home_bg1.png"
-        alt="block"
-      />
-     </div>
+          {{ $t('about.blockTitle1') }}
+        </h3>
+        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+          {{ $t('about.blockDes1') }}
+        </p>
+        <a
+          v-scroll-reveal="{ distance: '20px', delay: 300 }"
+          target="_blank"
+          href="https://www.matataki.io/p/806"
+        >
+          {{ $t('readMore') }}
+          ></a
+        >
+        <img
+          v-scroll-reveal="{ distance: '20px', delay: 400 }"
+          src="@/assets/img/home/home_bg1.png"
+          alt="block"
+        />
+      </div>
     </div>
     <div class="three">
       <div class="container">
-              <h3 v-scroll-reveal="{ distance: '20px' }">
-        {{ $t('about.blockTitle2') }}
-      </h3>
-      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-        {{ $t('about.blockDes2') }}
-      </p>
-      <a
-        v-scroll-reveal="{ distance: '20px', delay: 300 }"
-        target="_blank"
-        href="
+        <h3 v-scroll-reveal="{ distance: '20px' }">
+          {{ $t('about.blockTitle2') }}
+        </h3>
+        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+          {{ $t('about.blockDes2') }}
+        </p>
+        <a
+          v-scroll-reveal="{ distance: '20px', delay: 300 }"
+          target="_blank"
+          href="
         https://www.matataki.io/p/807
         "
-      >
-        {{ $t('readMore') }}
-        ></a
-      >
-      <img
-        v-scroll-reveal="{ distance: '20px', delay: 400 }"
-        src="@/assets/img/home/home_bg2.png"
-        alt="block"
-      />
+        >
+          {{ $t('readMore') }}
+          ></a
+        >
+        <img
+          v-scroll-reveal="{ distance: '20px', delay: 400 }"
+          src="@/assets/img/home/home_bg2.png"
+          alt="block"
+        />
       </div>
     </div>
     <div class="three">
       <div class="container">
         <h3 v-scroll-reveal="{ distance: '20px' }">
-        {{ $t('about.blockTitle3') }}
-      </h3>
-      <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-        {{ $t('about.blockDes31') }}
-        <br />
-        <span class="content-empty"></span>
-        {{ $t('about.blockDes32') }}
-        <br />
-        <span class="content-empty"></span>
-        {{ $t('about.blockDes33') }}
-        <br />
-        <span class="content-empty"></span>
-        {{ $t('about.blockDes34') }}
-      </p>
-      <a
-        v-scroll-reveal="{ distance: '20px', delay: 300 }"
-        target="_blank"
-        href="https://www.matataki.io/p/781"
-      >
-        {{ $t('readMore') }}
-        ></a
-      >
-      <img
-        v-scroll-reveal="{ distance: '20px', delay: 400 }"
-        src="@/assets/img/home/home_bg3.png"
-        alt="block"
-      />
+          {{ $t('about.blockTitle3') }}
+        </h3>
+        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
+          {{ $t('about.blockDes31') }}
+          <br />
+          <span class="content-empty"></span>
+          {{ $t('about.blockDes32') }}
+          <br />
+          <span class="content-empty"></span>
+          {{ $t('about.blockDes33') }}
+          <br />
+          <span class="content-empty"></span>
+          {{ $t('about.blockDes34') }}
+        </p>
+        <a
+          v-scroll-reveal="{ distance: '20px', delay: 300 }"
+          target="_blank"
+          href="https://www.matataki.io/p/781"
+        >
+          {{ $t('readMore') }}
+          ></a
+        >
+        <img
+          v-scroll-reveal="{ distance: '20px', delay: 400 }"
+          src="@/assets/img/home/home_bg3.png"
+          alt="block"
+        />
       </div>
     </div>
     <div class="four">
@@ -183,16 +183,11 @@ export default {
   },
   data() {
     return {
-      showSidebar: false,
-      nowIndex: 0
+      showSidebar: false
     }
   },
   computed: {
     ...mapGetters(['isLogined']),
-    navList() {
-      return [this.$t('home.navArticle'), this.$t('home.navShop')]
-    },
-
     effectList() {
       return [
         {
