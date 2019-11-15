@@ -57,32 +57,24 @@
 
       <!-- 持币阅读 -->
       <div class="post-content">
-        <div class="post-list">
-          <span class="post-list-title">
-            持币阅读
+        <div>
+          <h3>
+            阅读权限
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">
                 添加限制条件后，<br />读者只有在持有特定数量的粉丝币后才可查看全文的。
               </div>
               <svg-icon class="help-icon" icon-class="help" />
             </el-tooltip>
-          </span>
-          <div class="post-list-content right">
-            <el-checkbox v-model="readauThority"></el-checkbox>
-          </div>
+          </h3>
+          <el-checkbox v-model="readauThority" size="small">
+            设置持币
+          </el-checkbox>
         </div>
-
-        <div v-show="readauThority">
-          <div class="post-list">
-            <span class="post-list-title">持币数量</span>
-            <div class="post-list-content">
-              <el-input v-model="readToken" size="small" placeholder="请输入内容" />
-            </div>
-          </div>
-
-          <div class="post-list">
-            <span class="post-list-title">持币类型</span>
-            <div class="post-list-content">
+        <transition name="fade">
+          <div v-show="readauThority" class="fl ac">
+            <div>
+              <h3>持币类型</h3>
               <el-select
                 v-model="readSelectValue"
                 size="small"
@@ -97,23 +89,66 @@
                 />
               </el-select>
             </div>
-          </div>
-
-          <div class="post-list">
-            <span class="post-list-title">内容摘要</span>
-            <div class="post-list-content">
+            <div style="margin-left: 10px;">
+              <h3>持币数量</h3>
               <el-input
-                v-model="readSummary"
+                v-model="readToken"
+                :min="1"
+                :max="100000000"
                 size="small"
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 12 }"
                 placeholder="请输入内容"
-                maxlength="300"
-                show-word-limit
               />
             </div>
           </div>
-        </div>
+        </transition>
+        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+          设置支付
+        </el-checkbox>
+        <transition name="fade">
+          <div v-show="paymentTokenVisible" class="fl ac">
+            <div>
+              <h3>支付类型</h3>
+              <el-select
+                v-model="paymentSelectValue"
+                disabled
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+              >
+                <el-option
+                  v-for="item in paymentSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>支付数量</h3>
+              <el-input
+                v-model="paymentToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <transition name="fade">
+          <div v-show="readauThority">
+            <h3>内容摘要</h3>
+            <el-input
+              v-model="readSummary"
+              :autosize="{ minRows: 6, maxRows: 12 }"
+              size="small"
+              type="textarea"
+              placeholder="请输入内容"
+              maxlength="300"
+              show-word-limit
+            />
+          </div>
+        </transition>
       </div>
 
       <div v-if="$route.params.type !== 'edit'" class="fission">
@@ -311,10 +346,21 @@ export default {
       autoUpdateDfaft: false, // 是否自动更新草稿
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章发布', // 自动存为草稿
-      readauThority: false,
-      readToken: 1,
-      readSelectOptions: [],
-      readSelectValue: '',
+      readauThority: false, // 持币阅读
+      readToken: 1, // 阅读token数量
+      readSelectOptions: [], // 阅读tokenlist
+      readSelectValue: '', // 阅读tokenlist show value
+      paymentTokenVisible: false, // 支付可见
+      paymentToken: 1, // 支付token
+      paymentSelectOptions: [
+        {
+          id: 0,
+          symbol: 'CNY',
+          name: '人民币'
+        }
+      ], // 支付tokenlist
+      paymentSelectValue: 0, // 支付tokenlist show value
+
       readSummary: '',
       statementVisible: false, // 原创声明
       importVisible: false // 导入
