@@ -26,6 +26,10 @@
         <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
         <span>{{ $t('articleFooter.unlike') }} {{ token && token.dislikes }}</span>
       </button>
+      <button class="sun-btn" @click="toggleBookmark">
+        <img src="@/assets/newimg/star.svg" class="btn-prefix" />
+        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
+      </button>
       <button class="sun-btn" @click="$emit('share')">
         <img src="@/assets/newimg/share.svg" class="btn-prefix" />
         {{ $t('share') }}
@@ -56,6 +60,10 @@ export default {
         likes: 0,
         is_liked: 0
       })
+    },
+    isBookmarked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -270,6 +278,8 @@ export default {
         clearInterval(this.timer)
         this.timer = null
       }
+    },
+    toggleBookmark() {
     }
   }
 }

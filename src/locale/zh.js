@@ -163,7 +163,9 @@ export default {
     read_dislike: '用户阅读',
     commentDoneMessage: '评价成功，阅读积分奖励已领取',
     readNew: '阅读新文章奖励{0}积分, 评价后可领取更多积分!',
-    readNewFail: '阅读新文章增加积分失败'
+    readNewFail: '阅读新文章增加积分失败',
+    bookmark: '收藏',
+    unbookmark: '取消收藏'
   },
   assetCard: {
     0: '提现待处理',
