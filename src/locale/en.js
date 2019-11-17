@@ -299,7 +299,8 @@ export default {
     tg: '加入电报',
     billboard: '智能公告牌',
     feedback: '吐个槽',
-    language: '中文/English'
+    language: '中文/English',
+    bookmarks: '我的收藏'
   },
   publish: {
     editorText: '文章',
@@ -495,7 +496,8 @@ export default {
     buyHistory: '购买记录',
     transactionComplete: '交易已完成',
     unitPrice: '单价',
-    totalPrice: '总价'
+    totalPrice: '总价',
+    bookmarks: '我的收藏'
   },
   withdraw: {
     title: '提现',
