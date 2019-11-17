@@ -294,6 +294,9 @@ export default {
         }
       } catch (err) {
         console.error('ToggleBookmark err', err)
+        if (err.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
+        }
       }
     }
   }
