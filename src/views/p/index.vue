@@ -763,7 +763,7 @@ export default {
             this.differenceTokenFunc()
             this.calPayFormParams()
             this.setSSToken(res.data)
-            this.isBookmarked = Boolean(res.data.data.is_bookmarked);
+            this.isBookmarked = Boolean(res.data.data.is_bookmarked)
           } else if (res.data.code === 401) {
             console.log(res.data.message)
           } else {
