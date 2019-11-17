@@ -114,7 +114,7 @@
           <router-link :to="{ name: 'Bookmark', params: { id } }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/star.svg" alt="article" class="left-img" />
+                <img src="@/assets/newimg/bookmark.svg" alt="article" class="left-img" />
                 <span class="left-text">
                   {{ $t('sidebar.bookmarks') }}
                 </span>

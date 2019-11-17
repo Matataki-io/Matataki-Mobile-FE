@@ -27,7 +27,7 @@
         <span>{{ $t('articleFooter.unlike') }} {{ token && token.dislikes }}</span>
       </button>
       <button class="sun-btn" @click="toggleBookmark">
-        <img src="@/assets/newimg/star.svg" class="btn-prefix" />
+        <svg-icon :iconClass="!isBookmarked ? 'bookmark' : 'bookmark-solid'" class="btn-prefix" />
         {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
       </button>
       <button class="sun-btn" @click="$emit('share')">
