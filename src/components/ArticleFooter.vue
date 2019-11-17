@@ -279,7 +279,22 @@ export default {
         this.timer = null
       }
     },
-    toggleBookmark() {
+    async toggleBookmark() {
+      try {
+        if (!this.isBookmarked) {
+          const res = await this.$backendAPI.bookmark(this.article.id)
+          if (res.data.code === 0) {
+            this.isBookmarked = true
+          }
+        } else {
+          const res = await this.$backendAPI.unbookmark(this.article.id)
+          if (res.status === 204) {
+            this.isBookmarked = false
+          }
+        }
+      } catch (err) {
+        console.error('ToggleBookmark err', err)
+      }
     }
   }
 }
