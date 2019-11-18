@@ -162,3 +162,54 @@
     }
   }
 }
+
+.information {
+  margin: 10px 20px;
+  min-height: 200px;
+  .social-icons {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  .inline {
+    &.h3 {
+      margin-right: 20px;
+    }
+    &.url {
+      display: inline-table;
+      p {
+        margin: 15px 5px;
+      }
+    }
+    &.social {
+      margin: 15px 5px;
+      .url-text {
+        color: black;
+        position: relative;
+        top: -8px;
+      }
+    }
+    a {
+      text-decoration: underline;
+    }
+    a:link {color:black}
+    a:visited {color: black}
+    a:hover {color:dimgrey}
+    a:active {color: darkgray}
+  }
+  .websites {
+    margin-bottom: 20px;
+  }
+  .social {
+    padding-bottom: 20px;
+  }
+}
+
+.no-data {
+  text-align: center;
+  p {
+    margin-top: 40px;
+    font-size:14px;
+    color:rgba(178,178,178,1);
+  }
+}

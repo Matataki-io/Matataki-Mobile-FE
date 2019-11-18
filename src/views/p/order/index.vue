@@ -11,8 +11,6 @@
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
       <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
-      <van-cell title="交易内容" :value="tokenContent" />
-      <van-cell title="交易数量" :value="tokenAmount" />
       <van-cell title="交易类型" :value="tradeType" />
       <van-cell title="创建时间" :value="friendlyTime" />
       <van-cell title="订单编号" :value="tradeNo" />
@@ -80,7 +78,7 @@
 </template>
 
 <script>
-import QRCode from "./components/Qrcode";
+import QRCode from "@/views/order/components/Qrcode";
 import { mapGetters } from "vuex";
 import utils from "@/utils/utils";
 import moment from "moment";
@@ -92,7 +90,6 @@ export default {
       timer: null,
       tradeNo: 0,
       order: {},
-      token: {},
       balance: 0,
       loading: false,
       useBalance: false,
@@ -112,21 +109,14 @@ export default {
   computed: {
     ...mapGetters(["currentUserInfo"]),
     tradeType() {
-      const type = this.order.type
-      if (type === 'add') return '添加流动性'
-      if (type === 'buy_token_input' || type === 'buy_token_output') return '交易粉丝通证'
-      return ''
-    },
-    tokenContent() {
-      if (this.token.symbol) return `${this.token.symbol}(${this.token.name})`
-      return ''
+      return '购买文章'
     },
     tokenAmount() {
       if (this.order.token_amount) return this.$utils.fromDecimal(this.order.token_amount)
       else return 0
     },
     cnyAmount() {
-      if (this.order.cny_amount) return this.$utils.fromDecimal(this.order.cny_amount)
+      if (this.order.amount) return this.$utils.fromDecimal(this.order.amount)
       else return 0
     },
     friendlyTime() {
@@ -207,17 +197,17 @@ export default {
     getOrderData() {
       const id = this.$route.params.id
       this.tradeNo = id
-      this.$API.getOrderData(id).then(res => {
+      this.$API.getArticleOrder(id).then(res => {
+        console.log(res);
         if (res.code === 0) {
-          const status = Number(res.data.order.status)
+          const status = Number(res.data.status)
           if(status === 7 || status === 8) {
             this.alert('订单支付已失败')
           }
           if(status === 6 || status === 9) {
             this.alert('订单已支付')
           }
-          this.order = res.data.order
-          this.token = res.data.token
+          this.order = res.data
         } else {
           this.alert('订单不存在')
         }
@@ -226,6 +216,11 @@ export default {
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer);
+      this.$API.updateArticleOrder(this.tradeNo, { useBalance: v }).then(res => {
+        if (res.code === 0) {
+          // this.getOrderData()
+        }
+      })
     },
     // 使用余额支付
     balancePay() {
@@ -237,7 +232,6 @@ export default {
           this.alert('交易失败，请重试')
         }
       };
-      // const deadline = Math.floor(Date.now() / 1000) + 300;
       const {
         token_id,
         cny_amount,
@@ -291,11 +285,11 @@ export default {
         } else { // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.jsapiPay(tradeNo, openid).then(res => {
+        this.$API.ArticleJsapiPay(tradeNo, openid).then(res => {
           this.weakWeixinPay(res)
         })
       } else { // 弹出NATIVE支付二维码
-        this.$API.nativePay(tradeNo).then(res => {
+        this.$API.articleNativePay(tradeNo).then(res => {
           this.loading = false
           this.payLink = res.code_url
           this.qrcodeShow = true
@@ -372,7 +366,7 @@ export default {
     },
     // 获取订单状态
     getOrderStatus(tradeNo) {
-      this.$API.getOrderStatus(tradeNo).then(res => {
+      this.$API.getArticleOrder(tradeNo).then(res => {
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
@@ -380,11 +374,8 @@ export default {
             this.alert('交易失败，等待退款');
           }
           if (status === 6 || status === 9) {
-            this.alert('交易成功');
             clearInterval(this.timer);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            this.alert('交易成功');
           }
         }
       });
@@ -400,61 +391,45 @@ export default {
         message: text
       });
     },
-    // 构造参数
-    makeOrderParams(openid = null) {
-      const {
-        input,
-        inputToken,
-        output,
-        outputToken,
-        limitValue,
-        type
-      } = this.form;
-      let requestParams = {
-        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
-        title: `购买${outputToken.symbol}`,
-        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
-        token_id: outputToken.id,
-        token_amount: utils.toDecimal(output, outputToken.decimals),
-        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
-        decimals: outputToken.decimals,
-        pay_cny_amount: utils.toDecimal(this.needPay)
-      };
-      if (openid) {
-        requestParams = {
-          ...requestParams,
-          trade_type: "JSAPI",
-          openid
-        };
+    makeOrderParams() {
+      const requestParams = {
+        items: []
       }
-      console.log(requestParams);
-      if (type === "add") {
-        requestParams = {
-          ...requestParams,
-          title: `添加流动金`,
-          min_liquidity: utils.toDecimal(this.form.youMintTokenAmount)
-        };
-      } else {
-        requestParams = {
-          ...requestParams,
-          title: `购买${outputToken.symbol}`
-        };
+      // token未支付
+      if (!this.tokenHasPaied) {
+        const { output, outputToken } = this.form
+        requestParams.items.push({
+          tokenId: outputToken.id,
+          type: 'buy_minetoken',
+          amount: utils.toDecimal(output, outputToken.decimals)
+        })
       }
-      return requestParams;
+      // 文章price未支付
+      if (!this.articleHasPaied) {
+        requestParams.items.push({
+          signId: this.id,
+          type: 'buy_post'
+        })
+      }
+      return requestParams
     },
-    // 创建订单
-    createOrder(openid = null) {
-      this.loading = true;
-      const requestParams = this.makeOrderParams(openid);
-      this.$API.wxpay(requestParams).then(res => {
-        this.loading = false;
-        this.order = res;
-        if (this.needPay > 0) {
-          this.timer = setInterval(() => {
-            this.getOrderStatus(this.order.trade_no);
-          }, interval);
+    createOrder() {
+      const loading = this.$loading({
+        lock: false,
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      const requestParams = this.makeOrderParams()
+      this.$API.createArticleOrder(requestParams).then(res => {
+        loading.close()
+        if (res.code === 0) {
+          this.$router.replace({ name: 'porder-id', params: {id: res.data}})
+        } else {
+            this.$dialog.alert({
+            title: '温馨提示',
+            message: '订单创建失败'
+          })
         }
-      });
+      })
     }
   }
 };

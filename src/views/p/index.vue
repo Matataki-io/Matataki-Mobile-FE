@@ -82,10 +82,10 @@
 
       <mavon-editor v-show="false" style="display: none;" />
       <div class="markdown-body" v-html="compiledMarkdown"></div>
-      <statement v-if="isTokenArticle" :article="article"></statement>
+      <statement v-if="hasPaied" :article="article"></statement>
 
       <!-- 解锁按钮 -->
-      <div v-if="!isTokenArticle" class="lock-line">
+      <div v-if="!hasPaied" class="lock-line">
         <el-divider>
           <span class="lock-text">达成条件即可阅读全文</span>
         </el-divider>
@@ -93,55 +93,61 @@
         <div class="lock-line-full" />
       </div>
 
-      <div v-if="tokenArticle" class="lock">
+      <div v-if="isTokenArticle || isPriceArticle" class="lock">
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
-            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock" />
+            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock" />
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock" />
             <div>
               <h3 class="lock-info-title">
-                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
+                {{ !hasPaied ? '解锁全文的条件' : '已解锁全文' }}
                 <el-tooltip class="item" effect="dark" placement="top-start">
                   <div slot="content">
-                    阅读本文需要先持有特定数量的粉丝币，<br />满足本文的阅读条件后刷新页面即可阅读全文。
+                    阅读本文需要先持有特定数量的粉丝通证，<br />满足本文的阅读条件后刷新页面即可阅读全文。
                   </div>
                   <svg-icon class="help-icon" icon-class="help" />
                 </el-tooltip>
               </h3>
               <p v-if="!isMe(article.uid)" class="lock-info-des">
-                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                <br />
-                <!-- 不显示 - 号 -->
-                <span
-                  >{{ !isTokenArticle ? '还差' : '目前拥有'
-                  }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{
-                    needTokenSymbol
-                  }}
-                </span>
+                <ul>
+                  <li v-if="isPriceArticle">
+                    价格：{{ getArticlePrice }} CNY
+                  </li>
+                  <li v-if="isTokenArticle">
+                    条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                    <!-- 不显示 - 号 -->
+                    <br />
+                    <span
+                      >{{ !hasPaied ? '还差' : '目前拥有'
+                      }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{
+                        needTokenSymbol
+                      }}
+                    </span>
+                  </li>
+                </ul>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
               </p>
             </div>
           </div>
-          <div class="exchangeBtns">
-            <el-button
-              v-if="!isTokenArticle"
-              class="wxpayBtn"
-              plain
-              :disabled="payBtnDisabled && isLogined"
-              type="primary"
-              size="mini"
-              @click="wxpay"
-            >
-              微信支付
+        </div>
+        <div class="exchangeBtns">
+          <el-button
+            v-if="!hasPaied"
+            class="wxpayBtn"
+            plain
+            type="primary"
+            size="mini"
+            @click="wxpayArticle"
+          >
+            微信支付
+          </el-button>
+          <router-link :to="{ name: 'exchange' }">
+            <el-button size="mini" type="primary">
+              获取粉丝通证
             </el-button>
-            <router-link :to="{ name: 'exchange' }">
-              <el-button size="mini" type="primary">
-                获取粉丝币
-              </el-button>
-            </router-link>
-          </div>
+          </router-link>
         </div>
       </div>
 
@@ -642,27 +648,52 @@ export default {
       const time = moment(createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
-    // 是否为付费文章
-    tokenArticle() {
-      return this.article.tokens && this.article.tokens.length !== 0
-    },
-    isTokenArticle() {
-      // 付费文章
-      if (this.article.tokens && this.article.tokens.length !== 0) {
-        if (this.showLock) return true
-        else return false
+    getArticlePrice() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return this.$utils.fromDecimal(ad.price)
       } else {
-        // 不付费
-        return true
+        return 0
       }
     },
-    // 需要多少粉丝币
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    // token是否已支付
+    tokenHasPaied() {
+      if (this.isTokenArticle) {
+        if (this.showLock) return true
+        else return false
+      }
+      return true
+    },
+    // 文章是否支付
+    articleHasPaied() {
+      // todo
+      if (this.isPriceArticle) {
+        return this.currentProfile.is_buy
+      }
+      return true
+    },
+    // 是否已付费
+    hasPaied() {
+      if (this.tokenHasPaied && this.articleHasPaied) {
+        return true
+      }
+      return false
+    },
+    // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝币名称
+    // 需要多少粉丝通证名称
     needTokenSymbol() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
@@ -675,7 +706,7 @@ export default {
     // 如果是自己的文章 显示hash 否则走 持币阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
-      else return this.tokenArticle
+      else return this.isTokenArticle
     }
   },
   watch: {
@@ -1233,6 +1264,54 @@ export default {
       } catch (error) {
         this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
       }
+    },
+    makeOrderParams() {
+      const requestParams = {
+        items: []
+      }
+      // token未支付
+      if (!this.tokenHasPaied) {
+        const { output, outputToken } = this.form
+        requestParams.items.push({
+          tokenId: outputToken.id,
+          type: 'buy_minetoken',
+          amount: utils.toDecimal(output, outputToken.decimals)
+        })
+      }
+      // 文章price未支付
+      if (!this.articleHasPaied) {
+        requestParams.items.push({
+          signId: this.id,
+          type: 'buy_post'
+        })
+      }
+      return requestParams
+    },
+    wxpayArticle() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
+      }
+      const loading = this.$loading({
+        lock: false,
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      const requestParams = this.makeOrderParams()
+      this.$API.createArticleOrder(requestParams).then(res => {
+        loading.close()
+        if (res.code === 0) {
+          this.$router.push({ name: 'porder-id', params: {id: res.data}})
+        } else {
+            this.$dialog.alert({
+            title: '温馨提示',
+            message: '订单创建失败'
+          })
+        }
+      })
     },
     wxpay() {
       if (!this.isLogined) {

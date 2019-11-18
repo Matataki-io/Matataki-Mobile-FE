@@ -62,7 +62,7 @@
             阅读权限
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">
-                添加限制条件后，<br />读者只有在持有特定数量的粉丝币后才可查看全文的。
+                添加限制条件后，<br />读者只有在持有特定数量的粉丝通证后才可查看全文的。
               </div>
               <svg-icon class="help-icon" icon-class="help" />
             </el-tooltip>
@@ -355,12 +355,12 @@ export default {
       paymentToken: 1, // 支付token
       paymentSelectOptions: [
         {
-          id: 0,
+          id: -1,
           symbol: 'CNY',
           name: '人民币'
         }
       ], // 支付tokenlist
-      paymentSelectValue: 0, // 支付tokenlist show value
+      paymentSelectValue: -1, // 支付tokenlist show value
 
       readSummary: '',
       statementVisible: false, // 原创声明
@@ -516,43 +516,66 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$backendAPI.getIpfsData(hash)
-      try {
-        // 获取文章信息
-        const { data } = await this.$backendAPI.getMyPost(id)
-        if (data.code === 0) {
-          this.fissionNum = data.data.fission_factor / 1000
-          this.signature = data.data.sign
-          this.cover = data.data.cover
-          this.signId = data.data.id
-          this.isOriginal = Boolean(data.data.is_original)
-          // 持币阅读
-          if (data.data.tokens && data.data.tokens.length !== 0) {
-            this.readauThority = true
-            this.readToken = precision(
-              data.data.tokens[0].amount,
-              'cny',
-              data.data.tokens[0].decimals
-            )
-            this.readSummary = data.data.short_content
-            // this.readSelectOptions = data.data.tokens
-            this.readSelectValue = data.data.tokens[0].id
-          }
+      await this.$API
+        .getIpfsData(hash)
+        .then(res => {
+          if (res.code === 0) {
+            // 设置文章内容
+            this.title = res.data.title
+            this.markdownData = res.data.content
+          } else this.$message.warning(res.message)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
 
-          this.setTag(data.data)
-        } else {
-          this.$toast({ duration: 1000, message: data.message })
-          this.$router.push({ name: 'index' })
-        }
-      } catch (error) {
-        console.error(error)
-        this.$toast({ duration: 1000, message: this.$t('error.getArticleInfoError') })
-        this.$router.push({ name: 'index' })
-      }
-      // 设置文章内容
-      const { data } = articleData.data
-      this.title = data.title
-      this.markdownData = data.content
+      // 获取文章信息
+      await this.$API
+        .getMyPost(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.fissionNum = res.data.fission_factor / 1000
+            this.signature = res.data.sign
+            this.cover = res.data.cover
+            this.signId = res.data.id
+            this.isOriginal = Boolean(res.data.is_original)
+
+            // 持币阅读
+            if (res.data.tokens && res.data.tokens.length !== 0) {
+              this.readauThority = true
+              this.readToken = precision(
+                res.data.tokens[0].amount,
+                'cny',
+                res.data.tokens[0].decimals
+              )
+              this.readSummary = res.data.short_content
+              // this.readSelectOptions = res.data.tokens
+              this.readSelectValue = res.data.tokens[0].id
+            }
+
+            // 持币支付
+            if (res.data.prices && res.data.prices.length !== 0) {
+              this.paymentTokenVisible = true
+              this.paymentToken = precision(
+                res.data.prices[0].price,
+                res.data.prices[0].platform,
+                res.data.prices[0].decimals
+              )
+              this.readSummary = res.data.short_content
+              this.paymentSelectValue = -1
+            }
+
+            this.setTag(res.data)
+          } else {
+            this.$toast({ duration: 1000, message: res.message })
+            this.$router.push({ path: '/article' })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+          this.$toast({ duration: 1000, message: this.$t('error.getArticleInfoError') })
+          this.$router.push({ path: '/article' })
+        })
     },
     // 得到草稿箱内容 by id
     async getDraft(id) {
@@ -615,13 +638,11 @@ export default {
       }
       return tags
     },
-    /**
-     * 文章持币阅读
-     */
-    async postMineTokens(id, type) {
+    // 文章持币阅读
+    async postMineTokens(id) {
       let tokenArr = []
-      // 持币
       if (this.readauThority) {
+        // 持币
         // 获取当前选择的币种
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
         // 目前只用上传一种数据格式
@@ -637,23 +658,18 @@ export default {
         signId: id,
         tokens: tokenArr
       }
-      await this.$backendAPI
-        .addMineTokens(data)
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            if (type === 'publish') {
-              // 删除草稿
-              this.delDraft(this.id)
-                .then(() => {
-                  this.success(id)
-                })
-                .catch(() => {
-                  console.log('删除草稿失败')
-                })
-            } else this.success(id)
-          } else this.failed('设置持币阅读失败')
-        })
-        .catch(err => console.log(err))
+      const res = await this.$API.addMineTokens(data)
+      if (res.code === 0) return res.message
+      else throw res.message
+    },
+    // 文章支付阅读
+    async articlePrices(id) {
+      const data = {
+        price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+      }
+      const res = await this.$API.articlePrices(id, data)
+      if (res.code === 0) return res.message
+      else throw res.message
     },
     // 发布文章
     async publishArticle(article) {
@@ -672,9 +688,23 @@ export default {
           const response = await this.$API.publishArticle({ article, signature })
 
           if (response.code !== 0) throw new Error(response.message)
-          this.postMineTokens(response.data, 'publish')
-          // console.log(response)
-          return 'success'
+
+          // 发送完成开始设置阅读权限 因为需要返回的id
+          const promiseArr = []
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+          promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
+          Promise.all(promiseArr)
+            .then(() => {
+              this.success(
+                response.data,
+                `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`
+              )
+            })
+            .catch(err => {
+              console.log('err', err)
+              this.$message.error(err)
+            })
         } catch (error) {
           this.$store.commit('setLoginModal', this.$errorHandling.isNoToken(error))
           throw error
@@ -741,8 +771,23 @@ export default {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
-      if (response.code === 0) this.postMineTokens(response.data, 'edit')
-      else this.failed(this.$t('error.failTry'))
+      if (response.code === 0) {
+        if (this.readauThority || this.paymentTokenVisible) {
+          // 如果阅读权限设置其中一个都要走以下流程
+          // 发送完成开始设置阅读权限 因为需要返回的id
+          const promiseArr = []
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+          Promise.all(promiseArr)
+            .then(() => {
+              this.success(response.data)
+            })
+            .catch(err => {
+              console.log('err', err)
+              this.$message.error(err)
+            })
+        } else this.success(response.data)
+      } else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
     async delDraft(id) {
@@ -816,8 +861,16 @@ export default {
       // 草稿发送
       const draftPost = async () => {
         if (this.readauThority) {
-          if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
-          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!(Number(this.readToken) > 0))
+            return this.$message.warning('持币数量设置不能小于0')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        if (this.paymentTokenVisible) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.paymentToken) > 0))
+            return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 

@@ -25,8 +25,7 @@
         class="home-head-create"
         src="@/assets/img/icon_home_create.svg"
         alt="create"
-                    @click="writeP"
-
+        @click="writeP"
       />
     </div>
     <search :show-search="showSearch" @showSearchStatus="showSearch = false"></search>
@@ -42,12 +41,7 @@ export default {
   components: {
     search
   },
-  props: {
-    nowIndex: {
-      type: Number,
-      required: true
-    }
-  },
+  props: {},
   data() {
     return {
       avatar: '',
@@ -71,7 +65,7 @@ export default {
           name: 'shop'
         },
         {
-          title: '粉丝币',
+          title: '粉丝通证',
           name: 'token'
         }
       ]
@@ -90,9 +84,9 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser']),
     writeP() {
-      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      if (this.isLogined)
+        this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
       else this.$store.commit('setLoginModal', true)
-
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
@@ -115,7 +109,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f1f1f1;
-  padding: 10px 10px;
+  padding: 10px 20px;
   background-color: #fff;
   box-sizing: border-box;
   &-avatar {
@@ -143,7 +137,7 @@ export default {
     a {
       font-size: 16px;
       color: rgba(178, 178, 178, 1);
-      margin: 0 6px;
+      margin: 0 5px;
       position: relative;
       text-align: center;
       display: inline-block;

@@ -83,23 +83,29 @@
       </router-link>
       <span class="fixed-right share">
         <el-button class="narrowing" size="mini" @click="shareModalShow = true">
-          <svg-icon icon-class="share1" />
+          <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>
       </span>
     </div>
 
     <nav class="user-nav">
-      <a href="javascript:void(0);" class="active">文章</a>
+      <a href="javascript:void(0);" :class="numPage === 1 && 'active'" @click="numPage = 1">
+        文章
+      </a>
       <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
         {{ $t('follow') }}
       </router-link>
       <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
         {{ $t('fans') }}
       </router-link>
+      <a href="javascript:void(0);" :class="numPage === 2 && 'active'" @click="numPage = 2">
+        个人信息
+      </a>
     </nav>
 
     <BasePull
+      v-if="numPage === 1"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :active-index="0"
@@ -118,6 +124,44 @@
         type="article"
       />
     </BasePull>
+
+    <div v-if="numPage === 2" slot="list" v-loading="loading" class="information">
+      <div v-if="urls.length !== 0" class="websites">
+        <h3 class="inline h3">
+          相关网站
+        </h3>
+        <div class="inline url">
+          <p v-for="(item, index) in urls" :key="index">
+            <a :href="item">{{ item }} </a>
+          </p>
+        </div>
+      </div>
+      <div v-if="social.length !== 0" class="social">
+        <h3 class="inline h3">
+          社交账号
+        </h3>
+        <div class="inline social">
+          <div v-for="(item, index) in social" :key="index">
+            <div class="social-icons">
+              <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+            </div>
+            <a v-if="item.url" class="url-text" :href="item.url + '/' + item.content">
+              {{ item.url + '/' + item.content }}
+            </a>
+            <span v-else class="url-text">{{ item.content }}</span>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="social.length === 0 && urls.length === 0 && loading === false"
+        class="social no-data"
+      >
+        <p>
+          暂无信息
+        </p>
+      </div>
+    </div>
+
     <Share
       :share-modal-show="shareModalShow"
       :minetoken-user="{ nickname: username }"
@@ -134,9 +178,10 @@ import tokenAvatar from './components/token_avatar.vue'
 
 import Share from '@/components/token/token_share.vue'
 import avatar from '@/components/avatar/index.vue'
+import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
-  components: { ArticleCard, avatar, tokenAvatar, Share },
+  components: { ArticleCard, avatar, tokenAvatar, Share, socialIcon },
   data() {
     return {
       id: this.$route.params.id,
@@ -163,7 +208,52 @@ export default {
         loadingText: this.$t('not'),
         autoRequestTime: 0
       },
-      shareModalShow: false
+      shareModalShow: false,
+      numPage: 1,
+      loading: false,
+      social: [],
+      socialTemplate: [
+        {
+          icon: 'QQ',
+          type: 'qq',
+          content: ''
+        },
+        {
+          icon: 'Wechat',
+          type: 'wechat',
+          content: ''
+        },
+        {
+          icon: 'Weibo',
+          type: 'weibo',
+          url: 'https://www.weibo.com',
+          content: ''
+        },
+        {
+          icon: 'Telegram',
+          type: 'telegram',
+          content: ''
+        },
+        {
+          icon: 'Twitter',
+          type: 'twitter',
+          url: 'https://twitter.com',
+          content: ''
+        },
+        {
+          icon: 'Facebook',
+          type: 'facebook',
+          url: 'https://facebook.com',
+          content: ''
+        },
+        {
+          icon: 'Github',
+          type: 'github',
+          url: 'https://github.com',
+          content: ''
+        }
+      ],
+      urls: []
     }
   },
   computed: {
@@ -175,6 +265,11 @@ export default {
   watch: {
     isLogined() {
       this.refreshUser()
+    },
+    numPage() {
+      if (this.numPage === 2 && this.social.length === 0 && this.urls.length === 0) {
+        this.getMyUserLinks()
+      }
     }
   },
   created() {
@@ -259,6 +354,25 @@ export default {
     getListDataTab(res) {
       // console.log(res)
       this.pull.list = res.list
+    },
+    async getMyUserLinks() {
+      this.loading = true
+      try {
+        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+          id: this.$route.params.id
+        })
+        if (resLinks.code === 0) {
+          const data = resLinks.data
+          this.urls = data.websites
+          data.socialAccounts.forEach(item => {
+            this.socialTemplate.find(age => age.type === item.type).content = item.value
+          })
+          this.social = this.socialTemplate.filter(age => age.content !== '' && age.content != null)
+          this.loading = false
+        } else console.log('获取用户信息失败,', resLinks)
+      } catch (error) {
+        console.log(`获取用户信息失败${error}`)
+      }
     }
   }
 }

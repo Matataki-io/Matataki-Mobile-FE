@@ -28,6 +28,24 @@ export default {
   orderWxPay(order) {
     return request.post('/order/pay', order)
   },
+  //-------------文章支付使用开始-----------------
+  articleNativePay(tradeNo) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'NATIVE'
+    })
+  },
+  articleJsapiPay(tradeNo, openid) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'JSAPI',
+      openid
+    })
+  },
+  articleWxPay(order) {
+    return request.post('/order/articlepay', order)
+  },
+  //-------------文章支付使用结束-----------------
   wxpay(order) {
     return request.post('/wx/pay', order)
   },
@@ -42,6 +60,13 @@ export default {
         search
       }
     })
+  },
+  // 通过hash获取文章内容
+  getIpfsData(hash) {
+    return request.get(`/post/ipfs/${hash}`)
+  },
+  getMyPost(id) {
+    return request.get(`/mypost/${id}`)
   },
   /**
    * 创建我的token
@@ -108,7 +133,7 @@ minetokenGetResources(tokenId) {
     })
   },
     /**
-   * 粉丝币详情
+   * 粉丝通证详情
    * @param {Number} id token id
    */
   minetokenId(id) {
@@ -312,6 +337,22 @@ minetokenGetResources(tokenId) {
       timeout: 40000,
     })
   },
+    // 文章持币阅读
+    addMineTokens(data) {
+      return request({
+        method: 'post',
+        url: '/post/addMineTokens',
+        data: data,
+      })
+    },
+    // 文章持币支付
+    articlePrices(id, data) {
+      return request({
+        method: 'PUT',
+        url: `/posts/${id}/prices`,
+        data: data,
+      })
+    },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
@@ -414,5 +455,25 @@ minetokenGetResources(tokenId) {
   // 创建订单
   createOrder(order) {
     return request.post('/order/create', order)
+  },
+  createArticleOrder(order) {
+    return request({
+      method: 'PUT',
+      url: '/orders',
+      data: order
+    })
+  },
+  getArticleOrder(tradeNo) {
+    return request({
+      method: 'get',
+      url: `/orders/${tradeNo}`
+    })
+  },
+  updateArticleOrder(tradeNo, order) {
+    return request({
+      method: 'put',
+      url: `/orders/${tradeNo}`,
+      data: order
+    })
   }
 }

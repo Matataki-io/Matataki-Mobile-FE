@@ -2,7 +2,7 @@
   <div class="main exchange">
     <BaseHeader
       :has-bottom-border-line="true"
-      :pageinfo="{ title: '粉丝币交易所' }"
+      :pageinfo="{ title: '粉丝通证交易所' }"
       customize-header-bc="#fff"
     />
     <div class="outer-container">
@@ -14,7 +14,7 @@
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
             <div style="color: white;text-align: center;">
-              <a href="/tokens">跳转到我的粉丝币页面</a>
+              <a href="/tokens">跳转到我的粉丝通证页面</a>
             </div>
           </el-tab-pane>-->
           <el-tab-pane label="流动金池">
