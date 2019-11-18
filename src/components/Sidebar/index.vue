@@ -360,7 +360,7 @@ export default {
     }
   },
   created() {
-    if (!getCookie('ACCESS_TOKEN')) this.refreshUser()
+    if (getCookie('ACCESS_TOKEN')) this.refreshUser()
   },
   mounted() {
     // 保证切换正常显示状态
