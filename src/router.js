@@ -450,16 +450,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const hasLoginPage = [
     // TODO: 移动端路由和pc不一样需要统一, 否则这块数组路由无法统一
-    'account',
-    'points',
     'invite',
-    'tokens',
-    'holdliquidity',
     'minetoken',
     'editminetoken',
     'postminetoken',
     'setting',
-    'user-id-buy',
     'publish-type-id'
   ] // 需要登陆才能进入
   // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
