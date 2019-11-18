@@ -11,17 +11,13 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div v-if="pageType === 1" class="widget-button" @click="widgetModalStatus = 3">
+        <div class="widget-button" @click="widgetModalStatus = 3">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget" />
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div
-          v-else-if="minetokenToken !== null"
-          class="widget-button"
-          @click="widgetModalStatus = 1"
-        >
+        <div v-if="pageType === 0" class="widget-button" @click="widgetModalStatus = 1">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget" />
           </div>
@@ -155,7 +151,12 @@ export default {
       return this.article.id
     },
     userWidget() {
-      return `<iframe width="100%" height="200px" src="${process.env.VUE_APP_URL}/widget/user/?id=${this.$route.params.id}" frameborder=0></iframe>`
+      return [
+        `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this
+          .$route.params.id || 0}' frameborder=0></iframe>`,
+        `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/user/?id=${this
+          .$route.params.id || 0}' frameborder=0></iframe>`
+      ][this.pageType]
     }
   },
   watch: {
