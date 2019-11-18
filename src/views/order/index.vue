@@ -114,7 +114,7 @@ export default {
     tradeType() {
       const type = this.order.type
       if (type === 'add') return '添加流动性'
-      if (type === 'buy_token_input' || type === 'buy_token_output') return '交易粉丝币'
+      if (type === 'buy_token_input' || type === 'buy_token_output') return '交易粉丝通证'
       return ''
     },
     tokenContent() {

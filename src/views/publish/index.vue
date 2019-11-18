@@ -62,7 +62,7 @@
             阅读权限
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">
-                添加限制条件后，<br />读者只有在持有特定数量的粉丝币后才可查看全文的。
+                添加限制条件后，<br />读者只有在持有特定数量的粉丝通证后才可查看全文的。
               </div>
               <svg-icon class="help-icon" icon-class="help" />
             </el-tooltip>

@@ -3,7 +3,7 @@
     <BaseHeader
       :has-bottom-border-line="true"
       customize-header-bc="#fff"
-      :pageinfo="{ title: '粉丝币详情' }"
+      :pageinfo="{ title: '粉丝通证详情' }"
     />
 
     <div class="token-detail">
@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="link">
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝币?</a>
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝通证?</a>
       </div>
     </div>
 
@@ -158,10 +158,10 @@
     <div class="minetoken-card">
       <div class="minetoken-tab">
         <router-link :to="{ name: 'token-id' }" :class="$route.name === 'token-id' && 'active'">
-          粉丝币持仓
+          粉丝通证持仓
         </router-link>
         <router-link :to="{ name: 'token-detail-id' }" :class="$route.name === 'token-detail-id' && 'active'">
-          粉丝币流水
+          粉丝通证流水
         </router-link>
         <router-link :to="{ name: 'token-liquidity-id' }" :class="$route.name === 'token-liquidity-id' && 'active'">
           流动金持仓
@@ -186,7 +186,7 @@
     <!-- <div class="fixed-bottom">
       <router-link class="exchange" :to="{ name: 'exchange' }">
         <svg-icon class="tokens" icon-class="token" />
-        粉丝币交易所
+        粉丝通证交易所
       </router-link>
     </div> -->
   </div>

@@ -103,7 +103,7 @@
                 {{ !hasPaied ? '解锁全文的条件' : '已解锁全文' }}
                 <el-tooltip class="item" effect="dark" placement="top-start">
                   <div slot="content">
-                    阅读本文需要先持有特定数量的粉丝币，<br />满足本文的阅读条件后刷新页面即可阅读全文。
+                    阅读本文需要先持有特定数量的粉丝通证，<br />满足本文的阅读条件后刷新页面即可阅读全文。
                   </div>
                   <svg-icon class="help-icon" icon-class="help" />
                 </el-tooltip>
@@ -114,7 +114,7 @@
                     价格：{{ getArticlePrice }} CNY
                   </li>
                   <li v-if="isTokenArticle">
-                    条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                    条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
                     <!-- 不显示 - 号 -->
                     <br />
                     <span
@@ -145,7 +145,7 @@
           </el-button>
           <router-link :to="{ name: 'exchange' }">
             <el-button size="mini" type="primary">
-              获取粉丝币
+              获取粉丝通证
             </el-button>
           </router-link>
         </div>
@@ -687,13 +687,13 @@ export default {
       }
       return false
     },
-    // 需要多少粉丝币
+    // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝币名称
+    // 需要多少粉丝通证名称
     needTokenSymbol() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
