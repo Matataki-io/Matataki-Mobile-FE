@@ -3,13 +3,24 @@
     <div class="hYLPFg">
       <div class="token-info">
         <avatar :src="logo" size="20px" />
-        <span>{{minetokenToken.symbol}}视角</span>
-        <span title="切换视角" v-if="tokensId.length >= 2"><svg-icon class="refresh" icon-class="refresh" @click="changeView"/></span>
+        <span>{{ minetokenToken.symbol }}视角</span>
+        <svg-icon
+          v-if="tokensId.length >= 2"
+          class="refresh"
+          icon-class="refresh"
+          @click="changeView"
+        />
       </div>
       <div class="header">
-        <span><span class="black">{{price}}</span> 最新价格</span>
-        <span><span :class="changeClass">{{change}}</span> 24h涨跌</span>
-        <span><span class="black">{{volume}}</span> 24h成交</span>
+        <span
+          ><span class="black">{{ price }}</span> 最新价格</span
+        >
+        <span
+          ><span :class="changeClass">{{ change }}</span> 24h涨跌</span
+        >
+        <span
+          ><span class="black">{{ volume }}</span> 24h成交</span
+        >
       </div>
       <div class="jJSpkX" />
     </div>
@@ -17,19 +28,24 @@
       <div class="iNUelT">
         <div class="content">
           <!-- <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录'}}</span> -->
-          <router-link v-if="currentId" target='_blank' class="gray-btn btn" :to="{name: 'token-id', params: {id: currentId}}">
+          <router-link
+            v-if="currentId"
+            target="_blank"
+            class="gray-btn btn"
+            :to="{ name: 'token-id', params: { id: currentId } }"
+          >
             <div class="link">
-              <svg-icon icon-class="share" class="icon"/>
+              <svg-icon icon-class="share" class="icon" />
             </div>
           </router-link>
-          <el-tabs type="border-card"  v-model="activeName">
+          <el-tabs v-model="activeName" type="border-card">
             <el-tab-pane label="我的流水" name="my">
-              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol"/>
-              <LiquidityTable v-else :list="myLogs" :symbol="symbol"/>
+              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol" />
+              <LiquidityTable v-else :list="myLogs" :symbol="symbol" />
             </el-tab-pane>
             <el-tab-pane label="全部流水" name="all">
-              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol"/>
-              <LiquidityTable v-else :list="logs" :symbol="symbol"/>
+              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol" />
+              <LiquidityTable v-else :list="logs" :symbol="symbol" />
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -46,34 +62,19 @@ import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
-  props: {
-    tokensId: {
-      type: Array,
-      default: () => ([])
-    },
-    type: {
-      type: String,
-      default: 'purchase'
-    }
-  },
   components: {
     avatar,
     TradeTable,
     LiquidityTable
   },
-  watch: {
-    tokensId(ids) {
-      if (ids.length > 0) {
-        this.currentId = ids[0]
-        this.update()
-      } else {
-        this.currentId = null
-        this.logs = []
-        this.myLogs = []
-        this.minetokenToken = Object.create(null)
-        this.minetokenUser = Object.create(null)
-        this.minetokenExchange = Object.create(null)
-      }
+  props: {
+    tokensId: {
+      type: Array,
+      default: () => []
+    },
+    type: {
+      type: String,
+      default: 'purchase'
     }
   },
   data() {
@@ -96,7 +97,11 @@ export default {
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
     },
     volume() {
-      const tokenamount = precision(this.minetokenExchange.volume_24h || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.volume_24h || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     change() {
@@ -119,8 +124,22 @@ export default {
       }
     }
   },
-  beforeUpdate() {
+  watch: {
+    tokensId(ids) {
+      if (ids.length > 0) {
+        this.currentId = ids[0]
+        this.update()
+      } else {
+        this.currentId = null
+        this.logs = []
+        this.myLogs = []
+        this.minetokenToken = Object.create(null)
+        this.minetokenUser = Object.create(null)
+        this.minetokenExchange = Object.create(null)
+      }
+    }
   },
+  beforeUpdate() {},
   methods: {
     update() {
       this.minetokenId(this.currentId)
@@ -182,7 +201,9 @@ export default {
           ele.token_amount = this.$utils.fromDecimal(ele.token_amount)
         }
         if (!isNullExcept0(ele.create_time)) {
-          ele.create_time = moment(ele.create_time).utcOffset(480).format('YYYY.MM.DD HH:mm')
+          ele.create_time = moment(ele.create_time)
+            .utcOffset(480)
+            .format('YYYY.MM.DD HH:mm')
         }
         if (!isNullExcept0(ele.liquidity)) {
           ele.liquidity = this.$utils.fromDecimal(ele.liquidity)
@@ -191,15 +212,17 @@ export default {
       return list
     },
     async minetokenId(id) {
-      await this.$API.minetokenId(id).then(res => {
-        if (res.code === 0) {
-          this.minetokenToken = res.data.token || Object.create(null)
-          this.minetokenUser = res.data.user || Object.create(null)
-          this.minetokenExchange = res.data.exchange || Object.create(null)
-        } else {
-          this.$message.error(res.message)
-        }
-      })
+      await this.$API
+        .minetokenId(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.minetokenToken = res.data.token || Object.create(null)
+            this.minetokenUser = res.data.user || Object.create(null)
+            this.minetokenExchange = res.data.exchange || Object.create(null)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
         .catch(err => {
           console.log(err)
         })
@@ -253,7 +276,7 @@ export default {
         align-items: center;
         justify-content: center;
         .icon {
-          color: #B2B2B2;
+          color: #b2b2b2;
           font-size: 10px;
         }
       }
@@ -263,21 +286,25 @@ export default {
     display: flex;
     align-self: center;
     justify-content: flex-start;
-    padding: 0.5rem 0.8rem 0 0.8rem;
+    align-items: center;
+    padding: 10px 10px 0;
     span {
       line-height: 20px;
       height: 20px;
       margin-left: 5px;
+      font-size: 14px;
     }
     .refresh {
+      font-size: 16px;
       cursor: pointer;
+      margin-left: 8px;
     }
   }
   .red {
-    color: #FB6877;
+    color: #fb6877;
   }
   .green {
-    color: #44D7B6;
+    color: #44d7b6;
   }
   .black {
     color: #000000;
@@ -314,12 +341,12 @@ export default {
   }
 }
 .trade-log-header {
-  color: #542DE0;
+  color: #542de0;
   font-weight: 400;
-  border-bottom: 0!important;
+  border-bottom: 0 !important;
 }
 .trade-log-row {
-  border-bottom: 0!important;
-  padding: 2px 0!important;
+  border-bottom: 0 !important;
+  padding: 2px 0 !important;
 }
 </style>
