@@ -15,8 +15,8 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
-      <button class="sun-btn" @click="toggleBookmark">
-        <svg-icon :iconClass="!isBookmarked ? 'bookmark' : 'bookmark-solid'" class="btn-prefix" />
+      <button class="sun-btn" :bookmarked="isBookmarked" @click="toggleBookmark">
+        <svg-icon v-if="!isBookmarked" :iconClass="'bookmark-solid'" class="btn-prefix" />
         {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
       </button>
       <button class="sun-btn" :disabled="clicked" @click="like">
@@ -359,6 +359,11 @@ export default {
     margin-right: 2px;
   }
   &:disabled {
+    color: #ffffff;
+    background-color: #b2b2b2;
+    border: 1px solid #b2b2b2;
+  }
+  &[bookmarked] {
     color: #ffffff;
     background-color: #b2b2b2;
     border: 1px solid #b2b2b2;
