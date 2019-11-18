@@ -151,7 +151,8 @@ export default {
   articleCard: {
     read: '浏览',
     sale: '销量',
-    saleUnit: 'EOS/份'
+    saleUnit: 'EOS/份',
+    deleted: '已下架'
   },
   articleFooter: {
     received: '已领取',
