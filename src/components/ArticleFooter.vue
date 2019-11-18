@@ -19,12 +19,12 @@
         <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
         <span
           >{{ clicked ? $t('articleFooter.likes') : $t('articleFooter.like') }}
-          {{ token && token.likes }}</span
+          {{ token && likes }}</span
         >
       </button>
       <button class="sun-btn" :disabled="clicked" @click="dislike">
         <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
-        <span>{{ $t('articleFooter.unlike') }} {{ token && token.dislikes }}</span>
+        <span>{{ $t('articleFooter.unlike') }} {{ token && dislikes }}</span>
       </button>
       <button class="sun-btn" @click="$emit('share')">
         <img src="@/assets/newimg/share.svg" class="btn-prefix" />
@@ -47,6 +47,14 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    dislikes: {
+      type: Number,
+      default: 0
     },
     token: {
       type: Object,
@@ -152,7 +160,7 @@ export default {
             clearInterval(this.timer)
             this.token.is_liked = 2
             this.token.points = res.data
-            this.token.likes += 1
+            this.likes += 1
             // this.feedbackShow = true
             this.$toast.success({
               duration: 1000,
@@ -191,7 +199,7 @@ export default {
             clearInterval(this.timer)
             this.token.is_liked = 1
             this.token.points = res.data
-            this.token.dislikes += 1
+            this.dislikes += 1
             // this.feedbackShow = true
             this.$toast.success({
               duration: 1000,
