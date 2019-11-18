@@ -178,6 +178,23 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/user/:id/bookmark',
+      name: 'Bookmark',
+      props: true,
+      component: () => import(/* webpackChunkName: "Bookmark" */ './views/User/Bookmark.vue'),
+      beforeEnter: (to, from, next) => {
+        const { id } = to.params
+        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
+        else {
+          next()
+        }
+      },
+      meta: {
+        title: '收藏-瞬MATATAKI'
+      }
+    },
+    {
       path: '/user/:id/reward',
       name: 'Reward',
       props: true,

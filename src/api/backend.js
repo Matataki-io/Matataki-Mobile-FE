@@ -578,6 +578,18 @@ const API = {
   },
   async getUserLinks({ id }) {
     return this.accessBackend({ url: `/user/${id}/links` })
+  },
+  bookmark(id) {
+    return this.accessBackend({
+      method: 'post',
+      url: `/post/${id}/bookmark`
+    })
+  },
+  unbookmark(id) {
+    return this.accessBackend({
+      method: 'delete',
+      url: `/post/${id}/bookmark`
+    })
   }
 }
 

@@ -15,6 +15,10 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
+      <button class="sun-btn" :bookmarked="isBookmarked" @click="toggleBookmark">
+        <svg-icon v-if="!isBookmarked" :iconClass="'bookmark-solid'" class="btn-prefix" />
+        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
+      </button>
       <button class="sun-btn" :disabled="clicked" @click="like">
         <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
         <span
@@ -64,6 +68,10 @@ export default {
         likes: 0,
         is_liked: 0
       })
+    },
+    isBookmarked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -278,6 +286,26 @@ export default {
         clearInterval(this.timer)
         this.timer = null
       }
+    },
+    async toggleBookmark() {
+      try {
+        if (!this.isBookmarked) {
+          const res = await this.$backendAPI.bookmark(this.article.id)
+          if (res.data.code === 0) {
+            this.isBookmarked = true
+          }
+        } else {
+          const res = await this.$backendAPI.unbookmark(this.article.id)
+          if (res.status === 204) {
+            this.isBookmarked = false
+          }
+        }
+      } catch (err) {
+        console.error('ToggleBookmark err', err)
+        if (err.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
+        }
+      }
     }
   }
 }
@@ -339,6 +367,11 @@ export default {
     margin-right: 2px;
   }
   &:disabled {
+    color: #ffffff;
+    background-color: #b2b2b2;
+    border: 1px solid #b2b2b2;
+  }
+  &[bookmarked] {
     color: #ffffff;
     background-color: #b2b2b2;
     border: 1px solid #b2b2b2;

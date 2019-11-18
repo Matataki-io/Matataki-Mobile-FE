@@ -18,6 +18,7 @@
       :key="index"
       :params="item.params"
       :api-url="item.apiUrl"
+      :need-access-token="needAccessToken"
       :active-index="activeIndex"
       :now-index="index"
       :auto-request-time="item.autoRequestTime"
@@ -62,7 +63,8 @@ export default {
   data() {
     return {
       tabsData: [],
-      activeIndex: 0
+      activeIndex: 0,
+      needAccessToken: false
     }
   },
   computed: {},
@@ -125,6 +127,19 @@ export default {
           autoRequestTime: 0
         }
       ]
+    } else if (listtype === 'bookmark') {
+      this.tabsData = [
+        {
+          label: this.$t('user.article'),
+          params: {},
+          apiUrl: 'userBookmarks',
+          articles: [],
+          loadingText: this.$t('notArticle'),
+          autoRequestTime: 0
+        }
+      ]
+
+      this.needAccessToken = true
     }
   },
   methods: {

@@ -303,6 +303,7 @@
       :likes="likes" :dislikes="dislikes"
       :article="article"
       :token="ssToken"
+      :isBookmarked="isBookmarked"
       @share="widgetModal = true"
     />
 
@@ -577,7 +578,8 @@ export default {
         outputToken: {}
       },
       getInputAmountError: '',
-      payBtnDisabled: true
+      payBtnDisabled: true,
+      isBookmarked: false
     }
   },
   computed: {
@@ -795,6 +797,7 @@ export default {
             this.differenceTokenFunc()
             this.calPayFormParams()
             this.setSSToken(res.data)
+            this.isBookmarked = Boolean(res.data.data.is_bookmarked)
           } else if (res.data.code === 401) {
             console.log(res.data.message)
           } else {
