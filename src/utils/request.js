@@ -4,6 +4,7 @@
 import axios from "axios"
 import Cookies from 'js-cookie'
 import { Message } from 'element-ui'
+import store from '../store/index'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -51,6 +52,7 @@ _axios.interceptors.response.use(
 
       if (error.message.includes('status code 401')) {
         console.log('未授权')
+        store.commit('setLoginModal', true)
       }
 
       // 超时处理
