@@ -165,7 +165,7 @@ export default {
     readNew: '阅读新文章奖励{0}积分, 评价后可领取更多积分!',
     readNewFail: '阅读新文章增加积分失败',
     bookmark: '收藏',
-    unbookmark: '取消收藏'
+    unbookmark: '已收藏'
   },
   assetCard: {
     0: '提现待处理',
