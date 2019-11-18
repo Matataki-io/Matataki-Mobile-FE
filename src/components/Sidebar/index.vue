@@ -294,6 +294,7 @@
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 import defaultAvatar from '@/assets/avatar-default.svg'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'Sidebar',
@@ -359,7 +360,7 @@ export default {
     }
   },
   created() {
-    this.refreshUser()
+    if (!getCookie('ACCESS_TOKEN')) this.refreshUser()
   },
   mounted() {
     // 保证切换正常显示状态
@@ -414,10 +415,18 @@ export default {
       }
 
       if (isMe(id)) {
-        const {
-          data: { data }
-        } = await this.$backendAPI.getMyUserData()
-        setUser(data)
+        await this.$API
+          .getMyUserData()
+          .then(res => {
+            if (res.code === 0) {
+              setUser(res.data)
+            } else {
+              console.log(res.message)
+            }
+          })
+          .catch(err => {
+            console.log('err', err)
+          })
       }
     },
     setAvatarImage(hash) {

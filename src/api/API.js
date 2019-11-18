@@ -475,5 +475,11 @@ minetokenGetResources(tokenId) {
       url: `/orders/${tradeNo}`,
       data: order
     })
+  },
+  getMyUserData() {
+    return request({
+      method: 'get',
+      url: '/user/stats',
+    })
   }
 }
