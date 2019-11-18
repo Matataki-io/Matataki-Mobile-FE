@@ -115,7 +115,7 @@ minetokenGetResources(tokenId) {
     })
   },
     /**
-   * 粉丝币详情
+   * 粉丝通证详情
    * @param {Number} id token id
    */
   minetokenId(id) {

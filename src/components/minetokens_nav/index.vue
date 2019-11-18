@@ -4,7 +4,7 @@
       v-for="(item, index) in user"
       :key="index"
       :class="$route.name === item.url && 'active'"
-      :to="{name: item.url, params: {id: $route.params.id}}"
+      :to="{ name: item.url, params: { id: $route.params.id } }"
     >
       <div class="icon-tokens" :class="item.icon">
         <svg-icon :icon-class="item.icon" />
@@ -17,15 +17,13 @@
 <script>
 export default {
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     user() {
       return [
-        { title: '粉丝币持仓', icon: 'minetokens_details', url: 'token-id' },
-        { title: '粉丝币流水', icon: 'minetokens_detail', url: 'token-detail-id' },
+        { title: '粉丝通证持仓', icon: 'minetokens_details', url: 'token-id' },
+        { title: '粉丝通证流水', icon: 'minetokens_detail', url: 'token-detail-id' },
         { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
         { title: '流动金流水', icon: 'minetokens_detail', url: 'token-liquidity-detail-id' }
       ]
@@ -41,7 +39,7 @@ export default {
   display: flex;
   a {
     font-size: 18px;
-    line-height:33px;
+    line-height: 33px;
     text-decoration: none;
     margin: 0;
     cursor: pointer;
@@ -55,25 +53,25 @@ export default {
       margin-right: 40px;
     }
     &.active {
-      font-weight:bold;
-      color:rgba(0,0,0,1);
+      font-weight: bold;
+      color: rgba(0, 0, 0, 1);
     }
   }
 }
 
 .icon-tokens {
-  width:60px;
-  height:60px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  &.minetokens_detail{
-    background: #542DE0;
+  &.minetokens_detail {
+    background: #542de0;
   }
-  &.minetokens_details{
-    background: #F7B500;
+  &.minetokens_details {
+    background: #f7b500;
   }
 }
 </style>

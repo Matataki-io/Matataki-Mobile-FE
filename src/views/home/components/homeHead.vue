@@ -65,7 +65,7 @@ export default {
           name: 'shop'
         },
         {
-          title: '粉丝币',
+          title: '粉丝通证',
           name: 'token'
         }
       ]
