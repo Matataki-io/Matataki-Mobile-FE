@@ -15,6 +15,10 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
+      <button class="sun-btn" @click="toggleBookmark">
+        <svg-icon :iconClass="!isBookmarked ? 'bookmark' : 'bookmark-solid'" class="btn-prefix" />
+        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
+      </button>
       <button class="sun-btn" :disabled="clicked" @click="like">
         <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
         <span
@@ -25,10 +29,6 @@
       <button class="sun-btn" :disabled="clicked" @click="dislike">
         <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
         <span>{{ $t('articleFooter.unlike') }} {{ token && token.dislikes }}</span>
-      </button>
-      <button class="sun-btn" @click="toggleBookmark">
-        <svg-icon :iconClass="!isBookmarked ? 'bookmark' : 'bookmark-solid'" class="btn-prefix" />
-        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
       </button>
       <button class="sun-btn" @click="$emit('share')">
         <img src="@/assets/newimg/share.svg" class="btn-prefix" />
