@@ -112,11 +112,12 @@ export default {
       return '购买文章'
     },
     tokenAmount() {
-      if (this.order.token_amount) return this.$utils.fromDecimal(this.order.token_amount)
-      else return 0
+      if (this.order.token_amount) {
+        return utils.up2points(utils.fromDecimal(this.order.total))
+      } else return 0
     },
     cnyAmount() {
-      if (this.order.amount) return this.$utils.fromDecimal(this.order.amount)
+      if (this.order.total) return this.$utils.fromDecimal(this.order.total)
       else return 0
     },
     friendlyTime() {
@@ -198,7 +199,6 @@ export default {
       const id = this.$route.params.id
       this.tradeNo = id
       this.$API.getArticleOrder(id).then(res => {
-        console.log(res);
         if (res.code === 0) {
           const status = Number(res.data.status)
           if(status === 7 || status === 8) {
@@ -208,6 +208,7 @@ export default {
             this.alert('订单已支付')
           }
           this.order = res.data
+          this.useBalance = Boolean(res.data.use_balance)
         } else {
           this.alert('订单不存在')
         }
@@ -216,7 +217,7 @@ export default {
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer);
-      this.$API.updateArticleOrder(this.tradeNo, { useBalance: v }).then(res => {
+      this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
         if (res.code === 0) {
           // this.getOrderData()
         }
@@ -224,55 +225,11 @@ export default {
     },
     // 使用余额支付
     balancePay() {
-      const handler = res => {
-        this.loading = false;
-        if (res === 0) {
+      this.$API.handleAmount0(this.tradeNo).then(res => {
+        if (res.code === 0) {
           this.alert('交易成功')
-        } else {
-          this.alert('交易失败，请重试')
         }
-      };
-      const {
-        token_id,
-        cny_amount,
-        pay_cny_amount,
-        token_amount,
-        min_liquidity,
-        min_tokens,
-        max_tokens,
-        deadline,
-        type
-      } = this.order
-      if (type === "add") {
-        this.$API
-          .addLiquidityBalance({
-            tokenId: token_id,
-            cny_amount,
-            token_amount,
-            min_liquidity,
-            max_tokens,
-            deadline
-          })
-          .then(res => handler(res));
-      } else if (type === "buy_token_input") {
-        this.$API
-          .cnyToTokenInputBalance({
-            tokenId: token_id,
-            cny_sold: cny_amount,
-            min_tokens,
-            deadline
-          })
-          .then(res => handler(res));
-      } else if (type === "buy_token_output") {
-        this.$API
-          .cnyToTokenOutputBalance({
-            tokenId: token_id,
-            tokens_bought: token_amount,
-            max_cny: min_tokens,
-            deadline
-          })
-          .then(res => handler(res));
-      }
+      })
     },
     // 使用微信支付
     weixinPay() {

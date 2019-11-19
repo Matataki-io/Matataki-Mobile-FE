@@ -118,7 +118,7 @@
                     <!-- 不显示 - 号 -->
                     <br />
                     <span
-                      >{{ !hasPaied ? '还差' : '目前拥有'
+                      >{{ !tokenHasPaied ? '还差' : '目前拥有'
                       }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{
                         needTokenSymbol
                       }}
@@ -672,19 +672,10 @@ export default {
       }
       return true
     },
-    // 文章是否支付
-    articleHasPaied() {
-      // todo
-      if (this.isPriceArticle) {
-        return this.currentProfile.is_buy
-      }
-      return true
-    },
     // 是否已付费
     hasPaied() {
-      if (this.tokenHasPaied && this.articleHasPaied) {
-        return true
-      }
+      if (this.isMe(this.article.uid)) return true
+      if (this.currentProfile) return this.currentProfile.is_buy
       return false
     },
     // 需要多少粉丝通证
@@ -1267,10 +1258,11 @@ export default {
     },
     makeOrderParams() {
       const requestParams = {
+        useBalance: 0,
         items: []
       }
       // token未支付
-      if (!this.tokenHasPaied) {
+      if (this.isTokenArticle) {
         const { output, outputToken } = this.form
         requestParams.items.push({
           tokenId: outputToken.id,
@@ -1279,7 +1271,7 @@ export default {
         })
       }
       // 文章price未支付
-      if (!this.articleHasPaied) {
+      if (this.isPriceArticle) {
         requestParams.items.push({
           signId: this.id,
           type: 'buy_post'
@@ -1342,7 +1334,8 @@ export default {
           needTokenAmount = this.article.tokens[0].amount
         }
         // 减之后 换算
-        this.form.output = utils.fromDecimal(needTokenAmount - amount)
+        if (needTokenAmount <= amount) this.form.output = 0
+        else this.form.output = utils.fromDecimal(needTokenAmount - amount)
         const { inputToken, output, outputToken } = this.form
         if (output > 0) {
           this.getInputAmount(inputToken.id, outputToken.id, output)
