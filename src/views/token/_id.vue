@@ -1,48 +1,33 @@
 <template>
-  <layout>
-    <BasePull
-      :url-replace="$route.params.id + ''"
-      :params="pull.params"
-      :api-url="pull.apiUrl"
-      :loading-text="$t('not')"
-      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-      :need-access-token="true"
-      :auto-request-time="0"
-      @getListData="getListData"
-    >
-      <card v-for="item in pull.list" :key="item.id" :card="item" :decimals="4"></card>
-    </BasePull>
+  <layout v-model="tabPage">
+    <tokenFanCoins v-if="tabPage === 0" />
+    <tokenFanCoinsDetail v-if="tabPage === 1" />
+    <tokenLiquidity v-if="tabPage === 2" />
+    <tokenLiquidityDetail v-if="tabPage === 3" />
   </layout>
 </template>
 
 <script>
-import card from '@/components/minetoken_card/index.vue'
 import layout from '@/components/token/token_layout.vue'
+import tokenFanCoins from '@/components/token/token_fan_coins.vue'
+import tokenFanCoinsDetail from '@/components/token/token_fan_coins_detail.vue'
+import tokenLiquidity from '@/components/token/token_liquidity.vue'
+import tokenLiquidityDetail from '@/components/token/token_liquidity_detail.vue'
 
 export default {
   components: {
-    card,
-    layout
+    layout,
+    tokenFanCoins,
+    tokenFanCoinsDetail,
+    tokenLiquidity,
+    tokenLiquidityDetail
   },
   data() {
     return {
-      pull: {
-        params: {
-          pagesize: 20
-        },
-        apiUrl: 'tokenIdBalances',
-        list: []
-      },
-      currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
-      total: 0
+      tabPage: 0
     }
   },
-  methods: {
-    getListData(res) {
-      this.pull.list = res.list
-    }
-  }
+  methods: {}
 }
 </script>
 
