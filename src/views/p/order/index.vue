@@ -111,14 +111,10 @@ export default {
     tradeType() {
       return '购买文章'
     },
-    tokenAmount() {
-      if (this.order.token_amount) {
+    cnyAmount() {
+      if (this.order.total) {
         return utils.up2points(utils.fromDecimal(this.order.total))
       } else return 0
-    },
-    cnyAmount() {
-      if (this.order.total) return this.$utils.fromDecimal(this.order.total)
-      else return 0
     },
     friendlyTime() {
       return moment(this.order.create_time).format(
@@ -180,7 +176,7 @@ export default {
     },
     onSubmit() {
       this.loading = true
-      console.log(this.needPay);
+      console.log('this.needPay', this.needPay);
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
