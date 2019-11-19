@@ -288,7 +288,9 @@ export default {
       try {
         await Promise.all([saveProfile(), saveLinks()])
 
-        this.$navigation.cleanRoutes() // 清除路由记录
+        // !!! 该方法会导致内容监听失效 !!!
+        // this.$navigation.cleanRoutes() // 清除路由记录
+
         this.refreshUser()
         this.$toast.success({
           duration: 1000,
