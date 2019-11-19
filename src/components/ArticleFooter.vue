@@ -15,16 +15,27 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
-      <svg-icon icon-class="great-solid" :class="renderMyButton('great')" @click="like" />
-      <span>{{ token && likes }}</span>
-      <svg-icon icon-class="bullshit-solid" :class="renderMyButton('bullshit')" @click="dislike" />
-      <span>{{ token && dislikes }}</span>
-      <svg-icon
-        :icon-class="'bookmark-solid'"
-        :class="renderMyButton('bookmark')"
-        @click="toggleBookmark"
-      />
-      <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
+      <div :class="renderIconSet('great')">
+        <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
+        <p class="tag">{{ $t('articleFooter.like') }}{{ token && likes }}</p>
+      </div>
+      <div :class="renderIconSet('bullshit')">
+        <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
+        <p class="tag">{{ $t('articleFooter.unlike') }}{{ token && dislikes }}</p>
+      </div>
+      <div :class="renderIconSet('bookmark')">
+        <svg-icon
+          :icon-class="'bookmark-solid'"
+          class="borderless-icon-btn"
+          @click="toggleBookmark"
+        />
+        <p class="tag">{{ $t('articleFooter.bookmark') }}</p>
+      </div>
+      <div class="icon-set">
+        <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
+        <p class="tag">{{ $t('share') }}</p>
+      </div>
+
       <!-- {{ $t('share') }} -->
     </div>
   </footer>
@@ -152,15 +163,12 @@ export default {
     getIconStatus(name) {
       return this.type === name
     },
-    renderMyButton(name) {
-      if (name === 'bookmark') {
-        return this.isBookmarked ? `borderless-icon-btn clicked` : `borderless-icon-btn`
+    renderIconSet(name) {
+      let status = 'icon-set'
+      if (this.getIconStatus(name) || name === 'bookmark') {
+        status += ' clicked'
       }
-      if (this.getIconStatus(name)) {
-        return `borderless-icon-btn clicked`
-      } else {
-        return `borderless-icon-btn`
-      }
+      return status
     },
     handleAlreadyClicked() {
       this.$toast.fail({
@@ -408,5 +416,11 @@ export default {
 }
 .clicked {
   color: rgb(73, 60, 216);
+}
+.clicked * {
+  color: rgb(73, 60, 216);
+}
+.icon-set p.tag {
+  text-align: center;
 }
 </style>
