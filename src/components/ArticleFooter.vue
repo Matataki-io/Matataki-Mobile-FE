@@ -23,7 +23,7 @@
         <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
         <p class="tag">{{ $t('articleFooter.unlike') }}{{ token && dislikes }}</p>
       </div>
-      <div :class="renderIconSet('bookmark')">
+      <div :class="bookmarkBtnClass">
         <svg-icon
           :icon-class="'bookmark-solid'"
           class="borderless-icon-btn"
@@ -86,6 +86,13 @@ export default {
     }
   },
   computed: {
+    bookmarkBtnClass() {
+      let status = 'icon-set'
+      if (this.isBookmarked) {
+        status += ' clicked'
+      }
+      return status
+    },
     points() {
       const { points } = this.token
       const pointTypes = {
