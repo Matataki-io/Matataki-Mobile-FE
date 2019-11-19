@@ -129,8 +129,8 @@ p {
   border-bottom: 1px solid #ececec;
   padding: 20px;
   .avatar {
-    width: 30px !important;
-    height: 30px !important;
+    width: 40px !important;
+    height: 40px !important;
     background: #eee;
     z-index: 1;
     position: relative;
