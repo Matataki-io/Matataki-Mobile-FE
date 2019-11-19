@@ -13,8 +13,31 @@
       <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
       <van-cell title="交易类型" :value="tradeType" />
       <van-cell title="创建时间" :value="friendlyTime" />
-      <van-cell title="订单编号" :value="tradeNo" />
+      <van-cell title="订单编号" :value="tradeNo" value-class="longValue" />
     </van-cell-group>
+    <div class="order-item">
+      <el-table
+        header-cell-class-name="grayHeader"
+        :data="orderItems"
+        style="width: 100%">
+        <el-table-column
+          prop="name"
+          label="品名">
+        </el-table-column>
+        <el-table-column
+          prop="operating"
+          label="操作">
+        </el-table-column>
+        <el-table-column
+          prop="amount"
+          label="数量">
+        </el-table-column>
+        <el-table-column
+          prop="total"
+          label="小计">
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="flexBox">
       <span>预期价格波动：1%
       </span>
@@ -102,7 +125,8 @@ export default {
         limitValue: ''
       },
       qrcodeShow: false,
-      payLink: 'baidu.com'
+      payLink: '',
+      orderItems: []
     };
   },
   components: { QRCode },
@@ -205,10 +229,33 @@ export default {
           }
           this.order = res.data
           this.useBalance = Boolean(res.data.use_balance)
+          this.orderItems = this.handleOrderItem(res.data.items)
         } else {
           this.alert('订单不存在')
         }
       })
+    },
+    handleOrderItem(items) {
+      let result = []
+      const t1 = items.orderPriceItem
+      const t2 = items.orderTokenItem
+      if (t1) {
+        result.push({
+          name: t1.symbol,
+          operating: '支付',
+          amount: utils.fromDecimal(t1.amount),
+          total: utils.up2points(utils.fromDecimal(t1.price)) + ' CNY'
+        })
+      }
+      if (t2) {
+        result.push({
+          name: t2.symbol,
+          operating: '购买',
+          amount: utils.fromDecimal(t2.token_amount),
+          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY',
+        })
+      }
+      return result
     },
     // 是否使用余额修改
     useBalanceChange(v) {
@@ -398,6 +445,14 @@ export default {
     background-color: @purple;
     border: 0.0625rem solid @purple;
   }
+  .grayHeader {
+    color: #B2B2B2;
+    font-weight: 400;
+    padding: 6px 0;
+  }
+  .longValue {
+    flex: 4;
+  }
 }
 .van-dialog {
   border-radius: 10px;
@@ -454,6 +509,9 @@ export default {
       color: #bbbbbb;
       margin-bottom: 16px;
     }
+  }
+  .order-item {
+    margin-top: 10px;
   }
 }
 </style>
