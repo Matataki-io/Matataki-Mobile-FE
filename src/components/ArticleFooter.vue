@@ -15,16 +15,20 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
+      <button class="sun-btn" :bookmarked="isBookmarked" @click="toggleBookmark">
+        <svg-icon v-if="!isBookmarked" :iconClass="'bookmark-solid'" class="btn-prefix" />
+        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
+      </button>
       <button class="sun-btn" :disabled="clicked" @click="like">
         <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
         <span
           >{{ clicked ? $t('articleFooter.likes') : $t('articleFooter.like') }}
-          {{ token && token.likes }}</span
+          {{ token && likes }}</span
         >
       </button>
       <button class="sun-btn" :disabled="clicked" @click="dislike">
         <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
-        <span>{{ $t('articleFooter.unlike') }} {{ token && token.dislikes }}</span>
+        <span>{{ $t('articleFooter.unlike') }} {{ token && dislikes }}</span>
       </button>
       <button class="sun-btn" @click="$emit('share')">
         <img src="@/assets/newimg/share.svg" class="btn-prefix" />
@@ -48,6 +52,14 @@ export default {
       type: Object,
       required: true
     },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    dislikes: {
+      type: Number,
+      default: 0
+    },
     token: {
       type: Object,
       default: () => ({
@@ -56,6 +68,10 @@ export default {
         likes: 0,
         is_liked: 0
       })
+    },
+    isBookmarked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -152,7 +168,7 @@ export default {
             clearInterval(this.timer)
             this.token.is_liked = 2
             this.token.points = res.data
-            this.token.likes += 1
+            this.likes += 1
             // this.feedbackShow = true
             this.$toast.success({
               duration: 1000,
@@ -191,7 +207,7 @@ export default {
             clearInterval(this.timer)
             this.token.is_liked = 1
             this.token.points = res.data
-            this.token.dislikes += 1
+            this.dislikes += 1
             // this.feedbackShow = true
             this.$toast.success({
               duration: 1000,
@@ -270,6 +286,26 @@ export default {
         clearInterval(this.timer)
         this.timer = null
       }
+    },
+    async toggleBookmark() {
+      try {
+        if (!this.isBookmarked) {
+          const res = await this.$backendAPI.bookmark(this.article.id)
+          if (res.data.code === 0) {
+            this.isBookmarked = true
+          }
+        } else {
+          const res = await this.$backendAPI.unbookmark(this.article.id)
+          if (res.status === 204) {
+            this.isBookmarked = false
+          }
+        }
+      } catch (err) {
+        console.error('ToggleBookmark err', err)
+        if (err.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
+        }
+      }
     }
   }
 }
@@ -331,6 +367,11 @@ export default {
     margin-right: 2px;
   }
   &:disabled {
+    color: #ffffff;
+    background-color: #b2b2b2;
+    border: 1px solid #b2b2b2;
+  }
+  &[bookmarked] {
     color: #ffffff;
     background-color: #b2b2b2;
     border: 1px solid #b2b2b2;

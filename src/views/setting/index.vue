@@ -339,7 +339,18 @@ export default {
         })
       }
 
-      setUser(await this.getCurrentUser())
+      let userData = null
+      try {
+        userData = await this.getCurrentUser()
+      } catch (error) {
+        this.$toast.fail({
+          duration: 1000,
+          message: '获取当前用户信息失败'
+        })
+        console.log('error', error)
+        this.loading = false
+      }
+      setUser(userData)
 
       try {
         const { data: resLinks } = await this.$backendAPI.getUserLinks({

@@ -15,6 +15,11 @@
         <img v-if="cover" v-lazy="cover" :src="cover" alt="cover" class="img-inner" />
         <img v-else src="@/assets/img/article_bg.svg" alt="cover" class="img-inner" />
         <div class="full"></div>
+        <div v-if="article && article.status === 1" class="overlay">
+          <div class="circle">
+            {{ $t('articleCard.deleted') }}
+          </div>
+        </div>
       </div>
       <div class="card-text">
         <p v-clampy="2" class="title search-res" v-html="xssTitle"></p>
@@ -186,6 +191,32 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .overlay {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+    top: 0;
+    bottom: 0;
+
+    .circle {
+      background: rgba(0, 0, 0, 0.5);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
 }
 .read-ups {
   font-size: 12px;

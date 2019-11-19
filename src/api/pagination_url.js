@@ -59,4 +59,6 @@ export const paginationUrl = {
   liquidityUserList: 'token/:id/liquidity/balances',
   // 流动金流水列表
   liquidityTransactions: 'token/:id/liquidity/transactions',
+  // 收藏文章列表
+  userBookmarks: 'user/bookmarks'
 }

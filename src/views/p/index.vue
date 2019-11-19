@@ -300,8 +300,10 @@
       v-else
       ref="articleFooter"
       class="footer flex-right"
+      :likes="likes" :dislikes="dislikes"
       :article="article"
       :token="ssToken"
+      :isBookmarked="isBookmarked"
       @share="widgetModal = true"
     />
 
@@ -554,6 +556,8 @@ export default {
       isRequest: false,
       articleLoading: true, // 文章加载状态
       isOriginal: false,
+      likes: 0,
+      dislikes: 0,
       widgetModal: false, // 分享 widget dialog
       transferModal: false, // 转让
       ssToken: {
@@ -574,7 +578,8 @@ export default {
         outputToken: {}
       },
       getInputAmountError: '',
-      payBtnDisabled: true
+      payBtnDisabled: true,
+      isBookmarked: false
     }
   },
   computed: {
@@ -772,7 +777,7 @@ export default {
       await this.$backendAPI
         .getCurrentProfile(data)
         .then(res => {
-          // console.log(res)
+          // console.log(`getCurrentProfile ${JSON.stringify(res)}`)
           if (res.status === 200 && res.data.code === 0) {
             this.currentProfile = res.data.data
             this.form.outputToken =
@@ -783,6 +788,7 @@ export default {
             this.differenceTokenFunc()
             this.calPayFormParams()
             this.setSSToken(res.data)
+            this.isBookmarked = Boolean(res.data.data.is_bookmarked)
           } else if (res.data.code === 401) {
             console.log(res.data.message)
           } else {
@@ -852,6 +858,10 @@ export default {
       await this.$backendAPI
         .getArticleInfo(id)
         .then(res => {
+          console.info(`getArticleInfo ${JSON.stringify(res.data)}`)
+          const { likes, dislikes } = res.data.data
+          this.likes = likes
+          this.dislikes = dislikes 
           if (res.status === 200 && res.data.code === 0) {
             // 判断是否为付费阅读文章
             let { data } = res.data
@@ -903,7 +913,7 @@ export default {
       this.ssToken = {
         points: res.data.points || [], // 用户是否喜欢了这篇文章
         dislikes: res.data.dislikes,
-        likes: res.data.likes,
+        // likes: res.data.likes, // 这个接口不再返回 likes
         is_liked: res.data.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
       }
     },

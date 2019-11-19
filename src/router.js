@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import { accessTokenAPI } from '@/api'
 // wechat share
 import wechatShare from './utils/wechat_share'
+import { getCookie } from '@/utils/cookie'
+import store from './store/index'
 
 if (!window.VueRouter) Vue.use(VueRouter)
 
@@ -176,6 +178,23 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/user/:id/bookmark',
+      name: 'Bookmark',
+      props: true,
+      component: () => import(/* webpackChunkName: "Bookmark" */ './views/User/Bookmark.vue'),
+      beforeEnter: (to, from, next) => {
+        const { id } = to.params
+        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
+        if (id != idOfToken) next({ name: 'user-id', params: { id } })
+        else {
+          next()
+        }
+      },
+      meta: {
+        title: '收藏-瞬MATATAKI'
+      }
+    },
+    {
       path: '/user/:id/reward',
       name: 'Reward',
       props: true,
@@ -205,7 +224,8 @@ const router = new VueRouter({
       path: '/publish/:type/:id',
       name: 'publish-type-id',
       props: true,
-      component: () => import(/* webpackChunkName: "publish-type-id" */ './views/publish/index.vue'),
+      component: () =>
+        import(/* webpackChunkName: "publish-type-id" */ './views/publish/index.vue'),
       meta: {
         title: '编辑文章-瞬MATATAKI'
       }
@@ -444,7 +464,21 @@ const router = new VueRouter({
     }
   ]
 })
-
+router.beforeEach((to, from, next) => {
+  const hasLoginPage = [
+    // TODO: 移动端路由和pc不一样需要统一, 否则这块数组路由无法统一
+    'invite',
+    'minetoken',
+    'editminetoken',
+    'postminetoken',
+    'setting',
+    'publish-type-id'
+  ] // 需要登陆才能进入
+  // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
+  // 需要登陆的页面没有token
+  if (hasLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) next('/')
+  else next()
+})
 router.afterEach((to, from) => {
   // console.log(to, from)
   Vue.nextTick(() => {
@@ -452,6 +486,16 @@ router.afterEach((to, from) => {
       title: to.meta.title
     })
   })
+  const autoAlertLoginPage = [] // 进入页面没有登陆则弹出信息框
+  // 需要登陆的页面没有登陆, 弹出登陆框
+  if (autoAlertLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) {
+    Vue.nextTick(() => {
+      setTimeout(() => {
+        // TODO: 需要settimeout才能正常执行 需要调整
+        store.commit('setLoginModal', true)
+      }, 0)
+    })
+  }
 })
 
 export default router

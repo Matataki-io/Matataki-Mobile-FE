@@ -484,5 +484,11 @@ minetokenGetResources(tokenId) {
         tradeNo
       }
     })
+  },
+  getMyUserData() {
+    return request({
+      method: 'get',
+      url: '/user/stats',
+    })
   }
 }
