@@ -15,31 +15,23 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
-      <button class="sun-btn" :bookmarked="isBookmarked" @click="toggleBookmark">
-        <svg-icon v-if="!isBookmarked" :iconClass="'bookmark-solid'" class="btn-prefix" />
-        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
-      </button>
-      <button class="sun-btn" :disabled="clicked" @click="like">
-        <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
-        <span
-          >{{ clicked ? $t('articleFooter.likes') : $t('articleFooter.like') }}
-          {{ token && likes }}</span
-        >
-      </button>
-      <button class="sun-btn" :disabled="clicked" @click="dislike">
-        <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
-        <span>{{ $t('articleFooter.unlike') }} {{ token && dislikes }}</span>
-      </button>
-      <button class="sun-btn" @click="$emit('share')">
-        <img src="@/assets/newimg/share.svg" class="btn-prefix" />
-        {{ $t('share') }}
-      </button>
+      <svg-icon icon-class="great-solid" :class="renderMyButton('great')" @click="like" />
+      <span>{{ token && likes }}</span>
+      <svg-icon icon-class="bullshit-solid" :class="renderMyButton('bullshit')" @click="dislike" />
+      <span>{{ token && dislikes }}</span>
+      <svg-icon
+        :icon-class="'bookmark-solid'"
+        :class="renderMyButton('bookmark')"
+        @click="toggleBookmark"
+      />
+      <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
+      <!-- {{ $t('share') }} -->
     </div>
   </footer>
 </template>
 
 <script>
-import Progress from './Progress'
+import Progress from './Progress.vue'
 import { isNDaysAgo } from '@/common/methods'
 
 export default {
@@ -157,8 +149,31 @@ export default {
     this.handleFocus()
   },
   methods: {
+    getIconStatus(name) {
+      return this.type === name
+    },
+    renderMyButton(name) {
+      if (name === 'bookmark') {
+        return this.isBookmarked ? `borderless-icon-btn clicked` : `borderless-icon-btn`
+      }
+      if (this.getIconStatus(name)) {
+        return `borderless-icon-btn clicked`
+      } else {
+        return `borderless-icon-btn`
+      }
+    },
+    handleAlreadyClicked() {
+      this.$toast.fail({
+        duration: 2000,
+        message: `你已经表态了，不能重复表态`
+      })
+    },
     // 推荐
     like() {
+      if (this.clicked) {
+        this.handleAlreadyClicked()
+        return
+      }
       this.$backendAPI
         .like(this.article.id, this.timeCount)
         .then(response => {
@@ -198,6 +213,10 @@ export default {
     }, */
     // 不推荐
     dislike() {
+      if (this.clicked) {
+        this.handleAlreadyClicked()
+        return
+      }
       this.$backendAPI
         .dislike(this.article.id, this.timeCount)
         .then(response => {
@@ -381,5 +400,13 @@ export default {
   font-size: 16px;
   font-style: normal;
   margin-left: 4px;
+}
+.borderless-icon-btn {
+  width: 25px;
+  height: 25px;
+  margin: 0 15px;
+}
+.clicked {
+  color: rgb(73, 60, 216);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <div>
     <BasePull
       :url-replace="$route.params.id + ''"
       :params="pull.params"
@@ -12,17 +12,15 @@
     >
       <card v-for="item in pull.list" :key="item.id" :card="item" :decimals="4"></card>
     </BasePull>
-  </layout>
+  </div>
 </template>
 
 <script>
-import card from '@/components/minetoken_detail_card/index.vue'
-import layout from '@/components/token/token_layout.vue'
+import card from '@/components/minetoken_card/index.vue'
 
 export default {
   components: {
-    card,
-    layout
+    card
   },
   data() {
     return {
@@ -30,7 +28,7 @@ export default {
         params: {
           pagesize: 20
         },
-        apiUrl: 'tokenIdTransactions',
+        apiUrl: 'tokenIdBalances',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,

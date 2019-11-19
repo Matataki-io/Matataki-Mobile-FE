@@ -52,7 +52,9 @@
         </div>
       </div>
       <div class="link">
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝通证?</a>
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank"
+          >什么是粉丝通证?</a
+        >
       </div>
     </div>
 
@@ -115,7 +117,7 @@
       </div>
     </div>
 
-    <tokenBuyCard :token="minetokenToken"/>
+    <tokenBuyCard :token="minetokenToken" />
 
     <div class="about">
       <h2 class="token-title">
@@ -157,20 +159,20 @@
 
     <div class="minetoken-card">
       <div class="minetoken-tab">
-        <router-link :to="{ name: 'token-id' }" :class="$route.name === 'token-id' && 'active'">
+        <a :class="tabPage === 0 && 'active'" @click="tabPage = 0">
           粉丝通证持仓
-        </router-link>
-        <router-link :to="{ name: 'token-detail-id' }" :class="$route.name === 'token-detail-id' && 'active'">
+        </a>
+        <a :class="tabPage === 1 && 'active'" @click="tabPage = 1">
           粉丝通证流水
-        </router-link>
-        <router-link :to="{ name: 'token-liquidity-id' }" :class="$route.name === 'token-liquidity-id' && 'active'">
+        </a>
+        <a :class="tabPage === 2 && 'active'" @click="tabPage = 2">
           流动金持仓
-        </router-link>
-        <router-link :to="{ name: 'token-liquidity-detail-id' }" :class="$route.name === 'token-liquidity-detail-id' && 'active'">
+        </a>
+        <a :class="tabPage === 3 && 'active'" @click="tabPage = 3">
           流动金流水
-        </router-link>
+        </a>
       </div>
-      <div v-if="$route.name === 'token-id' || $route.name === 'token-liquidity-id'" class="minetoken-head">
+      <div v-if="tabPage === 0 || tabPage === 2" class="minetoken-head">
         <div class="minetoken-title">持仓者</div>
         <div class="minetoken-number">持仓量</div>
       </div>
@@ -218,7 +220,8 @@ export default {
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
       resourcesWebsites: [],
-      showTokenSetting: false
+      showTokenSetting: false,
+      tabPage: 0
     }
   },
   computed: {
@@ -289,6 +292,9 @@ export default {
     currentUserInfo() {
       // 第一次会重复请求两次接口
       if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    },
+    tabPage(val) {
+      this.$emit('input', val)
     }
   },
   created() {

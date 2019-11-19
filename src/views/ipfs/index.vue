@@ -116,7 +116,7 @@ export default {
 
       this.addReadAmount(this.articleData.hash)
 
-      if (this.articleData.require_holdtokens) {
+      if (this.articleData.require_holdtokens || this.articleData.require_buy) {
         this.showContent = false
       } else {
         await this.$backendAPI.getIpfsData(this.$route.params.hash).then(res => {

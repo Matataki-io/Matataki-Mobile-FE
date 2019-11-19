@@ -33,7 +33,7 @@
             推荐
             <!-- &nbsp;&nbsp;{{ article.ups }}投资 -->
             <img
-              v-if="article.require_holdtokens"
+              v-if="article.require_holdtokens || article.require_buy"
               class="lock-img"
               src="@/assets/img/lock.png"
               alt="lock"

@@ -166,10 +166,10 @@ const getInfobyId = id => {
 
         // 没有传递内容请求接口获取
         // 没有内容 不持币
-        if (!urlSearchData.content && !data.require_holdtokens) {
+        if (!urlSearchData.content && !data.require_holdtokens && !data.require_buy) {
           getArticleContent(data.hash)
           // 没有内容 持币
-        } else if (!urlSearchData.content && data.require_holdtokens) {
+        } else if (!urlSearchData.content && (data.require_holdtokens || data.require_buy)) {
           urlSearchData.content = data.short_content
         }
 
