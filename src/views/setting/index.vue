@@ -225,100 +225,94 @@ export default {
       // 中文 字母 数字 1-12
       const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-      let canSetProfile = true
       if (!reg.test(this.newNickName)) {
-        this.myToasted(this.$t('rule.strEnglishNumber', ['1-12']))
-        canSetProfile = false
+        throw this.$t('rule.strEnglishNumber', ['1-12'])
       }
       if (this.newIntroduction.length > 20) {
-        this.myToasted(this.$t('rule.profileNotExceedStr', ['20']))
-        canSetProfile = false
+        throw this.$t('rule.profileNotExceedStr', ['20'])
       }
       if (this.newEmail !== '' && !regEmail.test(this.newEmail)) {
-        this.myToasted(this.$t('rule.emailMessage'))
-        canSetProfile = false
+        throw this.$t('rule.emailMessage')
       }
-      return canSetProfile
     },
     myToasted(message) {
       this.$toast({ duration: 1000, message })
     },
-    save() {
+    async save() {
       // 如果没有改动返回上一页
-      if (!(this.setProfile || this.aboutModify || this.socialModify)) return this.$router.go(-1)
+      if (!this.setProfile && !this.aboutModify && !this.socialModify) return this.$router.go(-1)
       if (this.loading) return
-      if (!this.checkSaveParams()) return
-      const requestData = {
-        nickname: this.newNickName,
-        introduction: this.newIntroduction,
-        email: this.newEmail
-      }
-      if (this.newNickName === this.nickname) delete requestData.nickname
-      if (this.newIntroduction === this.introduction) delete requestData.introduction
-      if (this.newEmail === this.email) delete requestData.email
-      // console.log(requestData)
-      const filterRequestLinks = () => {
+
+      const saveProfile = async () => {
+        if (!this.setProfile) return
+
+        this.checkSaveParams()
+
         const requestData = {
-          websites: this.about.filter(age => age !== '' && age !== null),
+          nickname: this.newNickName,
+          introduction: this.newIntroduction,
+          email: this.newEmail
+        }
+        if (this.newNickName === this.nickname) delete requestData.nickname
+        if (this.newIntroduction === this.introduction) delete requestData.introduction
+        if (this.newEmail === this.email) delete requestData.email
+
+        await this.$backendAPI.setProfile(requestData)
+
+        this.setProfile = false
+        this.nickname = this.newNickName
+      }
+      const saveLinks = async () => {
+        if (!this.aboutModify && !this.socialModify) return
+
+        const requestData = {
+          websites: this.about.filter(Boolean),
           socialAccounts: (() => {
             const nSocial = {}
             this.social.forEach(item => {
-              if (item.value && item.value !== '') nSocial[item.type] = item.value
+              if (item.value && item.value !== '') {
+                nSocial[item.type] = item.value
+              }
             })
             return nSocial
           })()
         }
-        return requestData
+
+        await this.$backendAPI.setUserLinks(requestData)
+
+        this.aboutModify = false
+        this.socialModify = false
       }
-      const successError = error => {
-        console.log(error)
-        this.loading = false
-        if (error.response.status === 401) {
-          this.$toast.fail({
-            duration: 1000,
-            message: this.$t('error.pleaseLogin')
-          })
-        } else {
-          this.$toast.fail({
-            duration: 1000,
-            message: this.$t('error.loginFail')
-          })
-        }
-      }
-      let thenEnd = false
+
       this.loading = true
-      // 设置用户信息
-      if (this.setProfile) {
-        this.$backendAPI
-          .setProfile(requestData)
-          .then(res => {
-            if (res.status === 200 && res.data.code === 0) {
-              this.nickname = this.newNickName
-              this.$navigation.cleanRoutes() // 清除路由记录
-              if (thenEnd) {
-                this.$toast.success({ duration: 1000, message: res.data.message })
-                this.refreshUser({ id: this.currentUserInfo.id })
-              }
-            } else this.myToasted(res.data.message)
-            thenEnd = true
-          })
-          .catch(successError)
-      } else thenEnd = true
-      // 社交账号和相关网页
-      if (this.aboutModify || this.socialModify) {
-        this.$backendAPI
-          .setUserLinks(filterRequestLinks())
-          .then(res => {
-            if (res.status === 200 && res.data.code === 0) {
-              if (thenEnd) {
-                this.$toast.success({ duration: 1000, message: res.data.message })
-                this.refreshUser({ id: this.currentUserInfo.id })
-              }
-            } else this.$message.error(this.$t('error.fail'))
-            thenEnd = true
-          })
-          .catch(successError)
-      } else thenEnd = true
+      try {
+        await Promise.all([saveProfile(), saveLinks()])
+
+        this.$navigation.cleanRoutes() // 清除路由记录
+        this.refreshUser()
+        this.$toast.success({
+          duration: 1000,
+          message: this.$t('success.success')
+        })
+      } catch (error) {
+        console.log(error)
+        let message
+
+        if (typeof error === 'string') {
+          message = error
+        } else if (error.response && error.response.data) {
+          message = error.response.data.message
+        } else {
+          message = this.$t('error.fail')
+        }
+
+        this.$toast.fail({
+          duration: 1000,
+          message: this.$t(message)
+        })
+      } finally {
+        this.loading = false
+      }
     },
     async refreshUser() {
       this.loading = true
