@@ -212,6 +212,15 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/user/:id/info',
+      name: 'user-id-info',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-info" */ './views/User/info.vue'),
+      meta: {
+        title: '个人信息-瞬MATATAKI'
+      }
+    },
+    {
       path: '/buyHistory',
       name: 'BuyHistory',
       props: true,
