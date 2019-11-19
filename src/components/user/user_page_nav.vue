@@ -29,9 +29,9 @@ export default {
       return [
         // self 只有自己才能看
         { title: '文章', url: 'user-id', self: false },
-        { title: '关注', url: 'user-id', self: false },
-        { title: '粉丝', url: 'user-id', self: false },
-        { title: '购买', url: 'user-id', self: true },
+        { title: '关注', url: 'user-id-follow', self: false },
+        { title: '粉丝', url: 'user-id-fan', self: false },
+        { title: '购买', url: 'user-id-buy', self: true },
         { title: '个人信息', url: 'user-id-info', self: false }
       ]
     }

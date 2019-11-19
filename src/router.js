@@ -212,6 +212,43 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/user/:id/follow',
+      name: 'user-id-follow',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-follow" */ './views/User/follow.vue'),
+      meta: {
+        title: '我的关注-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/fan',
+      name: 'user-id-fan',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-fan" */ './views/User/fan.vue'),
+      meta: {
+        title: '我的粉丝-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/buy',
+      name: 'user-id-buy',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-buy" */ './views/User/buy/index.vue'),
+      meta: {
+        title: '购买文章-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/buy/other',
+      name: 'user-id-buy-other',
+      props: true,
+      component: () =>
+        import(/* webpackChunkName: "user-id-buy-other" */ './views/User/buy/other.vue'),
+      meta: {
+        title: '购买其他-瞬MATATAKI'
+      }
+    },
+    {
       path: '/user/:id/info',
       name: 'user-id-info',
       props: true,

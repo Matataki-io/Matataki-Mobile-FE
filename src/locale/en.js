@@ -457,7 +457,8 @@ export default {
     clipboardText2: '点击链接首次登入可领取额外',
     clipboardText3: '积分奖励！',
     shareWeibo: '微博',
-    shareWechat: '扫一扫，分享到微信'
+    shareWechat: '扫一扫，分享到微信',
+    confirmUnFollowMessage: '确定取消关注?'
   },
   invite: {
     headerTitle: '我的邀请',
