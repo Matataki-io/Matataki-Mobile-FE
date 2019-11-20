@@ -638,7 +638,7 @@ export default {
 .bottom-bar {
   // bottom: 0rem;
   z-index: 9999;
-  box-shadow: 0px -4px 5px #88888863;
+  box-shadow: 0px -4px 5px #8888881a;
   position: sticky;
   overflow: hidden;
   .button-card {
