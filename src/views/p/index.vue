@@ -85,7 +85,7 @@
       <statement v-if="hasPaied" :article="article"></statement>
 
       <!-- 解锁按钮 -->
-      <div v-if="!hasPaied" class="lock-line">
+      <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">
         <el-divider>
           <span class="lock-text">达成条件即可阅读全文</span>
         </el-divider>
@@ -93,16 +93,16 @@
         <div class="lock-line-full" />
       </div>
 
-      <div v-if="isTokenArticle || isPriceArticle" class="lock">
+      <div v-if="(isTokenArticle || isPriceArticle) && article.channel_id === 1" class="lock">
         <div class="lock-left">
           <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
           <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
         </div>
         <div class="lock-info">
           <h3 class="lock-info-title">
-            {{ !hasPaied ? '购买全文' : '已拥有本文' }}
+            {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
           </h3>
-          <h5 class="lock-info-subtitle" v-if="!hasPaied">购买后即可解锁全部精彩内容</h5>
+          <h5 class="lock-info-subtitle" v-if="isPriceArticle">购买后即可解锁全部精彩内容</h5>
           <p v-if="!isMe(article.uid)" class="lock-info-des">
             <ul>
               <li v-if="isPriceArticle">
@@ -125,7 +125,7 @@
               @click="wxpayArticle"
               size="small"
             >
-              一键购买
+              一键{{unlockText}}
             </el-button>
           </div>
         </div>
@@ -651,6 +651,12 @@ export default {
     // 是否为付费文章
     isTokenArticle() {
       return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    unlockText() {
+      if (this.isPriceArticle) {
+        return '购买'
+      }
+      return '解锁'
     },
     // 需要多少粉丝通证
     needTokenAmount() {
