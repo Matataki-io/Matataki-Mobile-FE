@@ -129,9 +129,9 @@
                 v-model="paymentToken"
                 :min="1"
                 :max="100000000"
-                @keypress.native="isNumber"
                 size="small"
                 placeholder="请输入内容"
+                @keypress.native="isNumber"
               />
             </div>
           </div>
@@ -241,6 +241,48 @@
     <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
       我声明此文章为原创
     </el-checkbox>
+    <div v-if="isOriginal" class="cc-licensing">
+      <h3>
+        Creative Commons 授权许可协议
+        <el-tooltip
+          effect="dark"
+          content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
+          placement="top-start"
+        >
+          <i class="el-icon-info" />
+        </el-tooltip>
+      </h3>
+      <h3>
+        请问您允许本作品被别人转载、节选、混编、二次创作吗？
+      </h3>
+      <el-radio v-model="ccLicenseOptions.share" label="true">
+        允许
+      </el-radio>
+      <el-radio v-model="ccLicenseOptions.share" label="false">
+        不允许
+        <el-tooltip
+          effect="dark"
+          content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
+          placement="top-start"
+        >
+          <i class="el-icon-info" />
+        </el-tooltip>
+      </el-radio>
+      <el-radio v-model="ccLicenseOptions.share" label="SA">
+        仅允许采用本协议授权的二次创作
+        <el-tooltip
+          effect="dark"
+          content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
+          placement="top-start"
+        >
+          <i class="el-icon-info" />
+        </el-tooltip>
+      </el-radio>
+      <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+        允许商业性使用
+      </el-checkbox>
+      <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
+    </div>
     <div class="tag">
       <p>
         {{ $t('publish.tagTitle') }}
@@ -293,6 +335,7 @@ import { strTrim } from '@/common/reg'
 import 'mavon-editor/dist/css/index.css' // editor css
 // import { sleep } from '@/common/methods'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
+import { CreativeCommonsLicenseGenerator, convertLicenseToChinese } from '@/api/CreativeCommons'
 import imgUpload from '@/components/imgUpload/index.vue' // 图片上传
 import modalPrompt from './components/modal_prompt.vue' // 弹出框提示
 import { Prompt } from '@/components/'
@@ -364,7 +407,11 @@ export default {
 
       readSummary: '',
       statementVisible: false, // 原创声明
-      importVisible: false // 导入
+      importVisible: false, // 导入
+      ccLicenseOptions: {
+        share: 'false',
+        commercialUse: false
+      }
     }
   },
   computed: {
@@ -374,6 +421,31 @@ export default {
     },
     isShowTransfer() {
       return this.$route.query.from === 'draft'
+    },
+    CCLicenseCredit() {
+      let ShareAlike = false
+      const Noncommercial = !this.ccLicenseOptions.commercialUse
+      let NoDerivativeWorks = false
+      if (this.ccLicenseOptions.share === 'false') NoDerivativeWorks = true
+      if (this.ccLicenseOptions.share === 'SA') ShareAlike = true
+      const license = CreativeCommonsLicenseGenerator({
+        ShareAlike,
+        Noncommercial,
+        NoDerivativeWorks
+      })
+      const chinese = convertLicenseToChinese(license)
+      const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
+      return { license, chinese, url }
+    },
+    contentWithCuricialInfo() {
+      if (this.isOriginal) {
+        const { license, chinese, url } = this.CCLicenseCredit
+        const CCLicenseWords = `本文章 [知识共享 ${chinese} (CC-${license}) 4.0](${url}) 协议授权`
+        return `${this.markdownData}
+    ${CCLicenseWords}`
+      } else {
+        return this.markdownData
+      }
     }
   },
   watch: {
@@ -854,7 +926,13 @@ export default {
       this.allowLeave = true
       const { type, id } = this.$route.params
 
-      const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
+      const {
+        currentUserInfo,
+        title,
+        contentWithCuricialInfo: content,
+        fissionFactor,
+        cover
+      } = this
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
 
