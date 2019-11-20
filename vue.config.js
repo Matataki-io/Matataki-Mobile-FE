@@ -15,35 +15,6 @@ process.env.VUE_APP_COMMIT_HASH = process.env.COMMIT_REF
 // console.log(process.env.NODE_ENV);
 const { NODE_ENV } = process.env
 // console.debug(process.env.VUE_APP_SIGNATURE_CONTRACT);
-if (NODE_ENV === 'test') {
-  module.exports = {
-    chainWebpack: config => {
-      if (NODE_ENV === 'test') {
-        config.merge({
-          target: 'node',
-          devtool: 'inline-cheap-module-source-map',
-          externals: [
-            {
-              canvas: 'commonjs canvas'
-            },
-            'bufferutil',
-            'utf-8-validate'
-          ]
-        })
-        // when target === 'node', vue-loader will attempt to generate
-        // SSR-optimized code. We need to turn that off here.
-        config.module
-          .rule('vue')
-          .use('vue-loader')
-          .tap(options => {
-            options.optimizeSSR = false
-            return options
-          })
-      }
-    }
-  }
-  return
-}
 module.exports = {
   chainWebpack: config => {
     // 移除 prefetch 插件
@@ -91,13 +62,7 @@ module.exports = {
   },
 
   configureWebpack: config => {
-    // todo 后面区分三个端的环境
-    if (NODE_ENV === 'development') {
-      console.log('development')
-    } else {
-      console.log('prod')
-    }
-    config.externals = [
+    let configExternals = [
       'axios',
       {
         vue: 'Vue',
@@ -113,6 +78,61 @@ module.exports = {
       'memcpy',
       'utf-8-validate'
     ]
+
+    let configPluginsModules = [
+      {
+        name: 'axios',
+        var: 'axios',
+        path: 'dist/axios.min.js'
+      },
+      {
+        name: 'moment',
+        paths: ['min/moment.min.js', 'locale/zh-cn.js']
+      },
+      {
+        name: 'vue',
+        var: 'Vue',
+        path: 'dist/vue.runtime.min.js'
+      },
+      {
+        name: 'vue-router',
+        var: 'VueRouter',
+        path: 'dist/vue-router.min.js'
+      },
+      {
+        name: 'vuex',
+        var: 'Vuex',
+        path: 'dist/vuex.min.js'
+      },
+      {
+        name: 'element-ui',
+        var: 'ELEMENT',
+        path: 'lib/index.js',
+        style: 'lib/theme-chalk/index.css'
+      },
+      {
+        name: 'mavon-editor',
+        var: 'mavonEditor',
+        cssOnly: true,
+        style: 'dist/css/index.css'
+      },
+      {
+        name: 'mavon-editor',
+        var: 'mavonEditor',
+        prodUrl:
+          'https://cdn.jsdelivr.net/gh/zhaokuohaha/mavonEditor@feature/lib-name/dist/mavon-editor.js'
+      }
+      /* {
+        name: 'eosjs',
+        var: 'Eos',
+      }, */
+    ]
+    // todo 后面区分三个端的环境
+    if (NODE_ENV === 'development') {
+      console.log('development')
+    } else {
+      console.log('prod')
+    }
     config.optimization = {
       splitChunks: {
         chunks: 'async',
@@ -135,61 +155,16 @@ module.exports = {
         }
       }
     }
+    config.externals = configExternals
     config.plugins.push(
       new WebpackCdnPlugin({
-        modules: [
-          {
-            name: 'axios',
-            var: 'axios',
-            path: 'dist/axios.min.js'
-          },
-          {
-            name: 'moment',
-            paths: ['min/moment.min.js', 'locale/zh-cn.js']
-          },
-          {
-            name: 'vue',
-            var: 'Vue',
-            path: 'dist/vue.runtime.min.js'
-          },
-          {
-            name: 'vue-router',
-            var: 'VueRouter',
-            path: 'dist/vue-router.min.js'
-          },
-          {
-            name: 'vuex',
-            var: 'Vuex',
-            path: 'dist/vuex.min.js'
-          },
-          {
-            name: 'element-ui',
-            var: 'ELEMENT',
-            path: 'lib/index.js',
-            style: 'lib/theme-chalk/index.css'
-          },
-          {
-            name: 'mavon-editor',
-            var: 'mavonEditor',
-            cssOnly: true,
-            style: 'dist/css/index.css'
-          },
-          {
-            name: 'mavon-editor',
-            var: 'mavonEditor',
-            prodUrl:
-              'https://cdn.jsdelivr.net/gh/zhaokuohaha/mavonEditor@feature/lib-name/dist/mavon-editor.js'
-          }
-          /* {
-            name: 'eosjs',
-            var: 'Eos',
-          }, */
-        ],
+        modules: configPluginsModules,
         publicPath: '/node_modules',
         crossOrigin: true
       })
     )
   },
+
   css: {
     extract: true, // 是否使用css分离插件
     loaderOptions: {
@@ -199,6 +174,7 @@ module.exports = {
       }
     }
   },
+
   pwa: {
     msTileColor: '#542de0',
     themeColor: '#FFF',
@@ -214,8 +190,9 @@ module.exports = {
       msTileImage: 'favicon.ico'
     }
   },
+
   // productionSourceMap: NODE_ENV === 'development' // 去掉map文件
-  productionSourceMap: false // 去掉map文件
+  // 去掉map文件
   // 代理
   // devServer: {
   //   proxy: {
@@ -224,4 +201,12 @@ module.exports = {
   //     }
   //   }
   // }
+  productionSourceMap: false,
+
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, 'src/assets/css/global.less')]
+    }
+  }
 }
