@@ -1,5 +1,11 @@
 <template>
-  <el-table height="300" :data="list" style="width: 100%" header-cell-class-name="trade-log-header" cell-class-name="trade-log-row">
+  <el-table
+    height="300"
+    :data="list"
+    style="width: 100%"
+    header-cell-class-name="trade-log-header"
+    cell-class-name="trade-log-row"
+  >
     <el-table-column label="方向" width="50">
       <template slot-scope="scope">
         <span :class="scope.row.direction">{{ scope.row.direction === 'buy' ? '买' : '卖' }}</span>
@@ -19,7 +25,7 @@
         </span>
       </template>
     </el-table-column> -->
-    <el-table-column prop="token_amount" :label="'数量'+symbol"></el-table-column>
+    <el-table-column prop="token_amount" :label="'数量' + symbol"></el-table-column>
     <el-table-column prop="create_time" label="时间"></el-table-column>
   </el-table>
 </template>
@@ -29,7 +35,7 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => ([])
+      default: () => []
     },
     symbol: {
       type: String,
@@ -46,9 +52,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .sell {
-  color: #FB6877;
+  color: @red;
 }
 .buy {
-  color: #44D7B6;
+  color: @green;
 }
 </style>

@@ -63,7 +63,7 @@ export default {
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: #fb6877;
+    background-color: @red;
     color: #fff;
     font-size: 12px;
     font-weight: 500;

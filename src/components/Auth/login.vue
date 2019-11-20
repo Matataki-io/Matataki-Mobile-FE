@@ -180,7 +180,7 @@ export default {
   align-items: center;
 }
 .red {
-  color:#FB6877;
+  color:#d74e5a;
 }
 .oauth-box {
   display: flex;

@@ -12,15 +12,15 @@
     </div>
     <div class="token-info">
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ cnyAmount }}</div>
+        <div :class="['fall-rise', amountClass(card.liquidity)]">{{ cnyAmount }}</div>
         <div class="gray">CNY</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ tokenAmount }}</div>
+        <div :class="['fall-rise', amountClass(card.liquidity)]">{{ tokenAmount }}</div>
         <div class="gray">{{ card.symbol }}</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', tokenClass(card.liquidity) ]">{{ liquidityAmount }}</div>
+        <div :class="['fall-rise', tokenClass(card.liquidity)]">{{ liquidityAmount }}</div>
         <div class="gray">流动金Token</div>
       </div>
     </div>
@@ -112,9 +112,9 @@ export default {
     },
     color() {
       if (this.isMe(this.card.from_uid)) {
-        return '#44D7B6'
+        return '#41b37d'
       } else if (this.isMe(this.card.to_uid)) {
-        return '#FB6877'
+        return '#d74e5a'
       } else {
         return '#000000'
       }
@@ -199,10 +199,10 @@ export default {
   color:#000000;
 }
 .green {
-  color:#44D7B6;
+  color:@green;
 }
 .red {
-  color:#FB6877;
+  color:@red;
 }
 .time {
   .gray();

@@ -301,10 +301,10 @@ export default {
     }
   }
   .red {
-    color: #fb6877;
+    color: @red;
   }
   .green {
-    color: #44d7b6;
+    color: @green;
   }
   .black {
     color: #000000;
