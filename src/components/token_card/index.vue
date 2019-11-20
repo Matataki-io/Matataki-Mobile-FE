@@ -3,31 +3,27 @@
     <router-link :to="{ name: 'token-id', params: { id: card.id } }">
       <avatar :src="cover" size="30px" />
     </router-link>
-    <div class="fl cards-content">
-      <div class="card-info">
-        <router-link :to="{ name: 'token-id', params: { id: card.id } }">
+    <div class="cards-content">
+      <div class="fl">
+        <router-link class="card-title" :to="{ name: 'token-id', params: { id: card.id } }">
           <h2 class="card-info-symbol">
             {{ card.symbol || '暂无' }}
           </h2>
         </router-link>
+        <router-link class="fl ac" :to="{ name: 'user-id', params: { id: card.uid } }">
+          <span class="card-username">
+            {{ name }}
+            <i class="el-icon-arrow-right"></i>
+          </span>
+        </router-link>
+      </div>
+      <div @click="$router.push({ path: '/token/' + card.id })">
         <p class="card-info-name">
           {{ card.name || '暂无' }}
         </p>
         <p class="card-info-name">
           {{ card.brief || '暂无' }}
         </p>
-      </div>
-      <div class="card-user">
-        <router-link class="fl ac" :to="{ name: 'user-id', params: { id: card.uid } }">
-          <!-- <avatar :src="coverUser" size="30px" /> -->
-          <span class="card-username">
-            {{ name }}
-            <i class="el-icon-arrow-right"></i>
-          </span>
-        </router-link>
-        <!-- <div class="card-user-icon">
-          持仓占位
-        </div> -->
       </div>
     </div>
   </div>
@@ -91,16 +87,6 @@ export default {
     margin: 4px 0 0 0;
   }
 }
-
-.card-user {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  flex-direction: column;
-}
 .card-username {
   margin-left: 6px;
   font-size: 12px;
@@ -112,5 +98,8 @@ export default {
   display: flex;
   flex: 1;
   align-items: flex-end;
+}
+.card-title {
+  flex: 1;
 }
 </style>
