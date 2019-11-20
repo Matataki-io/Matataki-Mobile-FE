@@ -283,8 +283,8 @@ export default {
     color() {
       // 显示转换
       const amount = parseFloat(this.change)
-      if (amount < 0) return 'rgb(266, 70, 69)'
-      else if (amount > 0) return 'rgb(74, 151, 42)'
+      if (amount < 0) return '#d74e5a'
+      else if (amount > 0) return '#41b37d'
       else return 'rgb(153, 153, 153)'
     }
   },
@@ -473,6 +473,9 @@ export default {
   line-height: 28px;
   padding: 0;
   margin: 0;
+  sub {
+    bottom: 0;
+  }
 }
 .token-name {
   font-size: 12px;
@@ -605,7 +608,7 @@ export default {
     font-weight: 500;
     color: #b2b2b2;
     line-height: 20px;
-    margin: 0 10px;
+    margin: 0 8px;
     position: relative;
     z-index: 1;
     &.active {

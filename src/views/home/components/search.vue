@@ -97,6 +97,7 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
+  flex-wrap: wrap;
   li {
     min-width: 40px;
     text-align: center;

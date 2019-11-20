@@ -1,8 +1,16 @@
 <template>
-  <el-table height="300" :data="list" style="width: 100%" header-cell-class-name="trade-log-header" cell-class-name="trade-log-row">
+  <el-table
+    height="300"
+    :data="list"
+    style="width: 100%"
+    header-cell-class-name="trade-log-header"
+    cell-class-name="trade-log-row"
+  >
     <el-table-column label="方向" width="50">
       <template slot-scope="scope">
-        <span :class="direction(scope.row.liquidity)">{{ scope.row.liquidity >= 0 ? '添加' : '删除' }}</span>
+        <span :class="direction(scope.row.liquidity)">{{
+          scope.row.liquidity >= 0 ? '添加' : '删除'
+        }}</span>
       </template>
     </el-table-column>
     <!-- <el-table-column prop="cny_amount" label="CNY">
@@ -29,17 +37,11 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => ([])
+      default: () => []
     },
     symbol: {
       type: String,
       default: '[Token Symbol]'
-    }
-  },
-  methods: {
-    direction(liquidity) {
-      if (liquidity >= 0) return 'buy'
-      else return 'sell'
     }
   },
   data() {
@@ -47,14 +49,20 @@ export default {
       purchaseLogs: [],
       myPurchaseLogs: []
     }
+  },
+  methods: {
+    direction(liquidity) {
+      if (liquidity >= 0) return 'buy'
+      else return 'sell'
+    }
   }
 }
 </script>
 <style lang="less" scoped>
 .sell {
-  color: #FB6877;
+  color: @red;
 }
 .buy {
-  color: #44D7B6;
+  color: @green;
 }
 </style>

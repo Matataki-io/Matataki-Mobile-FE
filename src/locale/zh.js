@@ -45,6 +45,7 @@ export default {
     copy: '复制成功',
     save: '保存成功',
     loginSuccess: '登录成功',
+    logoutSuccess: '登出成功',
     public: '发送成功,自动转到你发布的文章',
     draftUpdate: '草稿更新成功',
     codeSendSuccess: '验证码发送成功，5分钟内使用有效',
@@ -292,7 +293,7 @@ export default {
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
     invite: '我的邀请',
-    inviteDes: '已绑定{0}个账户',
+    inviteDes: '已邀请{0}个账户',
     original: '我的原创',
     investment: '我的投资',
     draft: '我的草稿',
@@ -458,7 +459,8 @@ export default {
     clipboardText3: '积分奖励！',
     shareWeibo: '微博',
     shareWechat: '扫一扫，分享到微信',
-    confirmUnFollowMessage: '确定取消关注?'
+    confirmUnFollowMessage: '确定取消关注?',
+    deleted: '文章已下架'
   },
   invite: {
     headerTitle: '我的邀请',

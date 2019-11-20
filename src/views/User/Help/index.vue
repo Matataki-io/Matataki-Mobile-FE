@@ -56,14 +56,11 @@
     </div>
     <div class="signout">
       <p class="version">-version2.7.1-</p>
-      <a class="signout-button" href="javascript:;" @click="btnsignOut">{{ $t('logout') }}</a>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   naem: 'Help',
   data() {
@@ -85,11 +82,6 @@ export default {
     this.getMyUserData()
   },
   methods: {
-    ...mapActions(['signOut']),
-    btnsignOut() {
-      this.signOut()
-      this.jumpTo({ name: 'index' })
-    },
     jumpTo(params) {
       if (!params.name) return
       this.$router.push(params)

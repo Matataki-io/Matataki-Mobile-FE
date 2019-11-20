@@ -10,6 +10,8 @@ import {
   Row,
   Col,
   Slider,
+  Radio,
+  RadioButton,
   Progress,
   Avatar,
   Popover,
@@ -49,6 +51,8 @@ Vue.use(Input)
   .use(Table)
   .use(TableColumn)
   .use(Image)
+  .use(Radio)
+  .use(RadioButton)
   .use(Checkbox)
 
 Vue.prototype.$loading = Loading.service

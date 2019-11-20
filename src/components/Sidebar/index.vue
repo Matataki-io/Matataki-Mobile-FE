@@ -4,14 +4,18 @@
       <template v-if="isLogined">
         <div class="account">
           <div class="top-container">
-            <router-link :to="{ name: 'setting' }">
+            <router-link :to="{ name: 'user-id', params: { id } }">
               <div class="avatar-container">
-                <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+                <img
+                  :src="avatar || '@/assets/avatar-default.svg'"
+                  alt="avatar"
+                  :onerror="defaultAvatar"
+                />
               </div>
             </router-link>
-            <router-link :to="{ name: 'Help' }">
+            <!-- <router-link :to="{ name: 'Help' }">
               <img src="@/assets/newimg/setting.svg" alt="setting" class="setting" />
-            </router-link>
+            </router-link> -->
           </div>
           <p class="account-name">
             {{ username }}
@@ -121,7 +125,7 @@
               </div>
             </div>
           </router-link>
-          <router-link :to="{ name: 'Reward', params: { id } }">
+          <!-- <router-link :to="{ name: 'Reward', params: { id } }">
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/zanshang.svg" alt="article" class="left-img" />
@@ -136,7 +140,7 @@
                 </span>
               </div>
             </div>
-          </router-link>
+          </router-link> -->
           <router-link :to="{ name: 'DraftBox', params: { id } }">
             <div class="cell">
               <div class="cell-left">
@@ -297,11 +301,33 @@
         </div>
       </div> -->
     </div>
+    <div v-if="isLogined" class="fl bottom-bar">
+      <router-link class="button-card" :to="{ name: 'Help' }">
+        <div class="cell">
+          <div class="cell-left center">
+            <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" />
+            <span class="left-text">
+              {{ $t('setting') }}
+            </span>
+          </div>
+        </div>
+      </router-link>
+      <a class="button-card" @click="btnsignOut()">
+        <div class="cell">
+          <div class="cell-left center">
+            <img src="@/assets/newimg/logout.svg" alt="home" class="left-img" />
+            <span class="left-text">
+              {{ $t('logout') }}
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
   </van-popup>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Cookies from 'js-cookie'
 import defaultAvatar from '@/assets/avatar-default.svg'
 import { getCookie } from '@/utils/cookie'
@@ -377,6 +403,19 @@ export default {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
   },
   methods: {
+    ...mapActions(['signOut']),
+    btnsignOut() {
+      this.signOut()
+      this.jumpTo({ name: 'index' })
+      this.$toast.success({
+        duration: 1500,
+        message: this.$t('success.logoutSuccess')
+      })
+    },
+    jumpTo(params) {
+      if (!params.name) return
+      this.$router.push(params)
+    },
     async tokenUserId(id) {
       await this.$backendAPI
         .tokenUserId(id)
@@ -466,6 +505,7 @@ export default {
   width: 75%;
   max-width: 280px;
   background-color: #f1f1f1;
+  overflow: hidden;
   color: #000000;
   .login-btn {
     text-align: center;
@@ -481,6 +521,8 @@ export default {
     cursor: pointer;
   }
   .container {
+    height: calc(100% - 40px);
+    overflow: auto;
     .account {
       padding: 20px 20px 10px;
       .top-container {
@@ -559,6 +601,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      &.center {
+        margin: 0 auto;
+      }
       .left-img {
         margin-right: 10px;
         width: 20px;
@@ -589,5 +634,15 @@ export default {
 .icon-feedback {
   color: #000;
   font-size: 20px;
+}
+.bottom-bar {
+  // bottom: 0rem;
+  z-index: 9999;
+  box-shadow: 0px -4px 5px #8888881a;
+  position: sticky;
+  overflow: hidden;
+  .button-card {
+    flex: 1;
+  }
 }
 </style>
