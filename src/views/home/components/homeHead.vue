@@ -135,7 +135,7 @@ export default {
   }
   &-nav {
     a {
-      font-size: 16px;
+      font-size: 14px;
       color: rgba(178, 178, 178, 1);
       margin: 0 5px;
       position: relative;
