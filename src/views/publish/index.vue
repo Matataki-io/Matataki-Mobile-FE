@@ -244,41 +244,46 @@
     <div v-if="isOriginal" class="cc-licensing">
       <h3>
         Creative Commons 授权许可协议
-        <el-tooltip
-          effect="dark"
-          content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
-          placement="top-start"
-        >
-          <i class="el-icon-info" />
+        <el-tooltip effect="dark" placement="top-start">
+          <div slot="content">
+            CC是一种公共著作权许可协议，
+            <br />
+            其允许分发受著作权保护的作品。
+            <br />
+            一个创作共享许可用于一个作者想给他人分享
+            <br />
+            使用，甚至创作派生作品的权利。
+          </div>
+          <i class="el-icon-info info" />
         </el-tooltip>
       </h3>
       <h3>
         请问您允许本作品被别人转载、节选、混编、二次创作吗？
       </h3>
-      <el-radio v-model="ccLicenseOptions.share" label="true">
+      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="true">
         允许
       </el-radio>
-      <el-radio v-model="ccLicenseOptions.share" label="false">
+      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="false">
         不允许
-        <el-tooltip
-          effect="dark"
-          content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
-          placement="top-start"
-        >
+        <el-tooltip effect="dark" placement="top-start">
+          <div slot="content">
+            他人不能再混合、转换、或者基于该作品创作，
+            <br />且不能分发修改后的作品
+          </div>
           <i class="el-icon-info" />
         </el-tooltip>
       </el-radio>
-      <el-radio v-model="ccLicenseOptions.share" label="SA">
+      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="SA">
         仅允许采用本协议授权的二次创作
-        <el-tooltip
-          effect="dark"
-          content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
-          placement="top-start"
-        >
+        <el-tooltip effect="dark" placement="top-start">
+          <div slot="content">
+            他人再混合、转换或者基于本作品进行创作，
+            <br />必须基于与原先许可协议相同的许可协议分发作品。
+          </div>
           <i class="el-icon-info" />
         </el-tooltip>
       </el-radio>
-      <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+      <el-checkbox v-model="ccLicenseOptions.commercialUse" class="cc-licensing-checkbox">
         允许商业性使用
       </el-checkbox>
       <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
