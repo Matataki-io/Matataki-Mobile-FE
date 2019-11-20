@@ -466,7 +466,6 @@ import OrderModal from '../exchange/components/OrderModal.vue'
 import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
-import { getCookie } from '@/utils/cookie'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -561,9 +560,9 @@ export default {
       getInputAmountError: '',
       payBtnDisabled: true,
       isBookmarked: false,
-      tokenHasPaied: true,
-      priceHasPaied: true,
-      hasPaied: true
+      tokenHasPaied: false,
+      priceHasPaied: false,
+      hasPaied: false
     }
   },
   computed: {
@@ -740,12 +739,6 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile() {
-      if (!getCookie('ACCESS_TOKEN')) {
-        this.tokenHasPaied = false
-        this.priceHasPaied = false
-        this.hasPaied = false
-        return
-      }
       const data = {
         id: this.id
       }
