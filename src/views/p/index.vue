@@ -41,404 +41,422 @@
       <rect x="54" y="26" rx="0" ry="0" width="30" height="8" />
       <rect x="27" y="46" rx="0" ry="0" width="334" height="240" />
     </ContentLoader>
-    <template v-else>
-      <img v-if="cover" v-lazy="cover" :src="cover" alt="" class="top-image" />
-      <header class="ta_header">
-        <h1>{{ article.title }}</h1>
-        <div class="userinfo-container">
-          <div class="avatar-info">
-            <router-link :to="{ name: 'user-id', params: { id: article.uid } }">
-              <avatar :src="articleAvatar" class="avatar" />
-            </router-link>
-            <div class="avatar-right">
-              <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
-                {{ article.nickname || article.author }}
+    <div v-else-if="article.status === 0">
+      <template>
+        <img v-if="cover" v-lazy="cover" :src="cover" alt="" class="top-image" />
+        <header class="ta_header">
+          <h1>{{ article.title }}</h1>
+          <div class="userinfo-container">
+            <div class="avatar-info">
+              <router-link :to="{ name: 'user-id', params: { id: article.uid } }">
+                <avatar :src="articleAvatar" class="avatar" />
               </router-link>
-              <p class="other">
-                {{ $t('p.publishFrom') }}
-                {{ articleCreateTimeComputed }}
-                <svg-icon icon-class="view" class="avatar-read" />
-                {{ article.read || 0 }}
-                {{ $t('read') }}
-              </p>
+              <div class="avatar-right">
+                <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
+                  {{ article.nickname || article.author }}
+                </router-link>
+                <p class="other">
+                  {{ $t('p.publishFrom') }}
+                  {{ articleCreateTimeComputed }}
+                  <svg-icon icon-class="view" class="avatar-read" />
+                  {{ article.read || 0 }}
+                  {{ $t('read') }}
+                </p>
+              </div>
+            </div>
+            <template v-if="!isMe(article.uid)">
+              <template v-if="!followed">
+                <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
+                  <van-icon name="plus" />
+                  {{ $t('follow') }}
+                </div>
+              </template>
+              <template v-else>
+                <span class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 0 })">
+                  {{ $t('unFollow') }}
+                </span>
+              </template>
+            </template>
+          </div>
+        </header>
+        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash"></ipfs>
+
+        <mavon-editor v-show="false" style="display: none;" />
+        <div class="markdown-body" v-html="compiledMarkdown"></div>
+        <statement v-if="hasPaied" :article="article"></statement>
+
+        <!-- 解锁按钮 -->
+        <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">
+          <el-divider>
+            <span class="lock-text">达成条件即可阅读全文</span>
+          </el-divider>
+          <svg-icon class="icon-arrow" icon-class="arrow_down" />
+          <div class="lock-line-full" />
+        </div>
+
+        <div v-if="(isTokenArticle || isPriceArticle) && article.channel_id === 1" class="lock">
+          <div class="lock-left">
+            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+          </div>
+          <div class="lock-info">
+            <h3 class="lock-info-title">
+              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
+            </h3>
+            <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
+            <p v-if="!isMe(article.uid)" class="lock-info-des">
+              <ul>
+                <li v-if="isPriceArticle">
+                  价格：{{ getArticlePrice }} CNY
+                </li>
+                <li v-if="isTokenArticle">
+                  条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                  <!-- 不显示 - 号 -->
+                  <span>{{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                </li>
+              </ul>
+              <span v-if="hasPaied" class="lock-pay-text">已支付</span>
+            </p>
+            <p v-else class="lock-info-des">
+              自己发布的文章
+            </p>
+            <div class="lock-bottom" v-if="!hasPaied">
+              <el-button
+                type="primary"
+                @click="wxpayArticle"
+                size="small"
+              >
+                一键{{unlockText}}
+              </el-button>
             </div>
           </div>
-          <template v-if="!isMe(article.uid)">
-            <template v-if="!followed">
-              <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
-                <van-icon name="plus" />
-                {{ $t('follow') }}
-              </div>
-            </template>
-            <template v-else>
-              <span class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 0 })">
-                {{ $t('unFollow') }}
-              </span>
-            </template>
-          </template>
         </div>
-      </header>
-      <ipfs :is-hide="isHideIpfsHash" :hash="article.hash"></ipfs>
 
-      <mavon-editor v-show="false" style="display: none;" />
-      <div class="markdown-body" v-html="compiledMarkdown"></div>
-      <statement v-if="hasPaied" :article="article"></statement>
-
-      <!-- 解锁按钮 -->
-      <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">
-        <el-divider>
-          <span class="lock-text">达成条件即可阅读全文</span>
-        </el-divider>
-        <svg-icon class="icon-arrow" icon-class="arrow_down" />
-        <div class="lock-line-full" />
-      </div>
-
-      <div v-if="(isTokenArticle || isPriceArticle) && article.channel_id === 1" class="lock">
-        <div class="lock-left">
-          <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-          <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+        <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
+          <tag-card
+            v-for="(item, index) in article.tags"
+            :key="index"
+            :tag-card="item"
+            :tag-mode="false"
+          />
         </div>
-        <div class="lock-info">
-          <h3 class="lock-info-title">
-            {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
-          </h3>
-          <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
-          <p v-if="!isMe(article.uid)" class="lock-info-des">
-            <ul>
-              <li v-if="isPriceArticle">
-                价格：{{ getArticlePrice }} CNY
-              </li>
-              <li v-if="isTokenArticle">
-                条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
-                <!-- 不显示 - 号 -->
-                <span>{{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
-              </li>
-            </ul>
-            <span v-if="hasPaied" class="lock-pay-text">已支付</span>
-          </p>
-          <p v-else class="lock-info-des">
-            自己发布的文章
-          </p>
-          <div class="lock-bottom" v-if="!hasPaied">
-            <el-button
-              type="primary"
-              @click="wxpayArticle"
-              size="small"
-            >
-              一键{{unlockText}}
-            </el-button>
+      </template>
+      <router-link :to="{ name: 'BuyHistory' }">
+        <div v-if="article.is_buy" class="buy-alert">
+          {{ $t('p.buyHistory') }}
+        </div>
+      </router-link>
+
+      <!-- 内容居中 -->
+      <div class="article-container">
+        <!-- 评论内容 -->
+        <commentInput
+          v-if="article.channel_id !== 2"
+          :article="article"
+          @doneComment="commentRequest = Date.now()"
+        />
+        <!-- <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" /> -->
+        <!--<div class="product" v-if="article.product">
+          <div class="product-list" v-for="(item, index) in article.product" :key="index">
+            <span>《{{item.title}}》&#45;&#45;key: {{item.digital_copy}}</span>
+            <img
+              src="@/assets/img/icon_copy.svg"
+              class="copy-product-info"
+              alt="hash"
+              @click="copyText('《' + item.title + '》&#45;&#45;key:'+ item.digital_copy)">
           </div>
-        </div>
-      </div>
-
-      <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
-        <tag-card
-          v-for="(item, index) in article.tags"
-          :key="index"
-          :tag-card="item"
-          :tag-mode="false"
+        </div>-->
+        <CommentsList
+          class="comments"
+          :sign-id="signId"
+          :is-request="isRequest"
+          :type="article.channel_id"
+          :comment-request="commentRequest"
+          @stopAutoRequest="status => (isRequest = status)"
         />
       </div>
-    </template>
-    <router-link :to="{ name: 'BuyHistory' }">
-      <div v-if="article.is_buy" class="buy-alert">
-        {{ $t('p.buyHistory') }}
-      </div>
-    </router-link>
 
-    <!-- 内容居中 -->
-    <div class="article-container">
-      <!-- 评论内容 -->
-      <commentInput
-        v-if="article.channel_id !== 2"
-        :article="article"
-        @doneComment="commentRequest = Date.now()"
-      />
-      <!-- <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" /> -->
-      <!--<div class="product" v-if="article.product">
-        <div class="product-list" v-for="(item, index) in article.product" :key="index">
-          <span>《{{item.title}}》&#45;&#45;key: {{item.digital_copy}}</span>
-          <img
-            src="@/assets/img/icon_copy.svg"
-            class="copy-product-info"
-            alt="hash"
-            @click="copyText('《' + item.title + '》&#45;&#45;key:'+ item.digital_copy)">
+      <div class="empty-line"></div>
+
+      <footer v-if="article.channel_id === 2" class="footer">
+        <div class="footer-block footer-info">
+          <div class="amount">
+            <Dropdown trigger="click" @on-click="toggleAmount">
+              <div>
+                <div
+                  :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
+                  class="amount-img"
+                ></div>
+                <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
+                  totalSupportedAmount.show
+                }}</span
+                >&nbsp;
+                <Icon type="ios-arrow-up" />
+              </div>
+              <DropdownMenu slot="list">
+                <DropdownItem name="eos" class="amount-icon">
+                  <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
+                  {{ totalSupportedAmount.eos }}
+                </DropdownItem>
+                <DropdownItem name="ont" class="amount-icon">
+                  <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
+                  {{ totalSupportedAmount.ont }}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <div class="amount-text">
+              {{ article.channel_id === 2 ? $t('p.totalRevenue') : $t('p.totalInvestment') }}
+            </div>
+          </div>
+          <div v-if="article.channel_id !== 2" class="fission">
+            <div>
+              <div class="amount-img fission"></div>
+              <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
+            </div>
+            <div class="amount-text">{{ $t('p.fissionCoefficient') }}</div>
+          </div>
         </div>
-      </div>-->
-      <CommentsList
-        class="comments"
-        :sign-id="signId"
-        :is-request="isRequest"
-        :type="article.channel_id"
-        :comment-request="commentRequest"
-        @stopAutoRequest="status => (isRequest = status)"
+        <div class="footer-block footer-btn">
+          <!-- <button
+            v-if="isSupported === -1"
+            class="button-support bg-yellow border-yellow"
+            @click="b4support"
+          >
+            {{ $t('p.investment') }}<img src="@/assets/newimg/touzi.svg" />
+          </button> -->
+          <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
+            {{ $t('p.investing') }}
+          </button>
+          <!-- <button
+            v-else-if="isSupported === 1"
+            class="button-support bg-yellow border-yellow"
+            @click="invest"
+          >
+            {{ $t('p.investment') }}
+            <img src="@/assets/newimg/touzi.svg" />
+          </button> -->
+          <button
+            v-else-if="isSupported === 2"
+            class="button-support bg-yellow border-yellow"
+            disabled
+          >
+            {{ $t('p.invested') }}
+          </button>
+
+          <button
+            v-if="isSupported === -1"
+            class="button-support bg-yellow border-yellow"
+            @click="b4support"
+          >
+            {{ $t('p.buy') }}
+            <img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button
+            v-else-if="isSupported === 0"
+            class="button-support bg-yellow border-yellow"
+            disabled
+          >
+            {{ $t('p.buying') }}
+            <img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button
+            v-else
+            class="button-support bg-yellow border-yellow"
+            :disabled="product.stock === 0"
+            @click="buyButton"
+          >
+            {{ product.stock === 0 ? $t('p.soldOut') : $t('p.buy') }}
+            <img src="@/assets/newimg/goumai.svg" />
+          </button>
+          <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
+            {{ $t('share') }}
+            <img src="@/assets/newimg/share2.svg" />
+          </button>
+        </div>
+        <!-- <button class="button-share" @click="widgetModal = true">
+            分享1<img src="@/assets/newimg/share.svg" />
+          </button> -->
+      </footer>
+      <ArticleFooter
+        v-else
+        ref="articleFooter"
+        class="footer flex-right"
+        :likes="likes" :dislikes="dislikes"
+        :article="article"
+        :token="ssToken"
+        :is-bookmarked="isBookmarked"
+        @share="widgetModal = true"
+      />
+
+      <van-dialog
+        v-model="supportModal"
+        :title="$t('p.investment')"
+        show-cancel-button
+        class="ffff"
+        :before-close="support"
+        :close-on-click-overlay="true"
+        @cancel="supportModal = false"
+      >
+        <van-field
+          v-model="comment"
+          type="textarea"
+          :placeholder="$t('p.buyPlaceholder')"
+          rows="4"
+          autosize
+        />
+        <van-field v-model="amount" :placeholder="displayPlaceholder" @input="handleChange(amount)" />
+      </van-dialog>
+
+      <van-popup v-model="buyProductModal" class="buy-product-modal">
+        <h1 class="title">{{ $t('p.buyShop') }}</h1>
+        <div class="info-container">
+          <img :src="cover" alt="cover" class="cover" />
+          <div class="info-inner">
+            <div class="product-price">
+              <span class="ont-price">
+                <img src="@/assets/newimg/ont2.svg" alt="ont" />
+                <span>{{ product.ontPrice }}</span>
+              </span>
+              <span class="eos-price">
+                <img src="@/assets/newimg/eos2.svg" alt="eos" />
+                <span>{{ product.eosPrice }}</span>
+              </span>
+            </div>
+            <div class="product-amount">
+              <span>
+                {{ $t('p.amount') }}
+              </span>
+              <van-stepper v-model="productNumber" disabled />
+            </div>
+          </div>
+        </div>
+        <van-field
+          v-model="comment"
+          type="textarea"
+          :placeholder="$t('p.buyPlaceholder')"
+          rows="4"
+          autosize
+          class="comment-container"
+        />
+        <div class="buy-container">
+          <span class="storage">
+            {{ $t('p.remainingStock', [product.stock]) }}
+          </span>
+          <div class="buy-btn" @click="buyProduct">
+            {{ $t('p.buy') }}
+          </div>
+        </div>
+      </van-popup>
+
+      <van-popup v-model="investProductModal" class="buy-product-modal">
+        <h1 class="title">{{ investTitle }}</h1>
+        <div class="invest-info">
+          <div class="info-item">
+            <span class="info-number">{{ getDisplayedFissionFactor }}</span>
+            <span class="info-subtitle">
+              {{ $t('p.fissionCoefficient') }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-number percent">{{ article.fission_rate }}</span>
+            <span class="info-subtitle">
+              {{ $t('p.fissionRebate') }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-number percent">{{ article.referral_rate }}</span>
+            <span class="info-subtitle">
+              {{ $t('p.recommendedRebate') }}
+            </span>
+          </div>
+        </div>
+        <van-field
+          v-model="amount"
+          :placeholder="displayPlaceholder"
+          class="comment-container"
+          @input="handleChange(amount)"
+        />
+        <van-field
+          v-model="comment"
+          type="textarea"
+          :placeholder="$t('p.recommendedRebate')"
+          rows="4"
+          autosize
+          class="comment-container"
+        />
+        <div class="invest-container">
+          <div class="invest-btn" @click="investProduct">
+            {{ $t('p.investment') }}
+          </div>
+        </div>
+      </van-popup>
+
+      <van-popup v-model="buySuccessModal" class="buy-product-modal">
+        <h1 class="title">
+          {{ $t('p.buyDone') }}
+        </h1>
+        <p class="tip">
+          {{ $t('p.buyDoneDes') }}
+        </p>
+        <div class="invest-container">
+          <router-link :to="{ name: 'BuyHistory' }">
+            <div class="invest-btn">
+              {{ $t('p.view') }}
+            </div>
+          </router-link>
+        </div>
+      </van-popup>
+
+      <!-- 文章 Info -->
+      <!-- 文章攻略 -->
+      <!-- <ArticleInfo
+        :info-moda="infoModa"
+        :channel="article.channel_id"
+        @changeInfo="status => (infoModa = status)"
+      /> -->
+      <Widget
+        :id="article.id"
+        :widget-modal="widgetModal"
+        :get-clipboard="getClipboard"
+        :invite="currentUserInfo.id"
+        :share-info="{
+          title: article.title,
+          avatar: articleAvatar,
+          name: article.nickname || article.author,
+          time: articleCreateTimeComputed,
+          content: compiledMarkdown,
+          shareLink: getShareLink,
+          cover
+        }"
+        @changeWidgetModal="status => (widgetModal = status)"
+      />
+      <article-transfer
+        :transfer-modal="transferModal"
+        :article-id="article.id"
+        :from="'article'"
+        @changeTransferModal="status => (transferModal = status)"
+      />
+      <OrderModal
+        v-model="showOrderModal"
+        :form="{ ...form, type: 'buy_token_output', limitValue }"
       />
     </div>
-
-    <div class="empty-line"></div>
-
-    <footer v-if="article.channel_id === 2" class="footer">
-      <div class="footer-block footer-info">
-        <div class="amount">
-          <Dropdown trigger="click" @on-click="toggleAmount">
-            <div>
-              <div
-                :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
-                class="amount-img"
-              ></div>
-              <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
-                totalSupportedAmount.show
-              }}</span
-              >&nbsp;
-              <Icon type="ios-arrow-up" />
-            </div>
-            <DropdownMenu slot="list">
-              <DropdownItem name="eos" class="amount-icon">
-                <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
-                {{ totalSupportedAmount.eos }}
-              </DropdownItem>
-              <DropdownItem name="ont" class="amount-icon">
-                <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
-                {{ totalSupportedAmount.ont }}
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <div class="amount-text">
-            {{ article.channel_id === 2 ? $t('p.totalRevenue') : $t('p.totalInvestment') }}
-          </div>
-        </div>
-        <div v-if="article.channel_id !== 2" class="fission">
-          <div>
-            <div class="amount-img fission"></div>
-            <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
-          </div>
-          <div class="amount-text">{{ $t('p.fissionCoefficient') }}</div>
-        </div>
+    <div v-else class="deleted-container">
+      <div>
+        <img src="@/assets/img/deleted.png" alt="deleted" />
       </div>
-      <div class="footer-block footer-btn">
-        <!-- <button
-          v-if="isSupported === -1"
-          class="button-support bg-yellow border-yellow"
-          @click="b4support"
-        >
-          {{ $t('p.investment') }}<img src="@/assets/newimg/touzi.svg" />
-        </button> -->
-        <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
-          {{ $t('p.investing') }}
-        </button>
-        <!-- <button
-          v-else-if="isSupported === 1"
-          class="button-support bg-yellow border-yellow"
-          @click="invest"
-        >
-          {{ $t('p.investment') }}
-          <img src="@/assets/newimg/touzi.svg" />
-        </button> -->
-        <button
-          v-else-if="isSupported === 2"
-          class="button-support bg-yellow border-yellow"
-          disabled
-        >
-          {{ $t('p.invested') }}
-        </button>
-
-        <button
-          v-if="isSupported === -1"
-          class="button-support bg-yellow border-yellow"
-          @click="b4support"
-        >
-          {{ $t('p.buy') }}
-          <img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button
-          v-else-if="isSupported === 0"
-          class="button-support bg-yellow border-yellow"
-          disabled
-        >
-          {{ $t('p.buying') }}
-          <img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button
-          v-else
-          class="button-support bg-yellow border-yellow"
-          :disabled="product.stock === 0"
-          @click="buyButton"
-        >
-          {{ product.stock === 0 ? $t('p.soldOut') : $t('p.buy') }}
-          <img src="@/assets/newimg/goumai.svg" />
-        </button>
-        <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
-          {{ $t('share') }}
-          <img src="@/assets/newimg/share2.svg" />
-        </button>
+      <div class="message">
+        <span>{{ $t('p.deleted') }}</span>
       </div>
-      <!-- <button class="button-share" @click="widgetModal = true">
-          分享1<img src="@/assets/newimg/share.svg" />
-        </button> -->
-    </footer>
-    <ArticleFooter
-      v-else
-      ref="articleFooter"
-      class="footer flex-right"
-      :likes="likes" :dislikes="dislikes"
-      :article="article"
-      :token="ssToken"
-      :is-bookmarked="isBookmarked"
-      @share="widgetModal = true"
-    />
-
-    <van-dialog
-      v-model="supportModal"
-      :title="$t('p.investment')"
-      show-cancel-button
-      class="ffff"
-      :before-close="support"
-      :close-on-click-overlay="true"
-      @cancel="supportModal = false"
-    >
-      <van-field
-        v-model="comment"
-        type="textarea"
-        :placeholder="$t('p.buyPlaceholder')"
-        rows="4"
-        autosize
-      />
-      <van-field v-model="amount" :placeholder="displayPlaceholder" @input="handleChange(amount)" />
-    </van-dialog>
-
-    <van-popup v-model="buyProductModal" class="buy-product-modal">
-      <h1 class="title">{{ $t('p.buyShop') }}</h1>
-      <div class="info-container">
-        <img :src="cover" alt="cover" class="cover" />
-        <div class="info-inner">
-          <div class="product-price">
-            <span class="ont-price">
-              <img src="@/assets/newimg/ont2.svg" alt="ont" />
-              <span>{{ product.ontPrice }}</span>
-            </span>
-            <span class="eos-price">
-              <img src="@/assets/newimg/eos2.svg" alt="eos" />
-              <span>{{ product.eosPrice }}</span>
-            </span>
-          </div>
-          <div class="product-amount">
-            <span>
-              {{ $t('p.amount') }}
-            </span>
-            <van-stepper v-model="productNumber" disabled />
-          </div>
-        </div>
+      <div class="deleted-ipfs-hash">
+        <svg-icon
+          class="copy-hash"
+          icon-class="copy"
+          @click="copyText(article.hash)"
+        />
+        <span>Hash: {{ article.hash }}</span>
       </div>
-      <van-field
-        v-model="comment"
-        type="textarea"
-        :placeholder="$t('p.buyPlaceholder')"
-        rows="4"
-        autosize
-        class="comment-container"
-      />
-      <div class="buy-container">
-        <span class="storage">
-          {{ $t('p.remainingStock', [product.stock]) }}
-        </span>
-        <div class="buy-btn" @click="buyProduct">
-          {{ $t('p.buy') }}
-        </div>
-      </div>
-    </van-popup>
-
-    <van-popup v-model="investProductModal" class="buy-product-modal">
-      <h1 class="title">{{ investTitle }}</h1>
-      <div class="invest-info">
-        <div class="info-item">
-          <span class="info-number">{{ getDisplayedFissionFactor }}</span>
-          <span class="info-subtitle">
-            {{ $t('p.fissionCoefficient') }}
-          </span>
-        </div>
-        <div class="info-item">
-          <span class="info-number percent">{{ article.fission_rate }}</span>
-          <span class="info-subtitle">
-            {{ $t('p.fissionRebate') }}
-          </span>
-        </div>
-        <div class="info-item">
-          <span class="info-number percent">{{ article.referral_rate }}</span>
-          <span class="info-subtitle">
-            {{ $t('p.recommendedRebate') }}
-          </span>
-        </div>
-      </div>
-      <van-field
-        v-model="amount"
-        :placeholder="displayPlaceholder"
-        class="comment-container"
-        @input="handleChange(amount)"
-      />
-      <van-field
-        v-model="comment"
-        type="textarea"
-        :placeholder="$t('p.recommendedRebate')"
-        rows="4"
-        autosize
-        class="comment-container"
-      />
-      <div class="invest-container">
-        <div class="invest-btn" @click="investProduct">
-          {{ $t('p.investment') }}
-        </div>
-      </div>
-    </van-popup>
-
-    <van-popup v-model="buySuccessModal" class="buy-product-modal">
-      <h1 class="title">
-        {{ $t('p.buyDone') }}
-      </h1>
-      <p class="tip">
-        {{ $t('p.buyDoneDes') }}
-      </p>
-      <div class="invest-container">
-        <router-link :to="{ name: 'BuyHistory' }">
-          <div class="invest-btn">
-            {{ $t('p.view') }}
-          </div>
-        </router-link>
-      </div>
-    </van-popup>
-
-    <!-- 文章 Info -->
-    <!-- 文章攻略 -->
-    <!-- <ArticleInfo
-      :info-moda="infoModa"
-      :channel="article.channel_id"
-      @changeInfo="status => (infoModa = status)"
-    /> -->
-    <Widget
-      :id="article.id"
-      :widget-modal="widgetModal"
-      :get-clipboard="getClipboard"
-      :invite="currentUserInfo.id"
-      :share-info="{
-        title: article.title,
-        avatar: articleAvatar,
-        name: article.nickname || article.author,
-        time: articleCreateTimeComputed,
-        content: compiledMarkdown,
-        shareLink: getShareLink,
-        cover
-      }"
-      @changeWidgetModal="status => (widgetModal = status)"
-    />
-    <article-transfer
-      :transfer-modal="transferModal"
-      :article-id="article.id"
-      :from="'article'"
-      @changeTransferModal="status => (transferModal = status)"
-    />
-    <OrderModal
-      v-model="showOrderModal"
-      :form="{ ...form, type: 'buy_token_output', limitValue }"
-    />
+    </div>
   </div>
 </template>
 <script>
@@ -844,7 +862,7 @@ export default {
           console.info(`getArticleInfo ${JSON.stringify(res.data)}`)
           const { likes, dislikes } = res.data.data
           this.likes = likes
-          this.dislikes = dislikes 
+          this.dislikes = dislikes
           if (res.status === 200 && res.data.code === 0) {
             // 判断是否为付费阅读文章
             let { data } = res.data

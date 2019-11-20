@@ -459,7 +459,8 @@ export default {
     clipboardText3: '积分奖励！',
     shareWeibo: '微博',
     shareWechat: '扫一扫，分享到微信',
-    confirmUnFollowMessage: '确定取消关注?'
+    confirmUnFollowMessage: '确定取消关注?',
+    deleted: '文章已下架'
   },
   invite: {
     headerTitle: '我的邀请',
