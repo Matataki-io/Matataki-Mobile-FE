@@ -121,6 +121,7 @@
               自己发布的文章
             </p>
             <div class="lock-bottom" v-if="!hasPaied">
+              <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
               <el-button
                 type="primary"
                 @click="wxpayArticle"
@@ -484,6 +485,7 @@ import OrderModal from '../exchange/components/OrderModal.vue'
 import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
+import { getCookie } from '@/utils/cookie'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -676,6 +678,13 @@ export default {
       }
       return '解锁'
     },
+    totalCny() {
+      let result = 0
+      if (this.isTokenArticle) {
+        result += parseFloat(this.form.input || 0)
+      }
+      return (result + this.getArticlePrice).toFixed(2)
+    },
     // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
@@ -763,6 +772,14 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile() {
+      if (!getCookie('ACCESS_TOKEN')) {
+        this.tokenHasPaied = false
+        this.priceHasPaied = false
+        this.hasPaied = false
+        this.form.outputToken = this.article.tokens && this.article.tokens.length > 0 ? this.article.tokens[0] : {}
+        this.calPayFormParams()
+        return
+      }
       const data = {
         id: this.id
       }
@@ -1316,40 +1333,34 @@ export default {
         }
       })
     },
-    wxpay() {
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return false
-      }
-      if (this.getInputAmountError) {
-        this.$message.error(this.getInputAmountError)
-        return
-      }
-      this.showOrderModal = true
-    },
     // 微信支付购买
     calPayFormParams() {
-      if (
-        this.currentProfile.holdMineTokens &&
-        this.currentProfile.holdMineTokens.length !== 0 &&
-        this.article.tokens
-      ) {
-        const tokenName = this.currentProfile.holdMineTokens.filter(
-          list => list.id === this.article.tokens[0].id
-        )
-        // 获取有多少token
-        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
-        let needTokenAmount = 0
-        // 获取需要多少token
-        if (this.article.tokens && this.article.tokens.length !== 0) {
-          needTokenAmount = this.article.tokens[0].amount
-        }
-        // 减之后 换算
-        if (needTokenAmount <= amount) this.form.output = 0
-        else this.form.output = utils.fromDecimal(needTokenAmount - amount)
-        const { inputToken, output, outputToken } = this.form
-        if (output > 0) {
-          this.getInputAmount(inputToken.id, outputToken.id, output)
+      if (this.article.tokens && this.article.tokens.length !== 0) {
+        if (
+          this.currentProfile.holdMineTokens &&
+          this.currentProfile.holdMineTokens.length !== 0
+        ) {
+          const tokenName = this.currentProfile.holdMineTokens.filter(
+            list => list.id === this.article.tokens[0].id
+          )
+          // 获取有多少token
+          const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+          // 获取需要多少token
+          const needTokenAmount = this.article.tokens[0].amount
+          // 减之后 换算
+          if (needTokenAmount <= amount) this.form.output = 0
+          else this.form.output = utils.fromDecimal(needTokenAmount - amount)
+          const { inputToken, output, outputToken } = this.form
+          if (output > 0) {
+            this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
+        } else {
+          const needTokenAmount = this.article.tokens[0].amount
+          this.form.output = utils.fromDecimal(needTokenAmount)
+          const { inputToken, output, outputToken } = this.form
+          if (output > 0) {
+            this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
         }
       }
     },
