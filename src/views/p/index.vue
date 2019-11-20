@@ -655,9 +655,8 @@ export default {
     unlockText() {
       if (this.isPriceArticle) {
         return '购买'
-      } else if (this.isTokenArticle){
-        return '解锁'
       }
+      return '解锁'
     },
     // 需要多少粉丝通证
     needTokenAmount() {
