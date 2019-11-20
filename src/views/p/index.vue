@@ -560,11 +560,9 @@ export default {
       getInputAmountError: '',
       payBtnDisabled: true,
       isBookmarked: false,
-      tokenHasPaied: true,
-      priceHasPaied: true,
-      hasPaied: true,
-      isTokenArticle: false,
-      isPriceArticle: false
+      tokenHasPaied: false,
+      priceHasPaied: false,
+      hasPaied: false
     }
   },
   computed: {
@@ -645,6 +643,14 @@ export default {
       } else {
         return 0
       }
+    },
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
     },
     // 需要多少粉丝通证
     needTokenAmount() {
@@ -782,10 +788,10 @@ export default {
         this.differenceToken =
           amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
-      // 是否是需要持币阅读的文章
+      /* // 是否是需要持币阅读的文章
       this.isTokenArticle = Boolean(this.currentProfile.holdMineTokens) && this.currentProfile.holdMineTokens.length > 0
       // 是否是需要购买的文章
-      this.isPriceArticle = Boolean(this.currentProfile.require_buy)
+      this.isPriceArticle = Boolean(this.currentProfile.require_buy) */
       if (this.isMe(this.article.uid)) {
         this.tokenHasPaied = true
         this.priceHasPaied = true
