@@ -370,12 +370,14 @@ export default {
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
-            clearInterval(this.timer);
-            this.alert('交易失败，等待退款');
+            clearInterval(this.timer)
+            this.qrcodeShow = false
+            this.alert('交易失败，等待退款')
           }
           if (status === 6 || status === 9) {
-            clearInterval(this.timer);
-            this.alert('交易成功');
+            clearInterval(this.timer)
+            this.qrcodeShow = false
+            this.alert('交易成功')
           }
         }
       });
