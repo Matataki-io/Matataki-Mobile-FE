@@ -129,7 +129,7 @@
                 v-model="paymentToken"
                 :min="1"
                 :max="100000000"
-                v-on:keypress.native="isNumber"
+                @keypress.native="isNumber"
                 size="small"
                 placeholder="请输入内容"
               />
@@ -439,6 +439,7 @@ export default {
       this.setArticleDataById(hash, id)
     } else {
       console.log('路由错误')
+      this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
     this.getTags()
