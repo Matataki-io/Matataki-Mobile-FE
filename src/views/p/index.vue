@@ -236,24 +236,24 @@
         </div>
       </div>
       <div class="footer-block footer-btn">
-        <button
+        <!-- <button
           v-if="isSupported === -1"
           class="button-support bg-yellow border-yellow"
           @click="b4support"
         >
           {{ $t('p.investment') }}<img src="@/assets/newimg/touzi.svg" />
-        </button>
+        </button> -->
         <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
           {{ $t('p.investing') }}
         </button>
-        <button
+        <!-- <button
           v-else-if="isSupported === 1"
           class="button-support bg-yellow border-yellow"
           @click="invest"
         >
           {{ $t('p.investment') }}
           <img src="@/assets/newimg/touzi.svg" />
-        </button>
+        </button> -->
         <button
           v-else-if="isSupported === 2"
           class="button-support bg-yellow border-yellow"
@@ -303,7 +303,7 @@
       :likes="likes" :dislikes="dislikes"
       :article="article"
       :token="ssToken"
-      :isBookmarked="isBookmarked"
+      :is-bookmarked="isBookmarked"
       @share="widgetModal = true"
     />
 

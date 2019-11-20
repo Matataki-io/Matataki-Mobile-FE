@@ -194,23 +194,23 @@ const router = new VueRouter({
         title: '收藏-瞬MATATAKI'
       }
     },
-    {
-      path: '/user/:id/reward',
-      name: 'Reward',
-      props: true,
-      component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
-      meta: {
-        title: '投资-瞬MATATAKI'
-      }
-    },
+    // {
+    //   path: '/user/:id/reward',
+    //   name: 'Reward',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
+    //   beforeEnter: (to, from, next) => {
+    //     const { id } = to.params
+    //     const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
+    //     if (id != idOfToken) next({ name: 'user-id', params: { id } })
+    //     else {
+    //       next()
+    //     }
+    //   },
+    //   meta: {
+    //     title: '投资-瞬MATATAKI'
+    //   }
+    // },
     {
       path: '/user/:id/follow',
       name: 'user-id-follow',
