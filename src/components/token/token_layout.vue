@@ -473,6 +473,9 @@ export default {
   line-height: 28px;
   padding: 0;
   margin: 0;
+  sub {
+    bottom: 0;
+  }
 }
 .token-name {
   font-size: 12px;
