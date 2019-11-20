@@ -1,5 +1,5 @@
 <template>
-  <userPage>
+  <userByTab>
     <BasePull
       :params="pull.params"
       :api-url="pull.apiUrl"
@@ -19,16 +19,16 @@
         type="article"
       />
     </BasePull>
-  </userPage>
+  </userByTab>
 </template>
 
 <script>
-import userPage from '@/components/user/user_page.vue'
+import userByTab from '@/components/user/user_buy_tab.vue'
 import { ArticleCard } from '@/components/'
 
 export default {
   components: {
-    userPage,
+    userByTab,
     ArticleCard
   },
   data() {

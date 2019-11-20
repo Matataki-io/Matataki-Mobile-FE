@@ -194,21 +194,67 @@ const router = new VueRouter({
         title: '收藏-瞬MATATAKI'
       }
     },
+    // {
+    //   path: '/user/:id/reward',
+    //   name: 'Reward',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
+    //   beforeEnter: (to, from, next) => {
+    //     const { id } = to.params
+    //     const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
+    //     if (id != idOfToken) next({ name: 'user-id', params: { id } })
+    //     else {
+    //       next()
+    //     }
+    //   },
+    //   meta: {
+    //     title: '投资-瞬MATATAKI'
+    //   }
+    // },
     {
-      path: '/user/:id/reward',
-      name: 'Reward',
+      path: '/user/:id/follow',
+      name: 'user-id-follow',
       props: true,
-      component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
+      component: () => import(/* webpackChunkName: "user-id-follow" */ './views/User/follow.vue'),
       meta: {
-        title: '投资-瞬MATATAKI'
+        title: '我的关注-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/fan',
+      name: 'user-id-fan',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-fan" */ './views/User/fan.vue'),
+      meta: {
+        title: '我的粉丝-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/buy',
+      name: 'user-id-buy',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-buy" */ './views/User/buy/index.vue'),
+      meta: {
+        title: '购买文章-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/buy/other',
+      name: 'user-id-buy-other',
+      props: true,
+      component: () =>
+        import(/* webpackChunkName: "user-id-buy-other" */ './views/User/buy/other.vue'),
+      meta: {
+        title: '购买其他-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/user/:id/info',
+      name: 'user-id-info',
+      props: true,
+      component: () => import(/* webpackChunkName: "user-id-info" */ './views/User/info.vue'),
+      meta: {
+        title: '个人信息-瞬MATATAKI'
       }
     },
     {
@@ -405,35 +451,6 @@ const router = new VueRouter({
       path: '/token/:id',
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
-      meta: {
-        title: '粉丝通证-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/token/liquditity/:id',
-      name: 'token-liquidity-id',
-      component: () =>
-        import(/* webpackChunkName: "token-liquidity-id" */ './views/token/liquidity/_id.vue'),
-      meta: {
-        title: '粉丝通证-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/token/detail/:id',
-      name: 'token-detail-id',
-      component: () =>
-        import(/* webpackChunkName: "token-detail-id" */ './views/token/detail/_id.vue'),
-      meta: {
-        title: '粉丝通证-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/token/liquditity/detail/:id',
-      name: 'token-liquidity-detail-id',
-      component: () =>
-        import(
-          /* webpackChunkName: "token-liquidity-detail-id" */ './views/token/liquidity/detail/_id.vue'
-        ),
       meta: {
         title: '粉丝通证-瞬MATATAKI'
       }

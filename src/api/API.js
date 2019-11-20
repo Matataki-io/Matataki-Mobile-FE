@@ -490,5 +490,11 @@ minetokenGetResources(tokenId) {
       method: 'get',
       url: '/user/stats',
     })
-  }
+  },
+  follow(uid) {
+    return request.post('/follow/follow', { uid })
+  },
+  unfollow(uid) {
+    return request.post('/follow/unfollow', { uid })
+  },
 }

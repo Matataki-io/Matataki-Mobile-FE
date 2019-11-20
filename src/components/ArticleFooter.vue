@@ -15,31 +15,34 @@
       </Progress>
     </div>
     <div class="sun-right-btns">
-      <button class="sun-btn" :bookmarked="isBookmarked" @click="toggleBookmark">
-        <svg-icon v-if="!isBookmarked" :iconClass="'bookmark-solid'" class="btn-prefix" />
-        {{ !isBookmarked ? $t('articleFooter.bookmark') : $t('articleFooter.unbookmark') }}
-      </button>
-      <button class="sun-btn" :disabled="clicked" @click="like">
-        <svg-icon v-if="!clicked" icon-class="great-solid" class="btn-prefix" />
-        <span
-          >{{ clicked ? $t('articleFooter.likes') : $t('articleFooter.like') }}
-          {{ token && likes }}</span
-        >
-      </button>
-      <button class="sun-btn" :disabled="clicked" @click="dislike">
-        <svg-icon icon-class="bullshit-solid" class="btn-prefix" />
-        <span>{{ $t('articleFooter.unlike') }} {{ token && dislikes }}</span>
-      </button>
-      <button class="sun-btn" @click="$emit('share')">
-        <img src="@/assets/newimg/share.svg" class="btn-prefix" />
-        {{ $t('share') }}
-      </button>
+      <div :class="renderIconSet('great')">
+        <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
+        <p class="tag">{{ $t('articleFooter.like') }}{{ token && likes }}</p>
+      </div>
+      <div :class="renderIconSet('bullshit')">
+        <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
+        <p class="tag">{{ $t('articleFooter.unlike') }}{{ token && dislikes }}</p>
+      </div>
+      <div :class="bookmarkBtnClass">
+        <svg-icon
+          :icon-class="'bookmark-solid'"
+          class="borderless-icon-btn"
+          @click="toggleBookmark"
+        />
+        <p class="tag">{{ $t('articleFooter.bookmark') }}</p>
+      </div>
+      <div class="icon-set">
+        <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
+        <p class="tag">{{ $t('share') }}</p>
+      </div>
+
+      <!-- {{ $t('share') }} -->
     </div>
   </footer>
 </template>
 
 <script>
-import Progress from './Progress'
+import Progress from './Progress.vue'
 import { isNDaysAgo } from '@/common/methods'
 
 export default {
@@ -83,6 +86,13 @@ export default {
     }
   },
   computed: {
+    bookmarkBtnClass() {
+      let status = 'icon-set'
+      if (this.isBookmarked) {
+        status += ' clicked'
+      }
+      return status
+    },
     points() {
       const { points } = this.token
       const pointTypes = {
@@ -157,8 +167,28 @@ export default {
     this.handleFocus()
   },
   methods: {
+    getIconStatus(name) {
+      return this.type === name
+    },
+    renderIconSet(name) {
+      let status = 'icon-set'
+      if (this.getIconStatus(name) || name === 'bookmark') {
+        status += ' clicked'
+      }
+      return status
+    },
+    handleAlreadyClicked() {
+      this.$toast.fail({
+        duration: 2000,
+        message: `你已经表态了，不能重复表态`
+      })
+    },
     // 推荐
     like() {
+      if (this.clicked) {
+        this.handleAlreadyClicked()
+        return
+      }
       this.$backendAPI
         .like(this.article.id, this.timeCount)
         .then(response => {
@@ -198,6 +228,10 @@ export default {
     }, */
     // 不推荐
     dislike() {
+      if (this.clicked) {
+        this.handleAlreadyClicked()
+        return
+      }
       this.$backendAPI
         .dislike(this.article.id, this.timeCount)
         .then(response => {
@@ -381,5 +415,19 @@ export default {
   font-size: 16px;
   font-style: normal;
   margin-left: 4px;
+}
+.borderless-icon-btn {
+  width: 25px;
+  height: 25px;
+  margin: 0 15px;
+}
+.clicked {
+  color: rgb(73, 60, 216);
+}
+.clicked * {
+  color: rgb(73, 60, 216);
+}
+.icon-set p.tag {
+  text-align: center;
 }
 </style>
