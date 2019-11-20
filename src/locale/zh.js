@@ -45,6 +45,7 @@ export default {
     copy: '复制成功',
     save: '保存成功',
     loginSuccess: '登录成功',
+    logoutSuccess: '登出成功',
     public: '发送成功,自动转到你发布的文章',
     draftUpdate: '草稿更新成功',
     codeSendSuccess: '验证码发送成功，5分钟内使用有效',
