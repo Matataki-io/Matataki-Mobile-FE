@@ -83,9 +83,9 @@ export default {
     },
     color() {
       if (this.isMe(this.card.from_uid)) {
-        return '#44D7B6'
+        return '#41b37d'
       } else if (this.isMe(this.card.to_uid)) {
-        return '#FB6877'
+        return '#d74e5a'
       } else {
         return '#000000'
       }

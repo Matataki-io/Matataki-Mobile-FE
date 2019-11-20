@@ -34,7 +34,7 @@ export default {
       return this.asset.amount
     },
     assetColor() {
-      return '#FB6877'
+      return '#d74e5a'
     },
     assetType() {
       const { type } = this.asset
