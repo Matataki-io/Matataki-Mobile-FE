@@ -293,7 +293,7 @@ export default {
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
     invite: '我的邀请',
-    inviteDes: '已绑定{0}个账户',
+    inviteDes: '已邀请{0}个账户',
     original: '我的原创',
     investment: '我的投资',
     draft: '我的草稿',
