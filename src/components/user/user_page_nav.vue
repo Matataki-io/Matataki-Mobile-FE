@@ -1,5 +1,5 @@
 <template>
-  <nav class="user-nav">
+  <nav class="user-nav fl">
     <router-link
       v-for="(item, index) in navList"
       :key="index"
@@ -45,13 +45,11 @@ export default {
   margin-bottom: 10px;
   padding: 0 20px;
   a {
+    flex: 1;
+    margin-right: 0px;
     font-size: 14px;
     color: rgba(178, 178, 178, 1);
     line-height: 20px;
-    margin-right: 20px;
-    &:nth-last-child(1) {
-      margin-right: 0;
-    }
     &.active {
       color: #000;
     }
