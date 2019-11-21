@@ -441,16 +441,6 @@ export default {
       const chinese = convertLicenseToChinese(license)
       const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
       return { license, chinese, url }
-    },
-    contentWithCuricialInfo() {
-      if (this.isOriginal) {
-        const { license, chinese, url } = this.CCLicenseCredit
-        const CCLicenseWords = `本文章 [知识共享 ${chinese} (CC-${license}) 4.0](${url}) 协议授权`
-        return `${this.markdownData}
-    ${CCLicenseWords}`
-      } else {
-        return this.markdownData
-      }
     }
   },
   watch: {
@@ -753,6 +743,7 @@ export default {
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      article.cc_license = this.CCLicenseCredit.license || null
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
@@ -934,7 +925,7 @@ export default {
       const {
         currentUserInfo,
         title,
-        contentWithCuricialInfo: content,
+        markdownData: content,
         fissionFactor,
         cover
       } = this
