@@ -497,4 +497,14 @@ minetokenGetResources(tokenId) {
   unfollow(uid) {
     return request.post('/follow/unfollow', { uid })
   },
+  // 根据symbol获取token信息
+  getTokenBySymbol(symbol) {
+    return request({
+      method: 'GET',
+      url: '/token/symbol',
+      params: {
+        symbol
+      }
+    })
+  },
 }
