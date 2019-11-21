@@ -165,7 +165,7 @@
           </router-link>
         </div>
         <div class="cell-container">
-          <router-link :to="{ name: 'BuyHistory' }">
+          <router-link :to="{ name: 'buy' }">
             <div class="cell">
               <div class="cell-left">
                 <img src="@/assets/newimg/goumaijilu.svg" alt="article" class="left-img" />

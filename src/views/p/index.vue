@@ -103,7 +103,7 @@
             <h3 class="lock-info-title">
               {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
             </h3>
-            <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
+            <h5 v-if="isPriceArticle && !hasPaied" class="lock-info-subtitle">购买后即可解锁全部精彩内容</h5>
             <p v-if="!isMe(article.uid)" class="lock-info-des">
               <ul>
                 <li v-if="isPriceArticle">
@@ -120,12 +120,12 @@
             <p v-else class="lock-info-des">
               自己发布的文章
             </p>
-            <div class="lock-bottom" v-if="!hasPaied">
+            <div v-if="!hasPaied" class="lock-bottom">
               <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
               <el-button
                 type="primary"
-                @click="wxpayArticle"
                 size="small"
+                @click="wxpayArticle"
               >
                 一键{{unlockText}}
               </el-button>
@@ -142,7 +142,7 @@
           />
         </div>
       </template>
-      <router-link :to="{ name: 'BuyHistory' }">
+      <router-link :to="{ name: 'buy' }">
         <div v-if="article.is_buy" class="buy-alert">
           {{ $t('p.buyHistory') }}
         </div>
@@ -400,7 +400,7 @@
           {{ $t('p.buyDoneDes') }}
         </p>
         <div class="invest-container">
-          <router-link :to="{ name: 'BuyHistory' }">
+          <router-link :to="{ name: 'buy' }">
             <div class="invest-btn">
               {{ $t('p.view') }}
             </div>

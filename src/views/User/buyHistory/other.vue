@@ -11,7 +11,7 @@
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       @getListData="getListDataTab"
     >
-      <buy v-for="(item, index) in pull.list" :key="index" :buy="item" type="article" />
+      <buy v-for="(item, index) in pull.list" :key="index" :buy="item" type="other" />
     </BasePull>
   </layout>
 </template>
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       pull: {
-        params: { pagesize: 20, platform: 'cny' },
+        params: { pagesize: 20 },
         apiUrl: 'buyHistory',
         list: [],
         loadingText: this.$t('not'),
