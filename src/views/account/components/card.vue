@@ -38,11 +38,11 @@ export default {
     },
     color() {
       const type = {
-        recharge: '#d74e5a',
-        transfer_out: '#41b37d',
-        transfer_in: '#d74e5a'
+        recharge: '#41b37d',
+        transfer_out: '#d74e5a',
+        transfer_in: '#41b37d'
       }
-      return type[this.card.type] || '#d74e5a'
+      return type[this.card.type] || '#41b37d'
     },
     type() {
       const { type } = this.card
