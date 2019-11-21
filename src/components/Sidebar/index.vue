@@ -239,12 +239,12 @@
       </div>
 
       <div class="cell-container">
-        <a href="https://matataki.io/p/617">
+        <a href="https://matataki.io/p/1060">
           <div class="cell">
             <div class="cell-left">
               <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" />
               <span class="left-text">
-                {{ $t('sidebar.rule') }}
+                使用手册
               </span>
             </div>
             <div class="cell-right"><span></span></div>

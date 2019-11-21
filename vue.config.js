@@ -1,4 +1,7 @@
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const ImageminPlugin = require('imagemin-webpack-plugin').default
+// const imageminMozjpeg = require('imagemin-mozjpeg')
+
 const WebpackCdnPlugin = require('webpack-cdn-plugin')
 
 const path = require('path')
@@ -162,6 +165,16 @@ module.exports = {
         publicPath: '/node_modules',
         crossOrigin: true
       })
+      // 图片优化
+      // new ImageminPlugin({
+      //   plugins: [
+      //     imageminMozjpeg({
+      //       disable: process.env.NODE_ENV !== 'production',
+      //       quality: '65-80',
+      //       progressive: true
+      //     })
+      //   ]
+      // })
     )
   },
 
@@ -203,6 +216,7 @@ module.exports = {
   // }
   productionSourceMap: false,
 
+  // 全局less变量
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
