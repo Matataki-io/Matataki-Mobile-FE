@@ -1,9 +1,8 @@
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-// const ImageminPlugin = require('imagemin-webpack-plugin').default
-// const imageminMozjpeg = require('imagemin-mozjpeg')
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+const imageminMozjpeg = require('imagemin-mozjpeg')
 
 const WebpackCdnPlugin = require('webpack-cdn-plugin')
-
 const path = require('path')
 
 function resolve(dir) {
@@ -18,6 +17,7 @@ process.env.VUE_APP_COMMIT_HASH = process.env.COMMIT_REF
 // console.log(process.env.NODE_ENV);
 const { NODE_ENV } = process.env
 // console.debug(process.env.VUE_APP_SIGNATURE_CONTRACT);
+
 module.exports = {
   chainWebpack: config => {
     // 移除 prefetch 插件
@@ -164,17 +164,18 @@ module.exports = {
         modules: configPluginsModules,
         publicPath: '/node_modules',
         crossOrigin: true
-      })
+      }),
       // 图片优化
-      // new ImageminPlugin({
-      //   plugins: [
-      //     imageminMozjpeg({
-      //       disable: process.env.NODE_ENV !== 'production',
-      //       quality: '65-80',
-      //       progressive: true
-      //     })
-      //   ]
-      // })
+      new ImageminPlugin({
+        test: /\.(jpe?g|png|gif)$/i,
+        plugins: [
+          imageminMozjpeg({
+            disable: process.env.NODE_ENV !== 'production',
+            quality: '65-80',
+            progressive: true
+          })
+        ]
+      })
     )
   },
 
