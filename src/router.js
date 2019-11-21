@@ -182,14 +182,6 @@ const router = new VueRouter({
       name: 'user-id-bookmark',
       props: true,
       component: () => import(/* webpackChunkName: "user-id-bookmark" */ './views/User/Bookmark.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '收藏-瞬MATATAKI'
       }
