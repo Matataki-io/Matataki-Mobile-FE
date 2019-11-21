@@ -32,6 +32,7 @@ export default {
         { title: '关注', url: 'user-id-follow', self: false },
         { title: '粉丝', url: 'user-id-fan', self: false },
         { title: '购买', url: 'user-id-buy', self: true },
+        { title: '收藏', url: 'user-id-bookmark', self: true },
         { title: '个人信息', url: 'user-id-info', self: false }
       ]
     }
