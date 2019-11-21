@@ -5,37 +5,31 @@
       :api-url="pull.apiUrl"
       :active-index="0"
       :now-index="index"
+      :need-access-token="true"
       :auto-request-time="pull.autoRequestTime"
       :loading-text="pull.loadingText"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       @getListData="getListDataTab"
     >
-      <ArticleCard
-        v-for="(itemChild, index) in pull.list"
-        :key="index"
-        :class="listtype !== 'others' && 'card-margin'"
-        :article="itemChild"
-        :now-index="0"
-        type="article"
-      />
+      <buy v-for="(item, index) in pull.list" :key="index" :buy="item" type="article" />
     </BasePull>
   </userByTab>
 </template>
 
 <script>
 import userByTab from '@/components/user/user_buy_tab.vue'
-import { ArticleCard } from '@/components/'
+import buy from '@/components/buy_card/index.vue'
 
 export default {
   components: {
     userByTab,
-    ArticleCard
+    buy
   },
   data() {
     return {
       pull: {
-        params: { author: this.$route.params.id },
-        apiUrl: 'homeTimeRanking',
+        params: { pagesize: 20, platform: 'cny' },
+        apiUrl: 'buyHistory',
         list: [],
         loadingText: this.$t('not'),
         autoRequestTime: 0
