@@ -285,7 +285,7 @@ export default {
         } else { // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.ArticleJsapiPay(tradeNo, openid).then(res => {
+        this.$API.articleJsapiPay(tradeNo, openid).then(res => {
           this.weakWeixinPay(res)
         })
       } else { // 弹出NATIVE支付二维码
