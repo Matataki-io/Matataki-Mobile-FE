@@ -123,6 +123,12 @@
                   {{ $t('sidebar.bookmarks') }}
                 </span>
               </div>
+              <div class="cell-right">
+                <span
+                  >{{ stats.bookmarks }}
+                  {{ $t('sidebar.article') }}
+                </span>
+              </div>
             </div>
           </router-link>
           <!-- <router-link :to="{ name: 'Reward', params: { id } }">
@@ -360,7 +366,8 @@ export default {
         referral_amount: 0,
         articles: 0,
         supports: 0,
-        drafts: 0
+        drafts: 0,
+        bookmarks: 0
       },
       tokenUser: false
     }
@@ -444,7 +451,8 @@ export default {
         referral_amount,
         articles,
         supports,
-        drafts
+        drafts,
+        bookmarks
       }) => {
         this.email = email
         this.fans = fans
@@ -459,7 +467,8 @@ export default {
           referral_amount,
           articles,
           supports,
-          drafts
+          drafts,
+          bookmarks
         }
       }
 
