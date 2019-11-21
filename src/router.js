@@ -258,12 +258,21 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/buyHistory',
-      name: 'BuyHistory',
+      path: '/buy',
+      name: 'buy',
       props: true,
-      component: () => import(/* webpackChunkName: "BuyHistory" */ './views/User/buyHistory'),
+      component: () => import(/* webpackChunkName: "buy" */ './views/User/buyHistory/index'),
       meta: {
-        title: '购买-瞬MATATAKI'
+        title: '购买文章-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/buy/other',
+      name: 'buy-other',
+      props: true,
+      component: () => import(/* webpackChunkName: "buy" */ './views/User/buyHistory/other'),
+      meta: {
+        title: '购买其他-瞬MATATAKI'
       }
     },
     {

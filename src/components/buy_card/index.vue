@@ -22,6 +22,7 @@
         >
           {{ buy && buy.title }}
         </router-link>
+        <p v-if="type === 'article'" class="author">{{ buy && (buy.nickname || buy.author) }}</p>
         <p class="money">
           <template v-if="type === 'other'">
             {{ $t('user.unitPrice') }}
@@ -147,6 +148,10 @@ export default {
   align-items: center;
   margin: 10px 0 0 0;
   padding: 0 0 10px 0;
+  .author {
+    font-size: 12px;
+    color: #333;
+  }
   &.no-padding {
     padding: 0;
   }
