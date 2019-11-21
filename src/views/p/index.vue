@@ -115,7 +115,7 @@
                   <span>{{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已购买</span>
+              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -727,7 +727,13 @@ export default {
   created() {
     this.getArticleInfo(this.id) // 得到文章信息
   },
-  mounted() {},
+  mounted() {
+    this.$navigation.once('back', (to, from) => {
+      if (from.route.name === 'porder-id') {
+        window.location.reload()
+      }
+    })
+  },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
     // 增加文章阅读量
