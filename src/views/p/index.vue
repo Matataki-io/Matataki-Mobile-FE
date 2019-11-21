@@ -83,7 +83,7 @@
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
-        <statement v-if="hasPaied" :article="article"></statement>
+        <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
         <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">

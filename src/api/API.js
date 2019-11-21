@@ -361,7 +361,7 @@ minetokenGetResources(tokenId) {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
     signature = null
   ) {
     // 账号类型
@@ -382,6 +382,7 @@ minetokenGetResources(tokenId) {
         is_original: isOriginal,
         tags,
         commentPayPoint,
+        cc_license,
         shortContent
       }
     })
