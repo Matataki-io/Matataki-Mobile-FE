@@ -18,9 +18,9 @@
             class="topcard-list-pricing"
             :style="
               assetsRewards.totalSignIncome > 0
-                ? { color: '#d74e5a' }
-                : assetsRewards.totalSignIncome < 0
                 ? { color: '#41b37d' }
+                : assetsRewards.totalSignIncome < 0
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
             "
           >
@@ -33,9 +33,9 @@
             class="topcard-list-pricing"
             :style="
               assetsRewards.totalShareIncome > 0
-                ? { color: '#d74e5a' }
-                : assetsRewards.totalShareIncome < 0
                 ? { color: '#41b37d' }
+                : assetsRewards.totalShareIncome < 0
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
             "
           >
@@ -48,9 +48,9 @@
             class="topcard-list-pricing"
             :style="
               assetsRewards.totalShareExpenses > 0
-                ? { color: '#d74e5a' }
-                : assetsRewards.totalShareExpenses < 0
                 ? { color: '#41b37d' }
+                : assetsRewards.totalShareExpenses < 0
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
             "
           >

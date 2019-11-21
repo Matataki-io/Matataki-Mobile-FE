@@ -66,15 +66,15 @@ export default {
     },
     assetColor() {
       const switchType = {
-        support_expenses: '#41b37d',
-        buy_expenses: '#41b37d',
-        fission_income: '#d74e5a',
-        referral_income: '#d74e5a',
-        author_sale_income: '#d74e5a',
-        author_supported_income: '#d74e5a',
+        support_expenses: '#d74e5a',
+        buy_expenses: '#d74e5a',
+        fission_income: '#41b37d',
+        referral_income: '#41b37d',
+        author_sale_income: '#41b37d',
+        author_supported_income: '#41b37d',
         withdraw: '#000000',
-        buyad: '#41b37d',
-        earn: '#d74e5a'
+        buyad: '#d74e5a',
+        earn: '#41b37d'
       }
       return switchType[this.asset.type]
     },
