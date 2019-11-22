@@ -2,7 +2,7 @@
   <div class="mw help">
     <BaseHeader :pageinfo="{ title: $t('setting') }" />
     <div class="help-block">
-      <a class="help-list" href="https://matataki.io/p/617">
+      <a class="help-list" href="https://matataki.io/p/1060">
         <span class="help-list-title">{{ $t('user.rule') }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
@@ -55,7 +55,7 @@
       </div>-->
     </div>
     <div class="signout">
-      <p class="version">-version2.7.1-</p>
+      <p class="version">-version2.12.2-</p>
     </div>
   </div>
 </template>
