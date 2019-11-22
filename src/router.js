@@ -16,7 +16,7 @@ const router = new VueRouter({
       path: '/',
       name: 'index',
       component: () =>
-        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'),
+        import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
       }
@@ -25,7 +25,7 @@ const router = new VueRouter({
       path: '/article',
       name: 'article',
       component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/index.vue'),
+        import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/home/index.vue'),
       meta: {
         title: '文章-瞬MATATAKI'
       }
@@ -34,7 +34,7 @@ const router = new VueRouter({
       path: '/shop',
       name: 'shop',
       component: () =>
-        import(/* webpackChunkName: "shop", webpackPrefetch: true  */ './views/home/shop.vue'),
+        import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/home/shop.vue'),
       meta: {
         title: '商品-瞬MATATAKI'
       }
@@ -90,7 +90,8 @@ const router = new VueRouter({
     {
       path: '/user/:id',
       name: 'user-id',
-      component: () => import(/* webpackChunkName: "user-id" */ './views/User/index.vue'),
+      component: () =>
+        import(/* webpackChunkName: "user-id", webpackPrefetch: true */ './views/User/index.vue'),
       meta: {
         title: '个人主页-瞬MATATAKI'
       }
