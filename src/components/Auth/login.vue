@@ -94,7 +94,7 @@ export default {
     getWeixinCode() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if(isWeixin()) {
-        this.$router.push({ name: 'WeixinLogin' })
+        this.$router.push({ name: 'WeixinLogin', query: { from: this.$route.name } })
       } else {
         this.$message.error('请在微信中打开此网页')
       }
