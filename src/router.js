@@ -517,8 +517,7 @@ router.beforeEach((to, from, next) => {
   if (hasLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) next('/')
   else next()
 })
-router.afterEach((to, from) => {
-  // console.log(to, from)
+router.afterEach(to => {
   Vue.nextTick(() => {
     wechatShare({
       title: to.meta.title
