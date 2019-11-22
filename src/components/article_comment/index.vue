@@ -72,6 +72,7 @@ export default {
       }
       return true
     },
+    // 发送评论
     postComment() {
       if (!this.islogin()) return
       if (!this.comment.trim())
