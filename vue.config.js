@@ -5,7 +5,7 @@ const imageminMozjpeg = require('imagemin-mozjpeg')
 const WebpackCdnPlugin = require('webpack-cdn-plugin')
 const path = require('path')
 
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -177,15 +177,15 @@ module.exports = {
             progressive: true
           })
         ]
-      }),
-      new CompressionWebpackPlugin({
-        filename: '[path].gz[query]',
-        algorithm: 'gzip',
-        test: /\.(js|css)$/,
-        threshold: 10240,
-        minRatio: 0.8,
-        deleteOriginalAssets: true
       })
+      // new CompressionWebpackPlugin({
+      //   filename: '[path].gz[query]',
+      //   algorithm: 'gzip',
+      //   test: /\.(js|css)$/,
+      //   threshold: 10240,
+      //   minRatio: 0.8,
+      //   deleteOriginalAssets: true
+      // })
     )
   },
 
