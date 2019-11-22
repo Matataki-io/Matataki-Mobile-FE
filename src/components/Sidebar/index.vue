@@ -36,7 +36,7 @@
           </p> -->
         </div>
         <div class="follow-info">
-          <router-link :to="{ name: 'FollowList', params: { id, listtype: $t('sidebar.follow') } }">
+          <router-link :to="{ name: 'user-id-follow', params: { id } }">
             <div class="follow">
               <p>{{ follows }}</p>
               <p>
@@ -44,7 +44,7 @@
               </p>
             </div>
           </router-link>
-          <router-link :to="{ name: 'FollowList', params: { id, listtype: $t('sidebar.fans') } }">
+          <router-link :to="{ name: 'user-id-fan', params: { id } }">
             <div class="fans">
               <p>{{ fans }}</p>
               <p>

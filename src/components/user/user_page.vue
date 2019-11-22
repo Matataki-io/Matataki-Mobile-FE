@@ -52,11 +52,11 @@
 
       <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
       <p class="user-status">
-        <router-link :to="{ name: 'FollowList', params: { listtype: $t('follow') } }">
+        <router-link :to="{ name: 'user-id-follow', params: { id: this.$route.params.id } }">
           <span class="status-number">{{ follows }}</span>
           <span class="status-key">{{ $t('follow') }}</span>
         </router-link>
-        <router-link :to="{ name: 'FollowList', params: { listtype: $t('fans') } }">
+        <router-link :to="{ name: 'user-id-fan', params: { id: this.$route.params.id } }">
           <span class="status-number">{{ fans }}</span>
           <span class="status-key">{{ $t('fans') }}</span>
         </router-link>
