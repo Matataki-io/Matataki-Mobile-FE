@@ -9,7 +9,7 @@
         :class="activeIndex === index && 'active'"
         @click="toggleTabs(index)"
       >
-        {{ item.label }}<span v-if="item.count"> ({{ item.count }})</span>
+        {{ item.label }}
       </div>
     </div>
     <BasePull
@@ -78,8 +78,7 @@ export default {
           apiUrl: 'homeTimeRanking',
           articles: [],
           loadingText: this.$t('notOriginal'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         },
         {
           label: this.$t('user.support'),
@@ -87,8 +86,7 @@ export default {
           apiUrl: 'userArticlesSupportedList',
           articles: [],
           loadingText: this.$t('notSupport'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         }
       ]
     } else if (listtype === 'original') {
@@ -99,8 +97,7 @@ export default {
           apiUrl: 'homeTimeRanking',
           articles: [],
           loadingText: this.$t('notArticle'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         },
         {
           label: this.$t('user.shop'),
@@ -108,8 +105,7 @@ export default {
           apiUrl: 'homeTimeRanking',
           articles: [],
           loadingText: this.$t('notShop'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         }
       ]
     } else if (listtype === 'reward') {
@@ -120,8 +116,7 @@ export default {
           apiUrl: 'userArticlesSupportedList',
           articles: [],
           loadingText: this.$t('notArticle'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         },
         {
           label: this.$t('user.shop'),
@@ -129,8 +124,7 @@ export default {
           apiUrl: 'userArticlesSupportedList',
           articles: [],
           loadingText: this.$t('notShop'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         }
       ]
     } else if (listtype === 'bookmark') {
@@ -141,14 +135,11 @@ export default {
           apiUrl: 'userBookmarks',
           articles: [],
           loadingText: this.$t('notArticle'),
-          autoRequestTime: 0,
-          count: 0
+          autoRequestTime: 0
         }
       ]
 
       this.needAccessToken = true
-
-      this.getBookmarkStats()
     }
   },
   methods: {
@@ -167,11 +158,6 @@ export default {
         data: { data }
       } = await this.$backendAPI.getUser({ id })
       return data.username
-    },
-    async getBookmarkStats() {
-      const { data: { data: { articleCount } } } = await this.$backendAPI.getBookmarkStats()
-
-      this.tabsData[0].count = articleCount
     }
   }
 }
