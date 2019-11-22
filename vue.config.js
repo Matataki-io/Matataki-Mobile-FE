@@ -132,10 +132,25 @@ module.exports = {
         var: 'Eos',
       }, */
     ]
+
+    let prodPlugins = []
     // todo 后面区分三个端的环境
     if (NODE_ENV === 'development') {
       console.log('development')
     } else {
+      prodPlugins = [
+        // 图片优化
+        new ImageminPlugin({
+          test: /\.(jpe?g|png|gif)$/i,
+          plugins: [
+            imageminMozjpeg({
+              disable: process.env.NODE_ENV !== 'production',
+              quality: '65-80',
+              progressive: true
+            })
+          ]
+        })
+      ]
       console.log('prod')
     }
     config.optimization = {
@@ -167,17 +182,7 @@ module.exports = {
         publicPath: '/node_modules',
         crossOrigin: true
       }),
-      // 图片优化
-      new ImageminPlugin({
-        test: /\.(jpe?g|png|gif)$/i,
-        plugins: [
-          imageminMozjpeg({
-            disable: process.env.NODE_ENV !== 'production',
-            quality: '65-80',
-            progressive: true
-          })
-        ]
-      })
+      ...prodPlugins
       // new CompressionWebpackPlugin({
       //   filename: '[path].gz[query]',
       //   algorithm: 'gzip',
