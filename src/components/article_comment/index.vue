@@ -87,7 +87,7 @@ export default {
             this.$toast({ duration: 1000, message: this.$t('p.commentSuccess') })
             this.comment = ''
             this.$emit('doneComment')
-          } else this.$toast({ duration: 1000, message: res.message })
+          } else this.$toast({ duration: 1000, message: res.data.message })
         })
         .catch(e => {
           console.log(this.$t('p.commentFail'), e)
