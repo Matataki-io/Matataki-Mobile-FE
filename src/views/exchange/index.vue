@@ -8,8 +8,8 @@
     <div class="outer-container">
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner" />
       <div class="p-w">
-        <el-tabs type="border-card">
-          <el-tab-pane label="交易">
+        <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
+          <el-tab-pane label="交易" name="#swap">
             <Swap />
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
@@ -17,7 +17,7 @@
               <a href="/tokens">跳转到我的粉丝通证页面</a>
             </div>
           </el-tab-pane>-->
-          <el-tab-pane label="流动金池">
+          <el-tab-pane label="流动金池" name="#pool">
             <Pool />
           </el-tab-pane>
         </el-tabs>
@@ -37,18 +37,34 @@ export default {
     Pool
   },
   data() {
-    return {}
+    return {
+      tab: '#swap'
+    }
   },
   computed: {
     ...mapGetters(['isLogined'])
   },
   created() {},
   mounted() {
+    this.handleRoute()
     this.$nextTick(() => {
       this.checkLogin()
     })
   },
   methods: {
+    handleRoute() {
+      const hashArr = ['#swap', '#pool']
+      const hash = this.$route.hash
+      console.log('hash:', hash)
+      if (hashArr.includes(hash)) this.tab = hash
+      else this.tab = '#swap'
+    },
+    tabClick(e) {
+      this.$router.replace({ 
+        hash: e.name,
+        query: this.$route.query
+      })
+    },
     onClickLeft() {
       this.$router.push({ name: 'index' })
     },

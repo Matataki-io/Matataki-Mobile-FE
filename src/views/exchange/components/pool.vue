@@ -311,11 +311,34 @@ export default {
       return "";
     }
   },
-  mounted() {
-    // this.checkLogin()
+  async mounted() {
+    await this.getTokenBySymbol()
   },
 
   methods: {
+    async getTokenBySymbol() {
+      console.log(this.$route);
+      const { output = '' } = this.$route.query
+      // 输出
+      if (!this.$utils.isNull(output)) {
+        this.field = OUTPUT
+        if (output.toLowerCase() === 'cny') {
+          this.form.outputToken = CNY
+        } else {
+          const ouputRes = await this.$API.getTokenBySymbol(output)
+          this.selectToken(ouputRes.data || {})
+        }
+      }
+    },
+    addRouterQuery(symbol) {
+      this.$router.replace({
+        hash: this.$route.hash,
+        query: {
+          ...this.$route.query,
+          [this.field === INPUT ? 'input' : 'output']: symbol
+        }
+      })
+    },
     isNumber(event) {
       if (!/\d/.test(event.key) && event.key !== ".") {
         return event.preventDefault();
@@ -396,6 +419,7 @@ export default {
           }
         }
       }
+      this.addRouterQuery(token.symbol)
     },
     getInputAmount(inputTokenId, outputTokenId, outputAmount) {
       const deciaml = 4;

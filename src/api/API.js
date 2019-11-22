@@ -361,7 +361,7 @@ minetokenGetResources(tokenId) {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
     signature = null
   ) {
     // 账号类型
@@ -382,6 +382,7 @@ minetokenGetResources(tokenId) {
         is_original: isOriginal,
         tags,
         commentPayPoint,
+        cc_license,
         shortContent
       }
     })
@@ -496,5 +497,15 @@ minetokenGetResources(tokenId) {
   },
   unfollow(uid) {
     return request.post('/follow/unfollow', { uid })
+  },
+  // 根据symbol获取token信息
+  getTokenBySymbol(symbol) {
+    return request({
+      method: 'GET',
+      url: '/token/symbol',
+      params: {
+        symbol
+      }
+    })
   },
 }

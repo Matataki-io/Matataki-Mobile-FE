@@ -39,7 +39,7 @@
     </BasePull>
     <div class="fixed-bottom">
       <el-button class="fix-button" @click="showGift">赠送</el-button>
-      <router-link :to="{ name: 'exchange' }">
+      <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetail.symbol } }">
         <el-button class="fix-button" type="primary">交易</el-button>
       </router-link>
     </div>

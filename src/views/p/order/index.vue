@@ -118,13 +118,14 @@ export default {
       },
       qrcodeShow: false,
       payLink: '',
-      orderItems: []
+      orderItems: [],
+      articleId: ''
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
-      return '购买文章'
+      return `购买文章${this.articleId}`
     },
     cnyAmount() {
       if (this.order.total) {
@@ -207,9 +208,15 @@ export default {
         })
     },
     getOrderData() {
+      const loading = this.$loading({
+        lock: false,
+        text: '获取订单数据中...',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
       const id = this.$route.params.id
       this.tradeNo = id
       this.$API.getArticleOrder(id).then(res => {
+        loading.close()
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
@@ -219,6 +226,7 @@ export default {
             this.alert('订单已支付')
           }
           this.order = res.data
+          this.articleId = res.data.items.orderPriceItem ? res.data.items.orderPriceItem.signid : ''
           this.useBalance = Boolean(res.data.use_balance)
           this.orderItems = this.handleOrderItem(res.data.items)
         } else {
@@ -278,7 +286,7 @@ export default {
           // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.ArticleJsapiPay(tradeNo, openid).then(res => {
+        this.$API.articleJsapiPay(tradeNo, openid).then(res => {
           this.weakWeixinPay(res)
         })
       } else {

@@ -179,17 +179,9 @@ const router = new VueRouter({
     },
     {
       path: '/user/:id/bookmark',
-      name: 'Bookmark',
+      name: 'user-id-bookmark',
       props: true,
-      component: () => import(/* webpackChunkName: "Bookmark" */ './views/User/Bookmark.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
+      component: () => import(/* webpackChunkName: "user-id-bookmark" */ './views/User/Bookmark.vue'),
       meta: {
         title: '收藏-瞬MATATAKI'
       }
@@ -310,6 +302,15 @@ const router = new VueRouter({
       },
       meta: {
         title: '草稿-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/bookmark',
+      name: 'BookmarkList',
+      props: true,
+      component: () => import(/* webpackChunkName: "BookmarkList" */ './views/User/BookmarkList/index.vue'),
+      meta: {
+        title: '收藏-瞬MATATAKI'
       }
     },
     {

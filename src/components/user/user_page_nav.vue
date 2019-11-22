@@ -1,5 +1,5 @@
 <template>
-  <nav class="user-nav">
+  <nav class="user-nav fl">
     <router-link
       v-for="(item, index) in navList"
       :key="index"
@@ -32,6 +32,7 @@ export default {
         { title: '关注', url: 'user-id-follow', self: false },
         { title: '粉丝', url: 'user-id-fan', self: false },
         { title: '购买', url: 'user-id-buy', self: true },
+        { title: '收藏', url: 'user-id-bookmark', self: true },
         { title: '个人信息', url: 'user-id-info', self: false }
       ]
     }
@@ -44,13 +45,11 @@ export default {
   margin-bottom: 10px;
   padding: 0 20px;
   a {
+    flex: 1;
+    margin-right: 0px;
     font-size: 14px;
     color: rgba(178, 178, 178, 1);
     line-height: 20px;
-    margin-right: 20px;
-    &:nth-last-child(1) {
-      margin-right: 0;
-    }
     &.active {
       color: #000;
     }

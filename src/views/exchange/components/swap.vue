@@ -207,9 +207,43 @@ export default {
       return "";
     }
   },
-  mounted() {},
+  async mounted() {
+    await this.getTokenBySymbol()
+  },
 
   methods: {
+    async getTokenBySymbol() {
+      const { input = '', output = '' } = this.$route.query
+      // 输入
+      if (!this.$utils.isNull(input)) {
+        this.field = INPUT
+        if (input.toLowerCase() === 'cny') {
+          this.form.inputToken = CNY
+        } else {
+          const inputRes = await this.$API.getTokenBySymbol(input)
+          this.selectToken(inputRes.data || {})
+        }
+      }
+      // 输出
+      if (!this.$utils.isNull(output)) {
+        this.field = OUTPUT
+        if (output.toLowerCase() === 'cny') {
+          this.form.outputToken = CNY
+        } else {
+          const ouputRes = await this.$API.getTokenBySymbol(output)
+          this.selectToken(ouputRes.data || {})
+        }
+      }
+    },
+    addRouterQuery(symbol) {
+      this.$router.replace({
+        hash: this.$route.hash,
+        query: {
+          ...this.$route.query,
+          [this.field === INPUT ? 'input' : 'output']: symbol
+        }
+      })
+    },
     isNumber(event) {
       if (!/\d/.test(event.key) && event.key !== ".") {
         return event.preventDefault();
@@ -277,6 +311,7 @@ export default {
       ) {
         this.getInputAmount(inputToken.id, outputToken.id, output);
       }
+      this.addRouterQuery(token.symbol)
     },
     // 构造参数
     makeOrderParams() {

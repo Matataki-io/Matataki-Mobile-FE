@@ -17,18 +17,18 @@ export default {
       this.$router.push({ name: 'index' })
       return
     } */
-    const { code, state } = this.$route.query
-    const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
-    const appid = 'wx95829b6a2307300b'
-    const scope = 'snsapi_userinfo'
-    const redirectUri = `${VUE_APP_WX_URL}/login/weixin`
+    const { code, state, from } = this.$route.query
     if (!code || state !== 'weixin') {
+      const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
+      const appid = 'wx95829b6a2307300b'
+      const scope = 'snsapi_userinfo'
+      const redirectUri = `${VUE_APP_WX_URL}/login/weixin?from=${from}`
       window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
     } else {
       this.$API.loginWeixin(code).then(res => {
         this.$store.commit('setAccessToken', res.data)
         this.$store.commit('setUserConfig', { idProvider: 'weixin' })
-        this.$router.push({ name: 'index' })
+        this.$router.push({ name: from })
       })
     }
   }

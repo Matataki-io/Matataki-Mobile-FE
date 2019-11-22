@@ -61,7 +61,7 @@ export default {
 <style lang="less" scoped>
 .home-fixed {
   position: fixed;
-  top: 50px;
+  top: 45px;
   right: 0;
   left: 0;
   z-index: 98;

@@ -83,7 +83,7 @@
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
-        <statement v-if="hasPaied" :article="article"></statement>
+        <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
         <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">
@@ -115,7 +115,7 @@
                   <span>{{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已支付</span>
+              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -683,7 +683,7 @@ export default {
       if (this.isTokenArticle) {
         result += parseFloat(this.form.input || 0)
       }
-      return (result + this.getArticlePrice).toFixed(2)
+      return utils.up2points(result + this.getArticlePrice)
     },
     // 需要多少粉丝通证
     needTokenAmount() {
@@ -727,7 +727,13 @@ export default {
   created() {
     this.getArticleInfo(this.id) // 得到文章信息
   },
-  mounted() {},
+  mounted() {
+    this.$navigation.once('back', (to, from) => {
+      if (from.route.name === 'porder-id') {
+        window.location.reload()
+      }
+    })
+  },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
     // 增加文章阅读量
