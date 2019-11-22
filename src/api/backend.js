@@ -491,7 +491,7 @@ const API = {
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
   },
-  // 文章持币阅读
+  // 文章持通证阅读
   addMineTokens(data) {
     return this.accessBackend({
       method: 'post',

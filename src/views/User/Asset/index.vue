@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <!-- 暂未支持的币种 -->
+    <!-- 暂未支持的通证种 -->
     <div class="asset-list">
       <div v-for="(item, index) in assetOtherList" :key="index" class="list">
         <div class="list-left">

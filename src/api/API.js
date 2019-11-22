@@ -337,7 +337,7 @@ minetokenGetResources(tokenId) {
       timeout: 40000,
     })
   },
-    // 文章持币阅读
+    // 文章持通证阅读
     addMineTokens(data) {
       return request({
         method: 'post',

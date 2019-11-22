@@ -202,7 +202,7 @@ export default {
   created() {
     this.tokenDetail()
 
-    // 根据token判断是否有币 如果有显示当前页面并且调用list
+    // 根据token判断是否有通证 如果有显示当前页面并且调用list
     // 否则修改界面显示
   },
   mounted() {},

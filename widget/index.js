@@ -165,10 +165,10 @@ const getInfobyId = id => {
         urlSearchData.img = data.cover ? `${imageAddress}${data.cover}` : logoImg
 
         // 没有传递内容请求接口获取
-        // 没有内容 不持币
+        // 没有内容 不持通证
         if (!urlSearchData.content && !data.require_holdtokens && !data.require_buy) {
           getArticleContent(data.hash)
-          // 没有内容 持币
+          // 没有内容 持通证
         } else if (!urlSearchData.content && (data.require_holdtokens || data.require_buy)) {
           urlSearchData.content = data.short_content
         }
@@ -183,7 +183,6 @@ const getInfobyId = id => {
           read,
           username
         })
-
       } else {
         console.error('请求失败')
         setAppDom({})

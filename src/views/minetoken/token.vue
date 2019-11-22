@@ -18,7 +18,9 @@
 
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝通证?</a>
       &nbsp;
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行粉丝通证?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980"
+        >如何发行粉丝通证?</a
+      >
     </div>
 
     <el-form ref="form" :rules="rules" class="input-form" :model="form" label-width="80px">
@@ -125,7 +127,7 @@
           class="publish-btn"
           @click="submitForm('form')"
         >
-          {{ isPost ? '发币' : '保存' }}
+          {{ isPost ? '发行粉丝通证' : '保存' }}
         </el-button>
       </div>
     </el-form>

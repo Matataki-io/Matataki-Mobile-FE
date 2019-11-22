@@ -36,7 +36,7 @@
       v-html="compiledMarkdown"
     />
     <article v-else class="markdown-body" itemprop="articleBody">
-      <p>该文章为持币阅读文章,请返回原文查看 <a :href="id">立即跳转</a></p>
+      <p>该文章需持通证阅读,请返回原文查看 <a :href="id">立即跳转</a></p>
     </article>
   </main>
 </template>

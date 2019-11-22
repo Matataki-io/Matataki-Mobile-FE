@@ -7,26 +7,29 @@
     custom-class="br10 nopadding"
     :before-close="handleClose"
   >
-    <div class="container" v-loading="loading">
+    <div v-loading="loading" class="container">
       <div class="padding20">
-        <img src="@/assets/img/m_logo.png" alt="logo">
+        <img src="@/assets/img/m_logo.png" alt="logo" />
         <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
         <table class="order-table">
           <tbody>
             <tr>
               <td class="order-key">
                 交易账号：
-              </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
+              </td>
+              <td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
             </tr>
             <tr>
               <td class="order-key">
                 交易内容：
-              </td><td>{{ form.outputToken.symbol }}</td>
+              </td>
+              <td>{{ form.outputToken.symbol }}</td>
             </tr>
             <tr>
               <td class="order-key">
                 交易数量：
-              </td><td>{{ form.output }}</td>
+              </td>
+              <td>{{ form.output }}</td>
             </tr>
             <!-- <tr>
               <td class="order-key">
@@ -36,7 +39,8 @@
             <tr v-if="!isWeixin">
               <td class="order-key">
                 订单编号：
-              </td><td>{{ order.trade_no }}</td>
+              </td>
+              <td>{{ order.trade_no }}</td>
             </tr>
             <!-- <tr>
               <td class="order-key">
@@ -56,39 +60,52 @@
       <div class="balanceBox">
         <div class="flexBox padding20">
           <div>
-            <el-tooltip  placement="bottom" effect="light">
-              <div slot="content">您的交易可能由于正常的价格波动而失败，<br/>
-                  预置币格波动区间将有助于您的交易成功。<br/>
-                  交易成功后，多支付的金额会退回。</div>
+            <el-tooltip placement="bottom" effect="light">
+              <div slot="content">
+                您的交易可能由于正常的价格波动而失败，<br />
+                预期价格波动区间将有助于您的交易成功。<br />
+                交易成功后，多支付的金额会退回。
+              </div>
               <i class="el-icon-question" />
             </el-tooltip>
             预期价格波动：1%
           </div>
           <div>
-            <el-tooltip  placement="bottom" effect="light">
-              <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
+            <el-tooltip placement="bottom" effect="light">
+              <div slot="content">
+                CNY 交易金额精度大于 0.01 时会自动进位支付，<br />多支付的金额会保留在您的CNY账户中。
+              </div>
               <i class="el-icon-question" />
             </el-tooltip>
-            合计：<span class="money">{{input}} CNY</span></div>
+            合计：<span class="money">{{ input }} CNY</span>
+          </div>
         </div>
         <div class="flexBox padding20 bgGray">
-          <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
-          <div>抵扣：<span class="money">{{deduction}} CNY</span></div>
+          <div>
+            <el-checkbox v-model="useBalance" @change="useBalanceChange"
+              >使用余额（{{ balance }} CNY）</el-checkbox
+            >
+          </div>
+          <div>
+            抵扣：<span class="money">{{ deduction }} CNY</span>
+          </div>
         </div>
         <div class="flexBox padding20">
           <div></div>
-          <div>应付：<span class="money">{{needPay}} CNY</span></div>
+          <div>
+            应付：<span class="money">{{ needPay }} CNY</span>
+          </div>
         </div>
       </div>
-      
+
       <template v-if="needPay > 0">
         <div v-if="isWeixin" class="wxpay-btn">
           <el-button type="primary" @click="loginAndPay">
             使用微信支付
-            <svg-icon icon-class="wxpay" class="wxpay-icon"/>
+            <svg-icon icon-class="wxpay" class="wxpay-icon" />
           </el-button>
         </div>
-        <QRCode v-else :pay-link="order.code_url"/>
+        <QRCode v-else :pay-link="order.code_url" />
       </template>
       <div v-else class="payBtnBox">
         <el-button type="primary" @click="confirmPay">确认支付</el-button>

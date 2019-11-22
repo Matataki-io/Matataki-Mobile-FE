@@ -6,7 +6,7 @@ const ONT = 10000
 
 /**
  *
- * @param {币} amount 需要转换的币
+ * @param {通证} amount 需要转换的通证
  * @param {类型} symbol 需要转换的类型
  */
 export const precision = (amount, symbol) => {
@@ -16,7 +16,7 @@ export const precision = (amount, symbol) => {
 }
 /**
  *
- * @param {币} amount 需要转换的币
+ * @param {通证} amount 需要转换的通证
  * @param {类型} symbol 需要转换的类型
  */
 export const toPrecision = (amount, symbol) => {

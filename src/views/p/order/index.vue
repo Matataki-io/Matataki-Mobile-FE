@@ -16,38 +16,28 @@
       <van-cell title="订单编号" :value="tradeNo" value-class="longValue" />
     </van-cell-group>
     <div class="order-item">
-      <el-table
-        header-cell-class-name="grayHeader"
-        :data="orderItems"
-        style="width: 100%">
-        <el-table-column
-          prop="name"
-          label="品名">
-        </el-table-column>
-        <el-table-column
-          prop="operating"
-          label="操作">
-        </el-table-column>
-        <el-table-column
-          prop="amount"
-          label="数量">
-        </el-table-column>
-        <el-table-column
-          prop="total"
-          label="小计">
-        </el-table-column>
+      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%">
+        <el-table-column prop="name" label="品名"> </el-table-column>
+        <el-table-column prop="operating" label="操作"> </el-table-column>
+        <el-table-column prop="amount" label="数量"> </el-table-column>
+        <el-table-column prop="total" label="小计"> </el-table-column>
       </el-table>
     </div>
     <div class="flexBox">
-      <span>预期价格波动：1%
-      </span>
-      <div>合计：<span class="money">¥ {{cnyAmount.toFixed(2)}}</span></div>
+      <span>预期价格波动：1% </span>
+      <div>
+        合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
+      </div>
     </div>
     <div class="flexBox">
       <div>
-        <el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（¥ {{balance}}）</el-checkbox>
+        <el-checkbox v-model="useBalance" @change="useBalanceChange"
+          >使用余额（¥ {{ balance }}）</el-checkbox
+        >
       </div>
-      <div>抵扣：<span class="money">¥ {{deduction.toFixed(2)}}</span></div>
+      <div>
+        抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
+      </div>
     </div>
     <!-- <div class="flexBox">
       <div></div>
@@ -59,13 +49,12 @@
     <div class="tip">
       <p>
         <van-icon name="info-o" />
-         您的交易可能由于正常的价格波动而失败，预置币格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。
+        您的交易可能由于正常的价格波动而失败，预期价格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。
       </p>
       <p>
         <van-icon name="info-o" />
         CNY 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的CNY账户中。
       </p>
-      
     </div>
     <van-submit-bar
       :price="needPay * 100"
@@ -94,20 +83,23 @@
       :close-on-press-escape="false"
       :visible.sync="qrcodeShow"
       :before-close="handleClose"
-      width="300px">
+      width="300px"
+    >
       <QRCode :pay-link="payLink" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import QRCode from "@/views/order/components/Qrcode";
-import { mapGetters } from "vuex";
-import utils from "@/utils/utils";
-import moment from "moment";
-const interval = 5000;
+import { mapGetters } from 'vuex'
+import moment from 'moment'
+import QRCode from '@/views/order/components/Qrcode'
+import utils from '@/utils/utils'
+
+const interval = 5000
 export default {
-  name: "Order",
+  name: 'Order',
+  components: { QRCode },
   data() {
     return {
       timer: null,
@@ -127,11 +119,10 @@ export default {
       qrcodeShow: false,
       payLink: '',
       orderItems: []
-    };
+    }
   },
-  components: { QRCode },
   computed: {
-    ...mapGetters(["currentUserInfo"]),
+    ...mapGetters(['currentUserInfo']),
     tradeType() {
       return '购买文章'
     },
@@ -141,47 +132,45 @@ export default {
       } else return 0
     },
     friendlyTime() {
-      return moment(this.order.create_time).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
+      return moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     // 是否是微信账户
     isWeixinAccount() {
-      return this.currentUserInfo.idProvider === "weixin";
+      return this.currentUserInfo.idProvider === 'weixin'
     },
     // 是否处于微信浏览器
     isInWeixin() {
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase());
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       return isWeixin()
     },
     // 扣除
     deduction() {
       let input = parseFloat(this.cnyAmount)
-      let balance = parseFloat(this.balance);
-      let result = 0;
+      let balance = parseFloat(this.balance)
+      let result = 0
       if (this.useBalance) {
         if (balance >= input) {
-          result = input;
+          result = input
         } else {
-          result = balance;
+          result = balance
         }
       } else {
-        result = 0;
+        result = 0
       }
-      return utils.down2points(result);
+      return utils.down2points(result)
     },
     needPay() {
       // 支付金额向上取整
       let input = parseFloat(this.cnyAmount)
-      let deduction = this.deduction;
+      let deduction = this.deduction
       if (this.useBalance) {
         if (deduction >= input) {
-          return 0;
+          return 0
         } else {
-          return input - deduction;
+          return input - deduction
         }
       } else {
-        return input;
+        return input
       }
     }
   },
@@ -200,7 +189,7 @@ export default {
     },
     onSubmit() {
       this.loading = true
-      console.log('this.needPay', this.needPay);
+      console.log('this.needPay', this.needPay)
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
@@ -208,12 +197,14 @@ export default {
       }
     },
     alert(message) {
-      this.$dialog.alert({
-        title: '温馨提示',
-        message: `${message}，点击确定返回`
-      }).then(() => {
-        this.$router.go(-1)
-      });
+      this.$dialog
+        .alert({
+          title: '温馨提示',
+          message: `${message}，点击确定返回`
+        })
+        .then(() => {
+          this.$router.go(-1)
+        })
     },
     getOrderData() {
       const id = this.$route.params.id
@@ -221,10 +212,10 @@ export default {
       this.$API.getArticleOrder(id).then(res => {
         if (res.code === 0) {
           const status = Number(res.data.status)
-          if(status === 7 || status === 8) {
+          if (status === 7 || status === 8) {
             this.alert('订单支付已失败')
           }
-          if(status === 6 || status === 9) {
+          if (status === 6 || status === 9) {
             this.alert('订单已支付')
           }
           this.order = res.data
@@ -252,14 +243,14 @@ export default {
           name: t2.symbol,
           operating: '购买',
           amount: utils.fromDecimal(t2.token_amount),
-          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY',
+          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY'
         })
       }
       return result
     },
     // 是否使用余额修改
     useBalanceChange(v) {
-      clearInterval(this.timer);
+      clearInterval(this.timer)
       this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
         if (res.code === 0) {
           // this.getOrderData()
@@ -280,15 +271,18 @@ export default {
       // 当前是否处于微信浏览器中
       if (this.isInWeixin) {
         let openid = ''
-        if (this.isWeixinAccount) { // 微信账号直接使用JSAPI微信支付
+        if (this.isWeixinAccount) {
+          // 微信账号直接使用JSAPI微信支付
           openid = this.currentUserInfo.name
-        } else { // 不是微信账号需要先获取openid
+        } else {
+          // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
         this.$API.ArticleJsapiPay(tradeNo, openid).then(res => {
           this.weakWeixinPay(res)
         })
-      } else { // 弹出NATIVE支付二维码
+      } else {
+        // 弹出NATIVE支付二维码
         this.$API.articleNativePay(tradeNo).then(res => {
           this.loading = false
           this.payLink = res.code_url
@@ -298,7 +292,7 @@ export default {
           }, interval)
         })
       }
-      const openid = this.currentUserInfo.name;
+      const openid = this.currentUserInfo.name
     },
     getWeixinOpenId() {
       if (!this.isInWeixin) return
@@ -310,7 +304,9 @@ export default {
         const appid = 'wx95829b6a2307300b'
         const scope = 'snsapi_base'
         const redirectUri = `${VUE_APP_WX_URL}${this.$route.path}`
-        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+          redirectUri
+        )}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
       } else {
         this.$API.getWeixinOpenId(code).then(res => {
           if (res.openid) {
@@ -321,11 +317,11 @@ export default {
     },
     // 唤起JS微信支付
     weakWeixinPay(order) {
-      const { appId, timeStamp, nonceStr, signType, paySign } = order;
-      const self = this;
+      const { appId, timeStamp, nonceStr, signType, paySign } = order
+      const self = this
       function onBridgeReady() {
         WeixinJSBridge.invoke(
-          "getBrandWCPayRequest",
+          'getBrandWCPayRequest',
           {
             appId,
             timeStamp,
@@ -335,34 +331,30 @@ export default {
             paySign
           },
           function(res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
+            if (res.err_msg == 'get_brand_wcpay_request:ok') {
               // 使用以上方式判断前端返回,微信团队郑重提示：
               //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
               self.alert('交易成功')
             }
           }
-        );
+        )
       }
-      if (typeof WeixinJSBridge == "undefined") {
+      if (typeof WeixinJSBridge == 'undefined') {
         if (document.addEventListener) {
-          document.addEventListener(
-            "WeixinJSBridgeReady",
-            onBridgeReady,
-            false
-          );
+          document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
         } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
-          document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
+          document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
+          document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
         }
       } else {
-        onBridgeReady();
+        onBridgeReady()
       }
     },
     // 获取用户账户余额
     getUserBalance() {
       this.$API.getCNYBalance().then(res => {
-        this.balance = utils.fromDecimal(res);
-      });
+        this.balance = utils.fromDecimal(res)
+      })
     },
     // 获取订单状态
     getOrderStatus(tradeNo) {
@@ -380,18 +372,18 @@ export default {
             this.alert('交易成功')
           }
         }
-      });
+      })
     },
     successNotice(text) {
       this.$message.success({
         message: text,
         duration: 4000
-      });
+      })
     },
     errorNotice(text) {
       this.$message.error({
         message: text
-      });
+      })
     },
     makeOrderParams() {
       const requestParams = {
@@ -424,9 +416,9 @@ export default {
       this.$API.createArticleOrder(requestParams).then(res => {
         loading.close()
         if (res.code === 0) {
-          this.$router.replace({ name: 'porder-id', params: {id: res.data}})
+          this.$router.replace({ name: 'porder-id', params: { id: res.data } })
         } else {
-            this.$dialog.alert({
+          this.$dialog.alert({
             title: '温馨提示',
             message: '订单创建失败'
           })
@@ -434,7 +426,7 @@ export default {
       })
     }
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -448,7 +440,7 @@ export default {
     border: 0.0625rem solid @purple;
   }
   .grayHeader {
-    color: #B2B2B2;
+    color: #b2b2b2;
     font-weight: 400;
     padding: 6px 0;
   }
