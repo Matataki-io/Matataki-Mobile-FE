@@ -15,7 +15,8 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'index',
-      component: () => import(/* webpackChunkName: "index" */ './views/index/index.vue'),
+      component: () =>
+        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
       }
@@ -23,7 +24,8 @@ const router = new VueRouter({
     {
       path: '/article',
       name: 'article',
-      component: () => import(/* webpackChunkName: "article" */ './views/home/index.vue'),
+      component: () =>
+        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/index.vue'),
       meta: {
         title: '文章-瞬MATATAKI'
       }
@@ -31,7 +33,8 @@ const router = new VueRouter({
     {
       path: '/shop',
       name: 'shop',
-      component: () => import(/* webpackChunkName: "shop" */ './views/home/shop.vue'),
+      component: () =>
+        import(/* webpackChunkName: "shop", webpackPrefetch: true  */ './views/home/shop.vue'),
       meta: {
         title: '商品-瞬MATATAKI'
       }
@@ -181,7 +184,8 @@ const router = new VueRouter({
       path: '/user/:id/bookmark',
       name: 'user-id-bookmark',
       props: true,
-      component: () => import(/* webpackChunkName: "user-id-bookmark" */ './views/User/Bookmark.vue'),
+      component: () =>
+        import(/* webpackChunkName: "user-id-bookmark" */ './views/User/Bookmark.vue'),
       meta: {
         title: '收藏-瞬MATATAKI'
       }
@@ -308,7 +312,8 @@ const router = new VueRouter({
       path: '/bookmark',
       name: 'BookmarkList',
       props: true,
-      component: () => import(/* webpackChunkName: "BookmarkList" */ './views/User/BookmarkList/index.vue'),
+      component: () =>
+        import(/* webpackChunkName: "BookmarkList" */ './views/User/BookmarkList/index.vue'),
       meta: {
         title: '收藏-瞬MATATAKI'
       }
