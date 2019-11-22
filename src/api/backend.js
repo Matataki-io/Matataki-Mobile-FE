@@ -590,6 +590,11 @@ const API = {
       method: 'delete',
       url: `/post/${id}/bookmark`
     })
+  },
+
+  // 收藏状态
+  getBookmarkStats() {
+    return this.accessBackend({ url: `/user/bookmark/stats` });
   }
 }
 
