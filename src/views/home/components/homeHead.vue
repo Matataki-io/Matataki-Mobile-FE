@@ -18,6 +18,7 @@
           {{ item.title }}
         </span>
       </router-link>
+      <span class="notice-btn" @click="notice">通知!</span>
     </div>
     <div class="fl ac">
       <svg-icon class="search-icon" icon-class="search" @click="showSearch = true"></svg-icon>
@@ -91,6 +92,28 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+    },
+    notice() {
+      this.$alert(
+        `<div class="notice">
+            <h3>粉丝通证删档测试即将结束：</h3>
+            <p>瞬matataki的粉丝币第一阶段删档测试马上就结束了。感谢所有参与者们的支持！</p>
+            <p>我们将会在11月25日开始清理以下测试数据：</p>
+
+            <p>1. 个人持仓粉丝币和流动金的交易记录</p>
+            <p>2. cny账户余额和记录</p>
+            <p>3. 粉丝币的全部持仓和交易记录</p>
+            <p>4. 交易所的交易记录和流动金记录</p>
+
+            <p>在测试期间各位支付的资金基本都已经如数退回了，还未退回的资金将会在未来几天中退还，请注意在微信中查看退款记录。</p>
+            <p>所有数据清理完成后，将会开放正式版。</p>
+          </div>`,
+        '重要通知!',
+        {
+          dangerouslyUseHTMLString: true,
+          customClass: 'notice'
+        }
+      )
     }
   }
 }
@@ -137,7 +160,7 @@ export default {
     a {
       font-size: 14px;
       color: rgba(178, 178, 178, 1);
-      margin: 0 5px;
+      margin: 0 4px;
       position: relative;
       text-align: center;
       display: inline-block;
@@ -176,5 +199,28 @@ export default {
   cursor: pointer;
   font-size: 20px;
   margin-right: 16px;
+}
+
+.notice-btn {
+  cursor: pointer;
+  font-size: 14px;
+  color: #b2b2b2;
+  margin: 0 0.25rem;
+}
+</style>
+
+<style lang="less">
+.notice {
+  width: 90%;
+  h3 {
+    padding: 0;
+    margin: 12px 0 8px 0;
+  }
+  p {
+    padding: 0;
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.3;
+  }
 }
 </style>
