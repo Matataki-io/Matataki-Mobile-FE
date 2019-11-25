@@ -26,7 +26,8 @@ export default {
     return {
       pull: {
         params: {
-          pagesize: 20
+          pagesize: 20,
+          sort: this.$route.query.sort || 'amount-desc'
         },
         apiUrl: 'tokenIdBalances',
         list: []

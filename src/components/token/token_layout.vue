@@ -173,6 +173,36 @@
         </a>
       </div>
       <div v-if="tabPage === 0 || tabPage === 2" class="minetoken-head">
+        <Dropdown class="dropdown" trigger="click" @on-click="toggleOrdering">
+          <div v-if="sort === 'amount-desc'">
+            持仓量最高
+          </div>
+          <div v-else-if="sort === 'amount-asc'">
+            持仓量最低
+          </div>
+          <div v-else-if="sort === 'name-asc'">
+            首字母升序
+          </div>
+          <div v-else-if="sort === 'name-desc'">
+            首字母降序
+          </div>
+          <DropdownMenu slot="list">
+            <DropdownItem name="amount-desc" :selected="sort === 'amount-desc'">
+              持仓量最高
+            </DropdownItem>
+            <DropdownItem name="amount-asc" :selected="sort === 'amount-asc'">
+              持仓量最低
+            </DropdownItem>
+            <DropdownItem name="name-asc" :selected="sort === 'name-asc'">
+              首字母升序
+            </DropdownItem>
+            <DropdownItem name="name-desc" :selected="sort === 'name-desc'">
+              首字母降序
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+      <div v-if="tabPage === 0 || tabPage === 2" class="minetoken-head">
         <div class="minetoken-title">持仓者</div>
         <div class="minetoken-number">持仓量</div>
       </div>
@@ -221,7 +251,8 @@ export default {
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
-      tabPage: 0
+      tabPage: Number(this.$route.query.tab) || 0,
+      sort: this.$route.query.sort || 'amount-desc'
     }
   },
   computed: {
@@ -295,6 +326,11 @@ export default {
     },
     tabPage(val) {
       this.$emit('input', val)
+      this.$router.replace({
+        query: {
+          tab: val
+        }
+      })
     }
   },
   created() {
@@ -306,53 +342,65 @@ export default {
   },
   methods: {
     async minetokenId(id) {
-      await this.$API
-        .minetokenId(id)
-        .then(res => {
-          if (res.code === 0) {
-            this.minetokenToken = res.data.token || Object.create(null)
-            this.minetokenUser = res.data.user || Object.create(null)
-            this.minetokenExchange = res.data.exchange || Object.create(null)
+      try {
+        const res = await this.$API.minetokenId(id)
 
-            this.$wechatShare({
-              title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
-              desc: this.minetokenToken.brief || '暂无',
-              imgUrl: this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
-            })
-          } else {
-            this.$message.success(res.message)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+        if (res.code === 0) {
+          this.minetokenToken = res.data.token || Object.create(null)
+          this.minetokenUser = res.data.user || Object.create(null)
+          this.minetokenExchange = res.data.exchange || Object.create(null)
+
+          this.$wechatShare({
+            title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
+            desc: this.minetokenToken.brief || '暂无',
+            imgUrl: this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+          })
+        } else {
+          this.$message.success(res.message)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     },
     async minetokenGetResources(id) {
-      await this.$API
-        .minetokenGetResources(id)
-        .then(res => {
-          if (res.code === 0) {
-            const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
-            const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
-            this.resourcesSocialss = socialFilterEmpty
-            this.resourcesWebsites = res.data.websites
-          } else {
-            this.$message.success(res.message)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      try {
+        const res = await this.$API.minetokenGetResources(id)
+
+        if (res.code === 0) {
+          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+          this.resourcesSocialss = socialFilterEmpty
+          this.resourcesWebsites = res.data.websites
+        } else {
+          this.$message.success(res.message)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     },
     async tokenUserId(id) {
-      await this.$backendAPI
-        .tokenUserId(id)
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
-            this.showTokenSetting = res.data.data.id === Number(this.$route.params.id)
-          }
-        })
-        .catch(err => console.log('get token user error', err))
+      try {
+        const res = await this.$API.tokenUserId(id)
+
+        if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
+          this.showTokenSetting = res.data.data.id === Number(this.$route.params.id)
+        }
+      } catch (err) {
+        console.error('get token user error', err)
+      }
+    },
+    toggleOrdering(name) {
+      this.sort = name
+
+      const query = {
+        sort: name
+      }
+
+      if (this.tabPage > 0) query.tab = this.tabPage
+
+      this.$router.replace({
+        query
+      })
     }
   }
 }
@@ -645,5 +693,9 @@ export default {
     width: 30%;
     text-align: center;
   }
+}
+
+.dropdown {
+  width: calc(100% - 8px);
 }
 </style>
