@@ -41,6 +41,16 @@
           </div>
           <div class="fl info-line">
             <div class="token-info-title">
+              发布时间：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ minetokenToken.create_time }}
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
               简&emsp;介：
             </div>
             <div>
@@ -445,7 +455,7 @@ export default {
 }
 .token-info-title {
   // width: 70px;
-  flex: 0 0 50px;
+  flex: 0 0 60px;
   &.bold {
     font-weight: bold;
     font-size: 20px;
