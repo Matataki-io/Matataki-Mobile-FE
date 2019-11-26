@@ -428,6 +428,7 @@ export default {
       return this.$route.query.from === 'draft'
     },
     CCLicenseCredit() {
+      if (!this.isOriginal) return null
       let ShareAlike = false
       const Noncommercial = !this.ccLicenseOptions.commercialUse
       let NoDerivativeWorks = false
@@ -743,7 +744,7 @@ export default {
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
-      article.cc_license = this.CCLicenseCredit.license || null
+      article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
@@ -922,13 +923,7 @@ export default {
       this.allowLeave = true
       const { type, id } = this.$route.params
 
-      const {
-        currentUserInfo,
-        title,
-        markdownData: content,
-        fissionFactor,
-        cover
-      } = this
+      const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
 

@@ -73,7 +73,7 @@
         介绍
       </h2>
       <p class="token-introduction">
-        {{ minetokenToken.introduction || '暂无' }}
+        <span class="wrap-open">{{ minetokenToken.introduction || '暂无' }}</span>
       </p>
     </div>
 
@@ -707,5 +707,8 @@ export default {
 
 .dropdown {
   width: calc(100% - 8px);
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 </style>
