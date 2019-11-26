@@ -25,6 +25,32 @@
           {{ card.brief || '暂无' }}
         </p>
       </div>
+      <div class="card-info-data">
+        <div class="card-info-data-column">
+          <p class="card-info-data-amount">
+            0
+          </p>
+          <p class="card-info-name">
+            单价（CNY)
+          </p>
+        </div>
+        <div class="card-info-data-column">
+          <p class="card-info-data-amount">
+            0
+          </p>
+          <p class="card-info-name">
+            流动金（CNY)
+          </p>
+        </div>
+        <div class="card-info-data-column">
+          <p class="card-info-data-amount">
+            0
+          </p>
+          <p class="card-info-name">
+            24h 成交量（个)
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -101,5 +127,17 @@ export default {
 }
 .card-title {
   flex: 1;
+}
+
+.card-info-data {
+  margin-top: 6px;
+
+  &-amount {
+    font-size: 14px;
+  }
+  &-column {
+    float: left;
+    width: 33%;
+  }
 }
 </style>
