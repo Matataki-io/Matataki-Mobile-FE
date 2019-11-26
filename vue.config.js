@@ -46,6 +46,7 @@ module.exports = {
     let configExternals = []
     let configPluginsModules = []
     let prodPlugins = []
+    let minimizer = []
     if (isDev) {
       console.log(process.env.NODE_ENV)
     } else {
@@ -115,6 +116,18 @@ module.exports = {
           var: 'Eos',
         }, */
       ]
+      minimizer = [
+        // minify your JavaScript.
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true
+            }
+          }
+        })
+      ]
       // 生产环境的插件配置
       prodPlugins = [
         // 图片优化
@@ -127,13 +140,6 @@ module.exports = {
               progressive: true
             })
           ]
-        }),
-        // minify your JavaScript.
-        new TerserPlugin({
-          parallel: true,
-          terserOptions: {
-            compress: { drop_console: true }
-          }
         }),
         // gzip
         new CompressionWebpackPlugin({
@@ -170,7 +176,9 @@ module.exports = {
             reuseExistingChunk: true
           }
         }
-      }
+      },
+      // minimize: true,
+      minimizer: minimizer
     }
     config.externals = configExternals
     config.plugins.push(
