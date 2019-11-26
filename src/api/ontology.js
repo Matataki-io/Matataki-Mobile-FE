@@ -50,7 +50,7 @@ const API = {
     const { client } = this;
     try {
       if (isAPP) {
-        const url = process.env.NODE_ENV === 'production' 
+        const url = process.env.NODE_ENV === 'production'
           ? `https://${ontology.currentUsingNode}:10334`
           : `http://${ontology.currentUsingNode}:20334`;
         const response = await fetch(`${url}/api/v1/balance/${address}`);

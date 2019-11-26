@@ -59,7 +59,7 @@ export default {
         // console.debug('watch $backendAPI.accessToken :', this.$backendAPI.accessToken)
       },
       deep: true
-    },
+    }
     /* $route(route) {
       this.getWeixinOpenId(route)
     } */
@@ -94,7 +94,6 @@ export default {
     // })()
     // https://juejin.im/post/5bfa4bb951882558ae3c171e
     // console.log(navigator.userAgent.toLowerCase(), window.location)
-    // this.tz()
 
     const { signIn, updateNotify } = this
 
@@ -119,66 +118,6 @@ export default {
   },
   mounted() {},
   methods: {
-    /* getWeixinOpenId(route) {
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      // 微信逻辑处理
-      const openid = window.localStorage.getItem('WX_OPENID')
-      if (isWeixin() && !openid) {
-        const { code, state } = route.query
-        const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
-        const appid = 'wx95829b6a2307300b'
-        const scope = 'snsapi_base'
-        const redirectUri = `${VUE_APP_WX_URL}${route.path}`
-        if (!code || state !== 'weixin') {
-          window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
-        } else {
-          this.$API.getWeixinOpenId(code).then(res => {
-            console.log(res)
-            window.localStorage.setItem('WX_OPENID', res.openid)
-          })
-        }
-      }
-    }, */
-    tz() {
-      const { href, origin } = window.location
-      const wxOrigin =
-        process.env.NODE_ENV === 'development'
-          ? 'https://sstest.frontenduse.top'
-          : 'https://smartsignature.frontenduse.top'
-
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-
-      // 规则只匹配了 文章详情页面 其他直接使用 all
-      let pathname = window.location.pathname
-
-      let pathURL = ''
-      // 如果是pc
-      if (pathname.includes('/p/')) {
-        pathURL = '/article/' + pathname.slice(3)
-        // 如果是 m
-      } else if (pathname.includes('/article/')) {
-        pathURL = pathname
-      } else if (pathname === '/') {
-        pathURL = ''
-      } else {
-        pathURL = pathname
-      }
-
-      /* const getQueryVariable = (variable) => {
-        let query = window.location.search.substring(1);
-        let vars = query.split("&");
-        for (let i=0;i<vars.length;i++) {
-                let pair = vars[i].split("=");
-                if(pair[0] == variable){return pair[1];}
-        }
-        return false
-      }
-      if (getQueryVariable('from') === 'wx')  return */
-
-      if (isWeixin() && origin !== wxOrigin) {
-        window.location.href = wxOrigin + pathURL
-      }
-    },
     ...mapActions(['signIn']),
     updateNotify(desc) {
       const btnCommonStyle = {
