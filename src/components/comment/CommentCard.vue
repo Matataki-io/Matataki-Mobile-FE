@@ -16,7 +16,9 @@
         <p class="comment-timestamp">{{ friendlyDate }}</p>
       </div>
     </div>
-    <p class="comment-message">{{ displayMessage }}</p>
+    <p class="comment-message">
+      <span class="wrap-open">{{ displayMessage }}</span>
+    </p>
   </div>
 </template>
 
@@ -146,6 +148,9 @@ export default {
   margin-left: 44px;
   background-color: rgba(241, 241, 241, 1);
   box-sizing: border-box;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 @media screen and (min-width: 750px) {
   .comment {
