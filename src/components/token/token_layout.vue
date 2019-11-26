@@ -45,7 +45,7 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ minetokenToken.create_time }}
+                {{ createTime }}
               </p>
             </div>
           </div>
@@ -327,6 +327,9 @@ export default {
       if (amount < 0) return '#d74e5a'
       else if (amount > 0) return '#41b37d'
       else return 'rgb(153, 153, 153)'
+    },
+    createTime() {
+      return moment(this.minetokenUser.create_time).format('lll')
     }
   },
   watch: {
