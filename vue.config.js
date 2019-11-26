@@ -1,4 +1,4 @@
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const imageminMozjpeg = require('imagemin-mozjpeg')
 const WebpackCdnPlugin = require('webpack-cdn-plugin')
@@ -10,13 +10,14 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-// TODO:
 // 1. 开发分支
 // 2. 测试环境分支 目前三个分支所以 测试分支配置同步生产环境
 // 3. 生产环境分支
 
 // 是否为开发环境
 const isDev = process.env.NODE_ENV === 'development'
+// 显示捆绑粉丝
+const showBundleAnalyzer = false
 
 module.exports = {
   chainWebpack: config => {
@@ -146,6 +147,9 @@ module.exports = {
       ]
       console.log(process.env.NODE_ENV)
     }
+
+    // 是否显示捆绑包分析页面
+    if (showBundleAnalyzer) prodPlugins.push(new BundleAnalyzerPlugin())
     config.optimization = {
       splitChunks: {
         chunks: 'async',
