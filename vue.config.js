@@ -141,7 +141,7 @@ module.exports = {
           test: /\.(js|css)$/,
           threshold: 10240,
           minRatio: 0.8,
-          deleteOriginalAssets: true
+          deleteOriginalAssets: false
         })
       ]
       console.log(process.env.NODE_ENV)
