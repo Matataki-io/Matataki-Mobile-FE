@@ -221,13 +221,13 @@ module.exports = {
   },
 
   // 代理 只修改了.env.development VUE_APP_API
-  // devServer: {
-  //   proxy: {
-  //     '/': {
-  //       target: 'https://apitest.smartsignature.io'
-  //     }
-  //   }
-  // },
+  devServer: {
+    proxy: {
+      '/': {
+        target: 'https://apitest.smartsignature.io'
+      }
+    }
+  },
   productionSourceMap: isDev,
 
   // 全局less变量
