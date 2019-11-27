@@ -28,7 +28,7 @@
       <div class="card-info-data">
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            {{ card.unit || 0 }}
+            {{ card.unit_price || 0 }}
           </p>
           <p class="card-info-name">
             单价（CNY)
@@ -44,7 +44,7 @@
         </div>
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            {{ card.exchange || 0 }}
+            {{ card.exchange_amount || 0 }}
           </p>
           <p class="card-info-name">
             24h 成交量（个)

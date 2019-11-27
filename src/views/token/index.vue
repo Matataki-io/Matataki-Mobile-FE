@@ -8,11 +8,11 @@
             <div v-if="sort === 'general'">
               综合排序
             </div>
-            <div v-else-if="sort === 'unit-desc'">
+            <div v-else-if="sort === 'unit-price-desc'">
               单价最高
               <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
-            <div v-else-if="sort === 'unit-asc'">
+            <div v-else-if="sort === 'unit-price-asc'">
               单价最低
               <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
             </div>
@@ -44,10 +44,10 @@
               <DropdownItem name="general" :selected="sort === 'general'">
                 综合排序
               </DropdownItem>
-              <DropdownItem name="unit-desc" :selected="sort === 'unit-desc'">
+              <DropdownItem name="unit-price-desc" :selected="sort === 'unit-price-desc'">
                 单价最高
               </DropdownItem>
-              <DropdownItem name="unit-asc" :selected="sort === 'unit-asc'">
+              <DropdownItem name="unit-price-asc" :selected="sort === 'unit-price-asc'">
                 单价最低
               </DropdownItem>
               <DropdownItem name="liquidity-desc" :selected="sort === 'liquidity-desc'">
