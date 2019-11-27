@@ -36,7 +36,7 @@
         </div>
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            {{ card.liquidity || 0 }}
+            {{ tokenAmount }}
           </p>
           <p class="card-info-name">
             流动金（CNY)
@@ -56,6 +56,8 @@
 </template>
 <script>
 import avatar from '@/components/avatar/index.vue'
+
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -77,6 +79,10 @@ export default {
     name() {
       let name = this.card.nickname || this.card.username
       return name.length > 12 ? name.slice(0, 12) + '...' : name
+    },
+    tokenAmount(amount) {
+      const tokenamount = Math.abs(precision(this.card.liquidity, 'CNY', this.card.decimals))
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
 }
