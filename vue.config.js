@@ -1,4 +1,4 @@
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const imageminMozjpeg = require('imagemin-mozjpeg')
 const WebpackCdnPlugin = require('webpack-cdn-plugin')
@@ -10,13 +10,14 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-// TODO:
 // 1. 开发分支
 // 2. 测试环境分支 目前三个分支所以 测试分支配置同步生产环境
 // 3. 生产环境分支
 
 // 是否为开发环境
 const isDev = process.env.NODE_ENV === 'development'
+// 显示捆绑粉丝
+const showBundleAnalyzer = false
 
 module.exports = {
   chainWebpack: config => {
@@ -45,6 +46,7 @@ module.exports = {
     let configExternals = []
     let configPluginsModules = []
     let prodPlugins = []
+    let minimizer = []
     if (isDev) {
       console.log(process.env.NODE_ENV)
     } else {
@@ -114,6 +116,18 @@ module.exports = {
           var: 'Eos',
         }, */
       ]
+      minimizer = [
+        // minify your JavaScript.
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true
+            }
+          }
+        })
+      ]
       // 生产环境的插件配置
       prodPlugins = [
         // 图片优化
@@ -127,13 +141,6 @@ module.exports = {
             })
           ]
         }),
-        // minify your JavaScript.
-        new TerserPlugin({
-          parallel: true,
-          terserOptions: {
-            compress: { drop_console: true }
-          }
-        }),
         // gzip
         new CompressionWebpackPlugin({
           filename: '[path].gz[query]',
@@ -141,11 +148,14 @@ module.exports = {
           test: /\.(js|css)$/,
           threshold: 10240,
           minRatio: 0.8,
-          deleteOriginalAssets: true
+          deleteOriginalAssets: false
         })
       ]
       console.log(process.env.NODE_ENV)
     }
+
+    // 是否显示捆绑包分析页面
+    if (showBundleAnalyzer) prodPlugins.push(new BundleAnalyzerPlugin())
     config.optimization = {
       splitChunks: {
         chunks: 'async',
@@ -166,7 +176,9 @@ module.exports = {
             reuseExistingChunk: true
           }
         }
-      }
+      },
+      // minimize: true,
+      minimizer: minimizer
     }
     config.externals = configExternals
     config.plugins.push(

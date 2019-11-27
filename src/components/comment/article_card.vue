@@ -15,7 +15,7 @@
           </span>
         </router-link>
         <p class="comment-content">
-          {{ displayMessage }}
+          <span class="wrap-open">{{ displayMessage }}</span>
         </p>
       </div>
     </div>
@@ -86,6 +86,9 @@ export default {
   padding: 0;
   margin: 6px 0;
   word-break: break-all;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 
 </style>
