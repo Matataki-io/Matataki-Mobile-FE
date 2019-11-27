@@ -234,6 +234,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 // import mineTokensNav from '@/components/minetokens_nav/index.vue'
