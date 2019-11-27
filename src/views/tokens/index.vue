@@ -2,7 +2,7 @@
   <div class="tokens">
     <BaseHeader
       :has-bottom-border-line="true"
-      :pageinfo="{ title: '持有的粉丝通证' }"
+      :pageinfo="{ title: '持有的Fan票' }"
       customize-header-bc="#fff"
     />
     <BasePull

@@ -62,19 +62,19 @@
             阅读权限
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">
-                添加限制条件后，<br />读者只有在持有特定数量的粉丝通证后才可查看全文的。
+                添加限制条件后，<br />读者只有在持有特定数量的Fan票后才可查看全文的。
               </div>
               <svg-icon class="help-icon" icon-class="help" />
             </el-tooltip>
           </h3>
           <el-checkbox v-model="readauThority" size="small">
-            设置持通证
+            设置持Fan票
           </el-checkbox>
         </div>
         <transition name="fade">
           <div v-show="readauThority" class="fl ac">
             <div>
-              <h3>持通证类型</h3>
+              <h3>持Fan票类型</h3>
               <el-select
                 v-model="readSelectValue"
                 size="small"
@@ -90,7 +90,7 @@
               </el-select>
             </div>
             <div style="margin-left: 10px;">
-              <h3>持通证数量</h3>
+              <h3>持Fan票数量</h3>
               <el-input
                 v-model="readToken"
                 :min="1"
@@ -395,7 +395,7 @@ export default {
       autoUpdateDfaft: false, // 是否自动更新草稿
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章发布', // 自动存为草稿
-      readauThority: false, // 持通证阅读
+      readauThority: false, // 持Fan票阅读
       readToken: 1, // 阅读token数量
       readSelectOptions: [], // 阅读tokenlist
       readSelectValue: '', // 阅读tokenlist show value
@@ -609,7 +609,7 @@ export default {
             this.signId = res.data.id
             this.isOriginal = Boolean(res.data.is_original)
 
-            // 持通证阅读
+            // 持Fan票阅读
             if (res.data.tokens && res.data.tokens.length !== 0) {
               this.readauThority = true
               this.readToken = precision(
@@ -622,7 +622,7 @@ export default {
               this.readSelectValue = res.data.tokens[0].id
             }
 
-            // 持通证支付
+            // 持Fan票支付
             if (res.data.prices && res.data.prices.length !== 0) {
               this.paymentTokenVisible = true
               this.paymentToken = precision(
@@ -707,12 +707,12 @@ export default {
       }
       return tags
     },
-    // 文章持通证阅读
+    // 文章持Fan票阅读
     async postMineTokens(id) {
       let tokenArr = []
       if (this.readauThority) {
-        // 持通证
-        // 获取当前选择的通证种
+        // 持Fan票
+        // 获取当前选择的Fan票种
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
         // 目前只用上传一种数据格式
         tokenArr = [
@@ -761,8 +761,8 @@ export default {
 
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
-          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持Fan票阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付Fan票
           promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
           Promise.all(promiseArr)
             .then(() => {
@@ -846,8 +846,8 @@ export default {
           // 如果阅读权限设置其中一个都要走以下流程
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
-          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持Fan票阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付Fan票
           Promise.all(promiseArr)
             .then(() => {
               this.success(response.data)
@@ -931,9 +931,9 @@ export default {
       // 草稿发送
       const draftPost = async () => {
         if (this.readauThority) {
-          if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
+          if (!this.readSelectValue) return this.$message.warning('请选择持Fan票类型')
           else if (!(Number(this.readToken) > 0))
-            return this.$message.warning('持通证数量设置不能小于0')
+            return this.$message.warning('持Fan票数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
@@ -961,8 +961,8 @@ export default {
       const editPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0))
-            return this.$message.warning('持通证证数量设置不能小于0')
-          else if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
+            return this.$message.warning('持Fan票证数量设置不能小于0')
+          else if (!this.readSelectValue) return this.$message.warning('请选择持Fan票类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 

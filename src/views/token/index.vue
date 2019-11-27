@@ -13,7 +13,7 @@
             <i class="el-icon-d-caret" />
           </div>
         </nav>
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是粉丝通证?</a>
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
       </div>
     </div>
 

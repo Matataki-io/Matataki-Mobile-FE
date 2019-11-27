@@ -14,7 +14,7 @@
     <div class="btns">
       <el-button class="btn1" @click="pay" :disabled="payBtnDisabled && isLogined">立即支付</el-button>
       <router-link class="link1" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-        <el-button class="btn2" type="primary">交易粉丝通证</el-button>        
+        <el-button class="btn2" type="primary">交易Fan票</el-button>        
       </router-link>
     </div>
   </div>
