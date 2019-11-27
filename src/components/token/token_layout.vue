@@ -186,15 +186,19 @@
         <Dropdown class="dropdown" trigger="click" @on-click="toggleOrdering">
           <div v-if="sort === 'amount-desc'">
             持仓量最高
+            <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
           </div>
           <div v-else-if="sort === 'amount-asc'">
             持仓量最低
+            <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
           </div>
           <div v-else-if="sort === 'name-asc'">
             首字母升序
+            <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
           </div>
           <div v-else-if="sort === 'name-desc'">
             首字母降序
+            <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
           </div>
           <DropdownMenu slot="list">
             <DropdownItem name="amount-desc" :selected="sort === 'amount-desc'">
@@ -711,6 +715,14 @@ export default {
 
 .dropdown {
   width: calc(100% - 8px);
+}
+.arrow {
+  margin-left: 0.25em;
+  margin-bottom: 0.25em;
+  vertical-align: middle;
+}
+.reversed {
+  transform: scaleY(-1);
 }
 .wrap-open {
   white-space: pre-wrap;
