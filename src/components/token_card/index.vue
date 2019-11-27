@@ -81,7 +81,7 @@ export default {
       return name.length > 12 ? name.slice(0, 12) + '...' : name
     },
     tokenAmount(amount) {
-      const tokenamount = Math.abs(precision(this.card.liquidity, 'CNY', this.card.decimals))
+      const tokenamount = Math.abs(precision(this.card.liquidity || 0, 'CNY', this.card.decimals))
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
