@@ -3,17 +3,74 @@
     <home-head @login="showSidebar = true" />
     <div class="tokens-list">
       <div class="fl jsb">
-        <nav class="tokens-list-nav">
-          <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
-            发布顺序
-            <i class="el-icon-d-caret" />
-          </div>
-          <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
-            字母顺序
-            <i class="el-icon-d-caret" />
-          </div>
-        </nav>
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+        <div class="tokens-list-nav">
+          <Dropdown class="dropdown" trigger="click" @on-click="toggleSort">
+            <div v-if="sort === 'general'">
+              综合排序
+            </div>
+            <div v-else-if="sort === 'unit-price-desc'">
+              单价最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'unit-price-asc'">
+              单价最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'liquidity-desc'">
+              流动金最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'liquidity-asc'">
+              流动金最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'exchange-desc'">
+              24h 成交量最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'exchange-asc'">
+              24h 成交量最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'name-asc'">
+              首字母升序
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'name-desc'">
+              首字母降序
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <DropdownMenu slot="list">
+              <DropdownItem name="general" :selected="sort === 'general'">
+                综合排序
+              </DropdownItem>
+              <DropdownItem name="unit-price-desc" :selected="sort === 'unit-price-desc'">
+                单价最高
+              </DropdownItem>
+              <DropdownItem name="unit-price-asc" :selected="sort === 'unit-price-asc'">
+                单价最低
+              </DropdownItem>
+              <DropdownItem name="liquidity-desc" :selected="sort === 'liquidity-desc'">
+                流动金最高
+              </DropdownItem>
+              <DropdownItem name="liquidity-asc" :selected="sort === 'liquidity-asc'">
+                流动金最低
+              </DropdownItem>
+              <DropdownItem name="exchange-desc" :selected="sort === 'exchange-desc'">
+                24h 成交量最高
+              </DropdownItem>
+              <DropdownItem name="exchange-asc" :selected="sort === 'exchange-asc'">
+                24h 成交量最低
+              </DropdownItem>
+              <DropdownItem name="name-asc" :selected="sort === 'name-asc'">
+                首字母升序
+              </DropdownItem>
+              <DropdownItem name="name-desc" :selected="sort === 'name-desc'">
+                首字母降序
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
     </div>
 
@@ -50,11 +107,11 @@ export default {
   data() {
     return {
       showSidebar: false,
-      sort: this.$route.query.id || 'id',
+      sort: this.$route.query.sort || 'general',
       pull: {
         params: {
           pagesize: 20,
-          sort: this.$route.query.sort || 'id-desc'
+          sort: this.$route.query.sort || 'general'
         },
         apiUrl: 'tokenAll',
         list: []
@@ -69,18 +126,11 @@ export default {
   computed: {},
   methods: {
     toggleSort(name) {
-      if (name === 'id') {
-        this.sort = 'id'
-        this.pull.params.sort = this.pull.params.sort === 'id-desc' ? 'id-asc' : 'id-desc'
-      } else {
-        this.sort = 'symbol'
-        this.pull.params.sort =
-          this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
-      }
+      this.sort = name
+      this.pull.params.sort = name
       this.$router.replace({
         query: {
-          id: this.sort,
-          sort: this.pull.params.sort
+          sort: name
         }
       })
     },

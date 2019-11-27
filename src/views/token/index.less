@@ -17,18 +17,20 @@
 }
 
 .tokens-list-nav {
-  div {
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
-    color: #B2B2B2;
-    line-height:28px;
-    margin-right: 20px;
-    &:nth-last-child(1) {
-      margin-right: 0;
-    }
-    &.active {
-      color: #000;
-    }
+  font-size: 14px;
+  line-height:28px;
+  width: 200px;
+
+  .arrow {
+    margin-left: 0.25em;
+    margin-bottom: 0.25em;
+    vertical-align: middle;
+  }
+  .reversed {
+    transform: scaleY(-1);
+  }
+
+  .dropdown {
+    width: calc(100% - 10px);
   }
 }
