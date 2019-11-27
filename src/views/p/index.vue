@@ -928,7 +928,10 @@ export default {
         })
         .catch(err => {
           console.error(err)
-          this.$Message.error(this.$t('error.getArticleInfoError'))
+          this.$dialog.alert({
+            title: '温馨提示',
+            message: this.$t('error.getArticleInfoError')
+          })
         })
     },
     setSSToken(res) {
@@ -1300,7 +1303,7 @@ export default {
         const { output, outputToken } = this.form
         requestParams.items.push({
           tokenId: outputToken.id,
-          type: 'buy_minetoken',
+          type: 'buy_token_output',
           amount: utils.toDecimal(output, outputToken.decimals)
         })
       }
@@ -1319,7 +1322,10 @@ export default {
         return false
       }
       if (this.getInputAmountError) {
-        this.$message.error(this.getInputAmountError)
+        this.$dialog.alert({
+          title: '温馨提示',
+          message: this.getInputAmountError
+        })
         return
       }
       const loading = this.$loading({
@@ -1332,7 +1338,7 @@ export default {
         if (res.code === 0) {
           this.$router.push({ name: 'porder-id', params: {id: res.data}})
         } else {
-            this.$dialog.alert({
+          this.$dialog.alert({
             title: '温馨提示',
             message: '订单创建失败'
           })

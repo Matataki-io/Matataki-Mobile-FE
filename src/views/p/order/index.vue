@@ -125,7 +125,18 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
-      return `购买文章${this.articleId}`
+      const typeOptions = {
+        add: '添加流动性',
+        buy_token_input: '购买Fan票',
+        buy_token_output: '购买Fan票',
+        sale_token: '出售Fan票',
+      };
+      if (this.articleId) {
+        return `购买文章${this.articleId}`
+      } else {
+        const type = this.order.items ? this.order.items.orderTokenItem.type : null
+        return typeOptions[type] || '暂无'
+      }
     },
     cnyAmount() {
       if (this.order.total) {
@@ -286,12 +297,12 @@ export default {
           // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.articleJsapiPay(tradeNo, openid).then(res => {
+        this.$API.articleJsapiPay(tradeNo, openid, this.tradeType).then(res => {
           this.weakWeixinPay(res)
         })
       } else {
         // 弹出NATIVE支付二维码
-        this.$API.articleNativePay(tradeNo).then(res => {
+        this.$API.articleNativePay(tradeNo, this.tradeType).then(res => {
           this.loading = false
           this.payLink = res.code_url
           this.qrcodeShow = true
@@ -379,57 +390,6 @@ export default {
             this.qrcodeShow = false
             this.alert('交易成功')
           }
-        }
-      })
-    },
-    successNotice(text) {
-      this.$message.success({
-        message: text,
-        duration: 4000
-      })
-    },
-    errorNotice(text) {
-      this.$message.error({
-        message: text
-      })
-    },
-    makeOrderParams() {
-      const requestParams = {
-        items: []
-      }
-      // token未支付
-      if (!this.tokenHasPaied) {
-        const { output, outputToken } = this.form
-        requestParams.items.push({
-          tokenId: outputToken.id,
-          type: 'buy_minetoken',
-          amount: utils.toDecimal(output, outputToken.decimals)
-        })
-      }
-      // 文章price未支付
-      if (!this.articleHasPaied) {
-        requestParams.items.push({
-          signId: this.id,
-          type: 'buy_post'
-        })
-      }
-      return requestParams
-    },
-    createOrder() {
-      const loading = this.$loading({
-        lock: false,
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
-      const requestParams = this.makeOrderParams()
-      this.$API.createArticleOrder(requestParams).then(res => {
-        loading.close()
-        if (res.code === 0) {
-          this.$router.replace({ name: 'porder-id', params: { id: res.data } })
-        } else {
-          this.$dialog.alert({
-            title: '温馨提示',
-            message: '订单创建失败'
-          })
         }
       })
     }

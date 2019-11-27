@@ -29,16 +29,18 @@ export default {
     return request.post('/order/pay', order)
   },
   //-------------文章支付使用开始-----------------
-  articleNativePay(tradeNo) {
+  articleNativePay(tradeNo, title) {
     return this.articleWxPay({
       tradeNo,
-      trade_type: 'NATIVE'
+      trade_type: 'NATIVE',
+      title
     })
   },
-  articleJsapiPay(tradeNo, openid) {
+  articleJsapiPay(tradeNo, openid, title) {
     return this.articleWxPay({
       tradeNo,
       trade_type: 'JSAPI',
+      title,
       openid
     })
   },

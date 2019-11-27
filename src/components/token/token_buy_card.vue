@@ -66,21 +66,19 @@ export default {
   mounted() {
   },
   methods: {
-    // 构造参数
     makeOrderParams() {
-      const { input, inputToken, output, outputToken } = this.form
-      const limitValue = this.limitValue
-      const type = this.type
-      let requestParams = {
-        total: this.$utils.toDecimal(input, outputToken.decimals), // 单位yuan
-        title: `购买${outputToken.symbol}`,
-        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
-        token_id: outputToken.id,
-        token_amount: this.$utils.toDecimal(output, outputToken.decimals),
-        limit_value: this.$utils.toDecimal(limitValue, outputToken.decimals),
-        decimals: outputToken.decimals,
-        pay_cny_amount: this.$utils.toDecimal(input) // this.needPay
+      const requestParams = {
+        useBalance: 0,
+        items: []
       }
+      const { input, inputToken, output, outputToken } = this.form
+      requestParams.items.push({
+        tokenId: outputToken.id,
+        type: this.type,
+        min_tokens: this.$utils.toDecimal(this.limitValue, outputToken.decimals),
+        cny_amount: this.$utils.toDecimal(input, outputToken.decimals),
+        amount: this.$utils.toDecimal(output, outputToken.decimals)
+      })
       return requestParams
     },
     createOrder() {
@@ -91,11 +89,11 @@ export default {
       });
       const requestParams = this.makeOrderParams()
       this.$API
-        .createOrder(requestParams)
+        .createArticleOrder(requestParams)
         .then(res => {
           loading.close()
           if (res.code === 0) {
-            this.$router.push({ name: 'order-id', params: {id: res.data}})
+            this.$router.push({ name: 'porder-id', params: {id: res.data}})
           } else {
              this.$dialog.alert({
               title: '温馨提示',
