@@ -10,27 +10,35 @@
             </div>
             <div v-else-if="sort === 'danjia-desc'">
               单价最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'danjia-asc'">
               单价最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'liquidity-desc'">
               流动金最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'liquidity-asc'">
               流动金最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'exchange-desc'">
               24h 成交量最高
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'exchange-asc'">
               24h 成交量最低
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'name-asc'">
               首字母升序
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <div v-else-if="sort === 'name-desc'">
               首字母降序
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
             <DropdownMenu slot="list">
               <DropdownItem name="general" :selected="sort === 'general'">
