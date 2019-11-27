@@ -378,7 +378,7 @@ const router = new VueRouter({
       name: 'exchange',
       component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue'),
       meta: {
-        title: '粉丝通证交易所-瞬MATATAKI'
+        title: 'Fan票交易所-瞬MATATAKI'
       }
     },
     {
@@ -386,7 +386,7 @@ const router = new VueRouter({
       name: 'tokens',
       component: () => import(/* webpackChunkName: "tokens" */ './views/tokens/index.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -394,7 +394,7 @@ const router = new VueRouter({
       name: 'tokensId',
       component: () => import(/* webpackChunkName: "tokensId" */ './views/tokens/id.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -402,7 +402,7 @@ const router = new VueRouter({
       name: 'minetoken',
       component: () => import(/* webpackChunkName: "minetoken" */ './views/minetoken/index.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -419,7 +419,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "editminetoken" */ './views/minetoken/token.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -428,7 +428,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "postminetoken" */ './views/minetoken/token.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -437,7 +437,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -469,7 +469,7 @@ const router = new VueRouter({
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -478,7 +478,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
@@ -487,7 +487,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "holdliquidityId" */ './views/holdliquidity/id.vue'),
       meta: {
-        title: '粉丝通证-瞬MATATAKI'
+        title: 'Fan票-瞬MATATAKI'
       }
     },
     {

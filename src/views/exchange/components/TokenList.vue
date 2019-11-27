@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="选择粉丝通证"
+    title="选择Fan票"
     :close-on-click-modal="false"
     :visible.sync="showModal"
     width="90%"
@@ -16,14 +16,14 @@
         <input
           v-model="search"
           type="text"
-          placeholder="搜索粉丝通证"
+          placeholder="搜索Fan票"
           class="dHtVAe"
           @keyup.enter="searchToken"
         />
       </div>
       <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table height="50vh" :data="tokenList" style="width: 100%" @row-click="selectToken">
-          <el-table-column width="180px" label="粉丝通证">
+          <el-table-column width="180px" label="Fan票">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">

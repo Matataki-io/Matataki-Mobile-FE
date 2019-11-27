@@ -43,7 +43,7 @@
           v-if="tokenUser"
           class="tooltip"
           effect="dark"
-          content="发行了粉丝通证的用户"
+          content="发行了Fan票的用户"
           placement="top"
         >
           <svg-icon class="tokens" icon-class="token" />

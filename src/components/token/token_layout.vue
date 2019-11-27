@@ -3,7 +3,7 @@
     <BaseHeader
       :has-bottom-border-line="true"
       customize-header-bc="#fff"
-      :pageinfo="{ title: '粉丝通证详情' }"
+      :pageinfo="{ title: 'Fan票详情' }"
     />
 
     <div class="token-detail">
@@ -63,7 +63,7 @@
       </div>
       <div class="link">
         <a class="help-link" href="https://www.matataki.io/p/977" target="_blank"
-          >什么是粉丝通证?</a
+          >什么是Fan票?</a
         >
       </div>
     </div>
@@ -170,10 +170,10 @@
     <div class="minetoken-card">
       <div class="minetoken-tab">
         <a :class="tabPage === 0 && 'active'" @click="tabPage = 0">
-          粉丝通证持仓
+          Fan票持仓
         </a>
         <a :class="tabPage === 1 && 'active'" @click="tabPage = 1">
-          粉丝通证流水
+          Fan票流水
         </a>
         <a :class="tabPage === 2 && 'active'" @click="tabPage = 2">
           流动金持仓
@@ -232,7 +232,7 @@
     <!-- <div class="fixed-bottom">
       <router-link class="exchange" :to="{ name: 'exchange' }">
         <svg-icon class="tokens" icon-class="token" />
-        粉丝通证交易所
+        Fan票交易所
       </router-link>
     </div> -->
   </div>

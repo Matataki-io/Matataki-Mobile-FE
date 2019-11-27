@@ -28,17 +28,29 @@
         {{ $t('auth.loginWarning') }}
       </p>
       <div class="oauth">
-        <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
-          <svg-icon class="eos" icon-class="eos_login" />
+        <div>
+          <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
+            <svg-icon class="eos" icon-class="eos_login" />
+          </div>
+          EOS
         </div>
-        <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
-          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
+        <div class="oauth-card">
+          <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
+            <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
+          </div>
+          ONT
         </div>
-        <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
-          <svg-icon class="github" icon-class="github" />
+        <div class="oauth-card">
+          <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
+            <svg-icon class="github" icon-class="github" />
+          </div>
+          GitHub
         </div>
-        <div class="oauth-bg bg-green" @click="getWeixinCode">
-          <svg-icon class="github" icon-class="weixin" />
+        <div class="oauth-card">
+          <div class="oauth-bg bg-green" @click="getWeixinCode">
+            <svg-icon class="github" icon-class="weixin" />
+          </div>
+          微信
         </div>
       </div>
     </div>
@@ -202,6 +214,10 @@ export default {
       font-size: 22px;
     }
     .flexCenter();
+
+    .oauth-card {
+      margin-left: 30px;
+    }
     .oauth-bg {
       cursor: pointer;
       .flexCenter();
@@ -212,9 +228,6 @@ export default {
       color: #fff;
       img {
         width: 20px;
-      }
-      +.oauth-bg {
-        margin-left: 30px;
       }
     }
   }

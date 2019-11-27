@@ -16,7 +16,7 @@
             <h4>{{ tokenDetail.name || '' }}</h4>
           </div>
         </div>
-        <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}枚</div>
+        <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}</div>
       </div>
       <div class="fl jsb publish-tokens">
         <div class="username">创始人：{{ userDetail.nickname || userDetail.username }}</div>
@@ -45,7 +45,7 @@
     </div>
 
     <el-dialog
-      title="赠送粉丝通证"
+      title="赠送Fan票"
       :visible.sync="giftDialog"
       width="90%"
       :before-close="giftDialogClose"
@@ -57,7 +57,7 @@
         label-width="70px"
         class="gift-form"
       >
-        <el-form-item label="粉丝通证">
+        <el-form-item label="Fan票">
           <p class="tokenname">
             {{ form.tokenname }}
           </p>

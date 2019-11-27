@@ -2,7 +2,7 @@
   <div class="publish-tokens">
     <BaseHeader
       :has-bottom-border-line="true"
-      :pageinfo="{ title: '发行的粉丝通证' }"
+      :pageinfo="{ title: '发行的Fan票' }"
       customize-header-bc="#fff"
     />
     <minetoken></minetoken>

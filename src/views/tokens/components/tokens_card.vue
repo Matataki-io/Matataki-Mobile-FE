@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="number">
-      <span>{{ tokenAmount(card.amount) }}枚</span>
+      <span>{{ tokenAmount(card.amount) }}</span>
       <i class="el-icon-arrow-right icon"></i>
     </div>
   </router-link>

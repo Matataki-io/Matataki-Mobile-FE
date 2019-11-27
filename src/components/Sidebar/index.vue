@@ -23,7 +23,7 @@
               v-if="tokenUser"
               class="tooltip"
               effect="dark"
-              content="发行了粉丝通证的用户"
+              content="发行了Fan票的用户"
               placement="top"
             >
               <svg-icon class="tokens" icon-class="token" />
@@ -184,7 +184,7 @@
               <div class="cell-left">
                 <svg-icon icon-class="tokens1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  持有的粉丝通证
+                  持有的Fan票
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -206,7 +206,7 @@
               <div class="cell-left">
                 <svg-icon icon-class="minetoken1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  发行的粉丝通证
+                  发行的Fan票
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -217,7 +217,7 @@
               <div class="cell-left">
                 <svg-icon icon-class="exchange" class="left-img"></svg-icon>
                 <span class="left-text">
-                  粉丝通证交易所
+                  Fan票交易所
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -236,7 +236,7 @@
             <div class="cell-left">
               <svg-icon icon-class="exchange" class="left-img"></svg-icon>
               <span class="left-text">
-                粉丝通证交易所
+                Fan票交易所
               </span>
             </div>
             <div class="cell-right"><span></span></div>
