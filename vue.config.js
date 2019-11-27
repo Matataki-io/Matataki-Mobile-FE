@@ -16,7 +16,7 @@ function resolve(dir) {
 
 // 是否为开发环境
 const isDev = process.env.NODE_ENV === 'development'
-// 显示捆绑粉丝
+// 显示捆绑分析
 const showBundleAnalyzer = false
 
 module.exports = {
@@ -120,10 +120,13 @@ module.exports = {
         // minify your JavaScript.
         new TerserPlugin({
           parallel: true,
+          cache: true,
           terserOptions: {
+            output: {
+              comments: false
+            },
             compress: {
-              drop_console: true,
-              drop_debugger: true
+              drop_console: true
             }
           }
         })
@@ -177,7 +180,7 @@ module.exports = {
           }
         }
       },
-      // minimize: true,
+      minimize: !isDev,
       minimizer: minimizer
     }
     config.externals = configExternals
