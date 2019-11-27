@@ -28,7 +28,7 @@
       <div class="card-info-data">
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            0
+            {{ card.unit || 0 }}
           </p>
           <p class="card-info-name">
             单价（CNY)
@@ -36,7 +36,7 @@
         </div>
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            0
+            {{ card.liquidity || 0 }}
           </p>
           <p class="card-info-name">
             流动金（CNY)
@@ -44,7 +44,7 @@
         </div>
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            0
+            {{ card.exchange || 0 }}
           </p>
           <p class="card-info-name">
             24h 成交量（个)
