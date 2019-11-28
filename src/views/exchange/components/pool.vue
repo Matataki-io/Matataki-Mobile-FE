@@ -166,7 +166,6 @@
     <div class="fixed-bottom">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
     </div>
-    <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
     <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
     <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
     <TradeLog :tokensId="tokensId" type="liquidity"/>
@@ -176,7 +175,6 @@
 <script>
 import { mapGetters } from "vuex";
 import debounce from "lodash/debounce";
-import OrderModal from "./OrderModal";
 import TokenListModal from "./TokenList";
 import PoolSelectModal from "./PoolSelect";
 import TradeLog from './TradeLog'
@@ -185,7 +183,6 @@ import utils from "@/utils/utils";
 
 export default {
   components: {
-    OrderModal,
     TokenListModal,
     PoolSelectModal,
     TradeLog
@@ -196,7 +193,6 @@ export default {
       detailShow: false,
       tlShow: false,
       field: "", // INPUT OUTPUT
-      orderShow: false,
       form: {
         input: "",
         inputToken: CNY,

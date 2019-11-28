@@ -437,10 +437,6 @@
         :from="'article'"
         @changeTransferModal="status => (transferModal = status)"
       />
-      <OrderModal
-        v-model="showOrderModal"
-        :form="{ ...form, type: 'buy_token_output', limitValue }"
-      />
     </div>
     <div v-else class="deleted-container">
       <div>
@@ -481,7 +477,6 @@ import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
 import commentInput from '@/components/article_comment/index.vue'
-import OrderModal from '../exchange/components/OrderModal.vue'
 import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
@@ -512,7 +507,6 @@ export default {
     statement,
     ArticleFooter,
     commentInput,
-    OrderModal,
     avatar
   },
   data() {
@@ -570,7 +564,6 @@ export default {
       currentProfile: Object.create(null),
       differenceToken: '0',
       showLock: false,
-      showOrderModal: false,
       form: {
         input: '',
         inputToken: CNY,

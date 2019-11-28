@@ -112,7 +112,6 @@
     <div class="fixed-bottom">
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">交易</button>
     </div>
-    <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
     <TradeLog :tokensId="tokensId" />
   </div>
@@ -121,7 +120,6 @@
 <script>
 import { mapGetters } from "vuex";
 import debounce from "lodash/debounce";
-import OrderModal from "./OrderModal";
 import TokenListModal from "./TokenList";
 import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from "./consts.js";
@@ -129,7 +127,6 @@ import utils from "@/utils/utils";
 
 export default {
   components: {
-    OrderModal,
     TokenListModal,
     TradeLog
   },
@@ -138,7 +135,6 @@ export default {
       detailShow: false,
       tlShow: false,
       field: "", // INPUT OUTPUT
-      orderShow: false,
       form: {
         input: "",
         inputToken: CNY,
