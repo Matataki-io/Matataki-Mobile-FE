@@ -297,12 +297,12 @@ export default {
           // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.articleJsapiPay(tradeNo, openid, this.tradeType).then(res => {
+        this.$API.wxJsapiPay(tradeNo, openid, this.tradeType).then(res => {
           this.weakWeixinPay(res)
         })
       } else {
         // 弹出NATIVE支付二维码
-        this.$API.articleNativePay(tradeNo, this.tradeType).then(res => {
+        this.$API.wxNativePay(tradeNo, this.tradeType).then(res => {
           this.loading = false
           this.payLink = res.code_url
           this.qrcodeShow = true

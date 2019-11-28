@@ -12,45 +12,26 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
-  nativePay(tradeNo) {
-    return this.orderWxPay({
-      tradeNo,
-      trade_type: 'NATIVE'
-    })
-  },
-  jsapiPay(tradeNo, openid) {
-    return this.orderWxPay({
-      tradeNo,
-      trade_type: 'JSAPI',
-      openid
-    })
-  },
-  orderWxPay(order) {
-    return request.post('/order/pay', order)
-  },
-  //-------------文章支付使用开始-----------------
-  articleNativePay(tradeNo, title) {
-    return this.articleWxPay({
+  //-------------微信支付-----------------
+  wxNativePay(tradeNo, title) {
+    return this.orderWxpay({
       tradeNo,
       trade_type: 'NATIVE',
       title
     })
   },
-  articleJsapiPay(tradeNo, openid, title) {
-    return this.articleWxPay({
+  wxJsapiPay(tradeNo, openid, title) {
+    return this.orderWxpay({
       tradeNo,
       trade_type: 'JSAPI',
       title,
       openid
     })
   },
-  articleWxPay(order) {
+  orderWxpay(order) {
     return request.post('/order/articlepay', order)
   },
-  //-------------文章支付使用结束-----------------
-  wxpay(order) {
-    return request.post('/wx/pay', order)
-  },
+  //-------------微信支付-----------------
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
       url: '/token/all',
