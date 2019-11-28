@@ -1333,7 +1333,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.4)'
       })
       const requestParams = this.makeOrderParams()
-      this.$API.createArticleOrder(requestParams).then(res => {
+      this.$API.createOrder(requestParams).then(res => {
         loading.close()
         if (res.code === 0) {
           this.$router.push({ name: 'order-id', params: {id: res.data}})

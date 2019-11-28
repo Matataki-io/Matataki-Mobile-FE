@@ -226,7 +226,7 @@ export default {
       })
       const id = this.$route.params.id
       this.tradeNo = id
-      this.$API.getArticleOrder(id).then(res => {
+      this.$API.getOrderData(id).then(res => {
         loading.close()
         if (res.code === 0) {
           const status = Number(res.data.status)
@@ -270,7 +270,7 @@ export default {
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer)
-      this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
+      this.$API.updateOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
         if (res.code === 0) {
           // this.getOrderData()
         }
@@ -377,7 +377,7 @@ export default {
     },
     // 获取订单状态
     getOrderStatus(tradeNo) {
-      this.$API.getArticleOrder(tradeNo).then(res => {
+      this.$API.getOrderData(tradeNo).then(res => {
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {

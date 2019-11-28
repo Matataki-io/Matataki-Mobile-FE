@@ -336,7 +336,7 @@ export default {
       });
       const requestParams = this.makeOrderParams()
       this.$API
-        .createArticleOrder(requestParams)
+        .createOrder(requestParams)
         .then(res => {
           loading.close()
           if (res.code === 0) {

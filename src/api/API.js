@@ -449,30 +449,21 @@ minetokenGetResources(tokenId) {
       }
     })
   },
-  getOrderData(id) {
-    return request({
-      method: 'get',
-      url: `/order/get/${id}`
-    })
-  },
   // 创建订单
   createOrder(order) {
-    return request.post('/order/create', order)
-  },
-  createArticleOrder(order) {
     return request({
       method: 'PUT',
       url: '/orders',
       data: order
     })
   },
-  getArticleOrder(tradeNo) {
+  getOrderData(tradeNo) {
     return request({
       method: 'get',
       url: `/orders/${tradeNo}`
     })
   },
-  updateArticleOrder(tradeNo, order) {
+  updateOrder(tradeNo, order) {
     return request({
       method: 'put',
       url: `/orders/${tradeNo}`,
