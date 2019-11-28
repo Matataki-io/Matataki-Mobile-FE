@@ -729,7 +729,7 @@ export default {
   },
   mounted() {
     this.$navigation.once('back', (to, from) => {
-      if (from.route.name === 'porder-id') {
+      if (from.route.name === 'order-id') {
         window.location.reload()
       }
     })
@@ -1336,7 +1336,7 @@ export default {
       this.$API.createArticleOrder(requestParams).then(res => {
         loading.close()
         if (res.code === 0) {
-          this.$router.push({ name: 'porder-id', params: {id: res.data}})
+          this.$router.push({ name: 'order-id', params: {id: res.data}})
         } else {
           this.$dialog.alert({
             title: '温馨提示',

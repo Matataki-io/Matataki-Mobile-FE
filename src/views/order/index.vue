@@ -11,12 +11,18 @@
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
       <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
-      <van-cell title="交易内容" :value="tokenContent" />
-      <van-cell title="交易数量" :value="tokenAmount" />
       <van-cell title="交易类型" :value="tradeType" />
       <van-cell title="创建时间" :value="friendlyTime" />
-      <van-cell title="订单编号" :value="tradeNo" />
+      <van-cell title="订单编号" :value="tradeNo" value-class="longValue" />
     </van-cell-group>
+    <div class="order-item">
+      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%">
+        <el-table-column prop="name" label="品名"> </el-table-column>
+        <el-table-column prop="operating" label="操作"> </el-table-column>
+        <el-table-column prop="amount" label="数量"> </el-table-column>
+        <el-table-column prop="total" label="小计"> </el-table-column>
+      </el-table>
+    </div>
     <div class="flexBox">
       <span>预期价格波动：1% </span>
       <div>
@@ -87,7 +93,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import QRCode from './components/Qrcode'
+import QRCode from '@/views/order/components/Qrcode'
 import utils from '@/utils/utils'
 
 const interval = 5000
@@ -99,7 +105,6 @@ export default {
       timer: null,
       tradeNo: 0,
       order: {},
-      token: {},
       balance: 0,
       loading: false,
       useBalance: false,
@@ -112,28 +117,31 @@ export default {
         limitValue: ''
       },
       qrcodeShow: false,
-      payLink: 'baidu.com'
+      payLink: '',
+      orderItems: [],
+      articleId: ''
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
-      const type = this.order.type
-      if (type === 'add') return '添加流动性'
-      if (type === 'buy_token_input' || type === 'buy_token_output') return '交易Fan票'
-      return ''
-    },
-    tokenContent() {
-      if (this.token.symbol) return `${this.token.symbol}(${this.token.name})`
-      return ''
-    },
-    tokenAmount() {
-      if (this.order.token_amount) return this.$utils.fromDecimal(this.order.token_amount)
-      else return 0
+      const typeOptions = {
+        add: '添加流动性',
+        buy_token_input: '购买Fan票',
+        buy_token_output: '购买Fan票',
+        sale_token: '出售Fan票',
+      };
+      if (this.articleId) {
+        return `购买文章${this.articleId}`
+      } else {
+        const type = this.order.items ? this.order.items.orderTokenItem.type : null
+        return typeOptions[type] || '暂无'
+      }
     },
     cnyAmount() {
-      if (this.order.cny_amount) return this.$utils.fromDecimal(this.order.cny_amount)
-      else return 0
+      if (this.order.total) {
+        return utils.up2points(utils.fromDecimal(this.order.total))
+      } else return 0
     },
     friendlyTime() {
       return moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
@@ -193,7 +201,7 @@ export default {
     },
     onSubmit() {
       this.loading = true
-      console.log(this.needPay)
+      console.log('this.needPay', this.needPay)
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
@@ -211,80 +219,70 @@ export default {
         })
     },
     getOrderData() {
+      const loading = this.$loading({
+        lock: false,
+        text: '获取订单数据中...',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
       const id = this.$route.params.id
       this.tradeNo = id
-      this.$API.getOrderData(id).then(res => {
+      this.$API.getArticleOrder(id).then(res => {
+        loading.close()
         if (res.code === 0) {
-          const status = Number(res.data.order.status)
+          const status = Number(res.data.status)
           if (status === 7 || status === 8) {
             this.alert('订单支付已失败')
           }
           if (status === 6 || status === 9) {
             this.alert('订单已支付')
           }
-          this.order = res.data.order
-          this.token = res.data.token
+          this.order = res.data
+          this.articleId = res.data.items.orderPriceItem ? res.data.items.orderPriceItem.signid : ''
+          this.useBalance = Boolean(res.data.use_balance)
+          this.orderItems = this.handleOrderItem(res.data.items)
         } else {
           this.alert('订单不存在')
         }
       })
     },
+    handleOrderItem(items) {
+      let result = []
+      const t1 = items.orderPriceItem
+      const t2 = items.orderTokenItem
+      if (t1) {
+        result.push({
+          name: t1.symbol,
+          operating: '支付',
+          amount: utils.fromDecimal(t1.amount),
+          total: utils.up2points(utils.fromDecimal(t1.price)) + ' CNY'
+        })
+      }
+      if (t2) {
+        result.push({
+          name: t2.symbol,
+          operating: '购买',
+          amount: utils.fromDecimal(t2.token_amount),
+          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY'
+        })
+      }
+      return result
+    },
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer)
+      this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
+        if (res.code === 0) {
+          // this.getOrderData()
+        }
+      })
     },
     // 使用余额支付
     balancePay() {
-      const handler = res => {
-        this.loading = false
-        if (res === 0) {
+      this.$API.handleAmount0(this.tradeNo).then(res => {
+        if (res.code === 0) {
           this.alert('交易成功')
-        } else {
-          this.alert('交易失败，请重试')
         }
-      }
-      // const deadline = Math.floor(Date.now() / 1000) + 300;
-      const {
-        token_id,
-        cny_amount,
-        pay_cny_amount,
-        token_amount,
-        min_liquidity,
-        min_tokens,
-        max_tokens,
-        deadline,
-        type
-      } = this.order
-      if (type === 'add') {
-        this.$API
-          .addLiquidityBalance({
-            tokenId: token_id,
-            cny_amount,
-            token_amount,
-            min_liquidity,
-            max_tokens,
-            deadline
-          })
-          .then(res => handler(res))
-      } else if (type === 'buy_token_input') {
-        this.$API
-          .cnyToTokenInputBalance({
-            tokenId: token_id,
-            cny_sold: cny_amount,
-            min_tokens,
-            deadline
-          })
-          .then(res => handler(res))
-      } else if (type === 'buy_token_output') {
-        this.$API
-          .cnyToTokenOutputBalance({
-            tokenId: token_id,
-            tokens_bought: token_amount,
-            max_cny: min_tokens,
-            deadline
-          })
-          .then(res => handler(res))
-      }
+      })
     },
     // 使用微信支付
     weixinPay() {
@@ -299,12 +297,12 @@ export default {
           // 不是微信账号需要先获取openid
           openid = window.localStorage.getItem('WX_OPENID')
         }
-        this.$API.jsapiPay(tradeNo, openid).then(res => {
+        this.$API.articleJsapiPay(tradeNo, openid, this.tradeType).then(res => {
           this.weakWeixinPay(res)
         })
       } else {
         // 弹出NATIVE支付二维码
-        this.$API.nativePay(tradeNo).then(res => {
+        this.$API.articleNativePay(tradeNo, this.tradeType).then(res => {
           this.loading = false
           this.payLink = res.code_url
           this.qrcodeShow = true
@@ -379,80 +377,19 @@ export default {
     },
     // 获取订单状态
     getOrderStatus(tradeNo) {
-      this.$API.getOrderStatus(tradeNo).then(res => {
+      this.$API.getArticleOrder(tradeNo).then(res => {
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
             clearInterval(this.timer)
+            this.qrcodeShow = false
             this.alert('交易失败，等待退款')
           }
           if (status === 6 || status === 9) {
-            this.alert('交易成功')
             clearInterval(this.timer)
-            setTimeout(() => {
-              window.location.reload()
-            }, 2000)
+            this.qrcodeShow = false
+            this.alert('交易成功')
           }
-        }
-      })
-    },
-    successNotice(text) {
-      this.$message.success({
-        message: text,
-        duration: 4000
-      })
-    },
-    errorNotice(text) {
-      this.$message.error({
-        message: text
-      })
-    },
-    // 构造参数
-    makeOrderParams(openid = null) {
-      const { input, inputToken, output, outputToken, limitValue, type } = this.form
-      let requestParams = {
-        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
-        title: `购买${outputToken.symbol}`,
-        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
-        token_id: outputToken.id,
-        token_amount: utils.toDecimal(output, outputToken.decimals),
-        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
-        decimals: outputToken.decimals,
-        pay_cny_amount: utils.toDecimal(this.needPay)
-      }
-      if (openid) {
-        requestParams = {
-          ...requestParams,
-          trade_type: 'JSAPI',
-          openid
-        }
-      }
-      console.log(requestParams)
-      if (type === 'add') {
-        requestParams = {
-          ...requestParams,
-          title: `添加流动金`,
-          min_liquidity: utils.toDecimal(this.form.youMintTokenAmount)
-        }
-      } else {
-        requestParams = {
-          ...requestParams,
-          title: `购买${outputToken.symbol}`
-        }
-      }
-      return requestParams
-    },
-    // 创建订单
-    createOrder(openid = null) {
-      this.loading = true
-      const requestParams = this.makeOrderParams(openid)
-      this.$API.wxpay(requestParams).then(res => {
-        this.loading = false
-        this.order = res
-        if (this.needPay > 0) {
-          this.timer = setInterval(() => {
-            this.getOrderStatus(this.order.trade_no)
-          }, interval)
         }
       })
     }
@@ -469,6 +406,14 @@ export default {
   .van-button--danger {
     background-color: @purple;
     border: 0.0625rem solid @purple;
+  }
+  .grayHeader {
+    color: #b2b2b2;
+    font-weight: 400;
+    padding: 6px 0;
+  }
+  .longValue {
+    flex: 4;
   }
 }
 .van-dialog {
@@ -526,6 +471,9 @@ export default {
       color: #bbbbbb;
       margin-bottom: 16px;
     }
+  }
+  .order-item {
+    margin-top: 10px;
   }
 }
 </style>

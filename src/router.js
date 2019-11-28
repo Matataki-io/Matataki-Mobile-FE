@@ -449,14 +449,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/porder/:id',
-      name: 'porder-id',
-      component: () => import(/* webpackChunkName: "porder-id" */ './views/p/order/index.vue'),
-      meta: {
-        title: '订单详情页-瞬MATATAKI'
-      }
-    },
-    {
       path: '/pay/weixin',
       name: 'WeixinPay',
       component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
