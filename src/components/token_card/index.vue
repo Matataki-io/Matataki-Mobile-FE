@@ -28,7 +28,7 @@
       <div class="card-info-data">
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            {{ card.unit_price || 0 }}
+            {{ unitPrice }}
           </p>
           <p class="card-info-name">
             单价（CNY)
@@ -79,6 +79,14 @@ export default {
     name() {
       let name = this.card.nickname || this.card.username
       return name.length > 12 ? name.slice(0, 12) + '...' : name
+    },
+    unitPrice() {
+      const amount = this.card.amount || 0
+      const liquidity = this.card.liquidity || 0
+
+      if (amount === 0) return 0
+
+      return (liquidity / amount).toFixed(this.card.decimals)
     },
     tokenAmount(amount) {
       const tokenamount = Math.abs(precision(this.card.liquidity || 0, 'CNY', this.card.decimals))
