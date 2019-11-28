@@ -175,7 +175,7 @@ export default {
     copyCode(code) {
       this.$copyText(code).then(
         () => {
-          this.$message.success("this.$t('success.copy')")
+          this.$message.success(this.$t('success.copy'))
         },
         () => {
           this.$message.error(this.$t('error.copy'))

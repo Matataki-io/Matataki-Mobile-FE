@@ -27,7 +27,8 @@ import {
   Table,
   TableColumn,
   Image,
-  Checkbox
+  Checkbox,
+  Message
 } from 'element-ui'
 
 Vue.use(Input)
@@ -57,3 +58,4 @@ Vue.use(Input)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$prompt = MessageBox.prompt
+Vue.prototype.$message = Message
