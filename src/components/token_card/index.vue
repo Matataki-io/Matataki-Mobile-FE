@@ -21,7 +21,7 @@
         <p class="card-info-name">
           {{ card.name || '暂无' }}
         </p>
-        <p class="card-info-name">
+        <p class="card-info-name brief">
           {{ card.brief || '暂无' }}
         </p>
       </div>
@@ -117,6 +117,12 @@ export default {
     line-height: 1.5;
     padding: 0;
     margin: 4px 0 0 0;
+    &.brief {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
   }
 }
 .card-username {
