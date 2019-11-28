@@ -60,9 +60,6 @@ export default {
       },
       deep: true
     }
-    /* $route(route) {
-      this.getWeixinOpenId(route)
-    } */
   },
   created() {
     // ;(function() {

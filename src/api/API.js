@@ -29,7 +29,7 @@ export default {
     })
   },
   orderWxpay(order) {
-    return request.post('/order/articlepay', order)
+    return request.post('/order/wxpay', order)
   },
   //-------------微信支付-----------------
   allToken({page = 1, pagesize = 10, search = ''}) {
