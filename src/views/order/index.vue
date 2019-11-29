@@ -16,7 +16,7 @@
       <van-cell title="订单编号" :value="tradeNo" value-class="longValue" />
     </van-cell-group>
     <div class="order-item">
-      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%">
+      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%" v-loading="loading">
         <el-table-column prop="name" label="品名"> </el-table-column>
         <el-table-column prop="operating" label="操作"> </el-table-column>
         <el-table-column prop="amount" label="数量"> </el-table-column>
@@ -32,7 +32,7 @@
     <div class="flexBox">
       <div>
         <el-checkbox v-model="useBalance" @change="useBalanceChange"
-          >使用余额（¥ {{ balance }}）</el-checkbox
+          >使用余额 <span>（¥ {{ balance }}）</span></el-checkbox
         >
       </div>
       <div>
@@ -200,8 +200,6 @@ export default {
       this.qrcodeShow = false
     },
     onSubmit() {
-      this.loading = true
-      console.log('this.needPay', this.needPay)
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
@@ -219,15 +217,11 @@ export default {
         })
     },
     getOrderData() {
-      const loading = this.$loading({
-        lock: false,
-        text: '获取订单数据中...',
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
+      this.loading = true
       const id = this.$route.params.id
       this.tradeNo = id
       this.$API.getOrderData(id).then(res => {
-        loading.close()
+        this.loading = false
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
@@ -269,8 +263,10 @@ export default {
     },
     // 是否使用余额修改
     useBalanceChange(v) {
+      this.loading = true
       clearInterval(this.timer)
       this.$API.updateOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
+        this.loading = false
         if (res.code === 0) {
           // this.getOrderData()
         }
@@ -278,14 +274,19 @@ export default {
     },
     // 使用余额支付
     balancePay() {
+      this.loading = true
       this.$API.handleAmount0(this.tradeNo).then(res => {
+        this.loading = false
         if (res.code === 0) {
           this.alert('交易成功')
+        } else {
+          this.alert('交易失败')
         }
       })
     },
     // 使用微信支付
     weixinPay() {
+      this.loading = true
       const { tradeNo } = this
       // 当前是否处于微信浏览器中
       if (this.isInWeixin) {
@@ -298,6 +299,7 @@ export default {
           openid = window.localStorage.getItem('WX_OPENID')
         }
         this.$API.wxJsapiPay(tradeNo, openid, this.tradeType).then(res => {
+          this.loading = false
           this.weakWeixinPay(res)
         })
       } else {
