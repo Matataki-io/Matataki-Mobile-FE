@@ -1286,29 +1286,6 @@ export default {
         this.$toast.fail({ duration: 1000, message: `${message}${this.$t('error.fail')}` })
       }
     },
-    makeOrderParams() {
-      const requestParams = {
-        useBalance: 0,
-        items: []
-      }
-      // token未支付
-      if (this.isTokenArticle && !this.tokenHasPaied) {
-        const { output, outputToken } = this.form
-        requestParams.items.push({
-          tokenId: outputToken.id,
-          type: 'buy_token_output',
-          amount: utils.toDecimal(output, outputToken.decimals)
-        })
-      }
-      // 文章price未支付
-      if (this.isPriceArticle && !this.priceHasPaied) {
-        requestParams.items.push({
-          signId: this.id,
-          type: 'buy_post'
-        })
-      }
-      return requestParams
-    },
     wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
@@ -1321,21 +1298,12 @@ export default {
         })
         return
       }
-      const loading = this.$loading({
-        lock: false,
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
-      const requestParams = this.makeOrderParams()
-      this.$API.createOrder(requestParams).then(res => {
-        loading.close()
-        if (res.code === 0) {
-          this.$router.push({ name: 'order-id', params: {id: res.data}})
-        } else {
-          this.$dialog.alert({
-            title: '温馨提示',
-            message: '订单创建失败'
-          })
-        }
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        type: 'buy_token_output',
+        needToken: this.isTokenArticle && !this.tokenHasPaied,
+        needPrice: this.isPriceArticle && !this.priceHasPaied,
+        signId: this.id
       })
     },
     // 微信支付购买

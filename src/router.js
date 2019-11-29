@@ -4,7 +4,6 @@ import { accessTokenAPI } from '@/api'
 // wechat share
 import wechatShare from './utils/wechat_share'
 import { getCookie } from '@/utils/cookie'
-import store from './store/index'
 
 if (!window.VueRouter) Vue.use(VueRouter)
 
@@ -515,13 +514,13 @@ router.afterEach(to => {
       title: to.meta.title
     })
   })
-  const autoAlertLoginPage = [] // 进入页面没有登陆则弹出信息框
+  const autoAlertLoginPage = ['index'] // 进入页面没有登陆则弹出信息框
   // 需要登陆的页面没有登陆, 弹出登陆框
   if (autoAlertLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) {
     Vue.nextTick(() => {
       setTimeout(() => {
         // TODO: 需要settimeout才能正常执行 需要调整
-        store.commit('setLoginModal', true)
+        router.app.$options.store.commit('setLoginModal', true)
       }, 0)
     })
   }

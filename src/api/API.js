@@ -482,4 +482,10 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  tokenUserId(id) {
+    return request({
+      method: 'get',
+      url: `/token/user/${id}`,
+    })
+  }
 }

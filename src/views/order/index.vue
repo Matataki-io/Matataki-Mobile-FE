@@ -93,7 +93,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import QRCode from '@/views/order/components/Qrcode'
+import QRCode from './components/Qrcode'
 import utils from '@/utils/utils'
 
 const interval = 5000

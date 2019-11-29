@@ -453,49 +453,11 @@ export default {
       if (this.isDelete) {
         this.removeLiquidity();
       } else {
-        this.addLiquidity();
-      }
-    },
-    makeOrderParams() {
-      const requestParams = {
-        useBalance: 0,
-        items: []
-      }
-      const { input, inputToken, output, outputToken } = this.form
-      requestParams.items.push({
-        tokenId: outputToken.id,
-        type: 'add',
-        min_tokens: utils.toDecimal(this.limitValue, outputToken.decimals),
-        cny_amount: utils.toDecimal(input, outputToken.decimals),
-        amount: utils.toDecimal(output, outputToken.decimals),
-        min_liquidity: utils.toDecimal(this.youMintTokenAmount)
-      })
-      return requestParams
-    },
-    // 创建订单
-    createOrder() {
-      const loading = this.$loading({
-        lock: false,
-        text: "订单创建中...",
-        background: "rgba(0, 0, 0, 0.4)"
-      });
-      const requestParams = this.makeOrderParams()
-      this.$API
-        .createOrder(requestParams)
-        .then(res => {
-          loading.close()
-          if (res.code === 0) {
-            this.$router.push({ name: 'order-id', params: {id: res.data}})
-          } else {
-             this.$dialog.alert({
-              title: '温馨提示',
-              message: '订单创建失败'
-            })
-          }
+        this.$store.dispatch('order/createOrder', {
+          ...this.form,
+          type: 'add'
         })
-    },
-    addLiquidity() {
-      this.createOrder()
+      }
     },
     getCurrentPoolSize(tokenId) {
       this.$API.getCurrentPoolSize(tokenId).then(res => {

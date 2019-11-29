@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
 import github from './github'
+import order from './order'
 import { backendAPI, accessTokenAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
   modules: {
     ontology,
     scatter,
-    github
+    github,
+    order
   },
   state: {
     userConfig: {
