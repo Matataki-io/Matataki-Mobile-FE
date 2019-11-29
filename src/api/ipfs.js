@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
-import { apiServer, accessTokenAPI } from '@/api/backend'
+import { accessTokenAPI } from '@/api/backend'
 
+export const apiServer = process.env.VUE_APP_API
 function sendPost({ title, author, desc, content }) {
   const stringifyData = qs.stringify({
     'data[title]': title,
