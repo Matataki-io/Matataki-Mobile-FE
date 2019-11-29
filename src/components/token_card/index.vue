@@ -44,7 +44,7 @@
         </div>
         <div class="card-info-data-column">
           <p class="card-info-data-amount">
-            {{ card.exchange_amount || 0 }}
+            {{ exchangeAmount || 0 }}
           </p>
           <p class="card-info-name">
             24h 成交量（个)
@@ -90,6 +90,10 @@ export default {
     },
     tokenAmount(amount) {
       const tokenamount = Math.abs(precision(this.card.liquidity || 0, 'CNY', this.card.decimals))
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    exchangeAmount(amount) {
+      const tokenamount = Math.abs(precision(this.card.exchange_amount || 0, 'CNY', this.card.decimals))
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
