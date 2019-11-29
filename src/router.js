@@ -514,7 +514,7 @@ router.afterEach(to => {
       title: to.meta.title
     })
   })
-  const autoAlertLoginPage = ['index'] // 进入页面没有登陆则弹出信息框
+  const autoAlertLoginPage = [] // 进入页面没有登陆则弹出信息框
   // 需要登陆的页面没有登陆, 弹出登陆框
   if (autoAlertLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) {
     Vue.nextTick(() => {
