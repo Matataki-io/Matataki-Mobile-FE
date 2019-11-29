@@ -27,11 +27,12 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" class="input" placeholder="请输入Fan票名称" />
       </el-form-item>
-      <!-- 编辑页面不需要显示 -->
-      <el-form-item v-if="isPost" label="缩写" prop="symbol">
+
+      <el-form-item label="缩写" prop="symbol">
         <el-input
           v-model="form.symbol"
           class="input"
+          :disabled="!isPost"
           placeholder="请输入Fan票缩写(发行后不可修改)"
         />
       </el-form-item>
@@ -65,7 +66,7 @@
       </el-form-item>
 
       <el-form-item label="简介" prop="brief">
-        <el-input v-model="form.brief" class="input" placeholder="简介" />
+        <el-input v-model="form.brief" class="input" maxlength="50" placeholder="简介" />
       </el-form-item>
       <el-form-item label="介绍" prop="">
         <el-input
@@ -288,7 +289,7 @@ export default {
             } else {
               const { token } = res.data
               this.form.name = token.name
-              this.form.symbol = token.name
+              this.form.symbol = token.symbol
               this.form.logo = token.logo
               this.form.brief = token.brief
               this.form.introduction = token.introduction

@@ -54,7 +54,7 @@
       介绍
     </h2>
     <p class="token-sub">
-      {{ tokenDetailData.token.introduction || '暂无' }}
+      <span class="wrap-open">{{ tokenDetailData.token.introduction || '暂无' }}</span>
     </p>
 
     <div class="line" />
@@ -408,6 +408,9 @@ export default {
   a {
     margin: 0 4px;
   }
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 </style>
 
