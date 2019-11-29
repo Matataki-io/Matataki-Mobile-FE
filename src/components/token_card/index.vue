@@ -47,7 +47,7 @@
             {{ exchangeAmount || 0 }}
           </p>
           <p class="card-info-name">
-            24h 成交量（个)
+            24h 成交额（CNY)
           </p>
         </div>
       </div>
