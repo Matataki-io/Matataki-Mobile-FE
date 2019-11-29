@@ -5,7 +5,10 @@
       <p>待提现</p>
       <div class="fl jsb">
         <span>{{ amount(cny.balance) }}</span>
-        <el-button size="mini" disabled>提现</el-button>
+        <div>
+          <el-button size="mini" disabled>提现</el-button>
+          <el-button size="mini" @click="giftDialogShow = true">转账</el-button>
+        </div>
       </div>
     </div>
 
@@ -22,16 +25,19 @@
         <card v-for="(item, index) in pull.list" :key="index" :card="item"></card>
       </BasePull>
     </div>
+    <giftDialog v-model="giftDialogShow"/>
   </div>
 </template>
 
 <script>
 import card from './components/card.vue'
+import giftDialog from './components/giftDialog.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
-    card
+    card,
+    giftDialog
   },
   data() {
     return {
@@ -42,7 +48,8 @@ export default {
         },
         apiUrl: 'assetList',
         list: []
-      }
+      },
+      giftDialogShow: false
     }
   },
   methods: {

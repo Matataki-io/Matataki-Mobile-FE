@@ -487,5 +487,14 @@ minetokenGetResources(tokenId) {
       method: 'get',
       url: `/token/user/${id}`,
     })
+  },
+  transferAsset({ symbol = 'cny', to, amount }) {
+    return request({
+      method: 'POST',
+      url: '/asset/transfer',
+      data: {
+        symbol, to, amount
+      }
+    })
   }
 }
