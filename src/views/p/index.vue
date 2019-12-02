@@ -943,7 +943,7 @@ export default {
       if (article.channel_id === 2) {
         this.product = {
           eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
-          ontPrice: article.prices[1].price / 10 ** article.prices[1].decimals,
+          ontPrice: article.prices[1] ? article.prices[1].price / 10 ** article.prices[1].decimals : 0,
           stock: article.prices[0].stock_quantity
         }
       }
