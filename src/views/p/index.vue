@@ -885,7 +885,8 @@ export default {
             this.article = data
             this.getCurrentProfile()
 
-            if ((data.tokens && data.tokens.length !== 0) || (data.prices && data.prices.length !== 0)) {
+            const isProduct = data.channel_id === 2
+            if (((data.tokens && data.tokens.length !== 0) || (data.prices && data.prices.length !== 0)) && !isProduct) {
               this.post.content = data.short_content
               this.setWxShare()
             } else {
