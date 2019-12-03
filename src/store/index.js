@@ -5,7 +5,7 @@ import ontology from './ontology'
 import scatter from './scatter'
 import github from './github'
 import order from './order'
-import { backendAPI, accessTokenAPI } from '@/api'
+import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 
 if (!window.Vue) Vue.use(Vuex)
@@ -30,7 +30,8 @@ export default new Vuex.Store({
     },
     loginModalShow: false,
     selectTokenShow: false,
-    selectedToken: null
+    selectedToken: null,
+    notificationCounters: {}
   },
   getters: {
     currentUserInfo: (
@@ -77,6 +78,13 @@ export default new Vuex.Store({
         symbol = 'ONT'
       }
       return { contract, symbol }
+    },
+    hasNewNotification({ notificationCounters }) {
+      if (!notificationCounters || typeof notificationCounters !== 'object') return false
+      for (const p in notificationCounters) {
+        if (notificationCounters[p] > 0) return true
+      }
+      return false
     }
   },
   actions: {
@@ -314,6 +322,14 @@ export default new Vuex.Store({
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
       return api.withdraw(data)
+    },
+    async getNotificationCounters({ commit }) {
+      const { data } = await notificationAPI.getNotificationCounters()
+      if (data) commit('setNotifyCounters', data)
+    },
+    async clearNotificationCounter({ commit }, { provider }) {
+      await notificationAPI.readNotifications(provider)
+      commit('clearNotifyCounters', provider)
     }
   },
   mutations: {
@@ -344,6 +360,14 @@ export default new Vuex.Store({
     },
     setSelectedToken(state, v) {
       state.selectedToken = v
+    },
+    setNotifyCounters(state, counters) {
+      state.notificationCounters = counters
+    },
+    clearNotifyCounters(state, provider) {
+      if (state.notificationCounters[provider]) {
+        state.notificationCounters[provider] = 0
+      }
     }
   }
 })

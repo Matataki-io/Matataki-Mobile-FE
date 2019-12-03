@@ -537,5 +537,15 @@ export default {
     supportIncome: '投资收益',
     supportExpenditure: '投资支出',
     assetList: '资产明细'
+  },
+  notification: {
+    title: '消息提醒',
+    follow: '关注',
+    recommend: '推荐',
+    comment: '评论',
+    message: '私信',
+    notice: '通知',
+
+    followed_you: '关注了你'
   }
 }

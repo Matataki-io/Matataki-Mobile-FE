@@ -13,6 +13,9 @@
                 />
               </div>
             </router-link>
+            <router-link :to="{ name: 'notification', params: { provider: 'follow' } }" :class="{ badge: hasNewNotification }">
+              <svg-icon class="notification-icon" icon-class="bell" />
+            </router-link>
             <!-- <router-link :to="{ name: 'Help' }">
               <img src="@/assets/newimg/setting.svg" alt="setting" class="setting" />
             </router-link> -->
@@ -349,7 +352,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe', 'hasNewNotification']),
     displayBalance() {
       const { balance } = this.currentUserInfo
       return balance ? balance.slice(0, -4) : ''
@@ -370,12 +373,18 @@ export default {
     sidebarShow(val) {
       this.$emit('input', val)
     },
-    isLogined(newState) {
-      if (newState) this.refreshUser()
+    async isLogined(newState) {
+      if (newState) {
+        await this.refreshUser()
+        await this.getNotificationCounters()
+      }
     },
     currentUserInfo() {
       // 第一次会重复请求两次接口
       if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    },
+    async $route() {
+      await this.getNotificationCounters()
     }
   },
   created() {
@@ -386,7 +395,7 @@ export default {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
   },
   methods: {
-    ...mapActions(['signOut']),
+    ...mapActions(['signOut', 'getNotificationCounters']),
     btnsignOut() {
       this.signOut()
       this.jumpTo({ name: 'index' })
@@ -628,6 +637,26 @@ export default {
   overflow: hidden;
   .button-card {
     flex: 1;
+  }
+}
+.notification-icon {
+  width: 20px;
+  font-size: 20px;
+  color: #1f1f1f;
+}
+.badge{
+  position: relative;
+  &::after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(251,104,119,1);
+    position: absolute;
+    z-index: 1000;
+    right: 0%;
+    margin-right: -3px;
+    margin-top: -3px;
   }
 }
 </style>
