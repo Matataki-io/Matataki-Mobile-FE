@@ -25,7 +25,12 @@
     </BaseHeader>
 
     <div class="user-head">
-      <img class="user-banner" src="@/assets/img/user_banner.png" alt="banner" />
+      <div v-if="banner" class="banner user-page-banner">
+        <img :src="banner" alt="banner" />
+      </div>
+      <div v-else class="default-banner user-page-banner">
+        <img src="@/assets/img/user_banner.png" alt="banner" />
+      </div>
       <div class="fl ac jc token-avatar">
         <avatar class="user-avatar" :src="avatar"></avatar>
 
@@ -61,6 +66,28 @@
           <span class="status-key">{{ $t('fans') }}</span>
         </router-link>
       </p>
+      <el-tooltip
+        v-if="isMe(Number($route.params.id))"
+        class="item"
+        effect="dark"
+        content="上传背景图"
+        placement="top"
+      >
+        <bannerUpload
+          :img-upload-done="imgUploadDone"
+          :update-type="'banner'"
+          class="fixed-right follow3"
+          @doneImageUpload="doneImageUpload"
+        >
+          <el-button
+            slot="uploadButton"
+            size="small"
+            class="ibutton"
+            type="info"
+            icon="el-icon-s-open"
+          />
+        </bannerUpload>
+      </el-tooltip>
       <div v-if="!isMe(id)" class="fixed-right follow">
         <template v-if="!scrollStatus">
           <transition name="fade">
@@ -123,8 +150,10 @@ import userPageNav from './user_page_nav.vue'
 import Share from '@/components/token/token_share.vue'
 import avatar from '@/components/avatar/index.vue'
 
+import bannerUpload from '@/components/bannerUpload/index.vue'
+
 export default {
-  components: { userPageNav, avatar, tokenAvatar, Share },
+  components: { userPageNav, avatar, tokenAvatar, Share, bannerUpload },
   data() {
     return {
       id: this.$route.params.id,
@@ -134,6 +163,7 @@ export default {
       name: '',
       email: '',
       avatar: '',
+      banner: '',
       introduction: '',
       stats: {
         accounts: 0,
@@ -144,7 +174,8 @@ export default {
       scrollStatus: false, // 根据滚动状态判断是否显示按钮
       tokenUser: false,
       tokenData: Object.create(null),
-      shareModalShow: false
+      shareModalShow: false,
+      imgUploadDone: 0 // 图片是否上传完成
     }
   },
   computed: {
@@ -172,6 +203,7 @@ export default {
       const { isMe, id } = this
       const setUser = ({
         avatar,
+        banner,
         email,
         fans,
         follows,
@@ -190,7 +222,8 @@ export default {
         this.introduction = introduction
         this.followed = is_follow
         this.name = nickname || username
-        this.setAvatarImage(avatar)
+        this.avatar = this.setImage(avatar)
+        this.banner = this.setImage(banner)
         this.stats = { accounts, articles, supports, drafts }
 
         this.$wechatShare({
@@ -203,7 +236,6 @@ export default {
       const {
         data: { data }
       } = await (isMe(id) ? this.$backendAPI.getMyUserData() : this.$backendAPI.getUser({ id }))
-      // console.debug(data);
       setUser(data)
     },
     async followOrUnfollowUser({ id, type }) {
@@ -223,8 +255,10 @@ export default {
       }
       this.refreshUser()
     },
-    setAvatarImage(hash) {
-      if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
+    setImage(hash) {
+      if (hash) {
+        return this.$backendAPI.getAvatarImage(hash)
+      } else return ''
     },
     async tokenUserId(id) {
       await this.$backendAPI
@@ -236,6 +270,10 @@ export default {
           }
         })
         .catch(err => console.log('get token user error', err))
+    },
+    doneImageUpload(res) {
+      this.imgUploadDone += Date.now()
+      this.refreshUser({ id: this.$route.params.id })
     }
   }
 }
@@ -377,6 +415,18 @@ export default {
     }
     bottom: 25px;
   }
+  &.follow3 {
+    bottom: 160px;
+    .ibutton {
+      font-size: 18px;
+      padding: 5px;
+      background: #9093998c;
+      border-color: #00000000;
+      &:hover {
+        background: #909399;
+      }
+    }
+  }
 }
 
 .fade-enter-active,
@@ -387,9 +437,34 @@ export default {
   opacity: 0;
 }
 
-.user-banner {
+.default-banner {
   width: 100%;
-  // height: 124px;
+  background-color: #c8d7ff;
+  box-sizing: border-box;
+  img {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.banner {
+  height: 137px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  padding: 0px;
+  img {
+    max-width: 3840px;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .no-data {

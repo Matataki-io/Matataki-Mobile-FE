@@ -223,7 +223,8 @@ const API = {
     const url = {
       avatar: '/user/uploadAvatar',
       artileCover: '/post/uploadImage',
-      coins: '/post/uploadImage'
+      coins: '/post/uploadImage',
+      banner: '/user/uploadBanner'
     }
     const formdata = new FormData()
     formdata.append('image', data)
