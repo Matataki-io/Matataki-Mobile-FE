@@ -225,6 +225,11 @@ export default {
       }
     },
     toggleNavMenu(i) {
+      this.content.navMenu[i].params = {
+        channel: this.content.navMenu[i].params.channel,
+        filter: this.filter
+      }
+
       this.content.activeIndex = i
       this.increaseTime('nemuNav', i)
     },
