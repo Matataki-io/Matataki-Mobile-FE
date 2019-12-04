@@ -16,13 +16,16 @@
         }}</span>
       </div>
       <div class="loginRegister">
-        <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false" />
+        <Login v-show="isLogin" @switch="step = 3" @hide="showModal = false" />
         <Register v-show="!isLogin" @switch="isLogin = true" />
       </div>
     </section>
     <Wallet v-show="step === 2" />
+    <section v-show="step === 3" class="auth-main">
+      <ResetPassword @switch="step = 1;isLogin = true;" />
+    </section>
     <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
-      <div v-if="step === 2" class="arrow">
+      <div v-if="step === 2 || step === 3" class="arrow">
         <van-icon name="arrow-left" />
       </div>
       <span>{{ step === 1 ? $t('auth.viewWallet') : $t('auth.backLogin') }}</span>
@@ -38,6 +41,7 @@
 import Login from './login'
 import Register from './register'
 import Wallet from './wallet'
+import ResetPassword from './resetPassword'
 import utils from "@/utils/utils";
 
 export default {
@@ -45,7 +49,8 @@ export default {
   components: {
     Wallet,
     Login,
-    Register
+    Register,
+    ResetPassword
   },
   data() {
     return {
@@ -69,12 +74,12 @@ export default {
       this.showModal = val
     }
   },
-    mounted(){
+  mounted(){
     this.isReferral()
     this.getReferral()
   },
   methods: {
-           // 是否有推荐
+    // 是否有推荐
     isReferral() {
       let search = window.location.search.slice(1)
       let searchArr = search.split('&')
