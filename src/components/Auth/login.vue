@@ -16,8 +16,8 @@
         <el-button type="primary" @click="submitLoginForm">{{ $t('login') }}</el-button>
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin') }}</span>
-          <!-- <a href="javascript:void(0);">忘记密码</a> | -->
-          <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('registered') }}</a>
+          <a href="javascript:void(0);" @click="$emit('switch')">忘记密码</a>
+          <!-- <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('registered') }}</a> -->
         </div>
         <!-- <span class="red">{{ $t('auth.pcLoginViewPointDetail') }}</span> -->
       </el-form-item>
