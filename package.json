@@ -31,6 +31,7 @@
     "cyanobridge": "0.1.0",
     "element-ui": "^2.11.1",
     "eosjs": "^16.0.9",
+    "gsap": "3.0.1",
     "html2canvas": "^1.0.0-rc.3",
     "iview": "^3.3.0",
     "js-base64": "^2.5.1",

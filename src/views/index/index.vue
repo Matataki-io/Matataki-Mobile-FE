@@ -1,273 +1,356 @@
 <template>
-  <div class="home-container">
-    <home-head @login="showSidebar = true" />
-    <div ref="home" class="one">
-      <div class="container">
-        <img
-          v-scroll-reveal="{ distance: '20px' }"
-          class="logo"
-          src="@/assets/img/home/logo_home.png"
-          :alt="$t('about.logo')"
-        />
-        <img
-          v-scroll-reveal="{ distance: '20px', delay: 100 }"
-          class="des"
-          src="@/assets/img/home/logo_des_home.png"
-          :alt="$t('about.logoDes')"
-        />
-        <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
-          {{ $t('about.homeTitle') }}
-        </h1>
-        <p v-scroll-reveal="{ distance: '20px', delay: 400 }" class="home-text">
-          {{ $t('about.homeDes') }}
-        </p>
-        <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
-          <router-link :to="{ name: 'article' }">
-            <el-button class="home-btn" icon="el-icon-reading">
-              {{ $t('about.homeBtnRead') }}
-            </el-button>
-          </router-link>
-          <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
-            {{ $t('about.homeBtnCreate') }}
-          </el-button>
+  <div class="main">
+    <!-- home -->
+    <section ref="home" class="home">
+      <!-- logo -->
+      <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo" />
+      <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary" />
+      <!-- btn -->
+      <div class="btn-menu">
+        <div ref="btn" class="btn" @click="showMoreMenu">
+          <svg-icon icon-class="add" />
         </div>
-        <img
-          v-scroll-reveal="{ distance: '20px', delay: 800 }"
-          class="bg"
-          src="@/assets/img/home/home_bg.png"
-          alt="logo"
-        />
+        <div ref="btnList" class="btn-list">
+          <router-link :to="{ name: 'article' }">
+            <svg-icon class="btn-list_btn" icon-class="article" />
+          </router-link>
+          <router-link :to="{ name: 'token' }">
+            <svg-icon class="btn-list_btn" icon-class="fan" />
+          </router-link>
+          <router-link :to="{ name: 'exchange' }">
+            <svg-icon class="btn-list_btn" icon-class="exchange_home" />
+          </router-link>
+        </div>
       </div>
-    </div>
-    <div class="two">
-      <div class="container">
-        <el-row v-for="(item, index) in effectList" :key="index">
-          <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
-            <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
-          </el-col>
-          <el-col class="margin-t-20" :span="10">
-            <p v-scroll-reveal="{ distance: '20px', delay: 200 * index }" class="title">
-              {{ item.subtitle }}
+      <!-- background -->
+      <img
+        class="home-background__left"
+        src="@/assets/img/index/top.png"
+        alt="matataki home background"
+      />
+      <img
+        class="home-background__right"
+        src="@/assets/img/index/bottom.png"
+        alt="matataki home background"
+      />
+    </section>
+
+    <!-- story -->
+    <section class="story ">
+      <div>
+        <!-- story 1 -->
+        <section ref="storyOne" class="component-story story-left story_01">
+          <section class="component-story__header">
+            <article class="component-story__inner">
+              <figure class="component-story__inner__title">
+                <img src="@/assets/img/index/passion.png" alt="passion" />
+              </figure>
+              <div class="visual-wrap">
+                <figure>
+                  <img src="@/assets/img/index/story_passion.png" alt="passion" />
+                </figure>
+              </div>
+            </article>
+          </section>
+          <section class="component-story__summary">
+            <article class="component-story__inner">
+              <figure class="component-story__summary__title">
+                <img src="@/assets/img/index/sotry_passion_title.png" alt="passion" />
+              </figure>
+              <p class="summary">
+                - 我所热爱的就是最大的。
+              </p>
+              <p class="summary">
+                - 在未来，我们与AI有什么不同？是生生不息的热爱、探索与执着让我们如此不同！
+              </p>
+              <p class="summary">
+                - 投资执着和努力创作的人，未来，一个人就是一家“公司”。
+              </p>
+            </article>
+          </section>
+        </section>
+
+        <!-- story 2 -->
+        <section ref="storyTwo" class="component-story story-right story_02">
+          <section class="component-story__header">
+            <article class="component-story__inner">
+              <figure class="component-story__inner__title">
+                <img src="@/assets/img/index/sustainability.png" alt="sustainability" />
+              </figure>
+              <div class="visual-wrap">
+                <figure>
+                  <img src="@/assets/img/index/story_sustainability.png" alt="sustainability" />
+                </figure>
+              </div>
+            </article>
+          </section>
+          <section class="component-story__summary">
+            <article class="component-story__inner">
+              <figure class="component-story__summary__title">
+                <img src="@/assets/img/index/sotry_sustainability_title.png" alt="sustainability" />
+              </figure>
+              <p class="summary">
+                - 利用区块链为创作数据确权，数据资产完全归属作者，不再被平台剥夺、剥削。
+              </p>
+              <p class="summary">
+                -
+                完善的区块链价值工具集，保证作者的创作价值触达更多爱好者，用社区的力量反哺创作，用创作的价值壮大社区。
+              </p>
+              <p class="summary">
+                - 区块链上价值透明可传导，保证衍生创作持续输血原作，让优秀的创作生生不息。
+              </p>
+            </article>
+          </section>
+        </section>
+
+        <!-- story 3 -->
+        <section ref="storyThree" class="component-story story-left story_03">
+          <section class="component-story__header">
+            <article class="component-story__inner">
+              <figure class="component-story__inner__title">
+                <img src="@/assets/img/index/boundary.png" alt="boundary" />
+              </figure>
+              <div class="visual-wrap">
+                <figure>
+                  <img src="@/assets/img/index/story_boundary.png" alt="boundary" />
+                </figure>
+              </div>
+            </article>
+          </section>
+          <section class="component-story__summary">
+            <article class="component-story__inner">
+              <figure class="component-story__summary__title">
+                <img src="@/assets/img/index/sotry_boundary_title.png" alt="boundary" />
+              </figure>
+              <p class="summary">
+                - 思想高度多样化的群体，智能水平能够超越多年训练的专家
+              </p>
+              <p class="summary">
+                - 社交媒体快速抢占我们的注意力，而思考和学习需要慢时间，如何让慢的事情高质量变快？
+              </p>
+              <p class="summary">
+                -
+                市场和经济系统能够奖励优秀的思想，合作能够快速传播思想和带来思想的进化，<b>”市场激励“</b>加<b>”合作“</b>能让群体的“慢”思考变快，提升社会中每个人的能力和收益。
+              </p>
+            </article>
+          </section>
+        </section>
+      </div>
+    </section>
+
+    <!-- roadmap -->
+    <section class="roadmap">
+      <section class="roadmap-content">
+        <img class="roadmap-bg" src="@/assets/img/index/roadmap_m.png" alt="roadmap-background" />
+        <section class="roadmap-time">
+          <div class="roadmap-time__block">
+            <h4>2019.4</h4>
+            <p class="sumary">
+              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的
+              。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。
+              一家“公司”。
             </p>
-            <img
-              v-scroll-reveal="{ distance: '20px', delay: 220 * index }"
-              :src="item.img"
-              alt="Features"
-            />
-          </el-col>
-          <el-col class="margin-t-20" :span="14">
-            <p v-scroll-reveal="{ distance: '20px', delay: 260 * index }" class="content">
-              {{ item.des }}
+          </div>
+          <div class="roadmap-time__block">
+            <h4>2019.4</h4>
+            <p class="sumary">
+              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的
+              。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。
+              一家“公司”。
             </p>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
-    <div class="three">
-      <div class="container">
-        <h3 v-scroll-reveal="{ distance: '20px' }">
-          {{ $t('about.blockTitle1') }}
-        </h3>
-        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-          {{ $t('about.blockDes1') }}
-        </p>
-        <a
-          v-scroll-reveal="{ distance: '20px', delay: 300 }"
-          target="_blank"
-          href="https://www.matataki.io/p/806"
-        >
-          {{ $t('readMore') }}
-          ></a
-        >
-        <img
-          v-scroll-reveal="{ distance: '20px', delay: 400 }"
-          src="@/assets/img/home/home_bg1.png"
-          alt="block"
-        />
-      </div>
-    </div>
-    <div class="three">
-      <div class="container">
-        <h3 v-scroll-reveal="{ distance: '20px' }">
-          {{ $t('about.blockTitle2') }}
-        </h3>
-        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-          {{ $t('about.blockDes2') }}
-        </p>
-        <a
-          v-scroll-reveal="{ distance: '20px', delay: 300 }"
-          target="_blank"
-          href="
-        https://www.matataki.io/p/807
-        "
-        >
-          {{ $t('readMore') }}
-          ></a
-        >
-        <img
-          v-scroll-reveal="{ distance: '20px', delay: 400 }"
-          src="@/assets/img/home/home_bg2.png"
-          alt="block"
-        />
-      </div>
-    </div>
-    <div class="three">
-      <div class="container">
-        <h3 v-scroll-reveal="{ distance: '20px' }">
-          {{ $t('about.blockTitle3') }}
-        </h3>
-        <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
-          {{ $t('about.blockDes31') }}
-          <br />
-          <span class="content-empty"></span>
-          {{ $t('about.blockDes32') }}
-          <br />
-          <span class="content-empty"></span>
-          {{ $t('about.blockDes33') }}
-          <br />
-          <span class="content-empty"></span>
-          {{ $t('about.blockDes34') }}
-        </p>
-        <a
-          v-scroll-reveal="{ distance: '20px', delay: 300 }"
-          target="_blank"
-          href="https://www.matataki.io/p/781"
-        >
-          {{ $t('readMore') }}
-          ></a
-        >
-        <img
-          v-scroll-reveal="{ distance: '20px', delay: 400 }"
-          src="@/assets/img/home/home_bg3.png"
-          alt="block"
-        />
-      </div>
-    </div>
-    <div class="four">
-      <div
-        v-for="(item, index) in stageList"
-        :key="index"
-        v-scroll-reveal="{ distance: '20px', delay: 200 * index }"
-        class="stage"
-      >
-        <img :src="item.img" alt="stage" />
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.des }}</p>
-        <p>{{ item.des1 }}</p>
-      </div>
-    </div>
-    <Sidebar v-model="showSidebar"></Sidebar>
+          </div>
+          <div class="roadmap-time__block">
+            <h4>2019.4</h4>
+            <p class="sumary">
+              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的
+              。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。
+              一家“公司”。
+            </p>
+          </div>
+          <div class="roadmap-time__block">
+            <h4>2019.4</h4>
+            <p class="sumary">
+              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的
+              。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。
+              一家“公司”。
+            </p>
+          </div>
+          <div class="roadmap-time__line" />
+        </section>
+      </section>
+    </section>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import homeHead from '../home/components/homeHead.vue'
-import Sidebar from '@/components/Sidebar/index.vue'
+/* eslint-disable no-undef */
 
-import effect1 from '@/assets/img/home/effect1.png'
-import effect2 from '@/assets/img/home/effect2.png'
-import effect3 from '@/assets/img/home/effect3.png'
-import effect4 from '@/assets/img/home/effect4.png'
-import effect5 from '@/assets/img/home/effect5.png'
-import effect6 from '@/assets/img/home/effect6.png'
-
-import stage1 from '@/assets/img/home/stage1.png'
-import stage2 from '@/assets/img/home/stage2.png'
-import stage3 from '@/assets/img/home/stage3.png'
+import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
+import throttle from 'lodash/throttle'
 
 export default {
-  components: {
-    homeHead,
-    Sidebar
+  head: {
+    // script: [
+    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
+    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
+    //   // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
+    // ]
   },
   data() {
-    return {
-      showSidebar: false
-    }
+    return {}
   },
-  computed: {
-    ...mapGetters(['isLogined']),
-    effectList() {
-      return [
-        {
-          title: this.$t('about.painPoint'),
-          subtitle: this.$t('about.painPointTitle1'),
-          img: effect1,
-          des: this.$t('about.painPointDes1')
-        },
-        {
-          title: this.$t('about.painPoint'),
-          subtitle: this.$t('about.painPointTitle2'),
-          img: effect2,
-          des: this.$t('about.painPointDes2')
-        },
-        {
-          title: this.$t('about.painPoint'),
-          subtitle: this.$t('about.painPointTitle3'),
-          img: effect3,
-          des: this.$t('about.painPointDes3')
-        },
-        {
-          title: this.$t('about.program'),
-          subtitle: this.$t('about.programTitle1'),
-          img: effect6,
-          des: this.$t('about.programDes1')
-        },
-        {
-          title: this.$t('about.program'),
-          subtitle: this.$t('about.programTitle2'),
-          img: effect4,
-          des: this.$t('about.programDes2')
-        },
-        {
-          title: this.$t('about.program'),
-          subtitle: this.$t('about.programTitle3'),
-          img: effect5,
-          des: this.$t('about.programDes3')
-        }
-      ]
-    },
-    stageList() {
-      return [
-        {
-          title: this.$t('about.stageTitle1'),
-          des: this.$t('about.stageDes11'),
-          des1: this.$t('about.stageDes12'),
-          img: stage1
-        },
-        {
-          title: this.$t('about.stageTitle2'),
-          des: this.$t('about.stageDes21'),
-          des1: this.$t('about.stageDes22'),
-          img: stage2
-        },
-        {
-          title: this.$t('about.stageTitle3'),
-          des: this.$t('about.stageDes31'),
-          des1: this.$t('about.stageDes32'),
-          img: stage3
-        }
-      ]
-    }
-  },
-  created() {
-    this.initPage()
+  mounted() {
+    this._setDefaultStyle()
+
+    this.$nextTick(() => {
+      this._resizeHomeHeight()
+      window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+      this._initScrollAnimation()
+    })
   },
   methods: {
-    initPage() {
-      this.$nextTick(() => {
-        let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        let height = clientHeight - 48
-        if (height > 620) this.$refs.home.style.height = `${clientHeight - 43}px`
+    _initScrollAnimation() {
+      const initStory = () => {
+        const componentStory = document.querySelectorAll('.component-story')
+        const controller = new ScrollMagic.Controller()
+        // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+
+        componentStory.forEach((el, i) => {
+          const childHeaderInner = el.querySelector(
+            '.component-story__header .component-story__inner'
+          )
+          const childSumaryInner = el.querySelector(
+            '.component-story__summary .component-story__inner'
+          )
+
+          const timelinemax = new TimelineMax()
+
+          // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
+
+          // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
+
+          const scene = new ScrollMagic.Scene({
+            triggerElement: el,
+            triggerHook: 1,
+            duration: '200%'
+            // offset: -clientHeight
+          })
+            .setTween(timelinemax)
+            // .addIndicators({
+            //   colorTrigger: 'black',
+            //   colorStart: 'black',
+            //   colorEnd: 'black',
+            //   indent: 10
+            // })
+            .addTo(controller)
+        })
+      }
+
+      const initRoadmap = () => {
+        const controller = new ScrollMagic.Controller()
+        const tl = new TimelineMax()
+        const roadmap = document.querySelector('.roadmap')
+        const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
+
+        roadmapBlock.forEach((el, i) => {
+          tl.to(el, 0.3, {
+            x: function() {
+              return i % 2 === 0 ? 0 : '100%'
+            },
+            y: 0,
+            opacity: 1,
+            ease: Linear.easeNone
+          })
+        })
+
+        const scene1 = new ScrollMagic.Scene({
+          triggerElement: roadmap
+          // triggerHook: 1,
+          // duration: '160%'
+          // offset: -clientHeight
+        })
+          .setTween(tl)
+          // .addIndicators({
+          // colorTrigger: 'black',
+          // colorStart: 'black',
+          // colorEnd: 'black',
+          // indent: 10
+          // })
+          .addTo(controller)
+      }
+      initStory()
+      initRoadmap()
+    },
+    _resizeHomeHeight() {
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      if (clientHeight < 600) return false
+      else this.$refs.home.style.height = clientHeight + 'px'
+    },
+    /**
+     * 设置默认样式, 从css里面抽离出来, 减少样式的印象
+     */
+    _setDefaultStyle() {
+      const { btnList } = this.$refs
+      const timeline = new TimelineLite()
+
+      TweenMax.set('.btn-list', {
+        opacity: 0,
+        y: 0
+      })
+
+      TweenMax.set('.story', {
+        perspective: 1000
+      })
+      // TweenMax.set('.component-story', {
+      //   z: -40
+      // })
+      TweenMax.set('.component-story .component-story__header .component-story__inner', {
+        y: '-10%'
+      })
+      TweenMax.set('.roadmap .roadmap-time__block', {
+        y: 20,
+        opacity: 0
       })
     },
-    jumpTo() {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+    // 首页第一屏按钮点击显示菜单
+    showMoreMenu() {
+      const { btn, btnList } = this.$refs
+      const timeline = new TimelineLite()
+      const btnVisible = btn.getAttribute('data-visible') === 'true'
+      btn.setAttribute('data-visible', !btnVisible)
+
+      if (btnVisible) {
+        timeline.to(btn, 0.2, {
+          rotation: 0
+        })
+        timeline.to(
+          btnList,
+          0.2,
+          {
+            y: 0,
+            opacity: 0
+          },
+          '-=0.1'
+        )
+      } else {
+        timeline.to(btn, 0.2, {
+          rotation: 45
+        })
+        timeline.to(
+          btnList,
+          0.2,
+          {
+            y: 10,
+            opacity: 1
+          },
+          '-=0.1'
+        )
+      }
     }
   }
 }
 </script>
 
-<style lang="less" scoped src="./index.less"></style>
+<style scoped lang="less" src="./index.less"></style>
