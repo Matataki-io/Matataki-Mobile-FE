@@ -28,7 +28,8 @@ import {
   TableColumn,
   Image,
   Checkbox,
-  Message
+  Message,
+  InfiniteScroll
 } from 'element-ui'
 
 Vue.use(Input)
@@ -55,6 +56,7 @@ Vue.use(Input)
   .use(Radio)
   .use(RadioButton)
   .use(Checkbox)
+  .use(InfiniteScroll)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$prompt = MessageBox.prompt
