@@ -22,7 +22,7 @@
     </section>
     <Wallet v-show="step === 2" />
     <section v-show="step === 3" class="auth-main">
-      <ResetPassword />
+      <ResetPassword @switch="step = 1;isLogin = true;" />
     </section>
     <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
       <div v-if="step === 2 || step === 3" class="arrow">

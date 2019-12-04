@@ -196,7 +196,6 @@ export default {
         }, 1000)
       }
     },
-    // 注册提交
     async submitRegisterForm() {
       await this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
@@ -205,16 +204,13 @@ export default {
             captcha: this.registerForm.smscode,
             password: this.registerForm.password
           }
-          // 检查是否有邀请id
-          let referral = utils.getCookie('referral')
-          if (referral) Object.assign(params, { referral: referral })
 
           try {
             this.loading = true
             const res = await this.$API.resetPassword(params)
             console.log(res)
             if (res.code === 0) {
-              this.successToast('密码修改成功')
+              this.successToast('密码修改成功，请重新登录')
               this.$emit('switch')
             } else {
               this.failToast('密码修改失败')
