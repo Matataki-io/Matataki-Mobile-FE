@@ -12,6 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Checkbox,
+  CheckboxGroup,
   Input,
   Tabs,
   TabPane,
@@ -37,6 +38,7 @@ Vue.component('Dropdown', Dropdown)
 Vue.component('DropdownMenu', DropdownMenu)
 Vue.component('DropdownItem', DropdownItem)
 Vue.component('Checkbox', Checkbox)
+Vue.component('CheckboxGroup', CheckboxGroup)
 Vue.component('Input', Input)
 Vue.component('Tabs', Tabs)
 Vue.component('TabPane', TabPane)
