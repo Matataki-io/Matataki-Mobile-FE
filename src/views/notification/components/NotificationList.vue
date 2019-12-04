@@ -1,5 +1,5 @@
 <template>
-  <div class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+  <div class="infinite-list" v-infinite-scroll="load" :infinite-scroll-distance="300" :infinite-scroll-delay="500" style="overflow:auto">
     <div class="card" v-for="(notification, index) in notifications" :key="index">
       <!-- Possible an eslint issue: https://github.com/vuejs/eslint-plugin-vue/issues/869 Remove next workaround if resolved -->
       <!-- eslint-disable-next-line vue/require-component-is -->
@@ -37,13 +37,12 @@ export default {
   },
   methods: {
     async load () {
-      const res = await API.fetchNotifications(this.provider, this.page)
+      const res = await API.fetchNotifications(this.provider, this.page++)
       if (Array.isArray(res.data) && res.data.length) {
         this.notifications.push(...res.data)
         if (this.page === 1) {
           await API.readNotifications(this.provider)
         }
-        this.page++
       }
     }
   }
