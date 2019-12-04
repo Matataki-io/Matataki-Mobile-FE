@@ -22,7 +22,20 @@
       />
 
       <!-- 标题 -->
-      <div class="now-title" :class="!isShowSlide && 'nav-hide'">{{ contentTitle }}</div>
+      <div class="now-title" :class="!isShowSlide && 'nav-hide'">
+        {{ contentTitle }}
+        <Poptip class="filter" placement="bottom-end">
+          <div><img class="filter-icon" src="@/assets/img/filter.svg" /></div>
+          <div slot="content">
+            <div style="margin-bottom: 8px"><Checkbox :indeterminate="isIndeterminate" v-model="filterAll" @on-change="handleFilterAllChanged">全部</Checkbox></div>
+            <CheckboxGroup v-model="checkedFilter" @on-change="handleCheckedFilterChanged">
+              <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span>免费</span></Checkbox></div>
+              <div style="margin-bottom: 8px"><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2">持币可见</Checkbox></div>
+              <div><Checkbox label="4" :disabled="checkedFilter.length === 1 && filter === 4">付费可见</Checkbox></div>
+            </CheckboxGroup>
+          </div>
+      </Poptip>
+      </div>
 
       <!-- 列表 -->
       <BasePull
@@ -87,6 +100,8 @@ import { ArticleCard } from '@/components/'
 // import banner from '@/components/banner/index.vue'
 import bannerMatataki from '@/components/banner/banner_matataki.vue'
 
+import debounce from 'lodash/debounce'
+
 export default {
   name: 'Home',
   components: {
@@ -145,7 +160,10 @@ export default {
           title: this.$t('home.articleNavRecommend'),
           list: []
         }
-      }
+      },
+      filterAll: true,
+      isIndeterminate: false,
+      checkedFilter: ['1', '2', '4']
     }
   },
   computed: {
@@ -163,6 +181,13 @@ export default {
       const status = this.content.navMenu[index].articles.length
       // console.log(status)
       return status
+    },
+    filter() {
+      let result = 0
+      for (const item of this.checkedFilter) {
+        result |= Number(item)
+      }
+      return result
     }
   },
   watch: {
@@ -234,7 +259,36 @@ export default {
       this.content.navMenu[2].title = this.$t('home.articleNavFollowTitle')
 
       this.content.recommend.title = this.$t('home.articleNavRecommend')
-    }
+    },
+    handleFilterAllChanged(value) {
+      if (!value) {
+        this.filterAll = true
+      }
+
+      if (this.filterAll) {
+        return
+      }
+
+      this.checkedFilter = ['1', '2', '4']
+      this.isIndeterminate = false
+      this.onCheckedFilterChanged()
+    },
+    handleCheckedFilterChanged(value) {
+      const checkedCount = value.length
+      this.filterAll = checkedCount === 3
+      this.isIndeterminate = checkedCount > 0 && checkedCount < 3
+      this.onCheckedFilterChanged()
+    },
+    onCheckedFilterChanged: debounce(function () {
+      let { params } = this.content.navMenu[this.content.activeIndex]
+
+      // This wastes me a lot of time!!!
+
+      this.content.navMenu[this.content.activeIndex].params = {
+        channel: params.channel,
+        filter: this.filter
+      }
+    }, 500)
   }
 }
 </script>
@@ -244,5 +298,15 @@ export default {
 <style lang="less" scoped>
 .margin {
   margin-top: 60px;
+}
+
+.filter {
+  float: right;
+
+  &-icon {
+    width: 24px;
+    height: 24px;
+    margin: 4px 0;
+  }
 }
 </style>
