@@ -51,5 +51,3 @@ export default {
   }
 }
 </script>
-
-<style src="./index.less" scoped lang="less"></style>
