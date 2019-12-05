@@ -60,5 +60,7 @@ export const paginationUrl = {
   // 流动金流水列表
   liquidityTransactions: 'token/:id/liquidity/transactions',
   // 收藏文章列表
-  userBookmarks: 'user/bookmarks'
+  userBookmarks: 'user/bookmarks',
+  // Fan 票相关文章
+  minetokenRelated: 'minetoken/:id/related'
 }
