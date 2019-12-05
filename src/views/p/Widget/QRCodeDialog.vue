@@ -1,39 +1,44 @@
 <template>
   <div class="outer">
     <div ref="container" :class="{ 'white-bg': !canvas }">
-      <div v-if="!canvas" ref="capture" class="container">
-        <div class="header">
-          <div style="height: 24px;"></div>
-          <div class="info">
-            <img class="avatar" :src="shareInfo.avatar" alt="" :onerror="defaultAvatar" />
-            <span class="username">{{ shareInfo.name }}</span>
+      <div ref="capture">
+        <div v-if="!canvas" class="container">
+          <div class="header">
+            <div style="height: 24px;"></div>
+            <div class="info">
+              <img class="avatar" :src="shareInfo.avatar" alt="" :onerror="defaultAvatar" />
+              <span class="username">{{ shareInfo.name }}</span>
+            </div>
+            <p v-clampy="2">
+              {{ shareInfo.title }}
+            </p>
+            <div v-if="shareInfo.cover" class="full" />
+            <div v-if="shareInfo.cover" :style="coverImage" class="cover" />
           </div>
-          <p v-clampy="2">
-            {{ shareInfo.title }}
-          </p>
-          <div v-if="shareInfo.cover" class="full" />
-          <div v-if="shareInfo.cover" :style="coverImage" class="cover" />
-        </div>
-        <div class="content-container">
-          <p v-clampy="8" class="markdown-body" v-html="htmlStr" />
-        </div>
-        <div class="hide-article-box">
-          <span>—— {{ $t('p.sweepCodeView') }} ——</span>
-        </div>
-        <section class="footer">
-          <div class="flex">
-            <img class="logo" src="@/assets/img/share_logo.png" alt="logo" />
-            <!-- <div ref="qr" class="qrcode" /> -->
-            <canvas ref="qr" class="qrcode" width="80" height="80"></canvas>
+          <div class="content-container">
+            <p v-clampy="8" class="markdown-body" v-html="htmlStr" />
           </div>
-          <img class="des" src="@/assets/img/des_logo.png" alt="logo" />
-        </section>
+          <div class="hide-article-box">
+            <span>—— {{ $t('p.sweepCodeView') }} ——</span>
+          </div>
+          <section class="footer">
+            <div class="flex">
+              <img class="logo" src="@/assets/img/share_logo.png" alt="logo" />
+              <!-- <div ref="qr" class="qrcode" /> -->
+              <canvas ref="qr" class="qrcode" width="80" height="80"></canvas>
+            </div>
+            <img class="des" src="@/assets/img/des_logo.png" alt="logo" />
+          </section>
+        </div>
+        <img v-else :src="canvas" alt="" style="width: 100%;" />
       </div>
-      <img v-else :src="downloadLink" alt="" style="width: 100%;" />
     </div>
-    <button v-if="canvas" class="save-btn" disabled>{{ $t('p.pressImgSave') }}</button>
-    <button v-else class="save-btn" @click="toCanvas">{{ $t('p.createImg') }}</button>
-    <button class="save-btn close" @click="close">{{ $t('close') }}</button>
+    <!-- <button v-if="canvas" class="save-btn" disabled>{{ $t('p.pressImgSave') }}</button> -->
+    <div class="save-content">
+      <button class="save-btn" @click="toCanvas">{{ $t('p.createImg') }}</button>
+      <p class="doc">如果图片无法下载, 点击保存后长按保存图片</p>
+      <button class="save-btn close" @click="close">{{ $t('close') }}</button>
+    </div>
 
     <!--<a
       :class="['save-btn', { disabled: isAPP }]"
@@ -50,6 +55,9 @@
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { xssFilter } from '@/common/xss'
+import { defaultImagesUploader } from '@/api'
+
+var tp = require('tp-js-sdk')
 
 export default {
   name: 'QRCodeDialog',
@@ -67,14 +75,11 @@ export default {
       canvas: null,
       coverImage: {
         backgroundImage: `url(${this.shareInfo.cover})`
-      }
+      },
+      loading: null
     }
   },
   computed: {
-    downloadLink() {
-      if (this.canvas) return this.canvas.toDataURL()
-      return ''
-    },
     isAPP() {
       return /Edge|Firefox|Opera|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
@@ -105,39 +110,61 @@ export default {
       this.$emit('change', false)
     },
     saveLocal(canvas) {
-      let link = document.createElement('a')
-      link.href = canvas.toDataURL()
-      link.setAttribute('download', `${this.shareInfo.title}.png`)
-      link.style.display = 'none'
-      link.click()
+      this.canvas = canvas.toDataURL()
+      if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
+        console.log('tp 环境')
+        canvas.toBlob(blob => {
+          defaultImagesUploader(blob).then(({ data }) => {
+            let url
+            if (!data.data)
+              url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
+            else url = data.data.url
+
+            tp.saveImage({
+              url: url
+            })
+
+            this.loading.close()
+          })
+        })
+      } else {
+        console.log('other 环境')
+        const linkTag = document.querySelector('#downloadImg')
+        if (linkTag) {
+          linkTag.href = canvas.toDataURL()
+          linkTag.click()
+        } else {
+          const link = document.createElement('a')
+          link.id = 'downloadImg'
+          link.href = canvas.toDataURL()
+          link.setAttribute('download', `${this.shareInfo.title || Date.now()}.png`)
+          link.style.display = 'none'
+          document.body.appendChild(link)
+          link.click()
+        }
+        this.loading.close()
+      }
     },
     toCanvas() {
-      const loading = this.$toast.loading({
+      this.loading = this.$toast.loading({
         mask: true,
         duration: 0,
         forbidClick: true,
         zIndex: 1200,
         message: `loading...`
       })
-      if (this.canvas) {
-        document.querySelector('#downloadImg').click()
-        loading.close()
-        return
-      }
       html2canvas(this.$refs.capture, {
         useCORS: true,
         scrollX: 0,
         scrollY: 0
       })
         .then(canvas => {
-          this.canvas = canvas
           this.saveLocal(canvas)
-          loading.clear()
         })
         .catch(error => {
           console.log(error)
-          loading.clear()
           this.$toast(this.$t('close'))
+          this.loading.close()
         })
     },
     genQRCode() {
@@ -190,7 +217,7 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin: 10px auto 0 auto;
+  margin: 0 auto;
   user-select: none;
   &.disabled {
     background: #b2b2b2;
@@ -300,5 +327,18 @@ export default {
     width: 140px;
     margin: 20px auto 0;
   }
+}
+.save-content {
+  background-color: #fff;
+  padding: 10px 0;
+  margin: 10px 0 0;
+  border-radius: 3px;
+}
+.doc {
+  color: #333;
+  text-align: center;
+  padding: 0;
+  margin: 6px 0;
+  font-size: 12px;
 }
 </style>
