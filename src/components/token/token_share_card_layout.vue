@@ -42,6 +42,9 @@
 <script>
 import html2canvas from 'html2canvas'
 import tokenShareCard from './token_share_card.vue'
+import { defaultImagesUploader } from '@/api'
+
+var tp = require('tp-js-sdk')
 
 export default {
   components: {
@@ -60,7 +63,8 @@ export default {
   data() {
     return {
       shareCardCheckedOne: true,
-      tokenImg: ''
+      tokenImg: '',
+      loading: null
     }
   },
   computed: {},
@@ -79,22 +83,42 @@ export default {
     },
     saveLocal(canvas) {
       this.tokenImg = canvas.toDataURL()
-      const linkTag = document.querySelector('#downloadImg')
-      if (linkTag) {
-        linkTag.href = canvas.toDataURL()
-        linkTag.click()
+      if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
+        console.log('tp 环境')
+        canvas.toBlob(blob => {
+          defaultImagesUploader(blob).then(({ data }) => {
+            let url
+            if (!data.data)
+              url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
+            else url = data.data.url
+
+            tp.saveImage({
+              url: url
+            })
+
+            this.loading.close()
+          })
+        })
       } else {
-        const link = document.createElement('a')
-        link.id = 'downloadImg'
-        link.href = canvas.toDataURL()
-        link.setAttribute('download', `${this.minetokenToken.symbol}.png`)
-        link.style.display = 'none'
-        document.body.appendChild(link)
-        link.click()
+        console.log('other 环境')
+        const linkTag = document.querySelector('#downloadImg')
+        if (linkTag) {
+          linkTag.href = canvas.toDataURL()
+          linkTag.click()
+        } else {
+          const link = document.createElement('a')
+          link.id = 'downloadImg'
+          link.href = canvas.toDataURL()
+          link.setAttribute('download', `${this.shareInfo.title || Date.now()}.png`)
+          link.style.display = 'none'
+          document.body.appendChild(link)
+          link.click()
+        }
+        this.loading.close()
       }
     },
     toCanvas(name) {
-      const loading = this.$loading({
+      this.loading = this.$loading({
         text: `${this.$t('p.createImg')}...`
       })
       const dom = this.$refs[name]
@@ -112,9 +136,7 @@ export default {
         .catch(error => {
           console.log(error)
           this.$message(this.$t('p.createFail'))
-        })
-        .finally(() => {
-          loading.close()
+          this.loading.close()
         })
     }
   }
@@ -144,6 +166,7 @@ export default {
   transition: border 0.3s;
   box-sizing: border-box;
   border: 2px solid #f1f1f1;
+  width: 100%;
   img {
     width: 100%;
   }

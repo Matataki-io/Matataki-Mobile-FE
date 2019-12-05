@@ -95,7 +95,7 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  max-width: 320px;
+  max-width: 100%;
   // height: 666px;
   // border: 1px solid #f1f1f1;
 }
