@@ -62,9 +62,7 @@
         </div>
       </div>
       <div class="link">
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank"
-          >什么是Fan票?</a
-        >
+        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
       </div>
     </div>
 
@@ -81,57 +79,55 @@
       <h2 class="token-title">
         数据统计
       </h2>
-      <div class="fl total-content">
-        <div class="token-data">
-          <p class="token-num">
-            {{ amount }}<sub>{{ minetokenToken.symbol }}</sub>
-          </p>
+      <div class="total-content">
+        <div class="fl token-data">
           <p class="token-name">
             发行总量
           </p>
+          <p class="token-num">
+            {{ amount }}<sub>{{ minetokenToken.symbol }}</sub>
+          </p>
         </div>
 
-        <div class="token-data">
-          <p class="token-num">
-            {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
-          </p>
+        <div class="fl token-data">
           <p class="token-name">
             流动金池
           </p>
+          <p class="token-num">
+            {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
+          </p>
         </div>
 
-        <div class="token-data">
-          <p class="token-num">
-            {{ volume }}<sub>{{ minetokenToken.symbol }}</sub>
-          </p>
+        <div class="fl token-data">
           <p class="token-name">
             24h成交量
           </p>
+          <p class="token-num">
+            {{ volume }}<sub>{{ minetokenToken.symbol }}</sub>
+          </p>
         </div>
 
-        <div class="token-data">
-          <p class="token-num">
-            {{ exchangeAmount }}<sub>CNY</sub>
-          </p>
+        <div class="fl token-data">
           <p class="token-name">
             24h成交额
           </p>
+          <p class="token-num">{{ exchangeAmount }}<sub>CNY</sub></p>
         </div>
 
-        <div class="token-data">
-          <p class="token-num" :style="{ color: color }">
-            {{ change }}
-          </p>
+        <div class="fl token-data">
           <p class="token-name">
             24h涨跌幅
           </p>
+          <p class="token-num" :style="{ color: color }">
+            {{ change }}
+          </p>
         </div>
 
-        <div class="token-data">
-          <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
+        <div class="fl token-data">
           <p class="token-name">
             现价
           </p>
+          <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
         </div>
       </div>
     </div>
@@ -542,25 +538,25 @@ export default {
 
 .token-data {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   margin: 10px 40px 10px 0;
   &:nth-last-child(1) {
     margin-right: 0;
   }
 }
 .token-num {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
   color: #542de0;
   line-height: 28px;
   padding: 0;
   margin: 0;
   sub {
+    font-size: 12px;
     bottom: 0;
   }
 }
 .token-name {
+  min-width: 78px;
   font-size: 12px;
   color: #000;
   line-height: 20px;
@@ -691,7 +687,7 @@ export default {
     font-weight: 500;
     color: #b2b2b2;
     line-height: 20px;
-    margin: 0 8px;
+    margin: 0 auto;
     position: relative;
     z-index: 1;
     &.active {
