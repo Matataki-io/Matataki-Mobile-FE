@@ -488,7 +488,7 @@ export default {
   margin: 0;
   a {
     font-size: 12px;
-    color: #000;
+    color: #542de0;
   }
 }
 
