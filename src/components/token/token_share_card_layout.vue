@@ -109,7 +109,10 @@ export default {
           const link = document.createElement('a')
           link.id = 'downloadImg'
           link.href = canvas.toDataURL()
-          link.setAttribute('download', `${this.shareInfo.title || Date.now()}.png`)
+          link.setAttribute(
+            'download',
+            `${(this.minetokenToken && this.minetokenToken.symbol) || Date.now()}.png`
+          )
           link.style.display = 'none'
           document.body.appendChild(link)
           link.click()
