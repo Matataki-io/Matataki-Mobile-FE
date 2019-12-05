@@ -24,6 +24,17 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/index_backup',
+      name: 'indeindex_backupx',
+      component: () =>
+        import(
+          /* webpackChunkName: "index", webpackPrefetch: true  */ './views/index_backup/index.vue'
+        ),
+      meta: {
+        title: '首页-瞬MATATAKI'
+      }
+    },
+    {
       path: '/article',
       name: 'article',
       component: () =>
