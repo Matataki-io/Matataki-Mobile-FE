@@ -525,5 +525,43 @@ minetokenGetResources(tokenId) {
         captcha: captcha.toString()
       }
     })
+  },
+    /**
+   * 上传图片
+   * @param {String} type 上传类型
+   * @param {Object} data 上传数据
+   */
+  uploadImage(type, data) {
+    const url = {
+      avatar: '/user/uploadAvatar',
+      artileCover: '/post/uploadImage',
+      coins: '/post/uploadImage', // fan票的icon也考虑新开路由
+      banner: '/user/uploadBanner'
+    }
+    const formdata = new FormData()
+    formdata.append('image', data)
+    return request({
+      method: 'POST',
+      url: url[type],
+      data: formdata
+    })
+  },
+  ossUploadImage(folder, data) {
+    const folderOption = {
+      avatar: 'avatar', // 头像
+      userBanner: 'userBanner', // 用户封面
+      articleCover: 'articleCover', // 文章封面
+      article: 'article', // 编辑器上传
+      temp: 'temp', // 临时文件
+      coin: 'coin', // fan票
+    }
+    const formdata = new FormData()
+    // Invalid filename blob
+    formdata.append('file', data, `${Date.now()}.png`)
+    return request({
+      method: 'POST',
+      url: `/oss/uploadImage?folder=${folderOption[folder]}`,
+      data: formdata
+    })
   }
 }

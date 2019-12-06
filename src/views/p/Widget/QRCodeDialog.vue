@@ -114,18 +114,26 @@ export default {
       if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
         console.log('tp 环境')
         canvas.toBlob(blob => {
-          defaultImagesUploader(blob).then(({ data }) => {
-            let url
-            if (!data.data)
-              url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
-            else url = data.data.url
-
-            tp.saveImage({
-              url: url
+          this.$API
+            .ossUploadImage('temp', blob)
+            .then(res => {
+              if (res.code === 0) {
+                tp.saveImage({
+                  url: this.$API.getImg(res.data)
+                })
+              } else {
+                this.$toast({ duration: 1000, message: '保存失败,请重试' })
+              }
+              this.loading.close()
             })
-
-            this.loading.close()
-          })
+            .catch(err => {
+              console.log('err', err)
+              if (err.response.status === 401) {
+                this.$toast({ duration: 1000, message: '请登录后保存图片' })
+                this.$store.commit('setLoginModal', true)
+              }
+              this.loading.close()
+            })
         })
       } else {
         console.log('other 环境')
