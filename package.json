@@ -16,8 +16,7 @@
     "build-user-prod": "cd user && npm i && npm run build-prod && cd ..",
     "build-widget-dev": "cd widget && npm i && npm run build-dev && cd ..",
     "build-widget-prod": "cd widget && npm i && npm run build-prod && cd ..",
-    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
-    "svgof": "svgo -f src/icons/svg_filter --config=src/icons/svgo.yml"
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
