@@ -505,7 +505,7 @@ export default {
     unitPrice: '单价',
     totalPrice: '总价',
     bookmarks: '我的收藏',
-    related: '相关文章'
+    related: '相关创作'
   },
   withdraw: {
     title: '提现',

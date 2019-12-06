@@ -175,7 +175,7 @@
 
     <div class="related" @click="jumpToRelated">
       <h2 class="token-title">
-        相关文章
+        相关创作
       </h2>
       <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
     </div>
