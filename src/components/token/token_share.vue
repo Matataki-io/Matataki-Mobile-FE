@@ -138,7 +138,9 @@ export default {
     },
     shareLink() {
       const slogan = [
-        `我在瞬MATATAKI发现了Fan票「${this.minetokenToken.symbol}」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
+        `我在瞬MATATAKI发现了Fan票「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」${
+          process.env.VUE_APP_URL
+        }/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
         `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
       ]
       return slogan[this.pageType]
