@@ -61,6 +61,6 @@ export const paginationUrl = {
   liquidityTransactions: 'token/:id/liquidity/transactions',
   // 收藏文章列表
   userBookmarks: 'user/bookmarks',
-  // Fan 票相关文章
+  // Fan 票相关创作
   minetokenRelated: 'minetoken/:id/related'
 }
