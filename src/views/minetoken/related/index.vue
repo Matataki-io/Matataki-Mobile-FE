@@ -2,8 +2,24 @@
   <div class="related mw">
     <BaseHeader :pageinfo="{ title: $t('user.related') }" :has-bottom-border-line="true" />
     <div class="options">
-      <div class="sort">
-      </div>
+      <Dropdown class="sort dropdown" trigger="click" placement="bottom-start" @on-click="toggleOrdering">
+        <div class="dropdown-header" v-if="pull.params.sort === 'popular-desc'">
+          按照热度排序
+          <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+        </div>
+        <div class="dropdown-header" v-else-if="pull.params.sort === 'time-desc'">
+          按照时间排序
+          <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+        </div>
+        <DropdownMenu slot="list">
+          <DropdownItem name="popular-desc" :selected="pull.params.sort === 'popular-desc'">
+            按照热度排序
+          </DropdownItem>
+          <DropdownItem name="time-desc" :selected="pull.params.sort === 'time-desc'">
+            按照时间排序
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <Poptip class="filter" placement="bottom-end">
         <div><img class="filter-icon" src="@/assets/img/filter.svg" /></div>
         <div slot="content">
@@ -51,7 +67,8 @@ export default {
       pull: {
         apiUrl: 'minetokenRelated',
         params: {
-          filter: 3
+          filter: 3,
+          sort: 'popular-desc'
         }
       },
       checkedFilter: ['1', '2']
@@ -74,11 +91,18 @@ export default {
     },
     onCheckedFilterChanged: debounce(function () {
       this.pull.params = {
-        filter: this.filter
+        filter: this.filter,
+        sort: this.pull.params.sort
       }
     }, 500),
     getListData(res) {
       this.articles = res.list
+    },
+    toggleOrdering(sort) {
+      this.pull.params = {
+        filter: this.filter,
+        sort
+      }
     }
   }
 }
@@ -99,6 +123,21 @@ export default {
 
   .sort {
     flex: 1;
+
+    display: flex;
+    align-items: stretch;
+
+    .dropdown-header {
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      font-size: 14px;
+
+      .arrow {
+        margin-left: 4px;
+      }
+    }
   }
 
   .filter {
