@@ -508,7 +508,7 @@ const router = new VueRouter({
       component: () =>
         import(/* webpackChunkName: "MinetokenRelated" */ './views/minetoken/related/index.vue'),
       meta: {
-        title: '相关文章-瞬MATATAKI'
+        title: '相关创作-瞬MATATAKI'
       }
     },
     {
