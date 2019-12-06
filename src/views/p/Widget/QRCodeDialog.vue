@@ -55,7 +55,6 @@
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { xssFilter } from '@/common/xss'
-import { defaultImagesUploader } from '@/api'
 
 var tp = require('tp-js-sdk')
 

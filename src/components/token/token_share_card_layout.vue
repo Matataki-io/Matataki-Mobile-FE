@@ -42,7 +42,6 @@
 <script>
 import html2canvas from 'html2canvas'
 import tokenShareCard from './token_share_card.vue'
-import { defaultImagesUploader } from '@/api'
 
 var tp = require('tp-js-sdk')
 
