@@ -172,6 +172,13 @@
       />
     </div>
 
+    <div class="related" @click="jumpToRelated">
+      <h2 class="token-title">
+        相关文章
+      </h2>
+      <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
+    </div>
+
     <div class="minetoken-card">
       <div class="minetoken-tab">
         <a :class="tabPage === 0 && 'active'" @click="tabPage = 0">
@@ -432,6 +439,11 @@ export default {
       this.$router.replace({
         query
       })
+    },
+    jumpToRelated() {
+      this.$router.push({
+        name: 'MinetokenRelated'
+      })
     }
   }
 }
@@ -524,7 +536,9 @@ export default {
 .detail,
 .about,
 .social,
-.share {
+.share,
+.related,
+.minetoken-card {
   background: #fff;
   padding: 14px 20px;
   // border-radius: 10px;
@@ -675,7 +689,7 @@ export default {
   padding: 0;
 }
 .minetoken-tab {
-  padding: 7px 0;
+  padding: 12px 0;
   text-align: center;
   border-bottom: 1px solid #ececec;
   display: flex;
@@ -739,5 +753,14 @@ export default {
 }
 .wrap-open {
   white-space: pre-wrap;
+}
+
+.related {
+  display: flex;
+  flex-direction: row;
+
+  .token-title {
+    flex: 1;
+  }
 }
 </style>

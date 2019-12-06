@@ -504,7 +504,8 @@ export default {
     transactionComplete: '交易已完成',
     unitPrice: '单价',
     totalPrice: '总价',
-    bookmarks: '我的收藏'
+    bookmarks: '我的收藏',
+    related: '相关文章'
   },
   withdraw: {
     title: '提现',
