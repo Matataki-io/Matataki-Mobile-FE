@@ -20,7 +20,7 @@ import {
   Poptip
 } from 'iview'
 
-import 'iview/dist/styles/iview.css'
+import '@/assets/theme/iview-theme.css'
 
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal

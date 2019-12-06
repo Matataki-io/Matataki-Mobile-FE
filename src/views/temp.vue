@@ -5,7 +5,7 @@
     <div class="info">
       <p>移动端页面开发中，请移步到PC端操作</p>
       <a href="/" class="btn">{{ $t('backHome') }}</a>
-      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{
+      <a href="https://support.qq.com/products/98576" target="_blank" class="btn">{{
         $t('sidebar.feedback')
       }}</a>
     </div>

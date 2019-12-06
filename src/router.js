@@ -502,6 +502,16 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/token/:id/related',
+      name: 'MinetokenRelated',
+      props: true,
+      component: () =>
+        import(/* webpackChunkName: "MinetokenRelated" */ './views/minetoken/related/index.vue'),
+      meta: {
+        title: '相关文章-瞬MATATAKI'
+      }
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,

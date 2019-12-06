@@ -94,7 +94,8 @@
             流动金池
           </p>
           <p class="token-num">
-            {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
+            {{ cnyReserve }}<sub>CNY</sub> + {{ tokenReserve
+            }}<sub>{{ minetokenToken.symbol }}</sub>
           </p>
         </div>
 
@@ -125,7 +126,7 @@
 
         <div class="fl token-data">
           <p class="token-name">
-            现价
+            当前价格
           </p>
           <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
         </div>
@@ -170,6 +171,13 @@
         :rows="6"
         placeholder="请输入内容"
       />
+    </div>
+
+    <div class="related" @click="jumpToRelated">
+      <h2 class="token-title">
+        相关文章
+      </h2>
+      <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
     </div>
 
     <div class="minetoken-card">
@@ -432,6 +440,11 @@ export default {
       this.$router.replace({
         query
       })
+    },
+    jumpToRelated() {
+      this.$router.push({
+        name: 'MinetokenRelated'
+      })
     }
   }
 }
@@ -524,7 +537,9 @@ export default {
 .detail,
 .about,
 .social,
-.share {
+.share,
+.related,
+.minetoken-card {
   background: #fff;
   padding: 14px 20px;
   // border-radius: 10px;
@@ -675,7 +690,7 @@ export default {
   padding: 0;
 }
 .minetoken-tab {
-  padding: 7px 0;
+  padding: 12px 0;
   text-align: center;
   border-bottom: 1px solid #ececec;
   display: flex;
@@ -739,5 +754,14 @@ export default {
 }
 .wrap-open {
   white-space: pre-wrap;
+}
+
+.related {
+  display: flex;
+  flex-direction: row;
+
+  .token-title {
+    flex: 1;
+  }
 }
 </style>

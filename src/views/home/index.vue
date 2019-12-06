@@ -27,11 +27,10 @@
         <Poptip class="filter" placement="bottom-end">
           <div><img class="filter-icon" src="@/assets/img/filter.svg" /></div>
           <div slot="content">
-            <div style="margin-bottom: 8px"><Checkbox :indeterminate="isIndeterminate" v-model="filterAll" @on-change="handleFilterAllChanged">全部</Checkbox></div>
             <CheckboxGroup v-model="checkedFilter" @on-change="handleCheckedFilterChanged">
-              <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span>免费</span></Checkbox></div>
-              <div style="margin-bottom: 8px"><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2">持币可见</Checkbox></div>
-              <div><Checkbox label="4" :disabled="checkedFilter.length === 1 && filter === 4">付费可见</Checkbox></div>
+              <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span style="margin-left: 4px">免费</span></Checkbox></div>
+              <div style="margin-bottom: 8px"><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2"><span style="margin-left: 4px">持票可见</span></Checkbox></div>
+              <div><Checkbox label="4" :disabled="checkedFilter.length === 1 && filter === 4"><span style="margin-left: 4px">付费可见</span></Checkbox></div>
             </CheckboxGroup>
           </div>
       </Poptip>
@@ -161,8 +160,6 @@ export default {
           list: []
         }
       },
-      filterAll: true,
-      isIndeterminate: false,
       checkedFilter: ['1', '2', '4']
     }
   },
@@ -265,23 +262,7 @@ export default {
 
       this.content.recommend.title = this.$t('home.articleNavRecommend')
     },
-    handleFilterAllChanged(value) {
-      if (!value) {
-        this.filterAll = true
-      }
-
-      if (this.filterAll) {
-        return
-      }
-
-      this.checkedFilter = ['1', '2', '4']
-      this.isIndeterminate = false
-      this.onCheckedFilterChanged()
-    },
     handleCheckedFilterChanged(value) {
-      const checkedCount = value.length
-      this.filterAll = checkedCount === 3
-      this.isIndeterminate = checkedCount > 0 && checkedCount < 3
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(function () {
