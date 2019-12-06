@@ -154,7 +154,7 @@ export default {
     },
     userWidget() {
       return [
-        `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this
+        `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this
           .$route.params.id || 0}' frameborder=0></iframe>`,
         `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/user/?id=${this
           .$route.params.id || 0}' frameborder=0></iframe>`
