@@ -25,7 +25,9 @@
       <div class="now-title" :class="!isShowSlide && 'nav-hide'">
         {{ contentTitle }}
         <Poptip class="filter" placement="bottom-end">
-          <div><img class="filter-icon" src="@/assets/img/filter.svg" /></div>
+          <div class="filter-header">
+            <img class="filter-icon" src="@/assets/img/filter.svg" />过滤
+          </div>
           <div slot="content">
             <CheckboxGroup v-model="checkedFilter" @on-change="handleCheckedFilterChanged">
               <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span style="margin-left: 4px">免费</span></Checkbox></div>
@@ -289,10 +291,16 @@ export default {
 .filter {
   float: right;
 
+  &-header {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+
   &-icon {
     width: 24px;
     height: 24px;
-    margin: 4px 0;
+    margin: 4px 4px 4px 0;
   }
 }
 </style>
