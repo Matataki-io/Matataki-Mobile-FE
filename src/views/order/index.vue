@@ -169,6 +169,11 @@ export default {
       } else {
         result = 0
       }
+      if (result === 0 || result === input) {
+        return result
+      } else {
+        return utils.down2points(result)
+      }
       return utils.down2points(result)
     },
     needPay() {
