@@ -8,8 +8,8 @@
         <div><img class="filter-icon" src="@/assets/img/filter.svg" /></div>
         <div slot="content">
           <CheckboxGroup v-model="checkedFilter" @on-change="handleCheckedFilterChanged">
-            <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1">持币可见</Checkbox></div>
-            <div><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2">付费可见</Checkbox></div>
+            <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span style="margin-left: 4px">持票可见</span></Checkbox></div>
+            <div><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2"><span style="margin-left: 4px">付费可见</span></Checkbox></div>
           </CheckboxGroup>
         </div>
       </Poptip>
