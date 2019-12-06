@@ -557,7 +557,11 @@ minetokenGetResources(tokenId) {
     }
     const formdata = new FormData()
     // Invalid filename blob
-    formdata.append('file', data, `${Date.now()}.png`)
+    let filename = data.name ? data.name.split('.') : 'png'
+    if (typeof filename !== 'string') {
+      filename = filename[filename.length - 1]
+    }
+    formdata.append('file', data, `${Date.now()}.${filename}`)
     return request({
       method: 'POST',
       url: `/oss/uploadImage?folder=${folderOption[folder]}`,

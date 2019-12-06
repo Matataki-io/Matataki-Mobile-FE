@@ -1011,14 +1011,17 @@ export default {
               this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
             } else {
               this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
+              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
             }
           })
           .catch(err => {
-            console.log('err', err)
             if (err.response.status === 401) {
               this.$toast({ duration: 1000, message: '请登录后上传图片' })
               this.$store.commit('setLoginModal', true)
+            } else {
+              console.log('err', err)
             }
+            this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
           })
       } else {
         const canvas = document.createElement('canvas')
@@ -1037,13 +1040,16 @@ export default {
                     this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
                   } else {
                     this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
+                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                   }
                 })
                 .catch(err => {
-                  console.log('err', err)
+                  this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                   if (err.response.status === 401) {
                     this.$toast({ duration: 1000, message: '请登录后上传图片' })
                     this.$store.commit('setLoginModal', true)
+                  } else {
+                    console.log('err', err)
                   }
                 })
             },

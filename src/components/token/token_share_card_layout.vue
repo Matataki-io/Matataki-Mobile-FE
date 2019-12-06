@@ -104,7 +104,7 @@ export default {
               if (err.response.status === 401) {
                 this.$toast({ duration: 1000, message: '请登录后保存图片' })
                 this.$store.commit('setLoginModal', true)
-              }
+              } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
               this.loading.close()
             })
         })
