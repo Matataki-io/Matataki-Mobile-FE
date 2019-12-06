@@ -94,7 +94,8 @@
             流动金池
           </p>
           <p class="token-num">
-            {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
+            {{ cnyReserve }}<sub>CNY</sub> + {{ tokenReserve
+            }}<sub>{{ minetokenToken.symbol }}</sub>
           </p>
         </div>
 
@@ -125,7 +126,7 @@
 
         <div class="fl token-data">
           <p class="token-name">
-            现价
+            当前价格
           </p>
           <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
         </div>
