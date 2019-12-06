@@ -2,20 +2,21 @@
   <div class="mw help">
     <BaseHeader :pageinfo="{ title: $t('setting') }" />
     <div class="help-block">
-      <a class="help-list" href="https://matataki.io/p/1060">
+      <a class="help-list" href="https://matataki.io/p/1060" target="_blank">
         <span class="help-list-title">{{ $t('user.rule') }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
 
-      <div
+      <router-link
         v-for="(item, index) in helpDoc"
         :key="index"
         class="help-list"
-        @click="jumpTo({ name: item.name })"
+        target="_blank"
+        :to="{ name: item.name }"
       >
         <span class="help-list-title">{{ item.title }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
-      </div>
+      </router-link>
     </div>
 
     <div class="help-block">
@@ -69,11 +70,11 @@ export default {
       helpDoc: [
         {
           title: this.$t('user.userProtocol'),
-          name: ''
+          name: 'agreement'
         },
         {
           title: this.$t('user.privacyPolicy'),
-          name: ''
+          name: 'policy'
         }
       ]
     }

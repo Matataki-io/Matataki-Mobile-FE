@@ -512,6 +512,24 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/agreement',
+      name: 'agreement',
+      props: true,
+      component: () => import(/* webpackChunkName: "agreement" */ './views/agreement/index.vue'),
+      meta: {
+        title: '用户服务协议-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/policy',
+      name: 'policy',
+      props: true,
+      component: () => import(/* webpackChunkName: "policy" */ './views/policy/index.vue'),
+      meta: {
+        title: '用户隐私政策-瞬MATATAKI'
+      }
+    },
+    {
       // 幽林页面重定向进入 404 页面
       path: '*',
       name: 404,
