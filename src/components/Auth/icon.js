@@ -30,8 +30,8 @@ export const wallet = {
     },
     {
       url: iconMathwallet,
-      href: 'http://www.medishares.org/',
-      alt: 'http://www.medishares.org/'
+      href: 'http://mathwallet.net/',
+      alt: 'http://mathwallet.net/'
     },
     {
       url: iconLeafwallet,
@@ -63,8 +63,8 @@ export const wallet = {
     },
     {
       url: iconMathwallet,
-      href: 'http://www.medishares.org/',
-      alt: 'http://www.medishares.org/'
+      href: 'http://mathwallet.net/',
+      alt: 'http://mathwallet.net/'
     }
   ]
 }
@@ -92,8 +92,8 @@ export const idProvider = [
       },
       {
         url: iconMathwallet,
-        href: 'http://www.medishares.org/',
-        alt: 'http://www.medishares.org/'
+        href: 'http://mathwallet.net/',
+        alt: 'http://mathwallet.net/'
       },
       {
         url: iconLeafwallet,
@@ -135,8 +135,8 @@ export const idProvider = [
       },
       {
         url: iconMathwallet,
-        href: 'http://www.medishares.org/',
-        alt: 'http://www.medishares.org/'
+        href: 'http://mathwallet.net/',
+        alt: 'http://mathwallet.net/'
       }
     ],
     doc: {
