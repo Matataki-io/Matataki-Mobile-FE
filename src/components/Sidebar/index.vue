@@ -376,7 +376,6 @@ export default {
     async isLogined(newState) {
       if (newState) {
         await this.refreshUser()
-        await this.getNotificationCounters()
       }
     },
     currentUserInfo() {
@@ -384,7 +383,7 @@ export default {
       if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
     },
     async $route() {
-      await this.getNotificationCounters()
+      if (this.isLogined) await this.getNotificationCounters()
     }
   },
   created() {
@@ -470,6 +469,7 @@ export default {
           .catch(err => {
             console.log('err', err)
           })
+        await this.getNotificationCounters()
       }
     },
     setAvatarImage(hash) {
