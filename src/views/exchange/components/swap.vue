@@ -442,7 +442,7 @@ export default {
       return true;
     },
     swap() {
-      const { input, output } = this.$route.query
+      const { input = 'cny', output = 'cny' } = this.$route.query
       this.$router.replace({
         hash: this.$route.hash,
         query: {
