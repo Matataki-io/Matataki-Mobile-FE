@@ -50,6 +50,6 @@ module.exports = {
     semi: [2, 'never'] // https://eslint.org/docs/2.0.0/rules/semi
   },
   parserOptions: {
-    // parser: "babel-eslint"
+    parser: 'babel-eslint'
   }
 }
