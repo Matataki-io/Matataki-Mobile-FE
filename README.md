@@ -48,10 +48,10 @@ npm run lint  # Lints and fixes files
 
 
 ## 開發前先讀一讀
+- https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Using_promises#%E5%9C%A8%E8%88%8A%E6%9C%89_API_%E4%B8%8A%E5%BB%BA%E7%AB%8B_Promise
+
+## Config
 IDE Eslint Config
  - vsCode [举例](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
  - webStorm [举例](https://www.jianshu.com/p/926a0e17a42d)
 
-
-
-- https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Using_promises#%E5%9C%A8%E8%88%8A%E6%9C%89_API_%E4%B8%8A%E5%BB%BA%E7%AB%8B_Promise
