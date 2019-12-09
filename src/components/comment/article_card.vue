@@ -5,7 +5,7 @@
         class="comment-avatar"
         :to="{name: 'user-id', params: {id : comment.uid}}"
       >
-        <avatar :src="avatar" size="30px" /></avatar>
+        <avatar :src="avatar" size="30px" ></avatar>
       </router-link>
       <div>
         <router-link class="comment-author" :to="`/user/${comment.uid}`">

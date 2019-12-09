@@ -14,7 +14,7 @@ const { JSDOM } = require('jsdom')
 
 let window
 beforeEach(async function() {
-  window = new JSDOM(``, {
+  window = new JSDOM('', {
     url: 'http://localhost/',
     referrer: 'http://localhost/',
     contentType: 'text/html',

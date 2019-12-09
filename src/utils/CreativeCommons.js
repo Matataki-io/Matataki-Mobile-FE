@@ -11,7 +11,7 @@ function CreativeCommonsLicenseGenerator({
   NoDerivativeWorks = false
 }) {
   if (ShareAlike && NoDerivativeWorks)
-    throw new Error("You can't use ShareAlike and NoDerivativeWorks at the same time.")
+    throw new Error('You can\'t use ShareAlike and NoDerivativeWorks at the same time.')
   const result = ['BY'] // 自2004年以来，当前所有的许可协议要求必须原作者署名
   if (Noncommercial) result.push('NC')
   if (NoDerivativeWorks) result.push('ND')

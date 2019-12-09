@@ -432,7 +432,7 @@ export default {
       if (type === 'add') {
         requestParams = {
           ...requestParams,
-          title: `添加流动金`,
+          title: '添加流动金',
           min_liquidity: utils.toDecimal(this.form.youMintTokenAmount)
         }
       } else {

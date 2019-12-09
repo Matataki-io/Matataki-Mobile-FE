@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     strokeDasharray() {
-      console.log('this.clicked', this.clicked);
+      console.log('this.clicked', this.clicked)
       if (this.clicked) {
         return 300
       }

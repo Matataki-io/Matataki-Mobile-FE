@@ -180,7 +180,7 @@ export default {
     handleAlreadyClicked() {
       this.$toast.fail({
         duration: 2000,
-        message: `你已经表态了，不能重复表态`
+        message: '你已经表态了，不能重复表态'
       })
     },
     // 推荐

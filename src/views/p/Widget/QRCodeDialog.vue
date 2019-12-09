@@ -161,7 +161,7 @@ export default {
         duration: 0,
         forbidClick: true,
         zIndex: 1200,
-        message: `loading...`
+        message: 'loading...'
       })
       html2canvas(this.$refs.capture, {
         useCORS: true,

@@ -173,13 +173,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import debounce from "lodash/debounce";
-import TokenListModal from "./TokenList";
-import PoolSelectModal from "./PoolSelect";
+import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
+import TokenListModal from './TokenList'
+import PoolSelectModal from './PoolSelect'
 import TradeLog from './TradeLog'
-import { CNY, INPUT, OUTPUT } from "./consts.js";
-import utils from "@/utils/utils";
+import { CNY, INPUT, OUTPUT } from './consts.js'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -192,11 +192,11 @@ export default {
       psShow: false,
       detailShow: false,
       tlShow: false,
-      field: "", // INPUT OUTPUT
+      field: '', // INPUT OUTPUT
       form: {
-        input: "",
+        input: '',
         inputToken: CNY,
-        output: "",
+        output: '',
         outputToken: {}
       },
       order: {},
@@ -216,7 +216,7 @@ export default {
       youMintTokenAmount: 0,
       poolSelected: {
         id: 0,
-        text: "添加流动金"
+        text: '添加流动金'
       },
       outputPoolSize: {
         cny_amount: 0,
@@ -226,10 +226,10 @@ export default {
         add: 0, // 添加流动性余额
         delete: 0 // 删除流动性余额
       }
-    };
+    }
   },
   computed: {
-    ...mapGetters(["isLogined"]),
+    ...mapGetters(['isLogined']),
     tokensId() {
       const result = []
       const { outputToken } = this.form
@@ -251,18 +251,18 @@ export default {
     isDelete() {
       // 添加流动金
       if (this.poolSelected.id === 0) {
-        return false;
+        return false
       } else {
         // 删除流动金
-        return true;
+        return true
       }
     },
     btnDisabled() {
-      const { input, inputToken, output, outputToken } = this.form;
-      const { outputPoolSize } = this;
+      const { input, inputToken, output, outputToken } = this.form
+      const { outputPoolSize } = this
       // 检查余额情况
       if (!this.checkBalance(false)) {
-        return true;
+        return true
       }
       // 删除流动金的情况
       /* eslint-disable */

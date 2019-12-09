@@ -130,7 +130,7 @@ export default {
         buy_token_input: '购买Fan票',
         buy_token_output: '购买Fan票',
         sale_token: '出售Fan票',
-      };
+      }
       if (this.articleId) {
         return `购买文章${this.articleId}`
       } else {
