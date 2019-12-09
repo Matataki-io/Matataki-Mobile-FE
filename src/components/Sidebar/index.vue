@@ -13,7 +13,10 @@
                 />
               </div>
             </router-link>
-            <router-link :to="{ name: 'notification', params: { provider: 'follow' } }" :class="{ badge: hasNewNotification }">
+            <router-link
+              :to="{ name: 'notification', params: { provider: 'follow' } }"
+              :class="{ badge: hasNewNotification }"
+            >
               <svg-icon class="notification-icon" icon-class="bell" />
             </router-link>
             <!-- <router-link :to="{ name: 'Help' }">
@@ -644,14 +647,14 @@ export default {
   font-size: 20px;
   color: #1f1f1f;
 }
-.badge{
+.badge {
   position: relative;
-  &::after{
+  &::after {
     content: '';
     width: 10px;
     height: 10px;
     border-radius: 10px;
-    background: rgba(251,104,119,1);
+    background: rgba(251, 104, 119, 1);
     position: absolute;
     z-index: 1000;
     right: 0%;

@@ -6,7 +6,9 @@
           <div class="jUAxZT">
             <span>输入</span>
           </div>
-          <div v-if="form.inputToken.symbol && form.inputToken.id !== 0">余额：{{ balance.input }}</div>
+          <div v-if="form.inputToken.symbol && form.inputToken.id !== 0">
+            余额：{{ balance.input }}
+          </div>
         </div>
         <div class="jbRmQG">
           <input
@@ -19,7 +21,13 @@
             @input="inputChange"
             @keypress="isNumber"
           />
-          <button class="iAoRgd" @click="tlShow = true;field = 'inputToken'">
+          <button
+            class="iAoRgd"
+            @click="
+              tlShow = true
+              field = 'inputToken'
+            "
+          >
             <span class="rTZzf">
               {{ form.inputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -41,7 +49,9 @@
           <div class="jUAxZT">
             <span>输出</span>
           </div>
-          <div v-if="form.outputToken.symbol && form.outputToken.id !== 0">余额：{{ balance.output }}</div>
+          <div v-if="form.outputToken.symbol && form.outputToken.id !== 0">
+            余额：{{ balance.output }}
+          </div>
         </div>
         <div class="jbRmQG">
           <input
@@ -54,7 +64,13 @@
             @input="outputChange"
             @keypress="isNumber"
           />
-          <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
+          <button
+            class="iAoRgd"
+            @click="
+              tlShow = true
+              field = 'outputToken'
+            "
+          >
             <span class="rTZzf">
               {{ form.outputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -67,9 +83,9 @@
       <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">兑换比率</span>
-        <span
-          v-if="exchangeRate"
-        >1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
+        <span v-if="exchangeRate"
+          >1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span
+        >
         <span v-else>-</span>
       </div>
     </div>
@@ -83,7 +99,8 @@
           你正在出售
           <span class="iDChvK">
             <span class="jbXIaP">{{ form.input }} {{ form.inputToken.symbol }}</span>
-          </span> 最少获得
+          </span>
+          最少获得
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
           </span>
@@ -92,7 +109,8 @@
           你正在购买
           <span class="iDChvK">
             <span class="jbXIaP">{{ form.output }} {{ form.outputToken.symbol }}</span>
-          </span> 最多需要
+          </span>
+          最多需要
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.inputToken.symbol }}</span>
           </span>
@@ -103,7 +121,9 @@
             <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
           <el-tooltip placement="bottom" effect="light">
-            <div slot="content">您的交易可能由于正常的价格波动而失败，<br/>价格滑落区间将有助于您的交易成功</div>
+            <div slot="content">
+              您的交易可能由于正常的价格波动而失败，<br />价格滑落区间将有助于您的交易成功
+            </div>
             <i class="el-icon-question" />
           </el-tooltip>
         </div>
@@ -113,17 +133,17 @@
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">交易</button>
     </div>
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
-    <TradeLog :tokensId="tokensId" />
+    <TradeLog :tokens-id="tokensId" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import debounce from "lodash/debounce";
-import TokenListModal from "./TokenList";
-import TradeLog from './TradeLog'
-import { CNY, INPUT, OUTPUT } from "./consts.js";
-import utils from "@/utils/utils";
+import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
+import TokenListModal from './TokenList.vue'
+import TradeLog from './TradeLog.vue'
+import { CNY, INPUT, OUTPUT } from './consts'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -134,21 +154,21 @@ export default {
     return {
       detailShow: false,
       tlShow: false,
-      field: "", // INPUT OUTPUT
+      field: '', // INPUT OUTPUT
       form: {
-        input: "",
+        input: '',
         inputToken: CNY,
-        output: "",
+        output: '',
         outputToken: {}
       },
       order: {},
       priceSlippage: 0.01,
-      base: "input", // input / output
+      base: 'input', // input / output
       balance: {
         input: 0,
         output: 0
       }
-    };
+    }
   },
   computed: {
     ...mapGetters(['isLogined', 'currentUserInfo']),
@@ -167,40 +187,40 @@ export default {
       return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
     },
     btnDisabled() {
-      const { input, output, outputToken } = this.form;
+      const { input, output, outputToken } = this.form
       if (
         utils.isNull(input) ||
         utils.isNull(outputToken) ||
         utils.isNull(output) ||
         !this.checkBalance(false)
       ) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
     limitValue() {
-      const { input, output } = this.form;
-      const { base } = this;
+      const { input, output } = this.form
+      const { base } = this
       // 以input为准计算
-      if (base === "input") {
+      if (base === 'input') {
         if (!utils.isNull(output)) {
-          return (parseFloat(output) * (1 - this.priceSlippage)).toFixed(4);
+          return (parseFloat(output) * (1 - this.priceSlippage)).toFixed(4)
         }
       }
       // 以output为准计算
-      if (base === "output") {
+      if (base === 'output') {
         if (!utils.isNull(input)) {
-          return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4);
+          return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4)
         }
       }
-      return "-";
+      return '-'
     },
     exchangeRate() {
-      const { input, output } = this.form;
+      const { input, output } = this.form
       if (!utils.isNull(input) && !utils.isNull(output)) {
-        return ((1 / input) * output).toFixed(4);
+        return ((1 / input) * output).toFixed(4)
       }
-      return "";
+      return ''
     }
   },
   mounted() {
@@ -241,83 +261,67 @@ export default {
       })
     },
     isNumber(event) {
-      if (!/\d/.test(event.key) && event.key !== ".") {
-        return event.preventDefault();
+      if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
       }
     },
     checkLogin() {
       if (!this.isLogined) {
-        this.$store.commit("setLoginModal", true);
-        return false;
+        this.$store.commit('setLoginModal', true)
+        return false
       }
-      return true;
+      return true
     },
     inputChange: debounce(function(e) {
-      const value = e.target.value;
-      this.form.input = value;
-      this.base = "input";
-      this.form.output = "";
-      const { input, inputToken, outputToken } = this.form;
-      this.checkBalance();
-      if (
-        !utils.isNull(input) &&
-        !utils.isNull(inputToken) &&
-        !utils.isNull(outputToken)
-      ) {
-        this.getOutputAmount(inputToken.id, outputToken.id, input);
+      const value = e.target.value
+      this.form.input = value
+      this.base = 'input'
+      this.form.output = ''
+      const { input, inputToken, outputToken } = this.form
+      this.checkBalance()
+      if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getOutputAmount(inputToken.id, outputToken.id, input)
       }
     }, 500),
     outputChange: debounce(function(e) {
-      const value = e.target.value;
-      this.form.output = value;
-      this.base = "output";
-      this.form.input = "";
-      const { inputToken, output, outputToken } = this.form;
-      if (
-        !utils.isNull(inputToken) &&
-        !utils.isNull(output) &&
-        !utils.isNull(outputToken)
-      ) {
-        this.getInputAmount(inputToken.id, outputToken.id, output);
+      const value = e.target.value
+      this.form.output = value
+      this.base = 'output'
+      this.form.input = ''
+      const { inputToken, output, outputToken } = this.form
+      if (!utils.isNull(inputToken) && !utils.isNull(output) && !utils.isNull(outputToken)) {
+        this.getInputAmount(inputToken.id, outputToken.id, output)
       }
     }, 500),
     selectToken(token) {
-      this.form[this.field] = token;
+      this.form[this.field] = token
       // 输入输出token不能相同
       if (this.form[INPUT] === this.form[OUTPUT]) {
-        this.form[this.field === INPUT ? OUTPUT : INPUT] = "";
-        this.form[this.field === INPUT ? "output" : "input"] = "";
-        this.balance[this.field === INPUT ? "output" : "input"] = 0;
+        this.form[this.field === INPUT ? OUTPUT : INPUT] = ''
+        this.form[this.field === INPUT ? 'output' : 'input'] = ''
+        this.balance[this.field === INPUT ? 'output' : 'input'] = 0
       }
       // 获取用户余额
-      this.getUserBalance(token.id, this.field === INPUT ? "input" : "output");
-      const { input, inputToken, output, outputToken } = this.form;
-      if (
-        !utils.isNull(input) &&
-        !utils.isNull(inputToken) &&
-        !utils.isNull(outputToken)
-      ) {
-        this.getOutputAmount(inputToken.id, outputToken.id, input);
-        return;
+      this.getUserBalance(token.id, this.field === INPUT ? 'input' : 'output')
+      const { input, inputToken, output, outputToken } = this.form
+      if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getOutputAmount(inputToken.id, outputToken.id, input)
+        return
       }
-      if (
-        !utils.isNull(output) &&
-        !utils.isNull(inputToken) &&
-        !utils.isNull(outputToken)
-      ) {
-        this.getInputAmount(inputToken.id, outputToken.id, output);
+      if (!utils.isNull(output) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getInputAmount(inputToken.id, outputToken.id, output)
       }
       this.addRouterQuery(token.symbol)
     },
     onSubmit() {
-      if (!this.checkLogin()) return;
-      const { input, inputToken, output, outputToken } = this.form;
+      if (!this.checkLogin()) return
+      const { input, inputToken, output, outputToken } = this.form
       if (parseFloat(input) < 0.01 && inputToken.id === 0) {
         this.$toast.fail({
-          message: "交易金额小于不得小于 0.01 CNY",
+          message: '交易金额小于不得小于 0.01 CNY',
           duration: 3000
-        });
-        return;
+        })
+        return
       }
       // 输入是人民币
       if (inputToken.isCNY) {
@@ -328,11 +332,11 @@ export default {
       } else {
         const loading = this.$loading({
           lock: false,
-          text: "提交中",
-          background: "rgba(0, 0, 0, 0.4)"
-        });
+          text: '提交中',
+          background: 'rgba(0, 0, 0, 0.4)'
+        })
         // 输入不是人民币
-        const amount = this.base === "input" ? input : output;
+        const amount = this.base === 'input' ? input : output
         this.$API
           .swap({
             inputTokenId: inputToken.id,
@@ -342,104 +346,93 @@ export default {
             base: this.base
           })
           .then(res => {
-            loading.close();
+            loading.close()
             if (res.code === 0) {
-              this.successNotice("兑换成功，即将刷新页面");
+              this.successNotice('兑换成功，即将刷新页面')
               setTimeout(() => {
-                window.location.reload();
-              }, 2000);
+                window.location.reload()
+              }, 2000)
             } else {
-              this.errorNotice("兑换失败，请刷新重试");
+              this.errorNotice('兑换失败，请刷新重试')
             }
-          });
+          })
       }
     },
     getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
-      const deciaml = 4;
-      const _inputAmount = utils.toDecimal(inputAmount, deciaml);
-      this.$API
-        .getOutputAmount(inputTokenId, outputTokenId, _inputAmount)
-        .then(res => {
-          if (res.code === 0) {
-            this.form.output = parseFloat(
-              utils.fromDecimal(res.data, deciaml)
-            ).toFixed(4);
-          } else {
-            this.$toast.fail(res.message);
-            this.form.output = "";
-          }
-        });
+      const deciaml = 4
+      const _inputAmount = utils.toDecimal(inputAmount, deciaml)
+      this.$API.getOutputAmount(inputTokenId, outputTokenId, _inputAmount).then(res => {
+        if (res.code === 0) {
+          this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+        } else {
+          this.$toast.fail(res.message)
+          this.form.output = ''
+        }
+      })
     },
     getInputAmount(inputTokenId, outputTokenId, outputAmount) {
-      const deciaml = 4;
-      const _outputAmount = utils.toDecimal(outputAmount, deciaml);
-      this.$API
-        .getInputAmount(inputTokenId, outputTokenId, _outputAmount)
-        .then(res => {
-          if (res.code === 0) {
-            // rmb向上取整
-            if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
-              this.form.input = parseFloat(
-                utils.formatCNY(res.data, deciaml)
-              ).toFixed(2);
-            } else {
-              this.form.input = parseFloat(
-                utils.fromDecimal(res.data, deciaml)
-              ).toFixed(4);
-            }
-            this.checkBalance();
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then(res => {
+        if (res.code === 0) {
+          // rmb向上取整
+          if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
+            this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
           } else {
-            this.$toast.fail(res.message);
-            this.form.input = "";
+            this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
           }
-        });
+          this.checkBalance()
+        } else {
+          this.$toast.fail(res.message)
+          this.form.input = ''
+        }
+      })
     },
     successNotice(text) {
       this.$toast.success({
         message: text,
         duration: 4000
-      });
+      })
     },
     errorNotice(text) {
       this.$toast.fail({
         message: text,
         duration: 4000
-      });
+      })
     },
     // 获取用户余额
     getUserBalance(tokenId, type) {
       // RMB 不计算余额
       if (tokenId === 0) {
-        this.balance[type] = 0;
-        return;
+        this.balance[type] = 0
+        return
       }
       this.$API.getUserBalance(tokenId).then(res => {
-
         if (res.code === 0) {
           this.balance[type] = parseFloat(utils.fromDecimal(res.data, 4))
           // 检查用户余额
-          this.checkBalance();
+          this.checkBalance()
         }
-      });
+      })
     },
     // 检测余额
     checkBalance(showError = true) {
-      const { input, inputToken } = this.form;
-      const inputBalance = this.balance.input;
+      const { input, inputToken } = this.form
+      const inputBalance = this.balance.input
       // 输入币存在，且不是rmb
       if (!utils.isNull(inputToken) && inputToken.id !== 0) {
         // 输入大于余额
         if (parseFloat(input) > parseFloat(inputBalance)) {
           if (showError) {
             this.$toast.fail({
-              message: "余额不足",
+              message: '余额不足',
               duration: 3000
-            });
+            })
           }
-          return false;
+          return false
         }
       }
-      return true;
+      return true
     },
     swap() {
       const { input = 'cny', output = 'cny' } = this.$route.query

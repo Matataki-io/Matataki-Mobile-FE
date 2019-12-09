@@ -333,7 +333,6 @@
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
-import { defaultImagesUploader } from '@/api'
 import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
@@ -524,7 +523,7 @@ export default {
     },
     // 更新草稿方法
     updateDraftFunc: debounce(function() {
-      const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
+      const { title, markdownData: content, fissionFactor, cover } = this
       const isOriginal = Number(this.isOriginal)
       const { type, id } = this.$route.params
 
@@ -569,6 +568,7 @@ export default {
     unload($event) {
       // 刷新页面 关闭页面有提示
       // https://jsfiddle.net/jbf4vL7h/29/
+      // eslint-disable-next-line no-useless-escape
       var confirmationMessage = '\o/'
       $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
       return confirmationMessage // Gecko, WebKit, Chrome <34
@@ -937,7 +937,8 @@ export default {
       if (this.fissionFactor === '') this.fissionFactor = 2 // 用户不填写裂变系数则默认为2
 
       this.allowLeave = true
-      const { type, id } = this.$route.params
+      // const { type, id } = this.$route.params
+      const { type } = this.$route.params
 
       const { currentUserInfo, title, markdownData: content, fissionFactor, cover } = this
       const { name: author } = currentUserInfo
