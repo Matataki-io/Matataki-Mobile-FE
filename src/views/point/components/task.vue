@@ -1,5 +1,5 @@
 <template>
-  <div class="point-task">
+  <div v-loading.fullscreen.lock="fullscreenLoading" class="point-task">
     <div class="task-block">
       <div class="task-list">
         <span class="task-title">{{ $t('point.title') }}</span>
@@ -111,7 +111,8 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      pointStatus: Object.create(null)
+      pointStatus: Object.create(null),
+      fullscreenLoading: true
     }
   },
   computed: {
@@ -162,7 +163,10 @@ export default {
       await this.$backendAPI
         .userPointStatus()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) this.pointStatus = res.data.data
+          if (res.status === 200 && res.data.code === 0) {
+            this.fullscreenLoading = false
+            this.pointStatus = res.data.data
+          }
           else console.log(res.message)
         })
         .catch(err => console.log(err))
