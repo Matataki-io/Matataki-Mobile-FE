@@ -10,6 +10,7 @@
           :placeholder="$t('rule.loginEmailMessage')"
         ></el-input>
       </el-form-item>
+      <input type="text" class="is-hidden" />
       <el-form-item prop="smscode">
         <div class="code-contaniner">
           <el-input
@@ -230,6 +231,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.is-hidden {
+  position: absolute;
+  left: -10000px;
+  top: -10000px;
+}
 .resetPassword {
   h1 {
     margin: 10px 0 20px 0;
