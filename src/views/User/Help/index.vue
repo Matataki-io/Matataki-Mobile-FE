@@ -69,14 +69,14 @@ export default {
       articleTransfer: false,
       // 隐私政策与用户协议
       helpDoc: [
-        // {
-        //   title: this.$t('user.userProtocol'),
-        //   name: 'agreement'
-        // },
-        // {
-        //   title: this.$t('user.privacyPolicy'),
-        //   name: 'policy'
-        // }
+        {
+          title: this.$t('user.userProtocol'),
+          // name: 'agreement'
+        },
+        {
+          title: this.$t('user.privacyPolicy'),
+          // name: 'policy'
+        }
       ]
     }
   },
