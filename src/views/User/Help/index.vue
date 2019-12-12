@@ -7,16 +7,15 @@
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
 
-      <router-link
+      <a
         v-for="(item, index) in helpDoc"
         :key="index"
         class="help-list"
         target="_blank"
-        :to="{ name: item.name }"
       >
         <span class="help-list-title">{{ item.title }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
-      </router-link>
+      </a>
     </div>
 
     <div class="help-block">
@@ -71,11 +70,11 @@ export default {
       helpDoc: [
         {
           title: this.$t('user.userProtocol'),
-          // name: 'agreement'
+          name: 'agreement'
         },
         {
           title: this.$t('user.privacyPolicy'),
-          // name: 'policy'
+          name: 'policy'
         }
       ]
     }
