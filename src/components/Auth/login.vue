@@ -35,6 +35,12 @@
           EOS
         </div>
         <div class="oauth-card">
+          <div class="oauth-bg bg-gray" @click="walletLogin('MetaMask')">
+            <svg-icon class="eos" icon-class="metamask" />
+          </div>
+          MetaMask
+        </div>
+        <div class="oauth-card">
           <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
             <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
           </div>
@@ -103,12 +109,35 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
+    ...mapActions("metamask", ["fetchAccount", "login"]),
     getWeixinCode() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if(isWeixin()) {
         this.$router.push({ name: 'WeixinLogin', query: { from: this.$route.name } })
       } else {
         this.$message.error('请在微信中打开此网页')
+      }
+    },
+    async loginWithMetaMask() {
+      this.loading = true;
+      this.fetchAccount();
+      try {
+        let res = await this.login();
+        this.$store.commit("setUserConfig", { idProvider: "MetaMask" });
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.success(res);
+        await this.$store.commit("setLoginModal", false);
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+        this.loading = false;
+        this.$message.closeAll();
+        if (error.message) {
+          this.$message.error(error.message);
+        } else {
+          this.$message.error(error.toString());
+        }
       }
     },
     async walletLogin(type) {
@@ -119,6 +148,9 @@ export default {
             from: this.$route.name
           }
         });
+        return
+      } else if (type === 'MetaMask') {
+        this.loginWithMetaMask();
         return
       }
       await this.signInx(type)
@@ -221,7 +253,7 @@ export default {
     .flexCenter();
 
     .oauth-card {
-      margin-left: 30px;
+      margin-left: 1rem;
     }
     .oauth-bg {
       cursor: pointer;

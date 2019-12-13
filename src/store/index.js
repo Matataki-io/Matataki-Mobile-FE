@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
+import metamask from './metamask'
 import github from './github'
 import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   modules: {
     ontology,
     scatter,
+    metamask,
     github,
     order
   },
@@ -62,6 +64,7 @@ export default new Vuex.Store({
     // for store
     prefixOfType: ({ userConfig: { idProvider } }) => {
       if (idProvider === 'EOS') return 'scatter'
+      if (idProvider === 'MetaMask') return 'metamask'
       if (idProvider === 'ONT') return 'ontology'
       if (idProvider === 'GitHub') return 'github'
       return null

@@ -138,12 +138,13 @@ const API = {
   /*
    * 根据用户名，公钥，客户端签名请求access_token
    */
-  async auth({ idProvider, publicKey: publickey, signature: sign, username }) {
+  async auth({ idProvider, publicKey: publickey, signature: sign, username, msgParams }) {
     let params = {
       platform: idProvider.toLowerCase(),
       publickey,
       sign,
-      username
+      username,
+      msgParams
     }
     // 推荐人id
     let referral = utils.getCookie('referral')
