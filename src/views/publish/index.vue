@@ -16,7 +16,9 @@
           导入
         </div>
 
-        <div class="post-button" @click="sendThePost">发布</div>
+        <div v-loading.fullscreen.lock="fullscreenLoading" class="post-button" @click="sendThePost">
+          发布
+        </div>
         <div
           v-if="isShowTransfer"
           slot="right"
@@ -415,7 +417,8 @@ export default {
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
-      }
+      },
+      fullscreenLoading: false
     }
   },
   computed: {
@@ -961,8 +964,10 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        this.fullscreenLoading = true
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
+        this.fullscreenLoading = false
         // console.log('sendPost result :', hash)
         this.publishArticle({
           author,
@@ -983,8 +988,10 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        this.fullscreenLoading = true
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
+        this.fullscreenLoading = false
         this.editArticle({
           signId: this.signId,
           author,
