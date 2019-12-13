@@ -265,7 +265,6 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 // import ScrollMagic from 'scrollmagic'
 import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'

@@ -18,22 +18,22 @@ const router = new VueRouter({
       path: '/',
       name: 'index',
       component: () =>
-        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'),
+        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index_backup/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
       }
     },
-    // {
-    //   path: '/index_backup',
-    //   name: 'indeindex_backupx',
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "index", webpackPrefetch: true  */ './views/index_backup/index.vue'
-    //     ),
-    //   meta: {
-    //     title: '首页-瞬MATATAKI'
-    //   }
-    // },
+    {
+      path: '/index_backup',
+      name: 'indeindex_backup',
+      component: () =>
+        import(
+          /* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'
+        ),
+      meta: {
+        title: '首页-瞬MATATAKI'
+      }
+    },
     {
       path: '/article',
       name: 'article',
