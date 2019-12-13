@@ -31,6 +31,15 @@
           />
         </span>
       </div>
+
+
+      <router-link
+        class="help-list"
+        :to="{name: 'setting-account'}"
+      >
+        <span class="help-list-title">{{ $t('helpPage.accountSetting') }}</span>
+        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+      </router-link>
     </div>
 
     <div class="help-block">

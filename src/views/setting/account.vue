@@ -1,0 +1,603 @@
+<template>
+  <div class="container">
+    <BaseHeader :pageinfo="{ title: '账户设置' }" :has-bottom-border-line="true" customize-header-bc="#fff" />
+    <div class="list">
+      <div v-for="(item, idx) in accountList" :key="idx" class="fl ac">
+        <div
+          v-loading="item.loading"
+          @click="buildAccount(item.type, item.typename, idx)"
+          :class="[item.type, item.status && 'bind']"
+          :data-disabled="item.disabled"
+          class="list-account"
+        >
+          <svg-icon :icon-class="item.icon" class="icon" />
+          <span class="typename">{{ item.typename }}</span>
+          <span class="username">{{ item.username }}</span>
+          <span class="close">取消绑定</span>
+          <svg-icon icon-class="correct" class="correct" />
+          <svg-icon icon-class="close_thin" class="close_thin" />
+        </div>
+        <el-radio
+          :value="accountRadio"
+          :label="item.type"
+          :disabled="item.disabled"
+          @change="accountChangeFunc(item.type, idx)"
+          style="margin-left: 10px;"
+        >
+          <span v-if="accountRadio === item.type">主账号</span>
+          <span v-else>&nbsp;</span>
+        </el-radio>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapState, mapActions, mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
+// import { getSignatureForLogin } from '@/api/eth'
+
+export default {
+  components: {},
+  data() {
+    return {
+      accountRadio: '',
+      accountList: [
+        {
+          type: 'email',
+          icon: 'email', // 随时可换 防止影响
+          typename: '邮箱',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'wechat',
+          icon: 'wechat', // 随时可换 防止影响
+          typename: '微信',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'eth',
+          icon: 'eth', // 随时可换 防止影响
+          typename: 'ETH',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: true
+        },
+        {
+          type: 'eos',
+          icon: 'eos', // 随时可换 防止影响
+          typename: 'EOS',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'ont',
+          icon: 'ont', // 随时可换 防止影响
+          typename: 'ONT',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'vnt',
+          icon: 'vnt', // 随时可换 防止影响
+          typename: 'VNT',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: true
+        },
+        {
+          type: 'github',
+          icon: 'github', // 随时可换 防止影响
+          typename: 'Github',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        }
+      ]
+    }
+  },
+  computed: {
+    ...mapState(['scatter', 'metamask']),
+    ...mapGetters(['scatter/currentUsername', 'isLogined'])
+  },
+  mounted() {
+    this.getAccountList()
+  },
+  methods: {
+    ...mapActions('scatter', ['connect', 'getSignature', 'login']),
+    ...mapActions('ontology', ['getAccount', 'getSignature']),
+    ...mapActions('metamask', ['getSignature', 'fetchAccount']),
+    ...mapActions('vnt', ['bind']),
+    accountBild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API
+        .accountBind(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+            this.getAccountList()
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.success(`绑定失败${params.platform.toUpperCase()}`)
+        })
+        .finally(() => {
+          this.accountList[idx].loading = false
+        })
+    },
+    accountUnbild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API
+        .accountUnbind(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+            this.getAccountList()
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+        })
+        .finally(() => {
+          this.accountList[idx].loading = false
+        })
+    },
+    accountChange(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API
+        .accountChange(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.accountRadio = this.accountList[idx].type
+            this.$message.success(res.message)
+            this.getAccountList()
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+        })
+        .finally(() => {
+          this.accountList[idx].loading = false
+        })
+    },
+    async bindFunc(type, typename, idx) {
+      if (type === 'email') {
+        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+        this.$router.push({
+          name: 'login-email'
+        })
+      } else if (type === 'wechat') {
+        this.$message.warning(`移动端暂不支持${typename}绑定`)
+      } else if (type === 'eth') {
+        this.$message.warning(`移动端暂不支持${typename}绑定`)
+        // try {
+        //   await this.$store.dispatch('metamask/fetchAccount')
+        //   const { signature, msgParams } = await getSignatureForLogin('Bind')
+        //   console.log('🚀', signature, msgParams)
+        //   await this.accountBild({
+        //     platform: type.toLocaleLowerCase(),
+        //     publickey: this.metamask.account,
+        //     sign: signature,
+        //     msgParams
+        //   }, idx)
+        // } catch (error) {
+        //   console.log(error)
+        //   if (error.message && error.code === 4001) {
+        //     if (error.message && error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
+        //     else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
+        //     else this.$message.warning('签名失败')
+        //   } else if (error.message) this.$message.warning(error.message)
+        //   else this.$message.warning(error.toString())
+        // }
+      } else if (type === 'eos') {
+        try {
+          // connect
+          if (!this.scatter.isConnected) {
+            const result = await this.$store.dispatch('scatter/connect')
+            if (!result) throw new Error('scatter连接失败')
+          }
+          if (!this.scatter.isLoggingIn) {
+            const result = await this.$store.dispatch('scatter/login')
+            if (!result) throw new Error('Scatter登录失败')
+          }
+          // get currentUsername
+          const currentUsername = (await this['scatter/currentUsername']) || ''
+          if (!currentUsername) throw new Error('Scatter获取账户信息失败')
+          // signature
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch(
+            'scatter/getSignature',
+            { mode: 'Auth', rawSignData: [currentUsername] }
+          )
+          console.log('🚀', signature)
+          await this.accountBild(
+            {
+              platform: type.toLocaleLowerCase(),
+              publickey: publicKey,
+              sign: signature,
+              username: username
+            },
+            idx
+          )
+        } catch (error) {
+          console.log(error)
+          if (error.isError) {
+            // User rejected the signature request
+            this.$message.warning('您拒绝了签名请求')
+          } else if (error.toString().includes('\'name\' of null'))
+            this.$message.warning('无法连接钱包, 请稍后再试')
+          else if (
+            error.message &&
+            error.message.includes('The user did not allow this app to connect to their Scatter')
+          )
+            this.$message.warning('用户不允许此应用连接到他们的Scatter')
+          else this.$message.warning(error.toString())
+        }
+      } else if (type === 'ont') {
+        try {
+          const getAccount = await this.$store.dispatch('ontology/getAccount')
+          if (!getAccount) throw new Error('Ont获取账户信息失败')
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch(
+            'ontology/getSignature',
+            { mode: 'Auth', rawSignData: [getAccount] }
+          )
+          console.log('🚀', signature)
+          await this.accountBild(
+            {
+              platform: type.toLocaleLowerCase(),
+              publickey: publicKey,
+              sign: signature,
+              username: username
+            },
+            idx
+          )
+        } catch (error) {
+          console.log(error)
+          if (error.message && error.message.includes('Could not establish connection'))
+            this.$message.warning('无法建立连接')
+          else if (error === 'CANCELED') this.$message.warning('您取消了签名请求')
+          else this.$message.warning('您拒绝了签名请求')
+        }
+      } else if (type === 'vnt') {
+        const username = await this.$store.dispatch('vnt/bind')
+        if (!username) throw new Error('Vnt获取账户信息失败')
+        await this.accountBild(
+          {
+            platform: type.toLocaleLowerCase(),
+            publickey: 'vnt',
+            sign: 'vnt',
+            username: username
+          },
+          idx
+        )
+      } else if (type === 'github') {
+        this.$router.push({
+          name: 'login-github',
+          query: {
+            from: 'buildAccount'
+          }
+        })
+      } else this.$message.warning('PC端暂不支持绑定')
+    },
+    unbindFunc(type, typename, idx) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (type === 'email') {
+        this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: '',
+          inputPlaceholder: '请输入密码',
+          customClass: 'account-bind__prompt',
+          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
+          inputValidator: function (value) {
+            if (!value) return false
+            else return true
+          },
+          inputErrorMessage: '请输入密码'
+        }).then(({ value }) => {
+          this.accountUnbild({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username,
+            password: value
+          }, idx)
+        })
+      } else {
+        this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.accountUnbild({
+            platform: type.toLocaleLowerCase(),
+            account: this.accountList[idx].username
+          }, idx)
+        })
+      }
+    },
+    buildAccount: debounce(function(type, typename, idx) {
+      if (this.accountList[idx].disabled) return
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (this.accountList[idx].is_main === 1)
+        return this.$message.warning('主账号不允许绑定或解除')
+      if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
+      else this.bindFunc(type, typename, idx)
+    }, 300),
+    getAccountList() {
+      this.$API
+        .accountList()
+        .then(res => {
+          if (res.code === 0) {
+            // console.log(res)
+            this.accountList.map(i => {
+              const filterPlatform = res.data.filter(j => j.platform === i.type)
+              // console.log(filterPlatform)
+              if (filterPlatform.length > 0) {
+                i.username = filterPlatform[0].account
+                i.status = filterPlatform[0].status
+                i.is_main = filterPlatform[0].is_main
+              } else {
+                i.username = ''
+                i.status = false
+                i.is_main = 0
+              }
+
+              if (i.is_main === 1) this.accountRadio = i.type
+            })
+          } else {
+            console.log(res.message)
+          }
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+    },
+    accountChangeFunc(label, idx) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (label === 'email') {
+        this.$prompt('请输入邮箱密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: '',
+          inputPlaceholder: '请输入密码',
+          customClass: 'account-bind__prompt',
+          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
+          inputValidator: function(value) {
+            if (!value) return false
+            else return true
+          },
+          inputErrorMessage: '请输入密码'
+        }).then(({ value }) => {
+          this.accountChange(
+            {
+              platform: this.accountList[idx].type,
+              account: this.accountList[idx].username,
+              password: value
+            },
+            idx
+          )
+        })
+      } else {
+        this.$confirm('此操作将切换主账号, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(this.accountList[idx])
+          this.accountChange(
+            {
+              platform: this.accountList[idx].type,
+              account: this.accountList[idx].username
+            },
+            idx
+          )
+        })
+      }
+    }
+  }
+}
+</script>
+<style lang="less">
+.account-bind__prompt {
+  width: 90%;
+}
+</style>
+<style lang="less" scoped>
+.container {
+  background-color: #fff;
+  min-height: 100%;
+  padding-top: 45px;
+}
+.list {
+  margin: 20px 80px 20px 20px;
+}
+.list-account {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  // height: 40px;
+  background-color: #eee;
+  color: #fff;
+  border-radius: 6px;
+  margin: 10px 0;
+  padding: 9px 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.email {
+    background-color: #542de0;
+    &:hover {
+      background-color: mix(#000, #542de0, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.wechat {
+    background-color: #00c800;
+    &:hover {
+      background-color: mix(#000, #00c800, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.eth {
+    background-color: #6c7ab7;
+    &:hover {
+      background-color: mix(#000, #6c7ab7, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.eos {
+    background-color: #333333;
+    &:hover {
+      background-color: mix(#000, #333, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.ont {
+    background-color: #4d9afd;
+    &:hover {
+      background-color: mix(#000, #4d9afd, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.vnt {
+    background-color: #3289ff;
+    &:hover {
+      background-color: mix(#000, #3289ff, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.github {
+    background-color: #882592;
+    &:hover {
+      background-color: mix(#000, #882592, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+
+
+  .typename,
+  .close {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 22px;
+    margin-left: 4px;
+  }
+  .username {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 22px;
+    margin-left: 10px;
+    margin-right: 40px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: none;
+  }
+  .correct {
+    font-size: 16px;
+    display: none;
+  }
+  .close {
+    display: none;
+    flex: 1;
+  }
+  .close_thin {
+    font-size: 16px;
+    display: none;
+  }
+  &.bind {
+    .correct,
+    .username {
+      display: block;
+    }
+    &:hover {
+      .username,
+      .correct {
+        display: none;
+      }
+      .close,
+      .close_thin {
+        display: block;
+      }
+    }
+  }
+
+  &[data-disabled="true"] {
+    cursor: not-allowed;
+    background-color: #dadada;
+    &:hover {
+      background-color: #dadada;
+    }
+  }
+
+  &[data-disabled="true"].bind {
+    .correct {
+      display: none;
+    }
+    .username {
+      display: block;
+    }
+    &:hover {
+      .correct {
+        display: none;
+      }
+      .username {
+        display: block;
+      }
+      .close,
+      .close_thin {
+        display: none;
+      }
+    }
+  }
+}
+</style>

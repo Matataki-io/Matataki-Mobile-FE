@@ -567,5 +567,38 @@ minetokenGetResources(tokenId) {
       url: `/oss/uploadImage?folder=${folderOption[folder]}`,
       data: formdata
     })
-  }
+  },
+  async verifyEmail(email) {
+    return request({
+      url: '/login/verify',
+      method: 'get',
+      params: { email },
+      noLoading: true
+    })
+  },
+  registerGT() {
+    return request({
+      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
+      method: 'get',
+      dataType: "json",
+    })
+  },
+  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    }, { noLoading: true })
+
+    return request.get('/login/captcha', { params: {email}, noLoading: true })
+  },
+  // -------------------------------- 账号绑定 --------------------------------
+  // account binding
+  accountBind(params) { return request.post('/account/binding', params) },
+  // account unbinding
+  accountUnbind(params) { return request.post('/account/unbinding', params) },
+  // 切换主账号
+  accountChange(params) { return request.post('/account/changeMainAccount', params) },
+  // 账号列表
+  accountList() { return request.get('/account/list') },
 }

@@ -549,5 +549,9 @@ export default {
     notice: '通知',
 
     followed_you: '关注了你'
+  },
+  // ---------------------------------------help page -------------------------------------
+  helpPage: {
+    accountSetting: '账户设置'
   }
 }

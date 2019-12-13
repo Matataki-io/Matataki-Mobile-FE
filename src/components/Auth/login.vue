@@ -113,7 +113,12 @@ export default {
     },
     async walletLogin(type) {
       if (type === 'GitHub') {
-        this.$router.push({ name: 'Login' })
+        this.$router.push({
+          name: "login-github",
+          query: {
+            from: this.$route.name
+          }
+        });
         return
       }
       await this.signInx(type)
