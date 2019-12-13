@@ -19,7 +19,7 @@
             >
               <svg-icon class="notification-icon" icon-class="bell" />
             </router-link>
-            <!-- <router-link :to="{ name: 'Help' }">
+            <!-- <router-link :to="{ name: 'help' }">
               <img src="@/assets/newimg/setting.svg" alt="setting" class="setting" />
             </router-link> -->
           </div>
@@ -290,7 +290,7 @@
       </div> -->
     </div>
     <div v-if="isLogined" class="fl bottom-bar">
-      <router-link class="button-card" :to="{ name: 'Help' }">
+      <router-link class="button-card" :to="{ name: 'help' }">
         <div class="cell">
           <div class="cell-left center">
             <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" />

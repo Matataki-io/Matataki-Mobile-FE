@@ -81,12 +81,18 @@ const router = new VueRouter({
     },
     {
       path: '/login/github',
-      name: 'Login',
-      component: () => import(/* webpackChunkName: "Login" */ './views/Login.vue'),
-      beforeEnter: (to, from, next) => {
-        if (!to.query.from) {
-          next({ name: 'Login', query: { ...to.query, from: from.path } })
-        } else next()
+      name: 'login-github',
+      component: () => import(/* webpackChunkName: "login-github" */ './views/login/github.vue'),
+      mata: {
+        title: 'Github登录-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/login/email',
+      name: 'login-email',
+      component: () => import(/* webpackChunkName: "login-email" */ './views/login/email.vue'),
+      mata: {
+        title: '邮箱绑定-瞬MATATAKI'
       }
     },
     {
@@ -112,6 +118,14 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "setting" */ './views/setting/index.vue'),
       meta: {
         title: '信息设置-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/setting/account',
+      name: 'setting-account',
+      component: () => import(/* webpackChunkName: "setting-account" */ './views/setting/account.vue'),
+      meta: {
+        title: '账号设置-瞬MATATAKI'
       }
     },
     {
@@ -331,9 +345,9 @@ const router = new VueRouter({
     },
     {
       path: '/help',
-      name: 'Help',
+      name: 'help',
       props: true,
-      component: () => import(/* webpackChunkName: "Help" */ './views/User/Help/index.vue'),
+      component: () => import(/* webpackChunkName: "help" */ './views/help/index.vue'),
       meta: {
         title: '帮助-瞬MATATAKI'
       }
