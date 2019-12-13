@@ -266,19 +266,12 @@
 
 <script>
 /* eslint-disable no-undef */
-
+// import ScrollMagic from 'scrollmagic'
 import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
 export default {
-  head: {
-    // script: [
-    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
-    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
-    //   // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
-    // ]
-  },
   components: {
     avatar
   },
