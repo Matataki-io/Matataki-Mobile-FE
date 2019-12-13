@@ -290,7 +290,7 @@
       </div> -->
     </div>
     <div v-if="isLogined" class="fl bottom-bar">
-      <router-link class="button-card" :to="{ name: 'help' }">
+      <a class="button-card" href="/help">
         <div class="cell">
           <div class="cell-left center">
             <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" />
@@ -299,7 +299,7 @@
             </span>
           </div>
         </div>
-      </router-link>
+      </a>
       <a class="button-card" @click="btnsignOut()">
         <div class="cell">
           <div class="cell-left center">
