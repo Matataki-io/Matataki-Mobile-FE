@@ -60,6 +60,9 @@ Vue.use(Input)
   .use(Checkbox)
   .use(InfiniteScroll)
 
-Vue.prototype.$loading = Loading.service
-Vue.prototype.$prompt = MessageBox.prompt
+
 Vue.prototype.$message = Message
+Vue.prototype.$loading = Loading.service
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt

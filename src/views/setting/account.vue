@@ -342,7 +342,8 @@ export default {
         this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          customClass: 'account-bind__prompt',
         }).then(() => {
           this.accountUnbild({
             platform: type.toLocaleLowerCase(),
@@ -422,7 +423,8 @@ export default {
         this.$confirm('此操作将切换主账号, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          customClass: 'account-bind__prompt',
         }).then(() => {
           console.log(this.accountList[idx])
           this.accountChange(
