@@ -196,7 +196,12 @@ export default {
           name: 'login-email'
         })
       } else if (type === 'wechat') {
-        this.$message.warning(`移动端暂不支持${typename}绑定`)
+        this.$router.push({
+          name: 'WeixinLogin',
+          query: {
+            from: 'buildAccount'
+          }
+        })
       } else if (type === 'eth') {
         this.$message.warning(`移动端暂不支持${typename}绑定`)
         // try {
@@ -289,17 +294,18 @@ export default {
           else this.$message.warning('您拒绝了签名请求')
         }
       } else if (type === 'vnt') {
-        const username = await this.$store.dispatch('vnt/bind')
-        if (!username) throw new Error('Vnt获取账户信息失败')
-        await this.accountBild(
-          {
-            platform: type.toLocaleLowerCase(),
-            publickey: 'vnt',
-            sign: 'vnt',
-            username: username
-          },
-          idx
-        )
+        this.$message.warning(`移动端暂不支持${typename}绑定`)
+        // const username = await this.$store.dispatch('vnt/bind')
+        // if (!username) throw new Error('Vnt获取账户信息失败')
+        // await this.accountBild(
+        //   {
+        //     platform: type.toLocaleLowerCase(),
+        //     publickey: 'vnt',
+        //     sign: 'vnt',
+        //     username: username
+        //   },
+        //   idx
+        // )
       } else if (type === 'github') {
         this.$router.push({
           name: 'login-github',
@@ -307,7 +313,7 @@ export default {
             from: 'buildAccount'
           }
         })
-      } else this.$message.warning('PC端暂不支持绑定')
+      } else this.$message.warning('移动端暂不支持绑定')
     },
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
@@ -360,7 +366,11 @@ export default {
           if (res.code === 0) {
             // console.log(res)
             this.accountList.map(i => {
-              const filterPlatform = res.data.filter(j => j.platform === i.type)
+              const filterPlatform = res.data.filter(j => {
+                if (j.platform === 'weixin') {
+                  return i.type === 'wechat'
+                } else return j.platform === i.type
+              })
               // console.log(filterPlatform)
               if (filterPlatform.length > 0) {
                 i.username = filterPlatform[0].account
@@ -440,12 +450,12 @@ export default {
   padding-top: 45px;
 }
 .list {
-  margin: 20px 80px 20px 20px;
+  margin: 20px 40px 20px 20px;
 }
 .list-account {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 74%;
   // height: 40px;
   background-color: #eee;
   color: #fff;
