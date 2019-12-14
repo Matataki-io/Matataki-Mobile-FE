@@ -396,9 +396,14 @@ export default {
     },
     _resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-      if (clientHeight < 600) return false
+      if (clientHeight < 600) {
+        this.$refs.evaluation.style['padding-top'] = ((740 / 2) - (257 + 113)) + 'px'
+        this.$refs.evaluation.style.height = (740 - 257) + 'px'
+        return false
+      } 
       else  {
         this.$refs.home.style.height = clientHeight + 'px'
+        this.$refs.evaluation.style['padding-top'] = ((clientHeight / 2) - (257 + 113)) + 'px'
         this.$refs.evaluation.style.height = (clientHeight - 257) + 'px'
       }
     },
