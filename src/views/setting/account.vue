@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <BaseHeader :pageinfo="{ title: '账户设置' }" :has-bottom-border-line="true" customize-header-bc="#fff" />
+    <BaseHeader
+      :pageinfo="{ title: '账户设置' }"
+      :has-bottom-border-line="true"
+      customize-header-bc="#fff"
+    />
     <div class="list">
       <div v-for="(item, idx) in accountList" :key="idx" class="fl ac">
         <div
@@ -218,7 +222,7 @@ export default {
         // try {
         //   await this.$store.dispatch('metamask/fetchAccount')
         //   const { signature, msgParams } = await getSignatureForLogin('Bind')
-        //   console.log('🚀', signature, msgParams)
+        // console.log('🚀', signature, msgParams)
         //   await this.accountBild({
         //     platform: type.toLocaleLowerCase(),
         //     publickey: this.metamask.account,
@@ -254,7 +258,7 @@ export default {
             'scatter/getSignature',
             { mode: 'Auth', rawSignData: [currentUsername] }
           )
-          console.log('🚀', signature)
+          // console.log('🚀', signature)
           await this.accountBild(
             {
               platform: type.toLocaleLowerCase(),
@@ -265,18 +269,57 @@ export default {
             idx
           )
         } catch (error) {
-          console.log(error)
-          if (error.isError) {
-            // User rejected the signature request
-            this.$message.warning('您拒绝了签名请求')
-          } else if (error.toString().includes('\'name\' of null'))
-            this.$message.warning('无法连接钱包, 请稍后再试')
-          else if (
-            error.message &&
-            error.message.includes('The user did not allow this app to connect to their Scatter')
-          )
-            this.$message.warning('用户不允许此应用连接到他们的Scatter')
-          else this.$message.warning(error.toString())
+          // 因为之前的base scatter原因 第一次登录连接会失败, 下面重复一次 如果修改请同步修改 谢谢
+          try {
+            // connect
+            if (!this.scatter.isConnected) {
+              const result = await this.$store.dispatch('scatter/connect')
+              if (!result) throw new Error('scatter连接失败')
+            }
+            if (!this.scatter.isLoggingIn) {
+              const result = await this.$store.dispatch('scatter/login')
+              if (!result) throw new Error('Scatter登录失败')
+            }
+            // get currentUsername
+            const currentUsername =
+              (await this['scatter/currentUsername']) || ''
+            if (!currentUsername) throw new Error('Scatter获取账户信息失败')
+            // signature
+            // 没有扩展
+            const {
+              publicKey,
+              signature,
+              username
+            } = await this.$store.dispatch('scatter/getSignature', {
+              mode: 'Auth',
+              rawSignData: [currentUsername]
+            })
+            // console.log('🚀', signature)
+            await this.accountBild(
+              {
+                platform: type.toLocaleLowerCase(),
+                publickey: publicKey,
+                sign: signature,
+                username: username
+              },
+              idx
+            )
+          } catch (error) {
+            console.log(error)
+            if (error.isError) {
+              // User rejected the signature request
+              this.$message.warning('您拒绝了签名请求')
+            } else if (error.toString().includes('\'name\' of null'))
+              this.$message.warning('无法连接钱包, 请稍后再试')
+            else if (
+              error.message &&
+              error.message.includes(
+                'The user did not allow this app to connect to their Scatter'
+              )
+            )
+              this.$message.warning('用户不允许此应用连接到他们的Scatter')
+            else this.$message.warning(error.toString())
+          }
         }
       } else if (type === 'ont') {
         try {
@@ -287,7 +330,7 @@ export default {
             'ontology/getSignature',
             { mode: 'Auth', rawSignData: [getAccount] }
           )
-          console.log('🚀', signature)
+          // console.log('🚀', signature)
           await this.accountBild(
             {
               platform: type.toLocaleLowerCase(),
@@ -299,9 +342,13 @@ export default {
           )
         } catch (error) {
           console.log(error)
-          if (error.message && error.message.includes('Could not establish connection'))
+          if (
+            error.message &&
+            error.message.includes('Could not establish connection')
+          )
             this.$message.warning('无法建立连接')
-          else if (error === 'CANCELED') this.$message.warning('您取消了签名请求')
+          else if (error === 'CANCELED')
+            this.$message.warning('您取消了签名请求')
           else this.$message.warning('您拒绝了签名请求')
         }
       } else if (type === 'vnt') {
@@ -328,7 +375,8 @@ export default {
     },
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (!this.accountList[idx].status)
+        return this.$message.warning('请先绑定账号')
       if (type === 'email') {
         this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -337,29 +385,35 @@ export default {
           inputPlaceholder: '请输入密码',
           customClass: 'account-bind__prompt',
           inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
-          inputValidator: function (value) {
+          inputValidator: function(value) {
             if (!value) return false
             else return true
           },
           inputErrorMessage: '请输入密码'
         }).then(({ value }) => {
-          this.accountUnbild({
-            platform: this.accountList[idx].type,
-            account: this.accountList[idx].username,
-            password: value
-          }, idx)
+          this.accountUnbild(
+            {
+              platform: this.accountList[idx].type,
+              account: this.accountList[idx].username,
+              password: value
+            },
+            idx
+          )
         })
       } else {
         this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
-          customClass: 'account-bind__prompt',
+          customClass: 'account-bind__prompt'
         }).then(() => {
-          this.accountUnbild({
-            platform: type.toLocaleLowerCase(),
-            account: this.accountList[idx].username
-          }, idx)
+          this.accountUnbild(
+            {
+              platform: type.toLocaleLowerCase(),
+              account: this.accountList[idx].username
+            },
+            idx
+          )
         })
       }
     },
@@ -378,7 +432,9 @@ export default {
           if (res.code === 0) {
             // console.log(res)
             this.accountList.map(i => {
-              const filterPlatform = res.data.filter(j => j.platform === i.type)
+              const filterPlatform = res.data.filter(
+                j => j.platform === i.type
+              )
               // console.log(filterPlatform)
               if (filterPlatform.length > 0) {
                 i.username = filterPlatform[0].account
@@ -402,7 +458,8 @@ export default {
     },
     accountChangeFunc(label, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (!this.accountList[idx].status)
+        return this.$message.warning('请先绑定账号')
       if (label === 'email') {
         this.$prompt('请输入邮箱密码', '提示', {
           confirmButtonText: '确定',
@@ -431,7 +488,7 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
-          customClass: 'account-bind__prompt',
+          customClass: 'account-bind__prompt'
         }).then(() => {
           console.log(this.accountList[idx])
           this.accountChange(
@@ -538,7 +595,6 @@ export default {
       font-size: 20px;
     }
   }
-
 
   .typename,
   .close {
