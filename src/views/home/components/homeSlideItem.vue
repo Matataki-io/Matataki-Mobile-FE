@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     jumpPage(id) {
-      this.$router.push({ name: 'p', params: { id: id } })
+      this.$router.push({ name: 'p-id', params: { id: id } })
     }
   }
 }

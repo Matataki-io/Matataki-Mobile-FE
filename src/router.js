@@ -62,7 +62,7 @@ const router = new VueRouter({
     },
     {
       path: '/p/:id', // 支持 hash id 访问
-      name: 'p',
+      name: 'p-id',
       props: true,
       component: () =>
         import(/* webpackChunkName: "p", webpackPrefetch: true */ './views/p/index.vue'),
