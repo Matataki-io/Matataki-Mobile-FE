@@ -1,5 +1,5 @@
 <template>
-  <div class="login" />
+  <div style="height: 100%;" v-loading="loading" element-loading-text="登录中..."></div>
 </template>
 
 <script>
@@ -9,6 +9,11 @@ import { getCookie, removeCookie } from '@/utils/cookie'
 export default {
   name: 'LoginPage',
   computed: {},
+  data() {
+    return {
+      loading: true
+    }
+  },
   mounted() {
     const { code, from, error } = this.$route.query
     const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
