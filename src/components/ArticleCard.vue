@@ -1,5 +1,5 @@
 <template>
-  <router-link tag="div" class="card" :to="{ name: 'p', params: { id: id } }">
+  <router-link tag="div" class="card" :to="{ name: 'p-id', params: { id: id } }">
     <!-- 他人主页隐藏info -->
     <div v-if="!isOtherUser" class="info">
       <div class="avatar">

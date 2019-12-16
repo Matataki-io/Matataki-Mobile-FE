@@ -295,6 +295,7 @@ export default new Vuex.Store({
       Cookies.remove('ACCESS_TOKEN', { path: '' })
       Cookies.remove('idProvider', { path: '' })
       localStorage.clear()
+      sessionStorage.clear()
     },
     // data: { amount, toaddress, memo }
     async withdraw({ dispatch, getters }, data) {

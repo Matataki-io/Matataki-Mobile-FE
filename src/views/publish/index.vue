@@ -679,7 +679,7 @@ export default {
     },
     // 跳转页面
     jumpToArticle(id) {
-      this.$router.push({ name: 'p', params: { id: id } })
+      this.$router.push({ name: 'p-id', params: { id: id } })
     },
     // 成功提示
     async success(id) {
