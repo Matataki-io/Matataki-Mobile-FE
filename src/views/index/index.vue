@@ -266,7 +266,7 @@
 
 <script>
 // import ScrollMagic from 'scrollmagic'
-import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
+// import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
