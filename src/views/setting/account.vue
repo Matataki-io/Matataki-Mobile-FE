@@ -138,12 +138,12 @@ export default {
             this.$message.success(res.message)
             this.getAccountList()
           } else {
-            this.$message.success(res.message)
+            this.$message.warning(res.message)
           }
         })
         .catch(err => {
           console.log(err)
-          this.$message.success(`绑定失败${params.platform.toUpperCase()}`)
+          this.$message.error(`绑定失败${params.platform.toUpperCase()}`)
         })
         .finally(() => {
           this.accountList[idx].loading = false
@@ -158,12 +158,12 @@ export default {
             this.$message.success(res.message)
             this.getAccountList()
           } else {
-            this.$message.success(res.message)
+            this.$message.warning(res.message)
           }
         })
         .catch(err => {
           console.log(err)
-          this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+          this.$message.error(`解除绑定失败${params.platform.toUpperCase()}`)
         })
         .finally(() => {
           this.accountList[idx].loading = false
@@ -179,12 +179,12 @@ export default {
             this.$message.success(res.message)
             this.getAccountList()
           } else {
-            this.$message.success(res.message)
+            this.$message.warning(res.message)
           }
         })
         .catch(err => {
           console.log(err)
-          this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+          this.$message.error(`解除绑定失败${params.platform.toUpperCase()}`)
         })
         .finally(() => {
           this.accountList[idx].loading = false
