@@ -24,9 +24,6 @@
     </el-form>
     <div class="oauth-box">
       <h1 class="oauth-title">{{ $t('auth.otherAccount') }}</h1>
-      <p class="red" style="margin-bottom: 10px;">
-        {{ $t('auth.loginWarning') }}
-      </p>
       <div class="oauth">
         <div>
           <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
