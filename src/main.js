@@ -7,7 +7,7 @@ import Navigation from 'vue-navigation'
 // 复制内容
 import VueClipboard from 'vue-clipboard2'
 
-// import VConsole from 'vconsole'
+import VConsole from 'vconsole'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -43,7 +43,7 @@ import point from './config/points'
 Vue.prototype.$point = point
 // 积分配置 end
 
-// new VConsole()
+new VConsole()
 
 Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$API = API
