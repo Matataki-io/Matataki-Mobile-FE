@@ -400,7 +400,7 @@ export default {
     ...mapActions(['signOut', 'getNotificationCounters']),
     btnsignOut() {
       this.signOut()
-      this.jumpTo({ name: 'index' })
+      this.jumpTo({ name: 'article' })
       this.$toast.success({
         duration: 1500,
         message: this.$t('success.logoutSuccess')

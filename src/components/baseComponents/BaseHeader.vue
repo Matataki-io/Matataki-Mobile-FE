@@ -157,7 +157,7 @@ export default {
       if (this.customizeHomeFunc) {
         this.$emit('headerHomeFunc')
       } else {
-        this.$router.push({ name: 'index' })
+        this.$router.push({ name: 'article' })
       }
     },
     addHandleScroll() {
