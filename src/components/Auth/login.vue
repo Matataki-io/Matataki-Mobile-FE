@@ -110,9 +110,18 @@ export default {
     getWeixinCode() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if(isWeixin()) {
+        this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'WeixinLogin', query: { from: this.$route.name } })
       } else {
         this.$message.error('请在微信中打开此网页')
+      }
+    },
+    setPathToSession(name) {
+      if (window.sessionStorage) {
+        const { pathname, search, hash } = window.location
+        sessionStorage.setItem(name, pathname + search + hash)
+      } else {
+        console.log('don\'t support sessionStorage')
       }
     },
     async loginWithMetaMask() {
