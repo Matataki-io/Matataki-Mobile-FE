@@ -265,7 +265,6 @@
 </template>
 
 <script>
-import {  Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
