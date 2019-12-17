@@ -265,8 +265,6 @@
 </template>
 
 <script>
-// import ScrollMagic from 'scrollmagic'
-// import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
@@ -311,97 +309,101 @@ export default {
     }
   },
   mounted() {
-    this._setDefaultStyle()
-
     this.$nextTick(() => {
-      this._resizeHomeHeight()
       window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
-      this._initScrollAnimation()
+      this._resizeHomeHeight()
+      this.initScrollAnimation()
+      this.setDefaultStyle()
     })
   },
   methods: {
-    _initScrollAnimation() {
-      const initStory = () => {
-        const componentStory = document.querySelectorAll('.component-story')
-        const controller = new ScrollMagic.Controller()
-        // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+    initScrollAnimation() {
+      try {
+          const initStory = () => {
+          const componentStory = document.querySelectorAll('.component-story')
+          const controller = new ScrollMagic.Controller()
+          // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
 
-        componentStory.forEach((el, i) => {
-          const childHeaderInner = el.querySelector(
-            '.component-story__header .component-story__inner'
-          )
-          const childSumaryInner = el.querySelector(
-            '.component-story__summary .component-story__inner'
-          )
+          componentStory.forEach((el, i) => {
+            const childHeaderInner = el.querySelector(
+              '.component-story__header .component-story__inner'
+            )
+            const childSumaryInner = el.querySelector(
+              '.component-story__summary .component-story__inner'
+            )
 
-          const timelinemax = new TimelineMax()
+            const timelinemax = new TimelineMax()
 
-          // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
-          timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
-          timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
+            // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+            timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+            timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
-          // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
+            // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
 
-          const scene = new ScrollMagic.Scene({
-            triggerElement: el,
-            triggerHook: 1,
-            duration: '200%'
+            const scene = new ScrollMagic.Scene({
+              triggerElement: el,
+              triggerHook: 1,
+              duration: '200%'
+              // offset: -clientHeight
+            })
+              .setTween(timelinemax)
+              // .addIndicators({
+              //   colorTrigger: 'black',
+              //   colorStart: 'black',
+              //   colorEnd: 'black',
+              //   indent: 10
+              // })
+              .addTo(controller)
+          })
+        }
+        const initRoadmap = () => {
+          const controller = new ScrollMagic.Controller()
+          const tl = new TimelineMax()
+          const roadmap = document.querySelector('.roadmap')
+          const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
+
+          roadmapBlock.forEach((el, i) => {
+            tl.to(el, 0.3, {
+              x: function() {
+                return i % 2 === 0 ? 0 : '100%'
+              },
+              y: 0,
+              opacity: 1,
+              ease: Linear.easeNone
+            })
+          })
+
+          const scene1 = new ScrollMagic.Scene({
+            triggerElement: roadmap
+            // triggerHook: 1,
+            // duration: '160%'
             // offset: -clientHeight
           })
-            .setTween(timelinemax)
+            .setTween(tl)
             // .addIndicators({
-            //   colorTrigger: 'black',
-            //   colorStart: 'black',
-            //   colorEnd: 'black',
-            //   indent: 10
+            // colorTrigger: 'black',
+            // colorStart: 'black',
+            // colorEnd: 'black',
+            // indent: 10
             // })
             .addTo(controller)
-        })
+        }
+        initStory()
+        initRoadmap()
+      } catch (error) {
+        console.log('initScrollAnimation', error)
       }
-
-      const initRoadmap = () => {
-        const controller = new ScrollMagic.Controller()
-        const tl = new TimelineMax()
-        const roadmap = document.querySelector('.roadmap')
-        const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
-
-        roadmapBlock.forEach((el, i) => {
-          tl.to(el, 0.3, {
-            x: function() {
-              return i % 2 === 0 ? 0 : '100%'
-            },
-            y: 0,
-            opacity: 1,
-            ease: Linear.easeNone
-          })
-        })
-
-        const scene1 = new ScrollMagic.Scene({
-          triggerElement: roadmap
-          // triggerHook: 1,
-          // duration: '160%'
-          // offset: -clientHeight
-        })
-          .setTween(tl)
-          // .addIndicators({
-          // colorTrigger: 'black',
-          // colorStart: 'black',
-          // colorEnd: 'black',
-          // indent: 10
-          // })
-          .addTo(controller)
-      }
-      initStory()
-      initRoadmap()
     },
     _resizeHomeHeight() {
+      console.log('clientHeight', '???????')
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      console.log('clientHeight', clientHeight)
       if (clientHeight < 600) {
+        this.$refs.home.style.height = 600 + 'px'
         this.$refs.evaluation.style['padding-top'] = ((740 / 2) - (257 + 113)) + 'px'
         this.$refs.evaluation.style.height = (740 - 257) + 'px'
         return false
-      } 
-      else  {
+      } else {
         this.$refs.home.style.height = clientHeight + 'px'
         this.$refs.evaluation.style['padding-top'] = ((clientHeight / 2) - (257 + 113)) + 'px'
         this.$refs.evaluation.style.height = (clientHeight - 257) + 'px'
@@ -410,62 +412,70 @@ export default {
     /**
      * 设置默认样式, 从css里面抽离出来, 减少样式的印象
      */
-    _setDefaultStyle() {
-      const { btnList } = this.$refs
-      const timeline = new TimelineLite()
+    setDefaultStyle() {
+      try {
+        const { btnList } = this.$refs
+        const timeline = new TimelineLite()
 
-      TweenMax.set('.btn-list', {
-        opacity: 0,
-        y: 0
-      })
+        TweenMax.set('.btn-list', {
+          opacity: 0,
+          y: 0
+        })
 
-      TweenMax.set('.story', {
-        perspective: 1000
-      })
-      // TweenMax.set('.component-story', {
-      //   z: -40
-      // })
-      TweenMax.set('.component-story .component-story__header .component-story__inner', {
-        y: '-10%'
-      })
-      TweenMax.set('.roadmap .roadmap-time__block', {
-        y: 20,
-        opacity: 0
-      })
+        TweenMax.set('.story', {
+          perspective: 1000
+        })
+        // TweenMax.set('.component-story', {
+        //   z: -40
+        // })
+        TweenMax.set('.component-story .component-story__header .component-story__inner', {
+          y: '-10%'
+        })
+        TweenMax.set('.roadmap .roadmap-time__block', {
+          y: 20,
+          opacity: 0
+        })
+      } catch (error) {
+        console.log('setDefaultStyle', error)
+      }
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btn, btnList } = this.$refs
-      const timeline = new TimelineLite()
-      const btnVisible = btn.getAttribute('data-visible') === 'true'
-      btn.setAttribute('data-visible', !btnVisible)
+      try {
+        const { btn, btnList } = this.$refs
+        const timeline = new TimelineLite()
+        const btnVisible = btn.getAttribute('data-visible') === 'true'
+        btn.setAttribute('data-visible', !btnVisible)
 
-      if (btnVisible) {
-        timeline.to(btn, 0.2, {
-          rotation: 0
-        })
-        timeline.to(
-          btnList,
-          0.2,
-          {
-            y: 0,
-            opacity: 0
-          },
-          '-=0.1'
-        )
-      } else {
-        timeline.to(btn, 0.2, {
-          rotation: 45
-        })
-        timeline.to(
-          btnList,
-          0.2,
-          {
-            y: 10,
-            opacity: 1
-          },
-          '-=0.1'
-        )
+        if (btnVisible) {
+          timeline.to(btn, 0.2, {
+            rotation: 0
+          })
+          timeline.to(
+            btnList,
+            0.2,
+            {
+              y: 0,
+              opacity: 0
+            },
+            '-=0.1'
+          )
+        } else {
+          timeline.to(btn, 0.2, {
+            rotation: 45
+          })
+          timeline.to(
+            btnList,
+            0.2,
+            {
+              y: 10,
+              opacity: 1
+            },
+            '-=0.1'
+          )
+        }
+      } catch (error) {
+        console.log('showMoreMenu', error)
       }
     },
     /** 翻页 */
