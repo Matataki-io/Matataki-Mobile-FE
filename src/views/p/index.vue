@@ -86,7 +86,7 @@
         <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
-        <div v-if="!hasPaied && article.channel_id === 1" class="lock-line">
+        <div v-if="(isTokenArticle || isPriceArticle) && (!hasPaied && article.channel_id === 1)" class="lock-line">
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
