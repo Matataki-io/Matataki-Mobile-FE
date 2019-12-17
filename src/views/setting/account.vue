@@ -210,6 +210,13 @@ export default {
           this.accountList[idx].loading = false
         })
     },
+    setPathToSession() {
+      if (window.sessionStorage) {
+        sessionStorage.setItem('wechatFrom', 'buildAccount')
+      } else {
+        console.log('don\'t support sessionStorage')
+      }
+    },
     async bindFunc(type, typename, idx) {
       if (type === 'email') {
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
@@ -217,6 +224,7 @@ export default {
           name: 'login-email'
         })
       } else if (type === 'weixin') {
+        this.setPathToSession()
         this.$router.push({
           name: 'WeixinLogin',
           query: {
