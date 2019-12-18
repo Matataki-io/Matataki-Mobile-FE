@@ -594,7 +594,7 @@ export default {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/p/${article.id}`
+      const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
       const shareLink = this.isLogined
         ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
