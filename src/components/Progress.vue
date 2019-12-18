@@ -1,6 +1,6 @@
 <template>
   <div role="progressbar" class="progress">
-    <div class="progress-circle" style="height: 60px; width: 60px;">
+    <div class="progress-circle" style="height: 37px; width: 37px;">
       <svg viewBox="0 0 100 100">
         <path
           d="
@@ -10,7 +10,7 @@
         a 47 47 0 1 1 0 -94
         "
           stroke="#e5e9f2"
-          stroke-width="5"
+          stroke-width="6"
           fill="none"
           class="progress-circle__track"
           style="stroke-dasharray: 300px,300px; stroke-dashoffset: 0px;"
@@ -25,7 +25,7 @@
           stroke="#542DE0"
           fill="none"
           stroke-linecap="round"
-          stroke-width="5"
+          stroke-width="6"
           class="progress-circle__path"
           :style="`stroke-dasharray: ${strokeDasharray}px, 300px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`"
         />
@@ -91,7 +91,6 @@ export default {
   left: 0;
   width: 100%;
   text-align: center;
-  margin: 0;
   transform: translateY(-50%);
   color: #606266;
   display: inline-block;
