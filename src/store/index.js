@@ -334,6 +334,9 @@ export default new Vuex.Store({
     async clearNotificationCounter({ commit }, { provider }) {
       await notificationAPI.readNotifications(provider)
       commit('clearNotifyCounters', provider)
+    },
+    setLoginModal({commit}, status) {
+      commit('setLoginModal', status)
     }
   },
   mutations: {
