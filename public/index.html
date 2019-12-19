@@ -1,58 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <meta name="referrer" content="no-referrer" />
-    <!-- twitter -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="瞬MATATAKI—发布瞬间，灵感永存" />
-    <meta name="twitter:description" content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
-    <meta name="twitter:image" content="https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png" />
-    <!-- facebook share -->
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="瞬MATATAKI—发布瞬间，灵感永存" />
-    <meta property="og:description"   content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
-    <meta property="og:image"         content="https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>瞬MATATAKI</title>
 
-    <meta name="description" content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
-    <meta name="keywords" content="岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <!-- <meta name="referrer" content="no-referrer" /> -->
+  <!-- twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="瞬MATATAKI—发布瞬间，灵感永存" />
+  <meta name="twitter:description"
+    content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
+  <meta name="twitter:image"
+    content="https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png" />
+  <!-- facebook share -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="瞬MATATAKI—发布瞬间，灵感永存" />
+  <meta property="og:description"
+    content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
+  <meta property="og:image"
+    content="https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png" />
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>瞬MATATAKI</title>
 
-    <!-- import stylesheet -->
-    <script>
-      var _hmt = _hmt || [];
-      (function() {
-          var arr = ['matataki.io','www.matataki.io','smartsignature.frontenduse.top']
-          var host = window.location.host
-          // includes 在 ie 环境有点...
-          function insertBeforeScript(script) {
-              var hm = document.createElement("script");
-              hm.src = script;
-              var s = document.getElementsByTagName("script")[0];
-              s.parentNode.insertBefore(hm, s);
-            }
-          if (host === arr[0] || host === arr[1] || host === arr[2]) insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=m-2.5.0&vc=2.5.0')
-          if (host === arr[0] || host === arr[1]) insertBeforeScript('https://hm.baidu.com/hm.js?ab52513ed2f153e147e10464ecc5180f')
-          else if (host === arr[2]) insertBeforeScript('https://hm.baidu.com/hm.js?b66806c8683f2f15c2280443a1b0e3d8')
-          else console.log('测试环境不会写入统计代码')
-      })();
+  <meta name="description"
+    content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
+  <meta name="keywords"
+    content="岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS" />
+  <!-- import stylesheet -->
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var arr = ['matataki.io', 'www.matataki.io', 'smartsignature.frontenduse.top']
+      var host = window.location.host
+      // includes 在 ie 环境有点...
+      function insertBeforeScript(script) {
+        var hm = document.createElement("script");
+        hm.src = script;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      }
+      if (host === arr[0] || host === arr[1] || host === arr[2]) {
+        insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=m-2.5.0&vc=2.5.0')
+        insertBeforeScript("https://hm.baidu.com/hm.js?92220991ac77a90c23811a011a86f722")
+      }
+      else insertBeforeScript("https://hm.baidu.com/hm.js?aa6eb4e79af4a742f38cd4661071dfb3")
+    })();
+  </script>
+</head>
 
-    </script>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but matataki doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <script src="https://cdn.bootcss.com/gsap/latest/TimelineLite.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/TimelineMax.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
-    <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-    <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
-    <!-- built files will be auto injected -->
-  </body>
+<body>
+  <noscript>
+    <strong>We're sorry but matataki doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <script src="https://cdn.bootcss.com/gsap/latest/TimelineLite.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/TimelineMax.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
+  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>

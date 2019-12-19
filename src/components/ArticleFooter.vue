@@ -1,39 +1,43 @@
 <template>
   <footer class="sun-footer">
-    <div class="progress">
-      <Progress :p="timeCount" :clicked="clicked">
-        <template slot="text">
-          <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
-          <div v-show="type === 'great' || type === 'bullshit'" class="has-reward-box">
-            <router-link :to="{ name: 'point' }">
-              <span class="has-reward">{{ $t('articleFooter.received') }}{{ points.all }}</span>
-            </router-link>
-          </div>
-          <!-- <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" /> -->
-          <!-- <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" /> -->
-        </template>
-      </Progress>
+    <div class="evaluation">
+      <div class="fl purple-box">
+        <div>
+          <Progress :p="timeCount" :clicked="clicked">
+            <template slot="text">
+              <span v-show="!clicked" class="center-text">+{{ readPoint }}</span>
+              <div v-show="type === 'great' || type === 'bullshit'" class="has-reward-box">
+                <router-link :to="{ name: 'point' }">
+                  <span class="has-reward">+{{ points.all }}</span>
+                </router-link>
+              </div>
+              <!-- <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" /> -->
+              <!-- <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" /> -->
+            </template>
+          </Progress>
+        </div>
+        <div class="icon-center fl" :class="renderIconSet('great')">
+          <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
+          <p class="tag">{{ token && likes }}</p>
+        </div>
+        <div class="icon-center fl" :class="renderIconSet('bullshit')">
+          <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
+          <p class="tag">{{ token && dislikes }}</p>
+        </div>
+      </div>
     </div>
     <div class="sun-right-btns">
-      <div :class="renderIconSet('great')">
-        <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
-        <p class="tag">{{ $t('articleFooter.like') }}{{ token && likes }}</p>
-      </div>
-      <div :class="renderIconSet('bullshit')">
-        <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
-        <p class="tag">{{ $t('articleFooter.unlike') }}{{ token && dislikes }}</p>
-      </div>
-      <div :class="bookmarkBtnClass">
+      <div class="icon-center" :class="bookmarkBtnClass">
         <svg-icon
           :icon-class="'bookmark-solid'"
           class="borderless-icon-btn"
           @click="toggleBookmark"
         />
-        <p class="tag">{{ $t('articleFooter.bookmark') }}</p>
+        <!-- <p class="tag">{{ $t('articleFooter.bookmark') }}</p> -->
       </div>
-      <div class="icon-set">
+      <div class="icon-center icon-set">
         <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
-        <p class="tag">{{ $t('share') }}</p>
+        <!-- <p class="tag">{{ $t('share') }}</p> -->
       </div>
 
       <!-- {{ $t('share') }} -->
@@ -352,7 +356,7 @@ export default {
 }
 .center-text {
   color: #542de0;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
 }
 .has-reward-box {
@@ -362,16 +366,20 @@ export default {
 }
 .has-reward {
   color: #542de0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
-.progress {
-  position: absolute;
-  z-index: 100;
-  left: 5px;
-  top: -15px;
-  padding: 5px;
-  background-color: #ffffff;
+.evaluation {
+  flex: 1;
+  height: 37px;
+  margin: 8px 0px 8px 25px;
+  .purple-box {
+    margin-bottom: -6px;
+    background: #EBE6FF;
+    height: 37px;
+    border-radius: 1000px;
+    display: inline-flex;
+  }
 }
 .sun-right-btns {
   display: flex;
@@ -419,7 +427,6 @@ export default {
 .borderless-icon-btn {
   width: 25px;
   height: 25px;
-  margin: 0 15px;
 }
 .clicked {
   color: rgb(73, 60, 216);
@@ -429,5 +436,11 @@ export default {
 }
 .icon-set p.tag {
   text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+.icon-center {
+  margin: auto 15px;
 }
 </style>

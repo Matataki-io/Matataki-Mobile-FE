@@ -6,7 +6,7 @@
         <svg-icon slot="reference" class="help-icon" icon-class="help" />
       </el-popover>
     </p>
-    <div v-if="!isHide" class="ipfs-hash">
+    <div v-if="isHide" class="ipfs-hash">
       <svg-icon class="copy-hash" icon-class="copy" @click="copyText(getCopyIpfsHash)" />
       <router-link class="ipfs" :to="{ name: 'ipfs', params: { hash: hash } }">
         IPFS Hash: {{ hash || 'Loading...' }}
@@ -26,7 +26,7 @@ export default {
     },
     isHide: {
       type: Boolean,
-      required: true
+      required: false
     }
   },
   data() {

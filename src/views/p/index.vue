@@ -594,7 +594,7 @@ export default {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/p/${article.id}`
+      const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
       const shareLink = this.isLogined
         ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
         : articleUrl
@@ -694,10 +694,14 @@ export default {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
     },
-    // 如果是自己的文章 显示hash 否则走 持通证阅读
+    // 如果是自己文章始终看到hash
+    // 如果不是, 只要是付费文章都不能看到无论是否购买
     isHideIpfsHash() {
-      if (this.isMe(this.article.uid)) return false
-      else return this.isTokenArticle || this.isPriceArticle
+      if (this.isMe(this.article.uid)) return true
+      else {
+        if (this.article.require_holdtokens || this.article.require_buy) return false
+        return true
+      }
     }
   },
   watch: {

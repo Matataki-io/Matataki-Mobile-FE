@@ -157,7 +157,6 @@ export default {
     deleted: '已下架'
   },
   articleFooter: {
-    received: '已领取',
     like: '推荐',
     likes: '已推荐',
     unlike: '不推荐',
