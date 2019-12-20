@@ -3,7 +3,7 @@
     <BasePull
       :params="pull.params"
       :api-url="pull.apiUrl"
-      :loading-text="$t('not')"
+      :loading-text="''"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       :need-access-token="true"
       :auto-request-time="0"
@@ -24,6 +24,8 @@
 <script>
 import homeLayout from '@/components/home/home_layout.vue'
 import fanCard from '@/components/fan_card/index.vue'
+import { mapGetters } from 'vuex'
+
 export default {
   components: {
     homeLayout,
@@ -32,11 +34,19 @@ export default {
   data() {
     return {
       pull: {
-        params: {},
+        params: {
+          login: null
+        },
         apiUrl: 'tokenTokenList',
         list: []
       }
     }
+  },
+  computed: {
+    ...mapGetters(['isLogined'])
+  },
+  created() {
+    if (this.isLogined) this.pull.params = {} // 登录了才能请求数据, login: null只是为了阻断请求
   },
   methods: {
     getListData(res) {
