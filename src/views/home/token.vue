@@ -1,0 +1,90 @@
+<template>
+  <homeLayout>
+    <BasePull
+      :params="pull.params"
+      :api-url="pull.apiUrl"
+      :loading-text="$t('not')"
+      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+      :need-access-token="true"
+      :auto-request-time="0"
+      @getListData="getListData"
+    >
+      <div class="list">
+        <fanCard class="list-card" v-for="item in pull.list" :key="item.token_id" :card="item"></fanCard>
+        <router-link :to="{name: 'token'}" class="list-card add">
+          <svg-icon icon-class="add1" />
+          <span>购买Fan票</span>
+        </router-link>
+      </div>
+    </BasePull>
+  </homeLayout>
+</template>
+
+
+<script>
+import homeLayout from '@/components/home/home_layout.vue'
+import fanCard from '@/components/fan_card/index.vue'
+export default {
+  components: {
+    homeLayout,
+    fanCard
+  },
+  data() {
+    return {
+      pull: {
+        params: {},
+        apiUrl: 'tokenTokenList',
+        list: []
+      }
+    }
+  },
+  methods: {
+    getListData(res) {
+      this.pull.list = res.list
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.head-sort {
+  width: 100px;
+}
+.list {
+  padding: 0 20px 20px;
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+    width: 0;
+    height: 0;
+  }
+  .list-card {
+    float: left;
+    margin-top: 20px;
+    width: calc(50% - 10px);
+    height: 222px;
+    &:nth-child(2n) {
+      margin-left: 20px;
+    }
+    &.add {
+      border: 1px dashed #dbdbdb;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 40px;
+      color: #dbdbdb;
+      overflow: hidden;
+      text-decoration: none;
+      span {
+        font-size: 12px;
+        margin: 4px 0 0;
+        padding: 0;
+        color: #dbdbdb;
+      }
+    }
+  }
+}
+</style>
