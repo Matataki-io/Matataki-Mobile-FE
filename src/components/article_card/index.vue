@@ -1,17 +1,16 @@
 <template>
   <div class="card">
     <div class="card-head">
-      <div class="card-head__info">
+      <router-link :to="{name: 'user-id', params: {id: card.uid}}" class="card-head__info">
         <avatar class="info-avatar" :src="avatar"></avatar>
         <span>{{card.nickname || card.author}}</span>
-      </div>
+      </router-link>
       <span class="card-head__time">{{friendlyDate}}</span>
     </div>
     <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
       <p class="card-title" v-clampy="2">{{card.title}}</p>
-      <p class="card-content" v-clampy="2">{{card.short_content}}</p>
-    </router-link>
-    <div class="card-footer">
+      <p class="card-content" v-if="card.short_content" v-clampy="2">{{card.short_content}}</p>
+      <div class="card-footer">
       <div class="card-footer__lock">
         <img
           v-if="card.require_holdtokens || card.require_buy"
@@ -31,6 +30,7 @@
         </div>
       </div>
     </div>
+    </router-link>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ export default {
     &__info {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      flex: 1;
       span {
         font-size: 12px;
         font-weight: 500;
@@ -106,6 +106,7 @@ export default {
   &-link {
     display: inline-block;
     text-decoration: none;
+    width: 100%;
   }
   &-title {
     font-size: 16px;
