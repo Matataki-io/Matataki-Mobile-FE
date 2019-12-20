@@ -65,7 +65,8 @@ export default {
       pull: {
         params: {
           filter: 3,
-          sort: 'popular-desc'
+          sort: 'popular-desc',
+          // extra: 'short_content' // 好像接口没有提供这个功能
         },
         autoRequestTime: 0,
         apiUrl: 'minetokenRelated',
