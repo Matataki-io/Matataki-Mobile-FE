@@ -44,6 +44,33 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/article/token',
+      name: 'article-token',
+      component: () =>
+        import(/* webpackChunkName: "article-token", webpackPrefetch: true  */ './views/home/token.vue'),
+      meta: {
+        title: 'fan票圈-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/article/follow',
+      name: 'article-follow',
+      component: () =>
+        import(/* webpackChunkName: "article-follow", webpackPrefetch: true  */ './views/home/follow.vue'),
+      meta: {
+        title: '我的关注-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/ring/:id',
+      name: 'ring-id',
+      component: () =>
+        import(/* webpackChunkName: "article-follow", webpackPrefetch: true  */ './views/ring/index.vue'),
+      meta: {
+        title: 'fan票圈详情-瞬MATATAKI'
+      }
+    },
+    {
       path: '/shop',
       name: 'shop',
       component: () =>

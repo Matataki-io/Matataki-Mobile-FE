@@ -11,7 +11,7 @@
       <router-link
         v-for="(item, index) in navList"
         :key="index"
-        :class="item.name === $route.name && 'active'"
+        :class="item.urlList.includes($route.name) && 'active'"
         :to="{ name: item.name }"
       >
         <span>
@@ -54,19 +54,27 @@ export default {
       return [
         {
           title: this.$t('home.navHome'),
-          name: 'index'
+          name: 'index',
+          urlList: ['index']
         },
+        // {
+        //   title: this.$t('home.navArticle'),
+        //   name: 'article'
+        // },
         {
-          title: this.$t('home.navArticle'),
-          name: 'article'
+          title: '创作大厅',
+          name: 'article',
+          urlList: ['article', 'article-token', 'article-follow']
         },
         {
           title: this.$t('home.navShop'),
-          name: 'shop'
+          name: 'shop',
+          urlList: ['shop']
         },
         {
           title: 'Fan票',
-          name: 'token'
+          name: 'token',
+          urlList: ['token']
         }
       ]
     },

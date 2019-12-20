@@ -30,7 +30,10 @@ import {
   Image,
   Checkbox,
   Message,
-  InfiniteScroll
+  InfiniteScroll,
+  Carousel,
+  CarouselItem,
+  CheckboxGroup,
 } from 'element-ui'
 
 Vue.use(Input)
@@ -59,6 +62,9 @@ Vue.use(Input)
   .use(RadioButton)
   .use(Checkbox)
   .use(InfiniteScroll)
+  .use(Carousel)
+  .use(CarouselItem)
+  .use(CheckboxGroup)
 
 
 Vue.prototype.$message = Message

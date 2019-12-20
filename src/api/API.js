@@ -592,6 +592,8 @@ minetokenGetResources(tokenId) {
 
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
+  // 获取推荐文章或者商品
+  postsRecommend(params) { return request.get('/posts/recommend', params) },
   // -------------------------------- 账号绑定 --------------------------------
   // account binding
   accountBind(params) { return request.post('/account/binding', params) },

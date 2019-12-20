@@ -70,7 +70,7 @@ export default {
         apiUrl: 'minetokenRelated',
         params: {
           filter: 3,
-          sort: 'popular-desc'
+          sort: 'time-desc'
         }
       },
       currentPage: 1,
