@@ -2,9 +2,9 @@
   <div class="container">
     <home-head @login="showSidebar = true" />
     <div class="carousel">
-      <van-swipe :autoplay="300000" indicator-color="#542DE0" :height="170">
+      <van-swipe :autoplay="3000" indicator-color="#542DE0" :height="170">
         <van-swipe-item v-for="(item, index) in sipeList" :key="index">
-          <div class="swip-container">
+          <div class="swip-container" @click="viewP(item.id)">
             <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title" />
             <p>{{item.title}}</p>
           </div>
@@ -77,6 +77,14 @@ export default {
     },
     cover(src) {
       return src ? this.$API.getImg(src) : ''
+    },
+    viewP(id) {
+      this.$router.push({
+        name: 'p-id',
+        params: {
+          id: id
+        }
+      })
     }
   }
 }
@@ -138,12 +146,15 @@ export default {
         left: 16px;
         right: 16px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: bold;
+        letter-spacing: 1px;
         color: rgba(255, 255, 255, 1);
         line-height: 20px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        padding: 0;
+        margin: 0;
       }
     }
   }
