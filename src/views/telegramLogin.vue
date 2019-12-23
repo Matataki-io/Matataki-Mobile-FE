@@ -2,7 +2,6 @@
   <div class="container" v-loading="loading">
     <TelegramLogin
       @callback="telegramLogin"
-      :userpic="false"
       mode="callback"
       telegram-login="matataki_bot"
       request-access="write"
@@ -38,6 +37,7 @@ export default {
           } else {
             this.$message.warning(res.message)
           }
+          this.$router.back(-1)
         })
         .catch(err => {
           console.log(err)
@@ -54,5 +54,8 @@ export default {
 .container {
   min-height: 100%;
   max-height: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 </style>
