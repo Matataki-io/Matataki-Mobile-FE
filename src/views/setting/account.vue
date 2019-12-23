@@ -142,6 +142,9 @@ export default {
   },
   mounted() {
     this.getAccountList()
+    this.$navigation.once('back', (to, from) => {
+      window.location.reload()
+    })
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
