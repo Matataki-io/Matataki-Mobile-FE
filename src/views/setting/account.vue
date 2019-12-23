@@ -32,6 +32,14 @@
           <span v-else>&nbsp;</span>
         </el-radio>
       </div>
+      <TelegramLogin
+        @callback="telegramLogin"
+        :userpic="false"
+        mode="callback"
+        telegram-login="matataki_bot"
+        request-access="write"
+        radius="6"
+      />
       <p class="list-p">
         瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。
       </p>
@@ -47,9 +55,12 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 // import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
+import TelegramLogin from '@/components/TelegramLogin'
 
 export default {
-  components: {},
+  components: {
+    TelegramLogin
+  },
   data() {
     return {
       accountRadio: '',
@@ -140,7 +151,9 @@ export default {
     ...mapActions('metamask', ['getSignature', 'fetchAccount']),
     ...mapActions('vnt', ['bind']),
     ...mapActions(['signOut']),
-
+    telegramLogin(user) {
+      alert(JSON.stringify(user))
+    },
     accountBild(params, idx) {
       this.accountList[idx].loading = true
       this.$API
