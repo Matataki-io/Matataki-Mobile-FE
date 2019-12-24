@@ -2,8 +2,8 @@
   <div class="container" v-loading="loading">
     <TelegramLogin
       @callback="telegramLogin"
+      :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
-      telegram-login="matataki_test_mobile_bot"
       request-access="write"
       radius="6"
     />
@@ -17,10 +17,10 @@ export default {
   components: {
     TelegramLogin
   },
-  computed: {},
   data() {
     return {
-      loading: false
+      loading: false,
+      TELEGRAM_BOT_NAME: process.env.VUE_APP_TELEGRAM_BOT
     }
   },
   methods: {
