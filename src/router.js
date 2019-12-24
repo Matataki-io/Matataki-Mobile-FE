@@ -133,7 +133,7 @@ const router = new VueRouter({
     {
       path: '/login/telegram',
       name: 'login-telegram',
-      component: () => import(/* webpackChunkName: "telegramLogin" */ './views/telegramLogin.vue'),
+      component: () => import(/* webpackChunkName: "telegramLogin" */ './views/login/telegram.vue'),
       mata: {
         title: 'Telegram Login'
       }
