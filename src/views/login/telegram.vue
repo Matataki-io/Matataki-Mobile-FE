@@ -3,7 +3,7 @@
     <TelegramLogin
       @callback="telegramLogin"
       mode="callback"
-      telegram-login="matataki_bot"
+      telegram-login="matataki_test_mobile_bot"
       request-access="write"
       radius="6"
     />
@@ -57,5 +57,6 @@ export default {
   display: flex;
   align-content: center;
   justify-content: center;
+  padding-top: 10%;
 }
 </style>
