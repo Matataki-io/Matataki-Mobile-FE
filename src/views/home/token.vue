@@ -1,5 +1,5 @@
 <template>
-  <homeLayout>
+  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
     <BasePull
       :params="pull.params"
       :api-url="pull.apiUrl"
@@ -17,19 +17,25 @@
         </router-link>
       </div>
     </BasePull>
-  </homeLayout>
+  </tab>
 </template>
 
 
 <script>
-import homeLayout from '@/components/home/home_layout.vue'
+import tab from './tab.vue'
 import fanCard from '@/components/fan_card/index.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    homeLayout,
+    tab,
     fanCard
+  },
+  props: {
+    idx: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {

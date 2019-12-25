@@ -18,23 +18,33 @@
       <slot name="sort" />
     </div>
     <slot /> -->
+    <articleTab v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
+    <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
+    <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 
 <script>
-import homeHead from '../../views/home/components/homeHead.vue'
+import homeHead from './components/homeHead.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
+import articleTab from './index.vue'
+import tokenTab from './token.vue'
+import followTab from './follow.vue'
 
 export default {
   components: {
     homeHead,
-    Sidebar
+    Sidebar,
+    articleTab,
+    tokenTab,
+    followTab
   },
   data() {
     return {
       showSidebar: false,
+      idx: 0,
       sipeList: [
         {
           src: '',
@@ -71,6 +81,9 @@ export default {
           id: id
         }
       })
+    },
+    setIdx(i) {
+      this.idx = i
     }
   }
 }

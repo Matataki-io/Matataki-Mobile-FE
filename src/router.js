@@ -38,27 +38,9 @@ const router = new VueRouter({
       path: '/article',
       name: 'article',
       component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/index.vue'),
+        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
       meta: {
         title: '文章-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/article/token',
-      name: 'article-token',
-      component: () =>
-        import(/* webpackChunkName: "article-token", webpackPrefetch: true  */ './views/home/token.vue'),
-      meta: {
-        title: 'fan票圈-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/article/follow',
-      name: 'article-follow',
-      component: () =>
-        import(/* webpackChunkName: "article-follow", webpackPrefetch: true  */ './views/home/follow.vue'),
-      meta: {
-        title: '我的关注-瞬MATATAKI'
       }
     },
     {
