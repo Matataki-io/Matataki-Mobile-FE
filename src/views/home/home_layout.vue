@@ -11,50 +11,46 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <div class="head">
+    <!-- <div class="head">
       <div class="head-title">
         <router-link v-for="(item, index) in head" :to="{name: item.url}" :key="index" :class="item.url === $route.name && 'active'">{{item.lab}}</router-link>
       </div>
       <slot name="sort" />
     </div>
-    <slot />
+    <slot /> -->
+    <articleTab v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
+    <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
+    <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 
 <script>
-import homeHead from '../../views/home/components/homeHead.vue'
+import homeHead from './components/homeHead.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
+import articleTab from './index.vue'
+import tokenTab from './token.vue'
+import followTab from './follow.vue'
 
 export default {
   components: {
     homeHead,
-    Sidebar
+    Sidebar,
+    articleTab,
+    tokenTab,
+    followTab
   },
   data() {
     return {
       showSidebar: false,
+      idx: 0,
       sipeList: [
         {
           src: '',
           title: ''
         }
       ],
-      head: [
-        {
-          url: 'article',
-          lab: '综合创作'
-        },
-        {
-          url: 'article-token',
-          lab: 'Fan票圈'
-        },
-        {
-          url: 'article-follow',
-          lab: '我的关注'
-        }
-      ]
     }
   },
   created() {
@@ -85,6 +81,9 @@ export default {
           id: id
         }
       })
+    },
+    setIdx(i) {
+      this.idx = i
     }
   }
 }
@@ -97,31 +96,6 @@ export default {
   padding-top: 46px;
 }
 
-.head {
-  margin: 10px 0 0;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &-title {
-    display: flex;
-    align-items: center;
-    a {
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(178, 178, 178, 1);
-      line-height: 20px;
-      margin-right: 20px;
-      text-decoration: none;
-      &:nth-last-child(1) {
-        margin-right: 0;
-      }
-      &.active {
-        color: rgba(0, 0, 0, 1);
-      }
-    }
-  }
-}
 </style>
 
 <style lang="less">

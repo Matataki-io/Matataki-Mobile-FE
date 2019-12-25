@@ -1,5 +1,5 @@
 <template>
-  <homeLayout>
+  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
     <div class="list">
     <BasePull
       :params="pull.params"
@@ -13,18 +13,24 @@
       <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
     </BasePull>
     </div>
-  </homeLayout>
+  </tab>
 </template>
 
 
 <script>
 import artcleCard from '@/components/article_card/index.vue'
-import homeLayout from '@/components/home/home_layout.vue'
+import tab from './tab.vue'
 
 export default {
   components: {
     artcleCard,
-    homeLayout
+    tab
+  },
+  props: {
+    idx: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {
