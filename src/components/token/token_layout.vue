@@ -64,6 +64,8 @@
       <div class="link">
         <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
       </div>
+      <p class="warning" v-if="!minetokenToken.contract_address">fan票正在发布中，请稍后过来操作!</p>
+
     </div>
 
     <div class="introduction">
@@ -273,7 +275,9 @@ export default {
     return {
       shareModalShow: false,
       tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
-      minetokenToken: Object.create(null),
+      minetokenToken: {
+        contract_address: true // v-fi 会取反
+      },
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
@@ -763,5 +767,12 @@ export default {
   .token-title {
     flex: 1;
   }
+}
+
+.warning {
+  padding: 0;
+  margin: 20px 0 0;
+  font-size: 12px;
+  color: red;
 }
 </style>
