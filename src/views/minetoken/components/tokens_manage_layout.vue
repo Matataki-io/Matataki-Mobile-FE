@@ -39,6 +39,8 @@
           </el-button>
         </router-link>
       </div>
+
+      <p class="warning" v-if="!tokenDetailData.token.contract_address">fan票正在发布中，请稍后过来操作!</p>
     </div>
     <div class="line" />
 
@@ -119,7 +121,11 @@ export default {
     return {
       tokenId: null,
       isPublishCoins: false,
-      tokenDetailData: Object.create(null),
+      tokenDetailData: {
+        token: {
+          contract_address: true // // v-fi 会取反
+        }
+      },
       pointLog: {
         params: {
           pagesize: 10
@@ -411,6 +417,13 @@ export default {
 }
 .wrap-open {
   white-space: pre-wrap;
+}
+
+.warning {
+  padding: 0;
+  margin: 20px 0 0;
+  font-size: 12px;
+  color: red;
 }
 </style>
 
