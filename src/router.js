@@ -490,6 +490,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/alipay',
+      name: 'alipay',
+      component: () => import(/* webpackChunkName: "alipay" */ './views/order/alipay.vue'),
+      meta: {
+        title: 'alipay'
+      }
+    },
+    {
       path: '/pay/weixin',
       name: 'WeixinPay',
       component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
