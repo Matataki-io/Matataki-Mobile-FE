@@ -4,12 +4,12 @@
     <div class="ring-logo">
       <img v-if="logo" :src="logoSrc" :alt="symbol">
     </div>
-    <p class="ring-logo-title">{{symbol}}{{name ? (name) : ''}}</p>
+    <p class="ring-logo-title">{{symbol}}{{name ? (name) : '&nbsp;'}}</p>
 
     <div class="ring-head">
       <div class="ring-title">
-        <router-link class="active" :to="{name: 'ring-id', params: { id: $route.params.id }}">全部内容</router-link>
-        <!-- <router-link :to="{name: 'ring'}">只看创始人</router-link> -->
+        <router-link :class="$route.name === 'ring-id' && 'active'" :to="{name: 'ring-id', params: { id: $route.params.id }}">全部内容</router-link>
+        <router-link :class="$route.name === 'ring-id-founder' && 'active'" :to="{name: 'ring-id-founder', params: { id: $route.params.id }}">只看创始人</router-link>
       </div>
       <slot name="sort"></slot>
     </div>

@@ -47,9 +47,18 @@ const router = new VueRouter({
       path: '/ring/:id',
       name: 'ring-id',
       component: () =>
-        import(/* webpackChunkName: "article-follow", webpackPrefetch: true  */ './views/ring/index.vue'),
+        import(/* webpackChunkName: "ring-id", webpackPrefetch: true  */ './views/ring/index.vue'),
       meta: {
         title: 'fan票圈详情-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/ring/:id/founder',
+      name: 'ring-id-founder',
+      component: () =>
+        import(/* webpackChunkName: "ring-id-founder", webpackPrefetch: true  */ './views/ring/founder.vue'),
+      meta: {
+        title: 'fan票圈创始人详情-瞬MATATAKI'
       }
     },
     {

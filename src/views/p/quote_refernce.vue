@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getListData(res) {
-      console.log('res1', res.list)
+      // console.log('res1', res.list)
       this.pull.list = res.list
     },
     getArticle(idInt, popEvent) {
