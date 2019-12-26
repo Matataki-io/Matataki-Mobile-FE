@@ -8,8 +8,8 @@
 
     <div class="ring-head">
       <div class="ring-title">
-        <router-link :class="$route.name === 'ring-id' && 'active'" :to="{name: 'ring-id', params: { id: $route.params.id }}">全部内容</router-link>
-        <router-link :class="$route.name === 'ring-id-founder' && 'active'" :to="{name: 'ring-id-founder', params: { id: $route.params.id }}">只看创始人</router-link>
+        <span :class="$route.name === 'ring-id' && 'active'" @click="toggleRouter('ring-id', $route.params.id)">全部内容</span>
+        <span :class="$route.name === 'ring-id-founder' && 'active'" @click="toggleRouter('ring-id-founder', $route.params.id)">只看创始人</span>
       </div>
       <slot name="sort"></slot>
     </div>
@@ -51,6 +51,12 @@ export default {
         }
       }).catch(err => {
         console.log(err)
+      })
+    },
+    toggleRouter(name, id) {
+      this.$router.replace({
+        name: name,
+        id: id
       })
     }
   }
@@ -95,7 +101,7 @@ export default {
     .ring-title {
       display: flex;
       align-items: center;
-      a {
+      span {
         font-size:14px;
         font-weight:400;
         color:rgba(178,178,178,1);
