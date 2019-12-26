@@ -1,8 +1,8 @@
 <template>
-  <div v-if="refernceTotal !== 0 || berefernceTotal !== 0">
-    <div class="quote" :class="show && 'open'" @click.stop>
+  <div v-show="refernceTotal !== 0 || berefernceTotal !== 0">
+    <div class="quote" :class="show && 'open'" @click.stop ref="quote">
       <div class="quote-head">
-        <div class="quote-head__title one" @click.stop="showQuote(0)" :class="idx === 0 && 'open'">
+        <div class="quote-head__title one" @click.stop="showQuote(0)" :class="(idx === 0 || idx === -1 ) && 'open'">
           已引用<span>{{refernceTotal}}</span>
         </div>
         <div class="quote-head__title two" @click.stop="showQuote(1)" :class="idx === 1 && 'open'">
@@ -37,20 +37,47 @@ export default {
   },
   data() {
     return {
-      idx: 0,
+      idx: -1, // 解决默认第一个不会加载数据bug
       refernceTotal: 0,
       berefernceTotal: 0,
+      bottom: -306,
+      height: 400,
     }
   },
   watch: {
     nowTime() {
       this.getRefernceCount('postsReferences', {}, 'refernce')
       this.getRefernceCount('postsPosts', {}, 'berefernce')
+    },
+    show(newVal) {
+      if (newVal) {
+        this.$refs.quote.style.height = this.height + 'px'
+        this.$refs.quote.style.bottom = '54px'
+      } else {
+        this.$refs.quote.style.height = this.height + 'px'
+        this.$refs.quote.style.bottom = this.bottom + 'px'
+      }
     }
   },
   created() {
     this.getRefernceCount('postsReferences', {}, 'refernce')
     this.getRefernceCount('postsPosts', {}, 'berefernce')
+
+    this.$nextTick(() => {
+      let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      if (!this.$refs.quote) return console.log('not refs quote')
+      // 屏幕高度 - header - footer
+      let height = ((clientHeight - 42 - 54) / 2)
+      if (height > 260) {
+        this.height = Math.round(height)
+        // footer - refernce
+        this.bottom = -(Math.round(height) - 42 -54)
+      } else {
+        // 260 默认高度
+        this.height = 260
+        this.bottom = -(260 - 42 -54)
+      }
+    })
   },
   mounted() {
   },

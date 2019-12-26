@@ -1,18 +1,17 @@
 <template>
-  <div class="container">
-    <BasePull
-      :url-replace="$route.params.id + ''"
-      :params="pull.params"
-      :api-url="pull.apiUrl"
-      :loading-text="$t('not')"
-      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-      :need-access-token="true"
-      :auto-request-time="nowTime"
-      @getListData="getListData"
-    >
-      <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card>
-    </BasePull>
-  </div>
+  <BasePull
+    class="container"
+    :url-replace="$route.params.id + ''"
+    :params="pull.params"
+    :api-url="pull.apiUrl"
+    :loading-text="$t('not')"
+    :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+    :need-access-token="true"
+    :auto-request-time="nowTime"
+    @getListData="getListData"
+  >
+    <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card>
+  </BasePull>
 </template>
 
 <script>
@@ -41,7 +40,7 @@ export default {
   },
   methods: {
     getListData(res) {
-      // console.log('res', res)
+      console.log('res2', res)
       let arr = []
       if (res) {
           res.list.map(i => {
