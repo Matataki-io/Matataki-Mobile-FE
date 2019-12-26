@@ -121,6 +121,8 @@ export default {
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 17px;
+    max-height: 36px;
+    overflow: hidden;
   }
 
   &-footer {
