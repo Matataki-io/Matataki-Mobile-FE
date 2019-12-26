@@ -250,7 +250,7 @@ const API = {
       const pullApiUrl = paginationUrl
       let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
       return !needAccessToken
-        ? axiosforApiServer.get(pullApiUrl[url], { params })
+        ? axiosforApiServer.get(urlReg, { params })
         : this.accessBackend({
             method: 'get',
             url: urlReg,

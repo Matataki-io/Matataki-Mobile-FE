@@ -205,7 +205,8 @@ export default {
         this.page += 1
         this.loading = false
 
-        if (resDataList.length >= 0 && resDataList.length < 20) this.finished = true
+        const pagesize = this.params.pagesize || 20
+        if (resDataList.length >= 0 && resDataList.length < pagesize) this.finished = true
       }
 
       // 获取数据失败执行

@@ -21,7 +21,7 @@ export default {
   components: {},
   props: {
     hash: {
-      type: Object,
+      type: String,
       required: true
     },
     isHide: {
