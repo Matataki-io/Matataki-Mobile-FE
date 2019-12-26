@@ -1,5 +1,5 @@
 <template>
-  <div class="article" @click.stop="opr = false">
+  <div class="article" @click.stop="hideClient">
     <BaseHeader
       :pageinfo="{ title: article.channel_id === 2 ? $t('p.articleTitle') : $t('p.shopTitle') }"
     >
@@ -178,7 +178,8 @@
       </div>
 
       <div class="empty-line"></div>
-
+      <!-- 引用 -->
+      <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
       <footer v-if="article.channel_id === 2" class="footer">
         <div class="footer-block footer-info">
           <div class="amount">
@@ -282,7 +283,9 @@
         v-else
         ref="articleFooter"
         class="footer flex-right"
-        :likes="likes" :dislikes="dislikes"
+        :nowTime="nowTime"
+        :likes="likes"
+        :dislikes="dislikes"
         :article="article"
         :token="ssToken"
         :is-bookmarked="isBookmarked"
@@ -481,6 +484,7 @@ import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 import { getCookie } from '@/utils/cookie'
+import quote from './quote.vue'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -507,7 +511,8 @@ export default {
     statement,
     ArticleFooter,
     commentInput,
-    avatar
+    avatar,
+    quote
   },
   data() {
     return {
@@ -575,7 +580,9 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
-      hasPaied: false
+      hasPaied: false,
+      showQuote: false, // refernces
+      nowTime: 0 // refernces
     }
   },
   computed: {
@@ -702,7 +709,10 @@ export default {
         if (this.article.require_holdtokens || this.article.require_buy) return false
         return true
       }
-    }
+    },
+    isProduct() {
+      return this.article.channel_id === 2
+    },
   },
   watch: {
     article() {
@@ -1360,7 +1370,84 @@ export default {
           this.form.input = ''
         }
       })
-    }
+    },
+    hideClient() {
+      this.opr = false
+      this.showQuote = false
+    },
+    // 切换文章 得到文章信息
+    async getArticle(id, popEvent) {
+      await this.$API.getArticleInfo(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.article = res.data
+
+            // 新增
+            const { likes, dislikes } = res.data
+            this.likes = likes
+            this.dislikes = dislikes
+
+            // 切换 url不刷新
+            this.$route.params.id = res.data.id
+            this.id = res.data.id
+            if (!popEvent) {
+              const url = window.location.origin + '/p/' + res.data.id
+              history.pushState({}, '', url)
+            }
+            // 判断是否为付费阅读文章
+            if (((res.data.tokens && res.data.tokens.length !== 0) || (res.data.prices && res.data.prices.length > 0)) && !this.isProduct) {
+              this.post.content = res.data.short_content
+            } else {
+              // 切换文章 得到ipfs内容
+              this.getIpfsData(res.data.hash)
+            }
+
+            // refernce
+            this.nowTime = Date.now()
+
+            // 有写是写在组件内的, 通过props传递的参数判断是否切换文章
+
+            // created
+            this.getCurrentProfile()
+            // mounted
+            this.setAvatar(res.data.uid) // 头像
+            this.addReadAmount(res.data.hash) // 增加阅读量
+
+            // this.handleFocus() // 移植到 ArticleFooter 组件内执行
+
+            // dom加载完提示 推荐/不推荐
+            this.$nextTick(() => {
+              this.ssToken = {
+                points: [],
+                dislikes: 0,
+                likes: 0,
+                is_liked: 0
+              }
+
+              // 这里清空分享计时器 移动端无
+              // // 清空两个定时器
+              // clearInterval(this.timerShare)
+              // this.timerShare = null
+              // this.timeCountShare = 0
+
+
+              // 移植到组件内
+              // clearInterval(this.timer)
+              // this.timer = null
+              // this.timeCount = 0
+              // this.shareCount() // 无, 分享计时
+
+              // this.loading = this.beingLoading = true // 下拉组件自带loading
+              // this.pull.reload = this.beingPull.reload = Date.now() // 移植到 quote 组件内执行
+            })
+          } else {
+            this.$message.warning(res.message)
+          }
+          console.log('res', res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+    },
   }
 }
 </script>

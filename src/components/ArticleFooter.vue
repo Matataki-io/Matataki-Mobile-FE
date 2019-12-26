@@ -79,6 +79,10 @@ export default {
     isBookmarked: {
       type: Boolean,
       default: false
+    },
+    nowTime: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -162,6 +166,15 @@ export default {
       if (v >= 150) {
         clearInterval(this.timer)
       }
+    },
+    nowTime() {
+      this.handleFocus()
+      this.$nextTick(() => {
+        clearInterval(this.timer)
+        this.timer = null
+        this.timeCount = 0
+        // this.shareCount()
+      })
     }
   },
   destroyed() {
