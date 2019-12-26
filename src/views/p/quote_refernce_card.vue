@@ -82,6 +82,14 @@ export default {
           'https://localhost:8080',
           'http://127.0.0.1:8080'
         ],
+        staging: [
+          process.env.VUE_APP_URL,
+          process.env.VUE_APP_PC_URL,
+          process.env.WX_SHARE_HOST,
+          'http://localhost:8080',
+          'https://localhost:8080',
+          'http://127.0.0.1:8080'
+        ],
         production: [
           process.env.VUE_APP_URL,
           process.env.VUE_APP_PC_URL,
