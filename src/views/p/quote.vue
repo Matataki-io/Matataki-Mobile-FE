@@ -2,10 +2,10 @@
   <div v-if="refernceTotal !== 0 || berefernceTotal !== 0">
     <div class="quote" :class="show && 'open'" @click.stop>
       <div class="quote-head">
-        <div class="quote-head__title" @click.stop="showQuote(0)" :class="idx === 0 && 'open'">
+        <div class="quote-head__title one" @click.stop="showQuote(0)" :class="idx === 0 && 'open'">
           已引用<span>{{refernceTotal}}</span>
         </div>
-        <div class="quote-head__title" @click.stop="showQuote(1)" :class="idx === 1 && 'open'">
+        <div class="quote-head__title two" @click.stop="showQuote(1)" :class="idx === 1 && 'open'">
           被引用<span>{{berefernceTotal}}</span>
         </div>
       </div>
@@ -96,6 +96,7 @@ export default {
   display: flex;
   margin: 0 0 20px;
   box-sizing: border-box;
+  overflow: hidden;
   &__title {
     display: flex;
     flex: 1;
@@ -110,8 +111,28 @@ export default {
     cursor: pointer;
     box-sizing: border-box;
     border-bottom: 1px solid #DBDBDB;
-    &:nth-child(1) {
-      border-right: 1px solid #dbdbdb;
+    position: relative;
+    &.one {
+      &.open {
+        &::after {
+          border-radius: 0 8px 0 0;
+          border-right: 1px solid #dbdbdb;
+          transform: rotate(-36deg);
+          right: -3px;
+          top: -1px;
+        }
+      }
+    }
+    &.two {
+      &.open {
+        &::after {
+          border-radius: 8px 0 0 0;
+          border-left: 1px solid #dbdbdb;
+          transform: rotate(36deg);
+          left: -3px;
+          top: -1px;
+        }
+      }
     }
     span {
       color: #542DE0;
@@ -119,6 +140,14 @@ export default {
     }
     &.open {
       border-bottom: 1px solid transparent;
+      &::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 100px;
+        background-color: #fff;
+        position: absolute;
+      }
     }
   }
 }
