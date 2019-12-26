@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     getListData(res) {
-      console.log('res2', res)
+      // console.log('res2', res)
       let arr = []
       if (res) {
           res.list.map(i => {
