@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     headerTitle() {
-      return this.name ? this.symbol + '-' + 'Fan票圈' : 'Fan票圈'
+      return this.name ? this.symbol + '-' + 'Fan圈' : 'Fan圈'
     },
     logoSrc() {
       return this.logo ? this.$API.getImg(this.logo) : ''
