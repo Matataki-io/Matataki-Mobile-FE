@@ -66,11 +66,11 @@ export default {
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
-        {
-          title: this.$t('home.navShop'),
-          name: 'shop',
-          urlList: ['shop']
-        },
+        // {
+        //   title: this.$t('home.navShop'),
+        //   name: 'shop',
+        //   urlList: ['shop']
+        // },
         {
           title: 'Fan票',
           name: 'token',
