@@ -16,7 +16,7 @@ export const paginationUrl = {
   assetList: 'user/tokens',
   // user articles
   // 原创文章-使用 homeTimeRanking 接口 地址一样
-  userArticlesSupportedList: 'posts/supported',
+  userArticlesSupportedList: 'posts/supported', // 页面被移除
   // draftbox
   draftboxList: 'draft/drafts',
   // tag by id
@@ -59,8 +59,16 @@ export const paginationUrl = {
   liquidityUserList: 'token/:id/liquidity/balances',
   // 流动金流水列表
   liquidityTransactions: 'token/:id/liquidity/transactions',
-  // 收藏文章列表
+  // 获取草稿引用列表
+  draftsReferences: 'drafts/:id/references',
+  // 获取文章引用列表
+  postsReferences: 'posts/:id/references',
+  // 查看本文被引用的文章列表
+  postsPosts: '/posts/:id/posts',
+  // 获取收藏文章文章引用列表
   userBookmarks: 'user/bookmarks',
+  // 通知
+  notifications: '/notification/fetch',
   // Fan 票相关创作
   minetokenRelated: 'minetoken/:id/related'
 }

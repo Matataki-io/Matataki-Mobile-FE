@@ -30,7 +30,7 @@ import {
   NavBar,
   SubmitBar,
   Row,
-  Col
+  Col,
 } from 'vant'
 
 // 增加前缀 区分多个组件库 防止冲突

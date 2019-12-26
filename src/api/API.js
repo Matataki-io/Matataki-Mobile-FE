@@ -12,6 +12,13 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
+  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
+  getArticleInfo(hashOrId) {
+    const reg = /^[0-9]*$/
+    // post hash获取  ， p id 短链接
+    const url = reg.test(hashOrId) ? 'p' : 'post'
+    return request({ url: `/${url}/${hashOrId}` })
+    },
   //-------------微信支付-----------------
   wxNativePay(tradeNo, title) {
     return this.orderWxpay({
@@ -592,6 +599,8 @@ minetokenGetResources(tokenId) {
 
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
+  // 获取推荐文章或者商品
+  postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------
   // account binding
   accountBind(params) { return request.post('/account/binding', params) },

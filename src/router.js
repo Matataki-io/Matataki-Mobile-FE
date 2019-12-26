@@ -38,9 +38,27 @@ const router = new VueRouter({
       path: '/article',
       name: 'article',
       component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/index.vue'),
+        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
       meta: {
         title: '文章-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/ring/:id',
+      name: 'ring-id',
+      component: () =>
+        import(/* webpackChunkName: "ring-id", webpackPrefetch: true  */ './views/ring/index.vue'),
+      meta: {
+        title: 'fan票圈详情-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/ring/:id/founder',
+      name: 'ring-id-founder',
+      component: () =>
+        import(/* webpackChunkName: "ring-id-founder", webpackPrefetch: true  */ './views/ring/founder.vue'),
+      meta: {
+        title: 'fan票圈创始人详情-瞬MATATAKI'
       }
     },
     {
@@ -101,6 +119,14 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "Login" */ './views/weixinLogin.vue'),
       mata: {
         title: '微信登录'
+      }
+    },
+    {
+      path: '/login/telegram',
+      name: 'login-telegram',
+      component: () => import(/* webpackChunkName: "telegramLogin" */ './views/login/telegram.vue'),
+      mata: {
+        title: 'Telegram Login'
       }
     },
     {
@@ -470,6 +496,14 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
       meta: {
         title: '订单详情页-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/alipay',
+      name: 'alipay',
+      component: () => import(/* webpackChunkName: "alipay" */ './views/order/alipay.vue'),
+      meta: {
+        title: 'alipay'
       }
     },
     {
