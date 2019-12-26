@@ -31,7 +31,7 @@ export default {
         },
         {
           url: 'article-token',
-          lab: 'Fan票圈'
+          lab: 'Fan圈'
         },
         {
           url: 'article-follow',
