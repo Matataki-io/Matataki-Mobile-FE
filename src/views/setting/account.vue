@@ -221,9 +221,9 @@ export default {
           this.accountList[idx].loading = false
         })
     },
-    setPathToSession() {
+    setPathToSession(name, from) {
       if (window.sessionStorage) {
-        sessionStorage.setItem('wechatFrom', 'buildAccount')
+        sessionStorage.setItem(name, from)
       } else {
         console.log('don\'t support sessionStorage')
       }
@@ -235,12 +235,9 @@ export default {
           name: 'login-email'
         })
       } else if (type === 'weixin') {
-        this.setPathToSession()
+        this.setPathToSession('wechatFrom', 'buildAccount')
         this.$router.push({
-          name: 'WeixinLogin',
-          query: {
-            from: 'buildAccount'
-          }
+          name: 'WeixinLogin'
         })
       } else if (type === 'eth') {
         this.$message.warning(`移动端暂不支持${typename}绑定`)
@@ -390,11 +387,9 @@ export default {
         //   idx
         // )
       } else if (type === 'github') {
+        this.setPathToSession('githubFrom', 'buildAccount')
         this.$router.push({
-          name: 'login-github',
-          query: {
-            from: 'buildAccount'
-          }
+          name: 'login-github'
         })
       } else if (type === 'telegram') {
         this.$router.push({ name: 'login-telegram' })
