@@ -16,6 +16,10 @@ import { mapActions, mapGetters } from 'vuex'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'
+import {
+  enable as enableDarkMode,
+  disable as disableDarkMode,
+} from 'darkreader'
 
 export default {
   components: {
@@ -82,10 +86,23 @@ export default {
     // console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
 
     window.updateNotify = updateNotify
+    this.getViewMode()
   },
   mounted() {},
   methods: {
     ...mapActions(['signIn']),
+    getViewMode() {
+      const viewMode = localStorage.getItem('viewMode')
+      if (viewMode && viewMode === 'night') {
+        enableDarkMode({
+          brightness: 100,
+          contrast: 90,
+          sepia: 10,
+        })
+      } else {
+        disableDarkMode()
+      }
+    },
     updateNotify(desc) {
       const btnCommonStyle = {
         type: 'default',
