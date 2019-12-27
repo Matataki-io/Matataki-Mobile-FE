@@ -148,11 +148,9 @@ export default {
     },
     async walletLogin(type) {
       if (type === 'GitHub') {
+        this.setPathToSession('githubFrom')
         this.$router.push({
-          name: "login-github",
-          query: {
-            from: this.$route.name
-          }
+          name: "login-github"
         });
         return
       } else if (type === 'MetaMask') {
