@@ -8,8 +8,8 @@
       <span class="card-head__time">{{friendlyDate}}</span>
     </div>
     <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
-      <p class="card-title" v-clampy="2">{{card.title}}</p>
-      <p class="card-content" v-if="card.short_content" v-clampy="2">{{card.short_content}}</p>
+      <p class="card-title">{{card.title}}</p>
+      <p class="card-content" v-if="card.short_content">{{card.short_content}}</p>
       <div class="card-footer">
       <div class="card-footer__lock">
         <img
@@ -114,6 +114,11 @@ export default {
     color: rgba(0, 0, 0, 1);
     line-height: 22px;
     margin: 10px 0 5px;
+    max-height: 46px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &-content {
@@ -123,6 +128,9 @@ export default {
     line-height: 17px;
     max-height: 36px;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &-footer {
