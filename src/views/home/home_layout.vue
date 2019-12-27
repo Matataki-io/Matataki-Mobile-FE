@@ -19,6 +19,7 @@
       <slot name="sort" />
     </div>
     <slot /> -->
+    <bannerMatataki />
     <articleTab v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
     <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
     <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
@@ -29,6 +30,7 @@
 
 <script>
 import homeHead from './components/homeHead.vue'
+import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
 import articleTab from './index.vue'
 import tokenTab from './token.vue'
@@ -40,7 +42,8 @@ export default {
     Sidebar,
     articleTab,
     tokenTab,
-    followTab
+    followTab,
+    bannerMatataki
   },
   data() {
     return {

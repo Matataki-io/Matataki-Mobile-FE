@@ -11,13 +11,13 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="widgetModalStatus = 3">
+        <div v-if="pageType !== 2" class="widget-button" @click="widgetModalStatus = 3">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget" />
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div v-if="pageType === 0" class="widget-button" @click="widgetModalStatus = 1">
+        <div v-if="(minetokenToken !== null && pageType === 0) || pageType === 2" class="widget-button" @click="reviewShareCard">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget" />
           </div>
@@ -31,7 +31,15 @@
         </div>
       </div>
       <SocialShare :img="img" :title="shareLink" />
-      <wechat style="margin: 60px 0 0 0;" :link="link" />
+      <wechat v-if="pageType !== 2" style="margin: 60px 0 0 0;" :link="link" />
+      <div v-else class="invite-synopsis">
+        邀请有奖：<br>
+        每成功邀请一名好友注册可得666积分！<br>
+        新用户阅读5篇文章（30秒以上）并作出评价视为成功邀请。<br>
+        受邀好友每次发文你可以获得额外20积分！<br>
+        受邀好友每次阅读获得积分，你可额外获得其总额1/4的积分！<br>
+        持有积分未来可共享 瞬Matataki 全平台收益！<br>
+      </div>
     </div>
     <!-- 截图分享 -->
     <div
@@ -88,19 +96,26 @@
         </a>
       </div>
     </div>
+    <!-- 邀请新用户 -->
+    <div v-if="widgetModalStatus === 4 && pageType === 2" class="padding2">
+      <InviteNewUsersCardLayout />
+    </div>
   </el-dialog>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import tokenShareCardLayout from './token_share_card_layout.vue'
 import SocialShare from '@/components/share/social_share.vue'
 import wechat from '@/components/scan/wechat.vue'
+import InviteNewUsersCardLayout from './invite_new_users_card_layout.vue'
 
 export default {
   components: {
     SocialShare,
     wechat,
-    tokenShareCardLayout
+    tokenShareCardLayout,
+    InviteNewUsersCardLayout
   },
   props: {
     minetokenToken: {
@@ -133,6 +148,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['currentUserInfo']),
     width() {
       return '92%'
     },
@@ -141,7 +157,8 @@ export default {
         `我在瞬MATATAKI发现了Fan票「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」${
           process.env.VUE_APP_URL
         }/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
-        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
+        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`,
+        this.referralLink1()
       ]
       return slogan[this.pageType]
     },
@@ -157,7 +174,8 @@ export default {
         `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this
           .$route.params.id || 0}' frameborder=0></iframe>`,
         `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/user/?id=${this
-          .$route.params.id || 0}' frameborder=0></iframe>`
+          .$route.params.id || 0}' frameborder=0></iframe>`,
+        ''
       ][this.pageType]
     }
   },
@@ -192,11 +210,20 @@ export default {
       await this.$utils.sleep(300)
       !status && this.resetStatus()
     },
+    reviewShareCard() {
+      this.widgetModalStatus = this.pageType === 0 ? 1 : 4
+    },
     reviewHelp() {
       this.widgetModalStatus = 2
     },
     backWidget() {
       this.widgetModalStatus = 3
+    },
+    referralLink1() {
+      if (process.browser) {
+        if (this.currentUserInfo && this.currentUserInfo.id) return `${this.$t('referral')}${window.location.origin}?referral=${this.currentUserInfo.id}`
+        else return `${this.$t('referral')}${window.location.origin}`
+      } else return ''
     }
   }
 }
@@ -343,6 +370,14 @@ p {
 
 .token-share-card {
   width: 51px;
+}
+
+.invite-synopsis {
+  font-size: 14px;
+  margin: 40px auto 0;
+  width: 100%;
+  line-height: 20px;
+  font-weight: 400;
 }
 </style>
 
