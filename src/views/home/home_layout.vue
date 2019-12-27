@@ -107,8 +107,8 @@ export default {
     .swip-container {
       border-radius: 10px;
       overflow: hidden;
-      background: #dbdbdb;
-      border: 1px solid #dbdbdb;
+      background: #f1f1f1;
+      border: 1px solid #f1f1f1;
       box-sizing: border-box;
       height: 100%;
       position: relative;
