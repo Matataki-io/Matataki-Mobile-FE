@@ -66,6 +66,7 @@ export default {
       }
       &.active {
         color: rgba(0, 0, 0, 1);
+        font-weight: bold;
       }
     }
   }
