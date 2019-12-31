@@ -59,13 +59,14 @@ export default {
       font-weight: 400;
       color: rgba(178, 178, 178, 1);
       line-height: 20px;
-      margin-right: 20px;
+      margin-right: 14px;
       text-decoration: none;
       &:nth-last-child(1) {
         margin-right: 0;
       }
       &.active {
         color: rgba(0, 0, 0, 1);
+        font-weight: bold;
       }
     }
   }
