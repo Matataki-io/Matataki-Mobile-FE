@@ -18,7 +18,8 @@
         </p>
       </div>
       <div>
-        <el-button class="add-button" @click="addFandom(fandom)" size="small">加群</el-button>
+        <el-button v-if="!isLogined || fandom.minBalance <= balance" class="add-button top10" @click="addFandom(fandom)" size="small">加群</el-button>
+        <div v-else class="disable top10">持票不足</div>
       </div>
     </div>
     <!-- 展开更多 -->
@@ -37,17 +38,28 @@
       <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p>
       <div class="fl help-step top">
         <div class="help-text">
-          <h3>步骤 1</h3>
+          <h3>步骤
+            <div class="help-serial">1</div>
+              </h3>
           <p class="introduction">绑定Telegram账号</p>
           <p>仅需要绑定一次</p>
         </div>
-        <div>
-          <el-button class="add-button">绑定</el-button>
+        <div class="help-touch" v-if="bindStatus">
+          <a @click="accountSettings()">
+            账号变更
+            <i class="el-icon-arrow-right"></i>
+          </a>
+          <div class="disable top20">已绑定</div>
+        </div>
+        <div class="help-touch" v-else>
+          <el-button class="add-button top40" @click="setTelegram()">绑定</el-button>
         </div>
       </div>
       <div class="fl help-step">
         <div class="help-text">
-          <h3>步骤 2</h3>
+          <h3>步骤
+            <div class="help-serial">2</div>
+          </h3>
           <p class="introduction">点击加群按钮</p>
           <p>根据机器人的指引入群</p>
         </div>
@@ -57,6 +69,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -66,6 +79,8 @@ export default {
       tokenShortName: 'KJC',
       isExpand: false,
       showHelp: false,
+      bindStatus: false,
+      balance: 100,
       fandomData: [
         {
           fandomId: '0',
@@ -81,7 +96,7 @@ export default {
         },
         {
           fandomId: '2',
-          name: '初期粉丝群',
+          name: '初级粉丝群',
           people: 879,
           minBalance: 50,
         },
@@ -95,16 +110,71 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
     /** 控制数据是否展开 */
     fandomList() {
       return this.isExpand ? this.fandomData : [this.fandomData[0]]
     }
   },
+  mounted() {
+    if(this.isLogined) this.getAccountStatus()
+  },
   methods: {
+    /** 申请加群 */
     addFandom(fandom) {
+      // 未登录情况
+      if(!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return
+      }
+      // 未绑定tg账号情况
+      if(!this.bindStatus) {
+        this.showHelp = true
+        return
+      }
       console.log('加群：',fandom.name)
-      this.showHelp = true
-    }
+      this.$message(`申请加入：${ fandom.name } 此功能还在开发中`)
+    },
+    /** 绑定tg账号 */
+    setTelegram() {
+      // if:未登录弹出登录框，否则如果未绑定tg账号则跳转至绑定页面
+      if(!this.isLogined) {
+        // 要先关掉弹窗，不然会产生遮挡
+        this.showHelp = false
+        this.$store.commit('setLoginModal', true)
+      }
+      else if(!this.bindStatus) this.$router.push({ name: 'login-telegram' })
+    },
+    /** 跳转至账号变更页面 */
+    accountSettings() {
+      // 要先关掉弹窗，不然页面跳转后会留有黑色遮罩。
+      this.showHelp = false
+      this.$router.push({ name: 'setting-account' })
+    },
+    /** 获取账号绑定状态 */
+    getAccountStatus() {
+      this.$API
+        .accountList()
+        .then(res => {
+          if (res.code === 0) {
+            // console.log('账号绑定状态：',res)
+            const filterPlatform = res.data.filter(
+              j => j.platform === 'telegram'
+            )
+            // console.log(filterPlatform)
+            if (filterPlatform.length > 0) {
+              this.bindStatus = filterPlatform[0].status ? true : false
+            } else {
+              this.bindStatus = false
+            }
+          } else {
+            console.log(res.message)
+          }
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+    },
   }
 }
 </script>
@@ -151,7 +221,7 @@ export default {
       color: #B2B2B2;
     }
   }
-  .add-button {
+  .top10 {
     margin-top: 10px;
   }
 }
@@ -165,6 +235,18 @@ export default {
     color: #542DE0;
   }
 }
+
+.disable {
+  width:80px;
+  height:30px;
+  background:rgba(178,178,178,1);
+  border-radius:6px;
+  text-align: center;
+  color: white;
+  padding-top: 6px;
+  font-size: 12px;
+}
+
 .expand-page {
   text-align: center;
   margin-bottom: 6px;
@@ -204,10 +286,27 @@ export default {
         padding-bottom: 10px;
       }
     }
+    .help-serial {
+      height: 16px;
+      width: 16px;
+      display: inline-block;
+      background-color: black;
+      color: white;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 8px;
+      font-weight: 500;
+      margin-left: 5px;
+    }
   }
-  .add-button {
-    margin-top: 40px;
+  .help-touch {
+    text-align: center;
+    .top20 {
+      margin-top: 20px;
+    }
+    .top40 {
+      margin-top: 40px;
+    }
   }
 }
-
 </style>
