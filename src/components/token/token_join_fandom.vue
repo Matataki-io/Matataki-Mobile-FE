@@ -2,7 +2,7 @@
   <div class="fandom-card">
     <div class="fl">
     <h2 class="token-title">
-      加入{{tokenShortName}}粉丝群
+      加入{{tokenSymbol}}粉丝群
     </h2>
     <a @click="showHelp = true" class="help-click">入群指南 <i class="el-icon-arrow-right"></i></a>
     </div>
@@ -14,7 +14,7 @@
           <span>（已有{{fandom.people}}人）</span>
         </h2>
         <p class="condition">
-          持有的{{tokenShortName}}票>{{fandom.minBalance}}即可加群
+          持有的{{tokenSymbol}}票>{{fandom.minBalance}}即可加群
         </p>
       </div>
       <div>
@@ -74,9 +74,14 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
   },
+  props: {
+    tokenSymbol: {
+      type: String,
+      required: true
+    },
+  },
   data() {
     return {
-      tokenShortName: 'KJC',
       isExpand: false,
       showHelp: false,
       bindStatus: false,

@@ -141,7 +141,7 @@
 
     <tokenBuyCard :token="minetokenToken" />
 
-    <TokenJoinFandom />
+    <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" />
 
     <div class="about">
       <h2 class="token-title">
