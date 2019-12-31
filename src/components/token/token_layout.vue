@@ -8,6 +8,10 @@
 
     <div class="token-detail">
       <div class="link">
+        <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
+        <svg-icon class="detail-btn" icon-class="eth_mini" />
+        </a>
+
         <svg-icon class="detail-btn" icon-class="share1" @click="shareModalShow = true" />
 
         <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
@@ -683,7 +687,7 @@ export default {
 .detail-btn {
   color: #000;
   font-size: 20px;
-  margin: 0 0 0 16px;
+  margin: 0 0 0 19px;
   :nth-child(1) {
     margin-left: 0;
   }
