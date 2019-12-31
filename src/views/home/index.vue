@@ -1,8 +1,13 @@
 <template>
   <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
-    <el-select slot="sort" class="head-sort" v-model="value" placeholder="请选择" size="mini" @change="changeSort">
+    <!-- <el-select slot="sort" class="head-sort" v-model="value" placeholder="请选择" size="mini" @change="changeSort">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-    </el-select>
+    </el-select> -->
+    <div slot="sort" class="sort">
+      <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
+      &nbsp;/&nbsp;
+      <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
+    </div>
     <div class="list">
       <BasePull
         :params="pull.params"
@@ -39,40 +44,42 @@ export default {
     return {
       options: [
         {
+          value: 'now',
+          label: '最新文章'
+        },
+        {
           value: 'hot',
           label: '最热文章'
         },
-        {
-          value: 'now',
-          label: '最新文章'
-        }
       ],
-      value: 'hot',
+      value: 'now',
       pull: {
         params: {
           channel: 1,
           extra: 'short_content'
         },
         autoRequestTime: 0,
-        apiUrl: 'homeScoreRanking',
+        apiUrl: 'homeTimeRanking',
         list: [],
       }
     }
   },
-  methods: {
-    getListData(res) {
-      this.pull.list = res.list
-    },
-    changeSort(value) {
-      if (value === 'hot') {
+  watch: {
+    value(newVal) {
+      if (newVal === 'hot') {
         this.pull.apiUrl = 'homeScoreRanking'
-      } else if (value === 'now') {
+      } else if (newVal === 'now') {
         this.pull.apiUrl = 'homeTimeRanking'
       } else {
         this.pull.apiUrl = 'homeScoreRanking'
       }
       this.pull.autoRequestTime = Date.now()
       this.pull.list.length = 0
+    }
+  },
+  methods: {
+    getListData(res) {
+      this.pull.list = res.list
     }
   }
 }
@@ -86,6 +93,21 @@ export default {
   padding: 0 20px;
   .list-card {
     margin: 20px 0 0;
+  }
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  span {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    &.active {
+      font-weight: bold;
+      color: @purpleDark;
+    }
   }
 }
 </style>
