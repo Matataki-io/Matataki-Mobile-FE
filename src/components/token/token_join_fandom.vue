@@ -123,6 +123,9 @@ export default {
   },
   mounted() {
     if(this.isLogined) this.getAccountStatus()
+    this.$navigation.once('back', (to, from) => {
+      window.location.reload()
+    })
   },
   methods: {
     /** 申请加群 */
@@ -148,7 +151,10 @@ export default {
         this.showHelp = false
         this.$store.commit('setLoginModal', true)
       }
-      else if(!this.bindStatus) this.$router.push({ name: 'login-telegram' })
+      else {
+        this.showHelp = false
+        if(!this.bindStatus) this.$router.push({ name: 'login-telegram' })
+      }
     },
     /** 跳转至账号变更页面 */
     accountSettings() {
@@ -305,7 +311,7 @@ export default {
     }
   }
   .help-touch {
-    text-align: center;
+    text-align: right;
     .top20 {
       margin-top: 20px;
     }
