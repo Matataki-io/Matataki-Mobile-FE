@@ -6,7 +6,7 @@
       height: size
     }"
   >
-    <el-image v-if="src" :src="src" class="img-lazy" alt="avatar">
+    <el-image v-if="src" :src="src" class="img-lazy" alt="avatar" fit="cover">
       <div slot="error" class="image-slot">
         <i class="el-icon-picture-outline" />
       </div>

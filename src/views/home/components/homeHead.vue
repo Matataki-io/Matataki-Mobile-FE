@@ -66,6 +66,11 @@ export default {
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
+        {
+          title: '分享大厅',
+          name: 'sharehall',
+          urlList: ['sharehall']
+        },
         // {
         //   title: this.$t('home.navShop'),
         //   name: 'shop',
