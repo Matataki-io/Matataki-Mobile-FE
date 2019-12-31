@@ -141,6 +141,8 @@
 
     <tokenBuyCard :token="minetokenToken" />
 
+    <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" />
+
     <div class="about">
       <h2 class="token-title">
         相关网站
@@ -266,6 +268,7 @@ import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types'
 import { precision } from '@/utils/precisionConversion'
+import TokenJoinFandom from './token_join_fandom'
 
 export default {
   components: {
@@ -273,7 +276,8 @@ export default {
     // mineTokensNav,
     Share,
     socialIcon,
-    tokenBuyCard
+    tokenBuyCard,
+    TokenJoinFandom
   },
   data() {
     return {
