@@ -367,7 +367,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     createTime() {
-      return moment(this.minetokenUser.create_time).format('lll')
+      return moment(this.minetokenToken.create_time).format('lll')
     }
   },
   watch: {
