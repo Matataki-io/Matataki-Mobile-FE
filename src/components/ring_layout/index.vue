@@ -2,9 +2,16 @@
   <div class="ring">
     <BaseHeader :pageinfo="{ title: headerTitle }" customize-header-bc="#fff" :has-bottom-border-line="true" />
     <div class="ring-logo">
-      <img v-if="logo" :src="logoSrc" :alt="symbol">
+      <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
+        <img v-if="logo" :src="logoSrc" :alt="symbol">
+      </router-link>
     </div>
-    <p class="ring-logo-title">{{symbol}}{{name ? (name) : '&nbsp;'}}</p>
+    <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
+      <p class="ring-logo-title">
+        {{symbol}}{{name ? (name) : '&nbsp;'}}
+        <i class="el-icon-arrow-right" />
+      </p>
+    </router-link>
 
     <div class="ring-head">
       <div class="ring-title">
@@ -90,6 +97,9 @@ export default {
     line-height:20px;
     margin-top: 10px;
     text-align: center;
+    i {
+      font-weight:600;
+    }
   }
 
   &-head {

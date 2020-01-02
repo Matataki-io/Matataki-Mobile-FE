@@ -54,6 +54,10 @@
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
+      <a class="help-list" href="https://www.matataki.io/p/1059" target="_blank">
+        <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
+        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+      </a>
       <a class="help-list" href="https://t.me/smartsignature_io" target="_blank">
         <span class="help-list-title">{{ $t('user.tg') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
