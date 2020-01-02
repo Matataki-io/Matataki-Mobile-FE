@@ -14,11 +14,11 @@
           <span>（已有{{fandom.groupSize}}人）</span>
         </h2>
         <p class="condition">
-          持有的{{tokenSymbol}}票>{{ fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0 }}即可加群
+          持有的{{tokenSymbol}}票>{{ getMinBalance(fandom) }}即可加群
         </p>
       </div>
       <div>
-        <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" class="add-button top10" @click="addFandom(fandom)" size="small">加群</el-button>
+        <el-button v-if="!isLogined || getMinBalance(fandom) <= balance" class="add-button top10" @click="addFandom(fandom)" size="small">加群</el-button>
         <div v-else class="disable top10">持票不足</div>
       </div>
     </div>
@@ -196,6 +196,9 @@ export default {
           // console.log('账户余额：', this.balance, res.data)
         }
       })
+    },
+    getMinBalance(fandom){
+      return fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0
     }
   }
 }
