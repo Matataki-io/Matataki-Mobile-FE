@@ -31,11 +31,11 @@
         <shareOuterCard v-if="item.type === 'outer'" cardType="read" class="list-card"></shareOuterCard>
         <shareInsideCard v-if="item.type === 'inside'" cardType="read" class="list-card"></shareInsideCard>
       </div>
-      <div name="fade" v-show="toggleMore">
-        <transition v-for="(item, index) in shareListMore" :key="index">
+      <div class="card-list__more" :class="toggleMore && 'open'">
+        <div v-for="(item, index) in shareListMore" :key="index">
           <shareOuterCard v-if="item.type === 'outer'" cardType="read" class="list-card" ></shareOuterCard>
           <shareInsideCard v-if="item.type === 'inside'" cardType="read" class="list-card"></shareInsideCard>
-        </transition>
+        </div>
       </div>
       <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
         <span>查看更多</span><i class="el-icon-d-arrow-left icon"></i>
@@ -205,6 +205,15 @@ export default {
       position: absolute;
       left: 20px;
       top: -20px;
+    }
+
+    &__more {
+      max-height: 0;
+      transition: all .3s;
+      overflow: hidden;
+      &.open {
+        max-height: none;
+      }
     }
   }
 

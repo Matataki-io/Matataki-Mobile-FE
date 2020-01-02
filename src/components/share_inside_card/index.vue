@@ -34,6 +34,10 @@ export default {
     cardType: {
       type: String,
       default: 'edit' // edit read
+    },
+    idx: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
@@ -45,9 +49,7 @@ export default {
           type: 'warning',
           customClass: 'message-box__mobile'
         }).then(() => {
-          this.$toast({ duration: 1000, message: '删除成功' })
-        }).catch(() => {
-          this.$toast.fail({ duration: 1000, message: '取消删除' })
+          this.$emit('removeShareLink', this.idx)
         })
     }
   }
