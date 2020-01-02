@@ -48,6 +48,8 @@ import Sidebar from '@/components/Sidebar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 import shareCard from '@/components/share_card/index.vue'
+import { sleep } from '@/common/methods'
+
 export default {
   components: {
     homeHead,
@@ -99,6 +101,23 @@ export default {
         sessionStorage.setItem('shareLink', JSON.stringify(this.shareLinkList))
       }
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
+      confirmButtonText: '去发布',
+      cancelButtonText: '不要了',
+      type: 'warning',
+      showClose: false,
+      closeOnClickModal: false,
+      customClass: 'message-box__mobile'
+    }).then(() => {
+      next(false)
+    }).catch(async () => {
+      this.$navigation.cleanRoutes() // 清除路由记录
+      sessionStorage.removeItem('shareLink')
+      await sleep(10)
+      next()
+    })
   },
   created() {
     this.initShareLink()
