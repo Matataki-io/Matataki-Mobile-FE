@@ -54,6 +54,10 @@
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
+      <a class="help-list" href="https://www.matataki.io/p/1059" target="_blank">
+        <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
+        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+      </a>
       <a class="help-list" href="https://t.me/smartsignature_io" target="_blank">
         <span class="help-list-title">{{ $t('user.tg') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
@@ -63,18 +67,38 @@
         <span class="help-list-sub">v2.3.2</span>
       </div>-->
     </div>
+
+    <div class="help-block">
+      <div class="help-list">
+        <span class="help-list-title">夜间模式</span>
+        <span class="help-list-sub">
+          <van-switch
+            v-model="siteViewMode"
+            size="22px"
+            active-color="#542de0"
+            inactive-color="#F0F0F0"
+            @change="changeViewMode"
+          />
+        </span>
+      </div>
+    </div>
     <div class="signout">
-      <p class="version">-version2.12.2-</p>
+      <p class="version">-version3.0.1-</p>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  enable as enableDarkMode,
+  disable as disableDarkMode,
+} from 'darkreader'
 export default {
   naem: 'Help',
   data() {
     return {
       articleTransfer: false,
+      siteViewMode: false,
       // 隐私政策与用户协议
       helpDoc: [
         {
@@ -90,8 +114,30 @@ export default {
   },
   created() {
     this.getMyUserData()
+    this.getViewMode()
   },
   methods: {
+    getViewMode() {
+      const viewMode = localStorage.getItem('viewMode')
+      if (viewMode && viewMode === 'night') {
+        this.siteViewMode = true
+      } else {
+        this.siteViewMode = false
+      }
+    },
+    changeViewMode(value) {
+      if (value) {
+        localStorage.setItem('viewMode', 'night')
+        enableDarkMode({
+          brightness: 100,
+          contrast: 90,
+          sepia: 10,
+        })
+      } else {
+        localStorage.setItem('viewMode', 'day')
+        disableDarkMode()
+      }
+    },
     jumpTo(params) {
       if (!params.name) return
       this.$router.push(params)

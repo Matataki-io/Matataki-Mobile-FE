@@ -8,6 +8,10 @@
 
     <div class="token-detail">
       <div class="link">
+        <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
+        <svg-icon class="detail-btn" icon-class="eth_mini" />
+        </a>
+
         <svg-icon class="detail-btn" icon-class="share1" @click="shareModalShow = true" />
 
         <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
@@ -56,6 +60,16 @@
             <div>
               <p class="token-info-sub">
                 {{ minetokenToken.brief || '暂无' }}
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
+              已持有：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ balance }} {{ minetokenToken.symbol }}
               </p>
             </div>
           </div>
@@ -136,6 +150,8 @@
     </div>
 
     <tokenBuyCard :token="minetokenToken" />
+
+    <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" />
 
     <div class="about">
       <h2 class="token-title">
@@ -262,6 +278,8 @@ import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types'
 import { precision } from '@/utils/precisionConversion'
+import TokenJoinFandom from './token_join_fandom'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -269,7 +287,8 @@ export default {
     // mineTokensNav,
     Share,
     socialIcon,
-    tokenBuyCard
+    tokenBuyCard,
+    TokenJoinFandom
   },
   data() {
     return {
@@ -284,11 +303,12 @@ export default {
       resourcesWebsites: [],
       showTokenSetting: false,
       tabPage: Number(this.$route.query.tab) || 0,
-      sort: this.$route.query.sort || 'amount-desc'
+      sort: this.$route.query.sort || 'amount-desc',
+      balance: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo']),
+    ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
@@ -359,7 +379,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     createTime() {
-      return moment(this.minetokenUser.create_time).format('lll')
+      return moment(this.minetokenToken.create_time).format('lll')
     }
   },
   watch: {
@@ -374,6 +394,11 @@ export default {
           tab: val
         }
       })
+    },
+    isLogined(val) {
+      if (val) {
+        this.getUserBalance()
+      }
     }
   },
   created() {
@@ -382,6 +407,7 @@ export default {
   },
   mounted() {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    if (this.isLogined) this.getUserBalance()
   },
   methods: {
     async minetokenId(id) {
@@ -448,6 +474,14 @@ export default {
     jumpToRelated() {
       this.$router.push({
         name: 'MinetokenRelated'
+      })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+          console.log('余额：', res.data, this.balance)
+        }
       })
     }
   }
@@ -683,7 +717,7 @@ export default {
 .detail-btn {
   color: #000;
   font-size: 20px;
-  margin: 0 0 0 16px;
+  margin: 0 0 0 19px;
   :nth-child(1) {
     margin-left: 0;
   }
