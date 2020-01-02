@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import card from './quote_berefernce_card.vue'
+import card from './quote_bereference_card.vue'
 
 export default {
   components: {
