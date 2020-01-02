@@ -63,6 +63,16 @@
               </p>
             </div>
           </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
+              已持有：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ balance }} {{ minetokenToken.symbol }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="link">
@@ -269,6 +279,7 @@ import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types'
 import { precision } from '@/utils/precisionConversion'
 import TokenJoinFandom from './token_join_fandom'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -292,11 +303,12 @@ export default {
       resourcesWebsites: [],
       showTokenSetting: false,
       tabPage: Number(this.$route.query.tab) || 0,
-      sort: this.$route.query.sort || 'amount-desc'
+      sort: this.$route.query.sort || 'amount-desc',
+      balance: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo']),
+    ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
@@ -382,6 +394,11 @@ export default {
           tab: val
         }
       })
+    },
+    isLogined(val) {
+      if (val) {
+        this.getUserBalance()
+      }
     }
   },
   created() {
@@ -390,6 +407,7 @@ export default {
   },
   mounted() {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    if (this.isLogined) this.getUserBalance()
   },
   methods: {
     async minetokenId(id) {
@@ -456,6 +474,14 @@ export default {
     jumpToRelated() {
       this.$router.push({
         name: 'MinetokenRelated'
+      })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+          console.log('余额：', res.data, this.balance)
+        }
       })
     }
   }
