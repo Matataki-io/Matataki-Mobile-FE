@@ -1,5 +1,5 @@
 <template>
-  <div class="fandom-card">
+  <div v-if="fandomData.length > 0" class="fandom-card">
     <div class="fl">
     <h2 class="token-title">
       加入{{tokenSymbol}}粉丝群
@@ -10,15 +10,15 @@
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
         <h2>
-          {{fandom.name}}
-          <span>（已有{{fandom.people}}人）</span>
+          {{fandom.title}}
+          <span>（已有{{fandom.groupSize}}人）</span>
         </h2>
         <p class="condition">
-          持有的{{tokenSymbol}}票>{{fandom.minBalance}}即可加群
+          持有的{{tokenSymbol}}票>{{ fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0 }}即可加群
         </p>
       </div>
       <div>
-        <el-button v-if="!isLogined || fandom.minBalance <= balance" class="add-button top10" @click="addFandom(fandom)" size="small">加群</el-button>
+        <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" class="add-button top10" @click="addFandom(fandom)" size="small">加群</el-button>
         <div v-else class="disable top10">持票不足</div>
       </div>
     </div>
@@ -70,6 +70,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -79,6 +81,10 @@ export default {
       type: String,
       required: true
     },
+    tokenId: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -86,32 +92,7 @@ export default {
       showHelp: false,
       bindStatus: false,
       balance: 100,
-      fandomData: [
-        {
-          fandomId: '0',
-          name: '高级粉丝群',
-          people: 250,
-          minBalance: 200,
-        },
-        {
-          fandomId: '1',
-          name: '中级粉丝群',
-          people: 519,
-          minBalance: 100,
-        },
-        {
-          fandomId: '2',
-          name: '初级粉丝群',
-          people: 879,
-          minBalance: 50,
-        },
-        {
-          fandomId: '3',
-          name: '新手粉丝群',
-          people: 1358,
-          minBalance: 10,
-        },
-      ]
+      fandomData: []
     }
   },
   computed: {
@@ -122,7 +103,11 @@ export default {
     }
   },
   mounted() {
-    if(this.isLogined) this.getAccountStatus()
+    if(this.isLogined) {
+      this.getAccountStatus()
+      this.getUserBalance()
+    }
+    this.getFandomList()
     this.$navigation.once('back', (to, from) => {
       window.location.reload()
     })
@@ -141,7 +126,7 @@ export default {
         return
       }
       console.log('加群：',fandom.name)
-      this.$message(`申请加入：${ fandom.name } 此功能还在开发中`)
+      window.open(`https://t.me/${process.env.VUE_APP_TELEGRAM_FANDOM_BOT}?start=${fandom.id}`)
     },
     /** 绑定tg账号 */
     setTelegram() {
@@ -186,6 +171,32 @@ export default {
           console.log('err', err)
         })
     },
+    getFandomList() {
+      const _axios = axios.create({
+        baseURL: process.env.VUE_APP_FANDOM_SERVER_API,
+        timeout: 20000,
+        headers: {}
+      })
+      _axios.get(`/api/token/${this.tokenId}`).then(res => {
+        console.log('粉丝币列表：',res)
+        const { data } = res
+        if (data.status) {
+          this.fandomData = data.result
+        } else {
+          console.log('获取粉丝群列表失败', data.error)
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(this.tokenId).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+          // console.log('账户余额：', this.balance, res.data)
+        }
+      })
+    }
   }
 }
 </script>
