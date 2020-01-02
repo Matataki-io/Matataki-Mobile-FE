@@ -5,7 +5,7 @@
     <div class="push">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" @submit.native.prevent>
         <el-form-item label="" prop="content">
-          <el-input size="mini" type="textarea" rows="4" placeholder="谈谈感想" v-model="ruleForm.content"></el-input>
+          <el-input ref="shareContent" size="mini" type="textarea" rows="4" placeholder="谈谈感想" v-model="ruleForm.content"></el-input>
         </el-form-item>
       </el-form>
 
@@ -102,22 +102,28 @@ export default {
       }
     }
   },
-  beforeRouteLeave(to, from, next) {
-    this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
-      confirmButtonText: '去发布',
-      cancelButtonText: '不要了',
-      type: 'warning',
-      showClose: false,
-      closeOnClickModal: false,
-      customClass: 'message-box__mobile'
-    }).then(() => {
-      next(false)
-    }).catch(async () => {
-      this.$navigation.cleanRoutes() // 清除路由记录
-      sessionStorage.removeItem('shareLink')
-      await sleep(10)
+  async beforeRouteLeave(to, from, next) {
+    if (this.shareLinkList.length === 0) {
       next()
-    })
+    } else {
+      try {
+        await this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
+          confirmButtonText: '去发布',
+          cancelButtonText: '不要了',
+          type: 'warning',
+          showClose: false,
+          closeOnClickModal: false,
+          customClass: 'message-box__mobile'
+        })
+        this.$refs.shareContent.focus()
+        next(false)
+      } catch (error) {
+        this.$navigation.cleanRoutes() // 清除路由记录
+        sessionStorage.removeItem('shareLink')
+        await sleep(100)
+        next()
+      }
+    }
   },
   created() {
     this.initShareLink()
