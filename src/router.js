@@ -53,6 +53,15 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/share/:id',
+      name: 'share-id',
+      props: true,
+      component: () => import(/* webpackChunkName: "policy" */ './views/share/_id.vue'),
+      meta: {
+        title: '分享详情-瞬MATATAKI'
+      }
+    },
+    {
       path: '/ring/:id',
       name: 'ring-id',
       component: () =>
