@@ -38,7 +38,7 @@
       </a>
     </div>
 
-    <el-dialog width="92%" title="入群指南" :visible.sync="showHelp" center>
+    <el-dialog width="92%" title="入群指南" :visible.sync="showHelp" center custom-class="fandom-popups-title">
       <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p>
       <div class="fl help-step top">
         <div class="help-text">
@@ -336,6 +336,15 @@ export default {
     .top40 {
       margin-top: 40px;
     }
+  }
+}
+</style>
+
+<style lang="less">
+.fandom-popups-title {
+  border-radius: 6px;
+  .el-dialog__title{
+    font-weight: 600;
   }
 }
 </style>

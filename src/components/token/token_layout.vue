@@ -6,18 +6,7 @@
       :pageinfo="{ title: 'Fan票详情' }"
     />
 
-    <div class="token-detail">
-      <div class="link">
-        <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
-        <svg-icon class="detail-btn" icon-class="eth_mini" />
-        </a>
-
-        <svg-icon class="detail-btn" icon-class="share1" @click="shareModalShow = true" />
-
-        <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
-          <svg-icon class="detail-btn" icon-class="setting" />
-        </router-link>
-      </div>
+    <div class="token-detail no-shadow">
       <div class="fl">
         <avatar :src="logo" class="avatar" />
         <div class="token-detail-info">
@@ -80,6 +69,21 @@
       </div>
       <p class="warning" v-if="!minetokenToken.contract_address">fan票正在发布中，请稍后过来操作!</p>
 
+    </div>
+
+    <div class="fl function-bar">
+      <div class="but" @click="openEtherscan()">
+          <div>
+            <svg-icon icon-class="eth_mini" />
+            链上查看
+          </div>
+      </div>
+      <div class="but midline" @click="shareModalShow = true">
+        <div>
+          <svg-icon icon-class="share1" @click="shareModalShow = true" />
+          分享Fan票
+        </div>
+      </div>
     </div>
 
     <div class="introduction">
@@ -483,6 +487,9 @@ export default {
           console.log('余额：', res.data, this.balance)
         }
       })
+    },
+    openEtherscan() {
+      window.open('http://rinkeby.etherscan.io/address/' + this.minetokenToken.contract_address)
     }
   }
 }
@@ -502,6 +509,10 @@ export default {
   box-sizing: border-box;
   & > div:nth-child(1) {
     margin-bottom: 10px;
+  }
+  &.no-shadow {
+    box-shadow: none;
+    padding-top: 20px;
   }
 }
 
@@ -714,14 +725,6 @@ export default {
   color: #868686;
   text-decoration: underline;
 }
-.detail-btn {
-  color: #000;
-  font-size: 20px;
-  margin: 0 0 0 19px;
-  :nth-child(1) {
-    margin-left: 0;
-  }
-}
 
 .minetoken-card {
   background: #fff;
@@ -808,5 +811,26 @@ export default {
   margin: 20px 0 0;
   font-size: 12px;
   color: red;
+}
+.function-bar {
+  height: 48px;
+  background: white;
+  z-index: 99999;
+  border-top: 0.0625rem solid #DBDBDB;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  .but {
+    flex: 1;
+    background: white;
+    display: -webkit-box;
+    cursor: pointer;
+    div {
+      font-size: 15px;
+      color: #000;
+      margin: auto;
+    }
+  }
+  .midline {
+    border-left: 1px solid #DBDBDB;
+  }
 }
 </style>
