@@ -45,7 +45,7 @@ export default {
 
 .ipfs-link {
   font-size:10px;
-  font-weight:500;
+  font-weight: bold;
   color: @purpleDark;
   line-height:14px;
 }

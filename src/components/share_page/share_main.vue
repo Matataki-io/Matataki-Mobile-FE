@@ -45,7 +45,7 @@ https://www.mockplus.com/blog/post/parallax-scrolling-websites提供了一些具
     line-height:20px;
     padding: 0;
     margin: 0;
-    word-break: break-all;
+    word-break: break-word;
   }
 }
 </style>
