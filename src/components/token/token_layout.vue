@@ -80,7 +80,7 @@
       </div>
       <div class="but midline" @click="shareModalShow = true">
         <div>
-          <svg-icon icon-class="share1" @click="shareModalShow = true" />
+          <svg-icon icon-class="share1" />
           分享Fan票
         </div>
       </div>

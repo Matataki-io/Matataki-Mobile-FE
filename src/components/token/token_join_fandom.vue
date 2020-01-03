@@ -15,7 +15,7 @@
               {{ fandom.title }}
             </h2>
           </el-tooltip>
-          <span>（已有{{ fandom.groupSize }}人）</span>
+          <span>（{{ fandom.groupSize }}人）</span>
         </div>
         <p class="condition">
           持有的{{tokenSymbol}}票 ≥{{ getMinBalance(fandom) }} 即可加群
@@ -39,12 +39,13 @@
     </div>
 
     <el-dialog width="92%" title="入群指南" :visible.sync="showHelp" center custom-class="fandom-popups-title">
-      <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p>
+      <!-- <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p> -->
       <div class="fl help-step top">
         <div class="help-text">
-          <h3>步骤
-            <div class="help-serial">1</div>
-              </h3>
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step1" />
+          </h3>
           <p class="introduction">绑定Telegram账号</p>
           <p>仅需要绑定一次</p>
         </div>
@@ -59,13 +60,24 @@
           <el-button class="add-button top40" @click="setTelegram()">绑定</el-button>
         </div>
       </div>
+      <div class="fl help-step top">
+        <div class="help-text">
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step2" />
+          </h3>
+          <p class="introduction">完成入群条件</p>
+          <p>购买并持有特定数量的Fan票</p>
+        </div>
+      </div>
       <div class="fl help-step">
         <div class="help-text">
-          <h3>步骤
-            <div class="help-serial">2</div>
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step3" />
           </h3>
           <p class="introduction">点击加群按钮</p>
-          <p>根据机器人的指引入群</p>
+          <p>根据机器人的引导入群</p>
         </div>
       </div>
     </el-dialog>
@@ -316,15 +328,6 @@ export default {
       }
     }
     .help-serial {
-      height: 16px;
-      width: 16px;
-      display: inline-block;
-      background-color: black;
-      color: white;
-      text-align: center;
-      border-radius: 50%;
-      font-size: 8px;
-      font-weight: 500;
       margin-left: 5px;
     }
   }
