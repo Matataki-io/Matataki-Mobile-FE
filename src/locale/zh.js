@@ -494,6 +494,7 @@ export default {
     rule: '规则介绍',
     transfer: '接受他人文章权限移交',
     about: '关于我们',
+    updateRecord: '更新记录',
     github: 'Github 入口',
     tg: '加入电报',
     userProtocol: '用户协议',
