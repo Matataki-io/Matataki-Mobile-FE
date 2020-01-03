@@ -1,33 +1,30 @@
 <template>
-    <div class="related-list">
-      <div
-        :class="!card.summary && 'no-margin-bottom'"
-        class="related-list-title">
-        <div class="fl jsb">
-          <div class="fl ac related-7">
-            <div class="related-list-link">
-              <a
-                v-if="currentSite(card.url)"
-                :href="card.url"
-                @click="toggleArticle(card.url, $event)"
-              >{{ card.title }}</a>
-              <a v-else :href="card.url" target="_blank">{{ card.title }}</a>
+  <div class="related-list">
+        <div class="related-list-title no-margin-bottom">
+          <div class="fl jsb">
+            <div class="fl ac related-7">
+              <div class="related-list-link">
+                <a
+                  v-if="currentSite(card.url)"
+                  :href="card.url"
+                  @click.stop="toggleArticle(card.url, $event)"
+                >{{ card.title }}</a>
+                <a v-else :href="card.url" target="_blank">{{ card.title }}</a>
+              </div>
             </div>
+            <!-- <div class="fl ac jfe related-3">
+                      <span class="related-id">{{ card.number }}</span>
+            </div>-->
           </div>
-          <div class="fl ac jfe related-3">
-            <span class="related-id">{{ card.number }}</span>
+          <div class="fl ac related-link">
+            <a class="link" href="javascript:void(0);">{{ card.url }}</a>
+            <svg-icon @click.stop="copyCode(card.url)" class="icon-copy" icon-class="copy2" />
+            <a :href="card.url" target="_blank">
+              <svg-icon class="icon-share" icon-class="jump" />
+            </a>
           </div>
         </div>
-        <div class="fl ac related-link">
-          <a class="link" href="javascript:void(0);">{{ card.url }}</a>
-          <svg-icon @click="copyCode(card.url)" class="icon-copy" icon-class="copy2" />
-          <a :href="card.url" target="_blank">
-            <svg-icon class="icon-share" icon-class="jump" />
-          </a>
-        </div>
-        <p class="summary" v-if="card.summary">{{ card.summary }}</p>
       </div>
-    </div>
 </template>
 
 <script>
@@ -67,6 +64,7 @@ export default {
     },
     // 判断文章关联链接是本站还是外站
     currentSite(link) {
+      return true
       const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
       const linkArr = link.match(reg)
       const prot = linkArr && linkArr[3] ? linkArr[3] : ''
@@ -236,6 +234,5 @@ export default {
 .summary {
   font-size: 12px;
   color: #333;
-  word-break: break-all;
 }
 </style>

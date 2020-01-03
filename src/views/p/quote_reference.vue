@@ -39,7 +39,6 @@ export default {
     }
   },
   created() {
-    console.log(121212121212)
   },
   methods: {
     getListData(res) {

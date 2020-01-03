@@ -3,8 +3,7 @@
     class="ipfs-block"
     placement="bottom"
     width="300"
-    trigger="click"
-    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+    trigger="click">
       <div>
         <p class="ipfs-tip">本文内容已上传星际文件存储系统「IPFS」，永久保存。</p>
         <p class="ipfs-link">
@@ -21,12 +20,8 @@ export default {
   methods: {
     copy(val) {
       this.$copyText(val).then(
-        () => {
-          this.$toast.success({ duration: 1000, message: this.$t('success.copy') })
-        },
-        () => {
-          this.$toast.fail({ duration: 1000, message: this.$t('fail.copy') })
-        }
+        () => this.$toast.success({ duration: 1000, message: this.$t('success.copy') }),
+        () => this.$toast.fail({ duration: 1000, message: this.$t('fail.copy') })
       )
     }
   }

@@ -15,7 +15,7 @@
 
 <script>
 import avatar from '@/components/avatar/index.vue'
-import ipfs from '@/components/ipfs/index.vue'
+import ipfs from '@/common/components/ipfs/index.vue'
 export default {
   components: {
     avatar,
