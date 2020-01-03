@@ -9,12 +9,16 @@
     <!-- 列表 -->
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
-        <h2>
-          {{fandom.title}}
-          <span>（已有{{fandom.groupSize}}人）</span>
-        </h2>
+        <div class="fl title">
+          <el-tooltip :content="fandom.title" class="item" effect="dark" placement="top">
+            <h2>
+              {{ fandom.title }}
+            </h2>
+          </el-tooltip>
+          <span>（已有{{ fandom.groupSize }}人）</span>
+        </div>
         <p class="condition">
-          持有的{{tokenSymbol}}票>{{ getMinBalance(fandom) }}即可加群
+          持有的{{tokenSymbol}}票 ≥{{ getMinBalance(fandom) }} 即可加群
         </p>
       </div>
       <div>
@@ -84,6 +88,10 @@ export default {
     tokenId: {
       type: Number,
       required: true
+    },
+    balance: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -91,7 +99,6 @@ export default {
       isExpand: false,
       showHelp: false,
       bindStatus: false,
-      balance: 100,
       fandomData: []
     }
   },
@@ -105,7 +112,6 @@ export default {
   mounted() {
     if(this.isLogined) {
       this.getAccountStatus()
-      this.getUserBalance()
     }
     this.getFandomList()
     this.$navigation.once('back', (to, from) => {
@@ -189,14 +195,6 @@ export default {
         console.log('err', err)
       })
     },
-    getUserBalance() {
-      this.$API.getUserBalance(this.tokenId).then(res => {
-        if (res.code === 0) {
-          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
-          // console.log('账户余额：', this.balance, res.data)
-        }
-      })
-    },
     getMinBalance(fandom){
       return fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0
     }
@@ -232,10 +230,16 @@ export default {
   margin: 20px 0;
   .fandom-text {
     flex: 1;
-    h2 {
-      font-size: 15px;
-      color: black;
-      margin-bottom: 10px;
+    .title {
+      white-space: nowrap;
+      max-width: 280px;
+      h2 {
+        font-size: 15px;
+        color: black;
+        margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       span {
         font-size: 12px;
         color: #B2B2B2;
