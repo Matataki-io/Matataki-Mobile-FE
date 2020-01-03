@@ -1,13 +1,13 @@
 <template>
   <div class="share-footer">
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="bookmark-solid"/>
+      <svg-icon class="icon active" icon-class="bookmark-solid"/>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="reference"/>
+      <svg-icon class="icon" icon-class="reference" @click="pushShare"/>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="share2"/>
+      <svg-icon class="icon" icon-class="share2" @click="$emit('share')"/>
     </div>
     <div class="icon-num">
       <svg-icon class="icon" icon-class="great-solid" />
@@ -19,6 +19,22 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    pushShare() {
+      this.$router.push({
+        name: 'sharehall',
+        query: {
+          id: this.$route.params.id,
+          from: 'share'
+        }
+      })
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .share-footer {
@@ -39,6 +55,9 @@
   .icon {
     font-size: 20px;
     color: #B2B2B2;
+    &.active {
+      color: @purpleDark;
+    }
   }
 
   .icon-num {

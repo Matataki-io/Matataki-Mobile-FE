@@ -127,6 +127,7 @@ export default {
   },
   created() {
     this.initShareLink()
+    this.initUrlInput()
   },
   methods: {
     initShareLink() {
@@ -134,6 +135,13 @@ export default {
       let shareLinkParse = JSON.parse(shareLink)
       // console.log('shareLinkParse', shareLinkParse)
       this.shareLinkList = Array.isArray(shareLinkParse) ? shareLinkParse : []
+    },
+    initUrlInput() {
+      let { id, from } = this.$route.query
+      if (from === 'share') {
+        console.log('share', id)
+        this.urlForm.url = id
+      }
     },
     // 初始化所有表单内容
     resetForm() {

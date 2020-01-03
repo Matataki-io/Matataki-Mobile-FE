@@ -9,17 +9,15 @@
         121211
       </span>
     </div>
-    <ipfs></ipfs>
+    <m-ipfs></m-ipfs>
   </div>
 </template>
 
 <script>
 import avatar from '@/components/avatar/index.vue'
-import ipfs from '@/common/components/ipfs/index.vue'
 export default {
   components: {
     avatar,
-    ipfs
   },
 }
 </script>
