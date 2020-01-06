@@ -74,6 +74,8 @@ export default {
       font-size:12px;
       color:rgba(178,178,178,1);
       line-height: 1;
+      padding: 0;
+      margin: 0;
     }
   }
 }
