@@ -73,7 +73,7 @@ export default {
 .dialog-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   &__btn {
     display: flex;
     align-items: center;
@@ -84,13 +84,14 @@ export default {
   .btn-icon {
     width: 60px;
     height: 60px;
-    background: #f9f9f9;
+    // background: #f9f9f9;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 34px;
+    cursor: pointer;
   }
   .btn-text {
     font-size: 12px;
