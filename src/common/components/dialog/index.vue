@@ -2,36 +2,41 @@
   <el-dialog
     :title="title"
     :visible.sync="shareDialogVisible"
-    width="90%"
-    center>
-    <slot></slot>
+    :width="width"
+    center
+  >
+    <slot />
   </el-dialog>
 </template>
 
 <script>
-  export default {
-    props: {
-      title: {
-        type: String,
-        default: '提示'
-      },
-      value: {
-        type: Boolean,
-        default: false
-      },
+export default {
+  props: {
+    title: {
+      type: String,
+      default: '提示'
     },
-    watch: {
-      value(newVal) {
-        this.shareDialogVisible = newVal
-      },
-      shareDialogVisible(newVal) {
-        this.$emit('input', newVal)
-      },
+    width: {
+      type: String,
+      default: '90%'
     },
-    data() {
-      return {
-        shareDialogVisible: false
-      }
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      shareDialogVisible: false
+    }
+  },
+  watch: {
+    value(newVal) {
+      this.shareDialogVisible = newVal
+    },
+    shareDialogVisible(newVal) {
+      this.$emit('input', newVal)
     }
   }
+}
 </script>

@@ -1,5 +1,6 @@
 ## common/components
 
+> 如果可以, 同步修改两端的代码
 
 plugins/baseComponents.js
 
@@ -8,3 +9,5 @@ m(matataki)
 m-ipfs
 m-dialog
 m-.......
+
+
