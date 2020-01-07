@@ -8,7 +8,7 @@
       :read="content.read"
       :hash="content.hash"
     ></shareHeader>
-    <shareMain :content="content.title"></shareMain>
+    <shareMain :content="content.short_content"></shareMain>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
     <shareFooter @share="shareDialogVisible = true" class="footer"></shareFooter>
     <m-dialog v-model="shareDialogVisible">
