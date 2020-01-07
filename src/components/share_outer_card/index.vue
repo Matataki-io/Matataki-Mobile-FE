@@ -1,9 +1,13 @@
 <template>
   <div class="card">
-    <div class="card-cover">
-      <img src="http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg" alt="title">
+    <div v-if="card.cover" class="card-cover">
+      <!-- <div style="width: 100px;height:100px;" v-html="showImg(card.cover)"></div> -->
+      <img referrer="no-referrer|origin|unsafe-url" :src="card.cover" :alt="card.title">
     </div>
-    <p class="card-text">继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…</p>
+    <div>
+      <p class="card-text">{{ card.title }}</p>
+      <p class="card-summary">{{ card.summary }}</p>
+    </div>
     <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
@@ -20,9 +24,23 @@ export default {
     idx: {
       type: Number,
       default: 0
+    },
+    card: {
+      type: Object,
+      required: true
     }
   },
+  created() {
+    console.log(this.card)
+  },
   methods: {
+    // 太消耗性能 不可取
+    // showImg (url) {
+    //   if (!url) return ''
+    //   var frameid = 'frameimg' + Math.random()
+    //   window.img = '<img width="100" height="50" src=\'' + url + '?' + Math.random() + '\' />'
+    //   return '<iframe id="' + frameid + '" src="javascript:parent.img;" frameBorder="0" scrolling="no" width="100" height="50"></iframe>'
+    // },
     removeCard() {
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
@@ -53,16 +71,30 @@ export default {
     border-radius: 3px;
     overflow: hidden;
     margin-right: 5px;
+    flex: 0 0 100px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
-  p {
+  &-text {
     font-size:12px;
     font-weight: bold;
     color:rgba(0,0,0,1);
+    line-height:17px;
+    flex: 1;
+    max-height: 19px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  &-summary {
+    font-size:12px;
+    font-weight: bold;
     line-height:17px;
     flex: 1;
     max-height: 36px;
@@ -70,6 +102,7 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    color: #737373;
   }
   &-remove {
     position: absolute;

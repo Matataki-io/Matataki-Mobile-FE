@@ -1,7 +1,8 @@
 <template>
   <div class="sharehall">
     <home-head @login="showSidebar = true" />
-    <h3 class="sharehall-title">分享文章</h3>
+    <div style="height: 20px;"></div>
+    <!-- <h3 class="sharehall-title">分享文章</h3> -->
     <div class="push">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" @submit.native.prevent>
         <el-form-item label="" prop="content">
@@ -14,15 +15,15 @@
           <div class="input-line">
             <!-- 为了使用from的验证功能, 不能用css实现下划线聚焦了 用js解决 -->
             <el-input size="mini" class="push-input" @focus="focusInput" @blur="blurInput" @change="changeInput" v-model="urlForm.url" placeholder="输入链接，包含http(s)://"></el-input>
-            <el-button type="primary" size="mini" class="btn-black" @click="getUrlData('urlForm')">
+            <el-button type="primary" size="mini" class="btn-black" @click="getUrlData('urlForm')" v-loading="urlLoading">
               <svg-icon icon-class="enter" class="icon" />
             </el-button>
           </div>
         </el-form-item>
         <el-form-item v-if="shareLinkList.length !== 0">
           <template v-for="(item, index) in shareLinkList">
-            <shareInsideCard v-if="item.type === 'inside'" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareInsideCard>
-            <shareOuterCard v-if="item.type === 'outer'" class="list-card" :key="'shareOuterCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareOuterCard>
+            <shareInsideCard :card="item" v-if="item.type === 'inside'" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareInsideCard>
+            <shareOuterCard :card="item" v-if="item.type === 'outer'" class="list-card" :key="'shareOuterCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareOuterCard>
           </template>
         </el-form-item>
         <el-form-item>
@@ -37,7 +38,7 @@
     </div>
     <h3 class="sharehall-title">分享大厅</h3>
     <!-- pull list -->
-    <shareCard class="list-card" v-for="item in 3" :key="'shareCard' + item"></shareCard>
+    <shareCard class="list-card" v-for="(item, index) in shareList" :key="index" :card="item"></shareCard>
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
@@ -49,6 +50,8 @@ import shareOuterCard from '@/components/share_outer_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 import shareCard from '@/components/share_card/index.vue'
 import { sleep } from '@/common/methods'
+import { getCookie } from '@/utils/cookie'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -91,7 +94,9 @@ export default {
         //   type: 'outer',
         // }
       ],
-      fullscreenLoading: false
+      shareList: [],
+      fullscreenLoading: false,
+      urlLoading: false,
     }
   },
   watch: {
@@ -128,6 +133,10 @@ export default {
   created() {
     this.initShareLink()
     this.initUrlInput()
+    this.shareListFunc()
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
   },
   methods: {
     initShareLink() {
@@ -135,6 +144,8 @@ export default {
       let shareLinkParse = JSON.parse(shareLink)
       // console.log('shareLinkParse', shareLinkParse)
       this.shareLinkList = Array.isArray(shareLinkParse) ? shareLinkParse : []
+
+      console.log(shareLink, this.shareLinkList)
     },
     initUrlInput() {
       let { id, from } = this.$route.query
@@ -142,6 +153,20 @@ export default {
         console.log('share', id)
         this.urlForm.url = id
       }
+    },
+    // 分享列表
+    shareListFunc() {
+      this.$API.shareList()
+        .then(res => {
+          if (res.code === 0) {
+            console.log(res)
+            this.shareList = res.data.list
+          } else {
+
+          }
+        }).catch(err => {
+          console.log(err)
+        })
     },
     // 初始化所有表单内容
     resetForm() {
@@ -157,42 +182,105 @@ export default {
     // 发布分享
     async pushShare(formName) {
       if (await this.setpFunc(formName)) {
+        console.log('currentUserInfo', this.currentUserInfo)
+        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         if (this.shareLinkList.length <= 0) return this.$toast({ duration: 1000, message: '分享引用不能为空'})
+        // 平台检测
+        let idProvider = getCookie('idProvider')
+        if (!idProvider) {
+          this.$toast({ duration: 1000, message: '发生错误, 请您重新登录'})
+          this.$store.commit('setLoginModal', true)
+          return false
+        }
+        let { name: author = '' } = this.currentUserInfo
         this.fullscreenLoading = true
-        setTimeout(() => {
-          this.resetForm()
-          this.fullscreenLoading = false
-          this.$toast.success({duration: 500, message: '发布成功'})
-        }, 2000)
+        let data = {
+            author,
+            content: this.ruleForm.content.trim(),
+            platform: idProvider.toLocaleLowerCase(),
+            refs: []
+        }
+        // console.log('data', data)
+        // console.log('data1', this.shareLinkList)
+        this.shareLinkList.map(i => {
+          // 目前只有外展
+          if (i.type === 'outer') {
+            data.refs.push({
+            url: i.url,
+            title: i.title,
+            summary: i.summary,
+            cover: i.cover
+          })
+          }
+        })
+        // return false
+        this.$API.createShare(data)
+          .then(res => {
+            console.log(res)
+            if (res.code === 0) {
+              this.resetForm()
+              this.$toast.success({duration: 500, message: '发布成功'})
+            } else {
+              this.$toast.fail({duration: 500, message: '发布失败'})
+            }
+          }).catch(err => {
+            console.log(err)
+            this.$toast.fail({duration: 500, message: '发布失败'})
+          }).finally(() => {
+            this.fullscreenLoading = false
+          })
       }
     },
     // 获取链接内容
     async getUrlData(formName) {
       if (await this.setpFunc(formName)) {
-        let random = Math.random() < 0.4
-        if (random) {
-          this.shareLinkList.push({
-            type: 'inside',
-            avatar: 'http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg',
-            username: 'xiaotiandada',
-            content: '继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…',
+        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+
+        // 自动检测url 获取标题 内容等
+        this.urlLoading = true
+        this.$API.extractRefTitle({
+          url: this.urlForm.url.trim()
+        })
+          .then(res => {
+            if (res.code === 0) {
+              console.log(res)
+              this.$toast({duration: 1000, message: '检测完成'})
+              let { ref_sign_id = 0, title = '', summary = '', cover = '' } = res.data
+              console.log(ref_sign_id, typeof ref_sign_id)
+              if (Number(ref_sign_id) === 0) {
+                this.shareLinkList.push({
+                  type: 'outer',
+                  cover,
+                  title: title || '暂无标题',
+                  summary: summary || '暂无内容',
+                  url: this.urlForm.url
+                })
+              } else {
+                this.shareLinkList.push({
+                  type: 'inside',
+                  avatar: 'http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg',
+                  username: 'xiaotiandada',
+                  content: '继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…',
+                  url: this.urlForm.url
+                })
+              }
+              // 清空数据
+              this.urlForm.url = ''
+              this.$refs[formName].resetFields()
+            } else {
+              this.$toast.fail(res.message)
+            }
+          }).catch(err => {
+            console.log('获取信息失败', err)
+          }).finally(() => {
+            this.urlLoading = false
           })
-        } else {
-          this.shareLinkList.push({
-            type: 'outer',
-            cover: 'http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg',
-            title: '继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…',
-          })
-        }
-        this.urlForm.url = ''
-        this.$refs[formName].resetFields()
       }
     },
     removeShareLink(i) {
       this.shareLinkList.splice(i, 1)
     },
     changeInput(val) {
-      // console.log(val)
       this.getUrlData('urlForm')
     },
     focusInput(e) {

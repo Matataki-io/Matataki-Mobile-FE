@@ -2,39 +2,36 @@
   <div class="card-share">
     <div class="card-info">
       <div class="card-info__left">
-        <avatar class="card-avatar" src="http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg"></avatar>
+        <avatar class="card-avatar" :src="avatarSrc"></avatar>
         <div class="card-author">
-          <span class="card-username">JKDJSFKSDJFKSDFDFJKDJSFKSDJFKSDFDFJKDJSFKSDJFKSDFDF</span>
-          <span class="card-date">123123123131231231</span>
+          <span class="card-username">{{ card.author }}</span>
+          <div>
+            <span class="card-date">{{ time }}</span>
+            <span class="card-read">
+              <svg-icon class="icon" icon-class="eye_blod" />{{ card.read }}
+            </span>
+          </div>
         </div>
       </div>
       <div class="card-quote">
         <svg-icon class="icon" icon-class="quote" />
-        <span>引用123</span>
+        <span>引用&nbsp;{{card.beRefs.length}}</span>
       </div>
     </div>
     <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>我觉得这篇文章真的非常非常赞！！大家都快去看～～～我一
-        直都在追这位作者的文章，每期都有看哟，对我的启发也很大，
-        简直amazing～～～我觉得这篇文章真的非常非常赞！！
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        每期都有看哟，对我的启发也很大，简直amazing～～～</p>
+      <p>{{ card.title }}</p>
     </div>
-    <div class="card-list">
-      <div v-for="(item, index) in shareList.slice(0, 1)" :key="index">
-        <shareOuterCard v-if="item.type === 'outer'" cardType="read" class="list-card"></shareOuterCard>
-        <shareInsideCard v-if="item.type === 'inside'" cardType="read" class="list-card"></shareInsideCard>
+    <div class="card-list" v-if="this.card.refs.length !== 0">
+      <div v-for="(item, index) in this.card.refs.slice(0, 1)" :key="index">
+        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"></shareOuterCard>
+        <shareInsideCard :card="item" v-if="item.ref_sign_id !== 0" cardType="read" class="list-card"></shareInsideCard>
       </div>
       <div class="card-list__more" :class="toggleMore && 'open'">
         <div v-for="(item, index) in shareListMore" :key="index">
-          <shareOuterCard v-if="item.type === 'outer'" cardType="read" class="list-card" ></shareOuterCard>
-          <shareInsideCard v-if="item.type === 'inside'" cardType="read" class="list-card"></shareInsideCard>
+          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" ></shareOuterCard>
+          <shareInsideCard :card="item" v-if="item.ref_sign_id !== 0" cardType="read" class="list-card"></shareInsideCard>
         </div>
       </div>
       <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
@@ -45,6 +42,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
@@ -54,32 +52,53 @@ export default {
     shareOuterCard,
     shareInsideCard,
   },
+  props: {
+    card: {
+      type: Object,
+      required: true
+    },
+  },
   data() {
     return {
       toggleMore: false,
-      shareList: [
-        {
-          type: 'outer'
-        },
-        {
-          type: 'inside'
-        },
-        {
-          type: 'outer'
-        },
-        {
-          type: 'inside'
-        },
-      ],
+      // shareList: [
+      //   {
+      //     type: 'outer'
+      //   },
+      //   {
+      //     type: 'inside'
+      //   },
+      //   {
+      //     type: 'outer'
+      //   },
+      //   {
+      //     type: 'inside'
+      //   },
+      // ],
     }
   },
   computed: {
     shareListMore() {
-      if (this.shareList.length > 1) return this.shareList.slice(1)
+      if (this.card.refs.length > 1) return this.card.refs.slice(1)
       else return []
-    }
+    },
+    // shareList() {
+    //   if (this.card) {
+    //     return this.card.refs.map(i => {
+    //       i['type'] = 'outer'
+    //     })
+    //   } else return []
+    // },
+    time() {
+      return moment(this.card.create_time).format('lll')
+    },
+    avatarSrc() {
+      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      return ''
+    },
   },
   created() {
+    console.log('card', this.card)
   }
 }
 </script>
@@ -134,6 +153,17 @@ export default {
       font-weight:400;
       color:rgba(178,178,178,1);
       line-height:17px;
+    }
+
+    .card-read {
+      font-size:12px;
+      font-weight:400;
+      color:rgba(178,178,178,1);
+      line-height:17px;
+      margin-left: 6px;
+      .icon {
+        margin-right: 4px;
+      }
     }
   }
 
