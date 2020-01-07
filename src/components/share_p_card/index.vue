@@ -1,16 +1,26 @@
 <template>
-  <a target="_blank" :href="card.url" class="card">
+  <router-link :to="{ name: 'p-id', params: { id: card.ref_sign_id } }" class="card">
     <div v-if="card.cover" class="card-cover">
       <img referrer="no-referrer|origin|unsafe-url" :src="card.cover" :alt="card.title">
     </div>
-    <div>
+    <div class="card-content">
       <p class="card-text">{{ card.title || '暂无' }}</p>
-      <p class="card-summary">{{ card.summary || '暂无' }}</p>
+      <div class="card-info">
+        <span>
+          <svg-icon icon-class="eye" class="icon"></svg-icon>12
+        </span>
+        <span>
+          <svg-icon icon-class="link" class="icon"></svg-icon>12
+        </span>
+        <span>
+          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
+        </span>
+      </div>
     </div>
     <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -72,21 +82,15 @@ export default {
       object-fit: cover;
     }
   }
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+  }
   &-text {
     font-size:12px;
     font-weight: bold;
     color:rgba(0,0,0,1);
-    line-height:17px;
-    flex: 1;
-    max-height: 19px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
-  &-summary {
-    font-size:12px;
-    font-weight: bold;
     line-height:17px;
     flex: 1;
     max-height: 36px;
@@ -94,7 +98,22 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    color: #737373;
+  }
+  &-info {
+    display: flex;
+    span {
+      font-size:12px;
+      font-weight:400;
+      color:rgba(178,178,178,1);
+      line-height:17px;
+      margin-left: 10px;
+      .icon {
+        margin-right: 4px;
+      }
+      &:nth-child(1) {
+        margin-left: 0;
+      }
+    }
   }
   &-remove {
     position: absolute;

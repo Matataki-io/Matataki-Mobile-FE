@@ -1,8 +1,14 @@
 <template>
-  <div class="share" @click.stop="hideClient">
+  <div class="share" @click.stop="hideClient" v-loading="loading">
     <BaseHeader :pageinfo="{title: '分享详情'}" customize-header-bc="#fff" :has-bottom-border-line="true" class="header" />
-    <shareHeader></shareHeader>
-    <shareMain></shareMain>
+    <shareHeader
+      :avatar="userInfo.avatar"
+      :username="userInfo.nickname || userInfo.username"
+      :time="content.create_time"
+      :read="content.read"
+      :hash="content.hash"
+    ></shareHeader>
+    <shareMain :content="content.title"></shareMain>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
     <shareFooter @share="shareDialogVisible = true" class="footer"></shareFooter>
     <m-dialog v-model="shareDialogVisible">
@@ -33,14 +39,55 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      content: Object.create(null), // 文章信息
+      userInfo: Object.create(null), // 用户信息
       shareDialogVisible: false, // 分享 dialog
       showQuote: false, // refernces
       nowTime: 0 // refernces
     }
   },
+  created() {
+    this.getDetail()
+  },
   computed: {
   },
   methods: {
+    // 获取详情内容
+    getDetail() {
+      // 无id
+      let { id = '' } = this.$route.params
+      if (!id) return this.$router.go(-1)
+      this.loading = true
+      this.$API.shareDetail(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.content = res.data
+            this.authorInfo(res.data.uid)
+          } else {
+            console.log(res.message)
+            this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
+        }).finally(() => {
+          this.loading = false
+        })
+    },
+    // 得到作者信息
+    authorInfo(id) {
+      this.$API.getUser(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.userInfo = res.data
+          } else {
+            console.log(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+    },
     hideClient() {
       this.showQuote = false
     },

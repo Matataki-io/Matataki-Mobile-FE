@@ -1,22 +1,14 @@
 <template>
   <div class="card">
-    <div class="card-info">
-      <avatar class="card-avatar" src="http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg"></avatar>
-      <span class="card-username">JKDJSFKSDJFKSDFDF</span>
-    </div>
-    <div class="card-content">
+    <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info">
+      <avatar class="card-avatar" :src="avatarSrc"></avatar>
+      <span class="card-username">{{ username }}</span>
+    </router-link>
+    <router-link :to="{ name: 'share-id', params: { id: card.sign_id } }" class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>我觉得这篇文章真的非常非常赞！！大家都快去看～～～我一
-        直都在追这位作者的文章，每期都有看哟，对我的启发也很大，
-        简直amazing～～～我觉得这篇文章真的非常非常赞！！
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        大家都快去看～～～我一直都在追这位作者的文章，
-        每期都有看哟，对我的启发也很大，简直amazing～～～</p>
-    </div>
+      <p>{{ card.summary || '暂无' }}</p>
+    </router-link>
     <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
@@ -38,7 +30,29 @@ export default {
     idx: {
       type: Number,
       default: 0
-    }
+    },
+    card: {
+      type: Object,
+      required: true
+    },
+  },
+  computed: {
+    username() {
+      if (this.cardType === 'edit') {
+        return this.card.user.nickname || this.card.user.username
+      } else if (this.cardType === 'read') {
+        return this.card.nickname || this.card.username
+      } else return ''
+    },
+    avatarSrc() {
+      if (this.cardType === 'edit') {
+        if (this.card.user.avatar) return this.$API.getImg(this.card.user.avatar)
+        return ''
+      } else if (this.cardType === 'read') {
+        if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+        return ''
+      } else return ''
+    },
   },
   methods: {
     removeCard() {
@@ -70,6 +84,8 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
+    text-decoration: none;
+    cursor: pointer;
     .card-avatar {
       margin-right: 5px;
       width: 30px !important;
@@ -91,6 +107,8 @@ export default {
     padding: 0 20px;
     width: 100%;
     margin-top: 5px;
+    text-decoration: none;
+    cursor: pointer;
     .icon {
       position: absolute;
       color: #000;

@@ -610,6 +610,8 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  // 得到用户信息
+  getUser(id) { return request.get(`/user/${id}`) },
   // 获取推荐文章或者商品
   postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------
@@ -625,5 +627,9 @@ minetokenGetResources(tokenId) {
   // 创建分享
   createShare(data) { return request.post('/share', data) },
   // 分享列表
-  shareList() { return request.get('/share') }
+  shareList() { return request.get('/share') },
+  // 分享详情
+  // 暂时不用, 后端说用 p 接口
+  // shareDetail(id) { return request.get(`/share/${id}`) },
+  shareDetail(id) { return request.get(`/p/${id}`) },
 }

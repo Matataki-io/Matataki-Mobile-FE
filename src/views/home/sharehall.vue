@@ -22,8 +22,9 @@
         </el-form-item>
         <el-form-item v-if="shareLinkList.length !== 0">
           <template v-for="(item, index) in shareLinkList">
-            <shareInsideCard :card="item" v-if="item.type === 'inside'" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareInsideCard>
-            <shareOuterCard :card="item" v-if="item.type === 'outer'" class="list-card" :key="'shareOuterCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareOuterCard>
+            <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareOuterCard>
+            <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></sharePCard>
+            <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" class="list-card" :key="'shareOuterCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareInsideCard>
           </template>
         </el-form-item>
         <el-form-item>
@@ -38,7 +39,7 @@
     </div>
     <h3 class="sharehall-title">分享大厅</h3>
     <!-- pull list -->
-    <shareCard class="list-card" v-for="(item, index) in shareList" :key="index" :card="item"></shareCard>
+    <shareCard class="list-card" v-for="(item, index) in shareList" :key="index" :card="item" @refClick="refClick"></shareCard>
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
@@ -47,6 +48,7 @@
 import homeHead from './components/homeHead.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 import shareCard from '@/components/share_card/index.vue'
 import { sleep } from '@/common/methods'
@@ -58,6 +60,7 @@ export default {
     homeHead,
     Sidebar,
     shareOuterCard,
+    sharePCard,
     shareInsideCard,
     shareCard
   },
@@ -150,7 +153,6 @@ export default {
     initUrlInput() {
       let { id, from } = this.$route.query
       if (from === 'share') {
-        console.log('share', id)
         this.urlForm.url = id
       }
     },
@@ -159,10 +161,9 @@ export default {
       this.$API.shareList()
         .then(res => {
           if (res.code === 0) {
-            console.log(res)
             this.shareList = res.data.list
           } else {
-
+            console.log(res.message)
           }
         }).catch(err => {
           console.log(err)
@@ -200,23 +201,18 @@ export default {
             platform: idProvider.toLocaleLowerCase(),
             refs: []
         }
-        // console.log('data', data)
-        // console.log('data1', this.shareLinkList)
         this.shareLinkList.map(i => {
           // 目前只有外展
-          if (i.type === 'outer') {
-            data.refs.push({
+          data.refs.push({
             url: i.url,
             title: i.title,
             summary: i.summary,
             cover: i.cover
           })
-          }
         })
         // return false
         this.$API.createShare(data)
           .then(res => {
-            console.log(res)
             if (res.code === 0) {
               this.resetForm()
               this.$toast.success({duration: 500, message: '发布成功'})
@@ -235,35 +231,22 @@ export default {
     async getUrlData(formName) {
       if (await this.setpFunc(formName)) {
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+        let url = this.urlForm.url.trim()
+
+        const urlIncludes = (url, arr) => {
+          return arr.filter(i => i.url === url).length !== 0
+        }
+
+        if (urlIncludes(url, this.shareLinkList)) return this.$toast({duration: 1000, message: '不能引用重复的内容'})
 
         // 自动检测url 获取标题 内容等
         this.urlLoading = true
-        this.$API.extractRefTitle({
-          url: this.urlForm.url.trim()
-        })
+        this.$API.extractRefTitle({ url })
           .then(res => {
             if (res.code === 0) {
-              console.log(res)
               this.$toast({duration: 1000, message: '检测完成'})
-              let { ref_sign_id = 0, title = '', summary = '', cover = '' } = res.data
-              console.log(ref_sign_id, typeof ref_sign_id)
-              if (Number(ref_sign_id) === 0) {
-                this.shareLinkList.push({
-                  type: 'outer',
-                  cover,
-                  title: title || '暂无标题',
-                  summary: summary || '暂无内容',
-                  url: this.urlForm.url
-                })
-              } else {
-                this.shareLinkList.push({
-                  type: 'inside',
-                  avatar: 'http://s2.mycomic.cc/imgs/201810/22/12/15401826622251.jpg',
-                  username: 'xiaotiandada',
-                  content: '继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出继Libra横空出世之后，还会有新的移动支付手段登上舞台吗？就Libra推出进…',
-                  url: this.urlForm.url
-                })
-              }
+              res.data.url = url
+              this.shareLinkList.push(res.data)
               // 清空数据
               this.urlForm.url = ''
               this.$refs[formName].resetFields()
@@ -280,14 +263,22 @@ export default {
     removeShareLink(i) {
       this.shareLinkList.splice(i, 1)
     },
+    // 输入框改变
     changeInput(val) {
       this.getUrlData('urlForm')
     },
+    // url 输入框聚焦
     focusInput(e) {
       e.target.parentElement.parentElement.classList.add('active')
     },
+    // url 输入框失焦
     blurInput(e) {
       e.target.parentElement.parentElement.classList.remove('active')
+    },
+    // 引用
+    refClick(card) {
+      this.urlForm.url = `${process.env.VUE_APP_URL}/share/${card.id}`
+      this.getUrlData('urlForm')
     }
   }
 }

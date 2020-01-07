@@ -7,8 +7,8 @@
       <div>
         <p class="ipfs-tip">本文内容已上传星际文件存储系统「IPFS」，永久保存。</p>
         <p class="ipfs-link">
-          IPFS Hash:cjsoiajcoiosjocjosjcoijocjsoiajcoiosjocjosjcoijo
-          <svg-icon icon-class="copy" @click="copy('cjsoiajcoiosjocjosjcoijocjsoiajcoiosjocjosjcoijo')"></svg-icon>
+          IPFS Hash: {{ hash }}
+          <svg-icon icon-class="copy" @click="copy(hash)"></svg-icon>
         </p>
       </div>
       <svg-icon slot="reference" icon-class="ipfs" class="ipfs"></svg-icon>
@@ -17,6 +17,12 @@
 
 <script>
 export default {
+  props: {
+    hash: {
+      type: String,
+      default: ''
+    }
+  },
   methods: {
     copy(val) {
       this.$copyText(val).then(

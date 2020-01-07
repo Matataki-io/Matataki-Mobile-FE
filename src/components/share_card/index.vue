@@ -1,10 +1,10 @@
 <template>
   <div class="card-share">
     <div class="card-info">
-      <div class="card-info__left">
+      <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info__left">
         <avatar class="card-avatar" :src="avatarSrc"></avatar>
         <div class="card-author">
-          <span class="card-username">{{ card.author }}</span>
+          <span class="card-username">{{ card.nickname || card.author }}</span>
           <div>
             <span class="card-date">{{ time }}</span>
             <span class="card-read">
@@ -12,26 +12,28 @@
             </span>
           </div>
         </div>
-      </div>
-      <div class="card-quote">
+      </router-link>
+      <div class="card-quote" @click="$emit('refClick', card)">
         <svg-icon class="icon" icon-class="quote" />
         <span>引用&nbsp;{{card.beRefs.length}}</span>
       </div>
     </div>
-    <div class="card-content">
+    <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.title }}</p>
-    </div>
+      <p>{{ card.short_content || "&nbsp;" }}</p>
+    </router-link>
     <div class="card-list" v-if="this.card.refs.length !== 0">
       <div v-for="(item, index) in this.card.refs.slice(0, 1)" :key="index">
         <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"></shareOuterCard>
-        <shareInsideCard :card="item" v-if="item.ref_sign_id !== 0" cardType="read" class="list-card"></shareInsideCard>
+        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"></sharePCard>
+        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"></shareInsideCard>
       </div>
       <div class="card-list__more" :class="toggleMore && 'open'">
         <div v-for="(item, index) in shareListMore" :key="index">
           <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" ></shareOuterCard>
-          <shareInsideCard :card="item" v-if="item.ref_sign_id !== 0" cardType="read" class="list-card"></shareInsideCard>
+          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" ></sharePCard>
+          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"></shareInsideCard>
         </div>
       </div>
       <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
@@ -45,11 +47,13 @@
 import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 export default {
   components: {
     avatar,
     shareOuterCard,
+    sharePCard,
     shareInsideCard,
   },
   props: {
@@ -61,20 +65,6 @@ export default {
   data() {
     return {
       toggleMore: false,
-      // shareList: [
-      //   {
-      //     type: 'outer'
-      //   },
-      //   {
-      //     type: 'inside'
-      //   },
-      //   {
-      //     type: 'outer'
-      //   },
-      //   {
-      //     type: 'inside'
-      //   },
-      // ],
     }
   },
   computed: {
@@ -82,13 +72,6 @@ export default {
       if (this.card.refs.length > 1) return this.card.refs.slice(1)
       else return []
     },
-    // shareList() {
-    //   if (this.card) {
-    //     return this.card.refs.map(i => {
-    //       i['type'] = 'outer'
-    //     })
-    //   } else return []
-    // },
     time() {
       return moment(this.card.create_time).format('lll')
     },
@@ -98,8 +81,7 @@ export default {
     },
   },
   created() {
-    console.log('card', this.card)
-  }
+  },
 }
 </script>
 
@@ -124,6 +106,8 @@ export default {
       flex: 1;
       overflow: hidden;
       margin-right: 10px;
+      text-decoration: none;
+      cursor: pointer;
     }
     .card-author {
       display: flex;
@@ -190,6 +174,8 @@ export default {
     padding: 0 20px;
     width: 100%;
     margin-top: 10px;
+    text-decoration: none;
+    cursor: pointer;
     .icon {
       position: absolute;
       color: @purpleDark;
