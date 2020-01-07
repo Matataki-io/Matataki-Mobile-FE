@@ -3,7 +3,7 @@
     class="ipfs-block"
     placement="bottom"
     width="300"
-    trigger="click">
+    trigger="hover">
       <div>
         <p class="ipfs-tip">本文内容已上传星际文件存储系统「IPFS」，永久保存。</p>
         <p class="ipfs-link">
