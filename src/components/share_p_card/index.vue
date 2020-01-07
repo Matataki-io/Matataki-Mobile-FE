@@ -40,7 +40,9 @@ export default {
     }
   },
   methods: {
-    removeCard() {
+    removeCard(e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -50,6 +52,7 @@ export default {
         }).then(() => {
           this.$emit('removeShareLink', this.idx)
         })
+      return false
     }
   }
 }
