@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     cover(cover) {
-      return cover ? this.$backendAPI.getImg(cover) : ''
+      return cover ? this.$API.getImg(cover) : ''
     },
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.decimals)

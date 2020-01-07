@@ -62,7 +62,7 @@ export default {
       // 获取用户头像
       await this.$backendAPI.getUser({ id }).then(res => {
         if (res.status === 200 && res.data.code === 0)
-          this.avatarSrc = res.data.data.avatar ? this.$backendAPI.getImg(res.data.data.avatar) : ''
+          this.avatarSrc = res.data.data.avatar ? this.$API.getImg(res.data.data.avatar) : ''
       })
     },
     islogin() {

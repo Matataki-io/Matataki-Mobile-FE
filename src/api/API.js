@@ -599,6 +599,17 @@ minetokenGetResources(tokenId) {
 
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
+  /**
+   * 解析引用网址的title
+   * @param {Object} data {url: xxx}
+   */
+  extractRefTitle(data) {
+    return request({
+      method: 'POST',
+      url: '/posts/extractRefTitle',
+      data
+    })
+  },
   // 获取推荐文章或者商品
   postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------
@@ -610,4 +621,9 @@ minetokenGetResources(tokenId) {
   accountChange(params) { return request.post('/account/changeMainAccount', params) },
   // 账号列表
   accountList() { return request.get('/account/list') },
+  // -------------------------------- 分享 --------------------------------
+  // 创建分享
+  createShare(data) { return request.post('/share', data) },
+  // 分享列表
+  shareList() { return request.get('/share') }
 }

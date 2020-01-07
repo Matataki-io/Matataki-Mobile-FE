@@ -211,14 +211,6 @@ const API = {
       data
     })
   },
-  // 获取头像
-  getAvatarImage(hash) {
-    return `${ssImgAddress}${hash}`
-  },
-  // todo, 方便复制, 后期两端命名需要统一
-  getImg(hash) {
-    return `${ssImgAddress}${hash}`
-  },
   // 上传图片
   async uploadImage(type, data) {
     const url = {

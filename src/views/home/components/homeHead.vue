@@ -103,7 +103,7 @@ export default {
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+      if (avatar) this.avatar = this.$API.getImg(avatar)
     }
   }
 }

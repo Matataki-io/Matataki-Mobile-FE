@@ -33,7 +33,7 @@ export default {
       return Number(list.uid) === Number(ownerId) ? list.fuid : list.uid
     },
     avatarList() {
-      return this.list.avatar ? this.$backendAPI.getAvatarImage(this.list.avatar) : ''
+      return this.list.avatar ? this.$API.getImg(this.list.avatar) : ''
     }
   },
   methods: {}

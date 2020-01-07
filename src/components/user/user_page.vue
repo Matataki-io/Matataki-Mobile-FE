@@ -257,7 +257,7 @@ export default {
     },
     setImage(hash) {
       if (hash) {
-        return this.$backendAPI.getAvatarImage(hash)
+        return this.$API.getImg(hash)
       } else return ''
     },
     async tokenUserId(id) {
