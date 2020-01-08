@@ -19,7 +19,7 @@ export default {
 
 <style lang="less" scoped>
 .share-main {
-  margin: 0 20px 140px 20px;
+  margin: 0 20px;
   padding: 0 20px;
   position: relative;
   .icon {

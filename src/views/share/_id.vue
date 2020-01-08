@@ -9,6 +9,7 @@
       :hash="content.hash"
     ></shareHeader>
     <shareMain :content="shareContent"></shareMain>
+    <div class="empty"></div>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
     <shareFooter
       :bookmarked="currentProfile.is_bookmarked"
@@ -208,6 +209,10 @@ export default {
 }
 .footer {
   z-index: 99;
+}
+
+.empty {
+  height: 140px;
 }
 
 
