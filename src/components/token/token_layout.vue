@@ -74,13 +74,13 @@
     <div class="fl function-bar">
       <div class="but" @click="openEtherscan()">
           <div>
-            <svg-icon icon-class="eth_mini" />
+            <svg-icon class="eth_mini" icon-class="eth_mini" />
             链上查看
           </div>
       </div>
       <div class="but midline" @click="shareModalShow = true">
         <div>
-          <svg-icon icon-class="share1" @click="shareModalShow = true" />
+          <svg-icon class="share1" icon-class="share1" />
           分享Fan票
         </div>
       </div>
@@ -827,6 +827,16 @@ export default {
       font-size: 15px;
       color: #000;
       margin: auto;
+      svg {
+        vertical-align: sub;
+        &.eth_mini {
+          font-size: 20px;
+        }
+        &.share1 {
+          font-size: 18px;
+          margin-right: 3px;
+        }
+      }
     }
   }
   .midline {
