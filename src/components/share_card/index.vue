@@ -201,6 +201,7 @@ export default {
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
+      white-space: pre-wrap;
     }
   }
   &-list {

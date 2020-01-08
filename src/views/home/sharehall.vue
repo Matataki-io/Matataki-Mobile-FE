@@ -39,7 +39,18 @@
     </div>
     <h3 class="sharehall-title">分享大厅</h3>
     <!-- pull list -->
-    <shareCard class="list-card" v-for="(item, index) in shareList" :key="index" :card="item" @refClick="refClick"></shareCard>
+
+    <BasePull
+      :params="pull.params"
+      :api-url="pull.apiUrl"
+      :loading-text="$t('not')"
+      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+      :need-access-token="true"
+      :auto-request-time="pull.time"
+      @getListData="getListData"
+    >
+      <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick"></shareCard>
+    </BasePull>
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
@@ -97,9 +108,16 @@ export default {
         //   type: 'outer',
         // }
       ],
-      shareList: [],
       fullscreenLoading: false,
       urlLoading: false,
+      pull: {
+        params: {
+          pagesize: 20
+        },
+        time: 0,
+        apiUrl: 'share',
+        list: []
+      },
     }
   },
   watch: {
@@ -136,7 +154,6 @@ export default {
   created() {
     this.initShareLink()
     this.initUrlInput()
-    this.shareListFunc()
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -155,19 +172,6 @@ export default {
       if (from === 'share') {
         this.urlForm.url = id
       }
-    },
-    // 分享列表
-    shareListFunc() {
-      this.$API.shareList()
-        .then(res => {
-          if (res.code === 0) {
-            this.shareList = res.data.list
-          } else {
-            console.log(res.message)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
     },
     // 初始化所有表单内容
     resetForm() {
@@ -215,6 +219,7 @@ export default {
           .then(res => {
             if (res.code === 0) {
               this.resetForm()
+              this.pull.time = Date.now()
               this.$toast.success({duration: 500, message: '发布成功'})
             } else {
               this.$toast.fail({duration: 500, message: '发布失败'})
@@ -279,7 +284,11 @@ export default {
     refClick(card) {
       this.urlForm.url = `${process.env.VUE_APP_URL}/share/${card.id}`
       this.getUrlData('urlForm')
-    }
+    },
+    getListData(res) {
+      console.log('res1', res)
+      this.pull.list = res.list
+    },
   }
 }
 </script>

@@ -626,8 +626,6 @@ minetokenGetResources(tokenId) {
   // -------------------------------- 分享 --------------------------------
   // 创建分享
   createShare(data) { return request.post('/share', data) },
-  // 分享列表
-  shareList() { return request.get('/share') },
   // 分享详情
   // 暂时不用, 后端说用 p 接口
   // shareDetail(id) { return request.get(`/share/${id}`) },

@@ -92,6 +92,7 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    white-space: pre-wrap;
   }
   &-summary {
     font-size:12px;
@@ -104,6 +105,7 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     color: #737373;
+    white-space: pre-wrap;
   }
   &-remove {
     position: absolute;
