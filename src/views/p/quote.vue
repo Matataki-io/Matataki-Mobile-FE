@@ -9,8 +9,8 @@
           被引用<span>{{berefernceTotal}}</span>
         </div>
       </div>
-      <quoteRefernce :nowTime="nowTime" @getArticle="getArticle" ref="quoteRefernce" v-if="idx === 0"></quoteRefernce>
-      <quoteBerefernce :nowTime="nowTime"  @getArticle="getArticle" ref="quoteBerefernce" v-if="idx === 1"></quoteBerefernce>
+      <quoteReference :nowTime="nowTime" @getArticle="getArticle" ref="quoteReference" v-if="idx === 0"></quoteReference>
+      <quoteBereference :nowTime="nowTime"  @getArticle="getArticle" ref="quoteBereference" v-if="idx === 1"></quoteBereference>
     </div>
     <div class="full" :class="show && 'open'"></div>
   </div>
@@ -18,12 +18,12 @@
 
 
 <script>
-import quoteRefernce from './quote_refernce'
-import quoteBerefernce from './quote_berefernce'
+import quoteReference from './quote_reference'
+import quoteBereference from './quote_bereference'
 export default {
   components: {
-    quoteRefernce,
-    quoteBerefernce
+    quoteReference,
+    quoteBereference
   },
   props: {
     show: {
@@ -46,8 +46,8 @@ export default {
   },
   watch: {
     nowTime() {
-      this.getRefernceCount('postsReferences', {}, 'refernce')
-      this.getRefernceCount('postsPosts', {}, 'berefernce')
+      this.getReferenceCount('postsReferences', {}, 'refernce')
+      this.getReferenceCount('postsPosts', {}, 'berefernce')
     },
     show(newVal) {
       if (newVal) {
@@ -60,8 +60,8 @@ export default {
     }
   },
   created() {
-    this.getRefernceCount('postsReferences', {}, 'refernce')
-    this.getRefernceCount('postsPosts', {}, 'berefernce')
+    this.getReferenceCount('postsReferences', {}, 'refernce')
+    this.getReferenceCount('postsPosts', {}, 'berefernce')
 
     this.$nextTick(() => {
       let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
@@ -86,7 +86,7 @@ export default {
       this.idx = i
       this.$emit('showQuote', true)
     },
-    async getRefernceCount(url, params, type) {
+    async getReferenceCount(url, params, type) {
       try {
         const res = await this.$backendAPI.getBackendData({ url, params, urlReplace: this.$route.params.id }, false)
         if (res.status === 200 && res.data.code === 0) {

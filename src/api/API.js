@@ -599,6 +599,31 @@ minetokenGetResources(tokenId) {
 
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
+  /**
+   * 解析引用网址的title
+   * @param {Object} data {url: xxx}
+   */
+  extractRefTitle(data) {
+    return request({
+      method: 'POST',
+      url: '/posts/extractRefTitle',
+      data
+    })
+  },
+  // 得到用户信息
+  getUser(id) { return request.get(`/user/${id}`) },
+  // 增加阅读量
+  read(hash) { return request.post(`/post/show/${hash}`) },
+  // 获取当前用户的文章信息
+  currentProfile(data) { return request.post('/post/currentProfile', data) },
+  // 收藏
+  bookmark(id) { return request.post(`/post/${id}/bookmark`) },
+  unbookmark(id) { return request.delete(`/post/${id}/bookmark`) },
+  // 点赞
+  like(id, data) { return request.post(`/posts/${id}/like`, data) },
+  dislike(id, data) { return request.post(`/posts/${id}/dislike`, data) },
+  // 客户端打开文章后提交，表示开始阅读
+  reading(id) { return request.post(`/posts/${id}/reading`) },
   // 获取推荐文章或者商品
   postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------
@@ -610,4 +635,11 @@ minetokenGetResources(tokenId) {
   accountChange(params) { return request.post('/account/changeMainAccount', params) },
   // 账号列表
   accountList() { return request.get('/account/list') },
+  // -------------------------------- 分享 --------------------------------
+  // 创建分享
+  createShare(data) { return request.post('/share', data) },
+  // 分享详情
+  // 暂时不用, 后端说用 p 接口
+  // shareDetail(id) { return request.get(`/share/${id}`) },
+  shareDetail(id) { return request.get(`/p/${id}`) },
 }

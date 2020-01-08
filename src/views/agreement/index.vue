@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="contract-main">
     <BaseHeader
       :pageinfo="{ title: '瞬Matataki用户服务协议' }"
       customize-header-bc="#fff"
@@ -179,7 +179,7 @@ export default {
 </script>
 
 <style lang="less">
-.main {
+.contract-main {
   padding-top: 45px;
 }
 .contract {

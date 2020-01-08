@@ -44,6 +44,24 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/sharehall',
+      name: 'sharehall',
+      props: true,
+      component: () => import(/* webpackChunkName: "policy" */ './views/home/sharehall.vue'),
+      meta: {
+        title: '分享大厅-瞬MATATAKI'
+      }
+    },
+    {
+      path: '/share/:id',
+      name: 'share-id',
+      props: true,
+      component: () => import(/* webpackChunkName: "policy" */ './views/share/_id.vue'),
+      meta: {
+        title: '分享详情-瞬MATATAKI'
+      }
+    },
+    {
       path: '/ring/:id',
       name: 'ring-id',
       component: () =>
@@ -133,7 +151,7 @@ const router = new VueRouter({
       path: '/user/:id',
       name: 'user-id',
       component: () =>
-        import(/* webpackChunkName: "user-id", webpackPrefetch: true */ './views/User/index.vue'),
+        import(/* webpackChunkName: "user-id", webpackPrefetch: true */ './views/user/index.vue'),
       meta: {
         title: '个人主页-瞬MATATAKI'
       }
@@ -158,7 +176,7 @@ const router = new VueRouter({
       path: '/user/asset/:id',
       name: 'Asset',
       props: true,
-      component: () => import(/* webpackChunkName: "Asset" */ './views/User/Asset/index.vue'),
+      component: () => import(/* webpackChunkName: "Asset" */ './views/user/Asset/index.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -175,7 +193,7 @@ const router = new VueRouter({
       path: '/user/asset/:id/:type',
       name: 'AssetType',
       props: true,
-      component: () => import(/* webpackChunkName: "AssetType" */ './views/User/Asset/Asset.vue'),
+      component: () => import(/* webpackChunkName: "AssetType" */ './views/user/Asset/Asset.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -201,7 +219,7 @@ const router = new VueRouter({
       path: '/user/withdraw/:id/:type',
       name: 'Withdraw',
       props: true,
-      component: () => import(/* webpackChunkName: "Withdraw" */ './views/User/Withdraw'),
+      component: () => import(/* webpackChunkName: "Withdraw" */ './views/user/Withdraw'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -218,7 +236,7 @@ const router = new VueRouter({
       path: '/user/:id/original',
       name: 'Original',
       props: true,
-      component: () => import(/* webpackChunkName: "Original" */ './views/User/Original.vue'),
+      component: () => import(/* webpackChunkName: "Original" */ './views/user/Original.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -236,7 +254,7 @@ const router = new VueRouter({
       name: 'user-id-bookmark',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "user-id-bookmark" */ './views/User/Bookmark.vue'),
+        import(/* webpackChunkName: "user-id-bookmark" */ './views/user/Bookmark.vue'),
       meta: {
         title: '收藏-瞬MATATAKI'
       }
@@ -245,7 +263,7 @@ const router = new VueRouter({
     //   path: '/user/:id/reward',
     //   name: 'Reward',
     //   props: true,
-    //   component: () => import(/* webpackChunkName: "Reward" */ './views/User/Reward.vue'),
+    //   component: () => import(/* webpackChunkName: "Reward" */ './views/user/Reward.vue'),
     //   beforeEnter: (to, from, next) => {
     //     const { id } = to.params
     //     const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -262,7 +280,7 @@ const router = new VueRouter({
       path: '/user/:id/follow',
       name: 'user-id-follow',
       props: true,
-      component: () => import(/* webpackChunkName: "user-id-follow" */ './views/User/follow.vue'),
+      component: () => import(/* webpackChunkName: "user-id-follow" */ './views/user/follow.vue'),
       meta: {
         title: '我的关注-瞬MATATAKI'
       }
@@ -271,7 +289,7 @@ const router = new VueRouter({
       path: '/user/:id/fan',
       name: 'user-id-fan',
       props: true,
-      component: () => import(/* webpackChunkName: "user-id-fan" */ './views/User/fan.vue'),
+      component: () => import(/* webpackChunkName: "user-id-fan" */ './views/user/fan.vue'),
       meta: {
         title: '我的粉丝-瞬MATATAKI'
       }
@@ -280,7 +298,7 @@ const router = new VueRouter({
       path: '/user/:id/buy',
       name: 'user-id-buy',
       props: true,
-      component: () => import(/* webpackChunkName: "user-id-buy" */ './views/User/buy/index.vue'),
+      component: () => import(/* webpackChunkName: "user-id-buy" */ './views/user/buy/index.vue'),
       meta: {
         title: '购买文章-瞬MATATAKI'
       }
@@ -290,7 +308,7 @@ const router = new VueRouter({
       name: 'user-id-buy-other',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "user-id-buy-other" */ './views/User/buy/other.vue'),
+        import(/* webpackChunkName: "user-id-buy-other" */ './views/user/buy/other.vue'),
       meta: {
         title: '购买其他-瞬MATATAKI'
       }
@@ -299,7 +317,7 @@ const router = new VueRouter({
       path: '/user/:id/info',
       name: 'user-id-info',
       props: true,
-      component: () => import(/* webpackChunkName: "user-id-info" */ './views/User/info.vue'),
+      component: () => import(/* webpackChunkName: "user-id-info" */ './views/user/info.vue'),
       meta: {
         title: '个人信息-瞬MATATAKI'
       }
@@ -308,7 +326,7 @@ const router = new VueRouter({
       path: '/buy',
       name: 'buy',
       props: true,
-      component: () => import(/* webpackChunkName: "buy" */ './views/User/buyHistory/index'),
+      component: () => import(/* webpackChunkName: "buy" */ './views/user/buyHistory/index'),
       meta: {
         title: '购买文章-瞬MATATAKI'
       }
@@ -317,7 +335,7 @@ const router = new VueRouter({
       path: '/buy/other',
       name: 'buy-other',
       props: true,
-      component: () => import(/* webpackChunkName: "buy" */ './views/User/buyHistory/other'),
+      component: () => import(/* webpackChunkName: "buy" */ './views/user/buyHistory/other'),
       meta: {
         title: '购买其他-瞬MATATAKI'
       }
@@ -337,7 +355,7 @@ const router = new VueRouter({
       name: 'FollowList',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "FollowList" */ './views/User/FollowList/FollowList.vue'),
+        import(/* webpackChunkName: "FollowList" */ './views/user/FollowList/FollowList.vue'),
       meta: {
         title: '关注列表-瞬MATATAKI'
       }
@@ -346,7 +364,7 @@ const router = new VueRouter({
       path: '/draftbox/:id',
       name: 'DraftBox',
       props: true,
-      component: () => import(/* webpackChunkName: "DraftBox" */ './views/User/DraftBox.vue'),
+      component: () => import(/* webpackChunkName: "DraftBox" */ './views/user/DraftBox.vue'),
       beforeEnter: (to, from, next) => {
         const { id } = to.params
         const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
@@ -364,7 +382,7 @@ const router = new VueRouter({
       name: 'BookmarkList',
       props: true,
       component: () =>
-        import(/* webpackChunkName: "BookmarkList" */ './views/User/BookmarkList/index.vue'),
+        import(/* webpackChunkName: "BookmarkList" */ './views/user/BookmarkList/index.vue'),
       meta: {
         title: '收藏-瞬MATATAKI'
       }

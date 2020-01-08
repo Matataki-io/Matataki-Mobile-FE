@@ -66,6 +66,11 @@ export default {
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
+        {
+          title: '分享大厅',
+          name: 'sharehall',
+          urlList: ['sharehall']
+        },
         // {
         //   title: this.$t('home.navShop'),
         //   name: 'shop',
@@ -98,7 +103,7 @@ export default {
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+      if (avatar) this.avatar = this.$API.getImg(avatar)
     }
   }
 }
