@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{ name: 'p-id', params: { id: card.ref_sign_id } }" class="card">
     <div v-if="card.cover" class="card-cover">
-      <img referrer="no-referrer|origin|unsafe-url" :src="card.cover" :alt="card.title">
+      <img :src="coverSrc" :alt="card.title">
     </div>
     <div class="card-content">
       <p class="card-text">{{ card.title || '暂无' }}</p>
@@ -38,6 +38,12 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    coverSrc() {
+      if (this.card.cover) return this.$API.getImg(this.card.cover)
+      return ''
+    },
   },
   methods: {
     removeCard(e) {
