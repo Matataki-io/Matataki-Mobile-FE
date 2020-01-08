@@ -7,14 +7,14 @@
       <p class="card-text">{{ card.title || '暂无' }}</p>
       <div class="card-info">
         <span>
-          <svg-icon icon-class="eye" class="icon"></svg-icon>12
+          <svg-icon icon-class="eye" class="icon"></svg-icon>{{ card.real_read_count }}
         </span>
         <span>
-          <svg-icon icon-class="link" class="icon"></svg-icon>12
+          <svg-icon icon-class="like_thin" class="icon"></svg-icon>{{ card.likes }}
         </span>
-        <span>
+        <!-- <span>
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
-        </span>
+        </span> -->
       </div>
     </div>
     <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
