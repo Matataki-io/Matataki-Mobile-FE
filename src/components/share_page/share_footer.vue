@@ -49,13 +49,9 @@ export default {
   },
   methods: {
     pushShare() {
-      this.$router.push({
-        name: 'sharehall',
-        query: {
-          id: this.$route.params.id,
-          from: 'share'
-        }
-      })
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('shareRef', this.$route.params.id)
+      this.$router.push({ name: 'sharehall' })
     }
   }
 }

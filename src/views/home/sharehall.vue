@@ -185,6 +185,7 @@ export default {
       } catch (error) {
         this.$navigation.cleanRoutes() // 清除路由记录
         sessionStorage.removeItem('shareLink')
+        sessionStorage.removeItem('shareRef')
         await sleep(100)
         next()
       }
@@ -215,8 +216,8 @@ export default {
       console.log(shareLink, this.shareLinkList)
     },
     initUrlInput() {
-      let { id, from } = this.$route.query
-      if (from === 'share') {
+      let id = sessionStorage.getItem('shareRef')
+      if (id) {
         this.urlForm.url = `${process.env.VUE_APP_URL}/share/${id}`
         this.getUrlData('urlForm')
       }
@@ -340,10 +341,14 @@ export default {
     },
     shareHeadSetClass() {
       this.$nextTick(() => {
-        let headOffsetTop = this.$refs.head.offsetTop
-        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop >= headOffsetTop) this.shareHeadActive = true
-        else this.shareHeadActive = false
+        try {
+          let headOffsetTop = this.$refs.head.offsetTop
+          let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+          if (scrollTop >= headOffsetTop) this.shareHeadActive = true
+          else this.shareHeadActive = false
+        } catch (error) {
+          console.log(error)
+        }
       })
     }
   }
