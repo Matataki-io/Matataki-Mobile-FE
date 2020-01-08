@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'p-id', params: { id: card.ref_sign_id } }" class="card">
+  <router-link :to="cardUrl" class="card">
     <div v-if="card.cover" class="card-cover">
       <img :src="coverSrc" :alt="card.title">
     </div>
@@ -40,6 +40,10 @@ export default {
     }
   },
   computed: {
+    cardUrl() {
+      if (this.cardType === 'edit') return {}
+      else return { name: 'p-id', params: { id: this.card.ref_sign_id } }
+    },
     coverSrc() {
       if (this.card.cover) return this.$API.getImg(this.card.cover)
       return ''
@@ -57,7 +61,7 @@ export default {
           customClass: 'message-box__mobile'
         }).then(() => {
           this.$emit('removeShareLink', this.idx)
-        })
+        }).catch(() => {})
       return false
     }
   }

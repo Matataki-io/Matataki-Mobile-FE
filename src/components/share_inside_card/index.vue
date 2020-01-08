@@ -1,18 +1,18 @@
 <template>
-  <div class="card">
-    <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info">
+  <router-link :to="cardUrl" class="card">
+    <div class="card-info">
       <avatar class="card-avatar" :src="avatarSrc"></avatar>
       <span class="card-username">{{ username }}</span>
-    </router-link>
-    <router-link :to="{ name: 'share-id', params: { id: card.sign_id } }" class="card-content">
+    </div>
+    <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
       <p>{{ card.summary || '暂无' }}</p>
-    </router-link>
+    </div>
     <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -37,6 +37,10 @@ export default {
     },
   },
   computed: {
+    cardUrl() {
+      if (this.cardType === 'edit') return {}
+      else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+    },
     username() {
       if (this.cardType === 'edit') {
         return this.card.user.nickname || this.card.user.username
@@ -66,9 +70,9 @@ export default {
           customClass: 'message-box__mobile'
         }).then(() => {
           this.$emit('removeShareLink', this.idx)
-        })
+        }).catch(() => {})
       return false
-    }
+    },
   }
 }
 </script>
@@ -83,12 +87,12 @@ export default {
   position: relative;
   padding: 10px;
   box-sizing: border-box;
+  text-decoration: none;
+  cursor: pointer;
   &-info {
     width: 100%;
     display: flex;
     align-items: center;
-    text-decoration: none;
-    cursor: pointer;
     .card-avatar {
       margin-right: 5px;
       width: 30px !important;

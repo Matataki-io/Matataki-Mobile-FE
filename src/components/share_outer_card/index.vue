@@ -47,7 +47,7 @@ export default {
           customClass: 'message-box__mobile'
         }).then(() => {
           this.$emit('removeShareLink', this.idx)
-        })
+        }).catch(() => {})
       return false
     }
   }
