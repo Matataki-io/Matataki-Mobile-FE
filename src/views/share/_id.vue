@@ -10,7 +10,16 @@
     ></shareHeader>
     <shareMain :content="shareContent"></shareMain>
     <div class="empty"></div>
-    <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
+    <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle">
+      <template slot="left-prompt">
+        已引用<span>{{refernceTotal}}</span>
+      </template>
+      <template slot="right-prompt">
+        被引用<span>{{berefernceTotal}}</span>
+      </template>
+      <quoteReference slot="ref"></quoteReference>
+      <quoteBereference slot="beref"></quoteBereference>
+    </quote>
     <shareFooter
       v-loading="footerLoading"
       :bookmarked="currentProfile.is_bookmarked"
@@ -41,12 +50,17 @@ import shareFooter from '@/components/share_page/share_footer'
 import shareHeader from '@/components/share_page/share_header'
 import shareMain from '@/components/share_page/share_main'
 import quote from '@/components/share_page/quote'
+import quoteReference from '@/components/share_page/quote_reference'
+import quoteBereference from '@/components/share_page/quote_bereference'
+
 export default {
   components: {
     shareHeader,
     shareFooter,
     shareMain,
     quote,
+    quoteReference,
+    quoteBereference
   },
   data() {
     return {
@@ -58,11 +72,21 @@ export default {
       currentProfile: Object.create(null), // 当前相关信息
       shareDialogVisible: false, // 分享 dialog
       showQuote: false, // refernces
-      nowTime: 0 // refernces
+      nowTime: 0, // refernces
+      refernceTotal: 0, // refernces slidebar
+      berefernceTotal: 0, // refernces slidebar
     }
+  },
+  watch: {
+    nowTime() {
+      this.getReferenceCount('postsReferences', {}, 'refernce')
+      this.getReferenceCount('postsPosts', {}, 'berefernce')
+    },
   },
   created() {
     this.init()
+    this.getReferenceCount('postsReferences', {}, 'refernce')
+    this.getReferenceCount('postsPosts', {}, 'berefernce')
   },
   mounted() {
   },
@@ -251,7 +275,18 @@ export default {
         () => this.$toast.success({ className: 'toast-zindex2999', duration: 1000, message: this.$t('success.copy') }),
         () => this.$toast.fail({ className: 'toast-zindex2999', duration: 1000, message: this.$t('fail.copy') })
       )
-    }
+    },
+    // 获取引用数量
+    async getReferenceCount(url, params, type) {
+      try {
+        const res = await this.$backendAPI.getBackendData({ url, params, urlReplace: this.$route.params.id }, false)
+        if (res.status === 200 && res.data.code === 0) {
+          if (type === 'refernce') this.refernceTotal = res.data.data.count
+          else if (type === 'berefernce') this.berefernceTotal = res.data.data.count
+          else this.refernceTotal = res.data.data.count
+        } else console.log(res.message)
+      } catch (error) { console.log(error) }
+    },
   }
 }
 </script>

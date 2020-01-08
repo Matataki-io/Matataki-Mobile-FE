@@ -4,14 +4,16 @@
     <div class="quote" :class="show && 'open'" @click.stop ref="quote">
       <div class="quote-head">
         <div class="quote-head__title one" @click.stop="showQuote(0)" :class="(idx === 0 || idx === -1 ) && 'open'">
-          已引用<span>{{refernceTotal}}</span>
+          <slot name="left-prompt">已引用</slot>
         </div>
         <div class="quote-head__title two" @click.stop="showQuote(1)" :class="idx === 1 && 'open'">
-          被引用<span>{{berefernceTotal}}</span>
+          <slot name="right-prompt">被引用</slot>
         </div>
       </div>
-      <quoteReference :nowTime="nowTime" @getArticle="getArticle" ref="quoteReference" v-if="idx === 0"></quoteReference>
-      <quoteBereference :nowTime="nowTime"  @getArticle="getArticle" ref="quoteBereference" v-if="idx === 1"></quoteBereference>
+      <!-- <quoteReference :nowTime="nowTime" @getArticle="getArticle" ref="quoteReference" v-if="idx === 0"></quoteReference> -->
+      <!-- <quoteBereference :nowTime="nowTime"  @getArticle="getArticle" ref="quoteBereference" v-if="idx === 1"></quoteBereference> -->
+      <slot v-if="idx === 0" name="ref"></slot>
+      <slot v-if="idx === 1" name="beref"></slot>
     </div>
     <div class="full" :class="show && 'open'"></div>
   </div>
@@ -19,37 +21,27 @@
 
 
 <script>
-import quoteReference from './quote_reference'
-import quoteBereference from './quote_bereference'
+// import quoteReference from './quote_reference'
+// import quoteBereference from './quote_bereference'
 export default {
   components: {
-    quoteReference,
-    quoteBereference
+    // quoteReference,
+    // quoteBereference
   },
   props: {
     show: {
       type: Boolean,
       default: false
     },
-    nowTime: {
-      type: Number,
-      default: 0
-    }
   },
   data() {
     return {
       idx: -1, // 解决默认第一个不会加载数据bug
-      refernceTotal: 0,
-      berefernceTotal: 0,
       bottom: -306,
       height: 400,
     }
   },
   watch: {
-    nowTime() {
-      this.getReferenceCount('postsReferences', {}, 'refernce')
-      this.getReferenceCount('postsPosts', {}, 'berefernce')
-    },
     show(newVal) {
       if (newVal) {
         this.$refs.quote.style.height = this.height + 'px'
@@ -61,9 +53,6 @@ export default {
     }
   },
   created() {
-    this.getReferenceCount('postsReferences', {}, 'refernce')
-    this.getReferenceCount('postsPosts', {}, 'berefernce')
-
     this.$nextTick(() => {
       let clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       if (!this.$refs.quote) return console.log('not refs quote')
@@ -87,19 +76,6 @@ export default {
       this.idx = i
       this.$emit('showQuote', true)
     },
-    async getReferenceCount(url, params, type) {
-      try {
-        const res = await this.$backendAPI.getBackendData({ url, params, urlReplace: this.$route.params.id }, false)
-        if (res.status === 200 && res.data.code === 0) {
-          if (type === 'refernce') this.refernceTotal = res.data.data.count
-          else if (type === 'berefernce') this.berefernceTotal = res.data.data.count
-          else this.refernceTotal = res.data.data.count
-        } else console.log(res.message)
-      } catch (error) { console.log(error) }
-    },
-    getArticle(idInt, popEvent) {
-      this.$emit('getArticle', idInt, popEvent)
-    }
   }
 }
 </script>
