@@ -37,7 +37,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="sharehall-head">
+    <div class="sharehall-head" ref="sharehallHead">
       <h3 class="sharehall-title">分享大厅</h3>
       <div class="sort">
         <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
@@ -48,6 +48,7 @@
     <!-- pull list -->
 
     <BasePull
+      class="pull"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :loading-text="$t('not')"
@@ -72,6 +73,7 @@ import shareCard from '@/components/share_card/index.vue'
 import { sleep } from '@/common/methods'
 import { getCookie } from '@/utils/cookie'
 import { mapGetters } from 'vuex'
+import throttle from 'lodash/throttle'
 
 export default {
   components: {
@@ -189,6 +191,12 @@ export default {
   created() {
     this.initShareLink()
     this.initUrlInput()
+  },
+  mounted() {
+    window.addEventListener('scroll', throttle(this.shareHeadSetClass, 300))
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.shareHeadSetClass)
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -324,13 +332,21 @@ export default {
       console.log('res1', res)
       this.pull.list = res.list
     },
+    shareHeadSetClass() {
+      this.$nextTick(() => {
+        let sharehallHead = this.$refs.sharehallHead
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        if (scrollTop >= 240) sharehallHead.classList.add('active')
+        else sharehallHead.classList.remove('active')
+      })
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .sharehall {
-  padding: 46px 20px 20px;
+  padding: 46px 0 20px;
   min-height: 100%;
   background-color: #fff;
 }
@@ -339,11 +355,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin: 0 0 4px;
-  padding: 10px 0;
+  padding: 10px 20px;
   position: sticky;
   top: 46px;
   background: #fff;
   z-index: 9;
+  &.active {
+    border-bottom: 0.0625rem solid #eaeaea;
+    box-shadow: 0 0 10px 4px rgba(0,0,0,.08);
+  }
 }
 .sharehall-title {
   font-size:14px;
@@ -352,6 +372,7 @@ export default {
 }
 
 .push {
+  padding: 0 20px;
   .input-line {
     display: flex;
     align-items: center;
@@ -384,6 +405,9 @@ export default {
       color: @purpleDark;
     }
   }
+}
+.pull {
+  padding: 0 20px;
 }
 </style>
 
