@@ -619,6 +619,11 @@ minetokenGetResources(tokenId) {
   // 收藏
   bookmark(id) { return request.post(`/post/${id}/bookmark`) },
   unbookmark(id) { return request.delete(`/post/${id}/bookmark`) },
+  // 点赞
+  like(id, data) { return request.post(`/posts/${id}/like`, data) },
+  dislike(id, data) { return request.post(`/posts/${id}/dislike`, data) },
+  // 客户端打开文章后提交，表示开始阅读
+  reading(id) { return request.post(`/posts/${id}/reading`) },
   // 获取推荐文章或者商品
   postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------

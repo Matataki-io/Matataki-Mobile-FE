@@ -13,12 +13,12 @@
       <p>分享</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="great-solid" />
-      <p>12312312</p>
+      <svg-icon class="icon" :class="isLiked === 2 && 'active'" icon-class="great-solid" @click="$emit('like', 2)" />
+      <p>{{ likes }}</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="bullshit-solid" />
-      <p>121</p>
+      <svg-icon class="icon" :class="isLiked === 1 && 'active'" icon-class="bullshit-solid" @click="$emit('like', 1)" />
+      <p>{{ dislikes }}</p>
     </div>
   </div>
 </template>
@@ -26,7 +26,23 @@
 <script>
 export default {
   props: {
+    // 是否收藏
     bookmarked: {
+      type: Number,
+      default: 0
+    },
+    // 是否点赞 like 2 dislike 1
+    isLiked: {
+      type: Number,
+      default: 0
+    },
+    // 点赞数
+    likes: {
+      type: Number,
+      default: 0
+    },
+    // 不推荐数
+    dislikes: {
       type: Number,
       default: 0
     }

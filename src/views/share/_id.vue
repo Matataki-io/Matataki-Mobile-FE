@@ -12,9 +12,14 @@
     <div class="empty"></div>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
     <shareFooter
+      v-loading="footerLoading"
       :bookmarked="currentProfile.is_bookmarked"
+      :isLiked="Number(currentProfile.is_liked)"
+      :likes="content.likes"
+      :dislikes="content.dislikes"
       @bookmarked="bookmarked"
       @share="shareDialogVisible = true"
+      @like="like"
       class="footer">
     </shareFooter>
     <m-dialog v-model="shareDialogVisible">
@@ -46,6 +51,7 @@ export default {
   data() {
     return {
       loading: false,
+      footerLoading: false, // footer loading
       shareContent: '', // 分享内容
       content: Object.create(null), // 文章信息
       userInfo: Object.create(null), // 用户信息
@@ -56,18 +62,29 @@ export default {
     }
   },
   created() {
-    this.getDetail()
+    this.init()
   },
   mounted() {
   },
   computed: {
   },
   methods: {
-    // 获取详情内容
-    getDetail() {
+    init() {
       // 无id
       let { id = '' } = this.$route.params
       if (!id) return this.$router.go(-1)
+      this.getDetail(id)
+      this.getCurrentProfile(id)
+      this.reading(id)
+    },
+    // 客户端打开文章后提交，表示开始阅读
+    async reading(id) {
+      await this.$API.reading(id)
+        .then(res => console.log(`reading ${res.message}`))
+        .catch(err => console.log(`reading err ${err}`))
+    },
+    // 获取详情内容
+    getDetail(id) {
       this.loading = true
       this.$API.shareDetail(id)
         .then(res => {
@@ -75,7 +92,6 @@ export default {
             this.content = res.data
             this.authorInfo(res.data.uid)
             this.getIpfsData(res.data.hash)
-            this.getCurrentProfile(res.data.id)
             this.read(res.data.hash)
           } else {
             console.log(res.message)
@@ -159,6 +175,7 @@ export default {
     },
     // 收藏
     async bookmarked(bookmarked) {
+      this.footerLoading = true
       // 状态码不为200 !!! 所以取消了res.code === 0
       if (bookmarked) {
         this.$confirm('是否取消收藏?', '提示', {
@@ -173,6 +190,9 @@ export default {
             this.currentProfile.is_bookmarked = 0
           })
           .catch(err => console.log(err))
+          .finally(() => {
+            this.footerLoading = false
+          })
         }).catch(() => {})
       } else {
         await this.$API.bookmark(this.currentProfile.id)
@@ -181,6 +201,43 @@ export default {
             this.currentProfile.is_bookmarked = 1
           })
           .catch(err => console.log(err))
+          .finally(() => {
+            this.footerLoading = false
+          })
+      }
+    },
+    // 推荐 不推荐
+    async like(isLiked) {
+      if (this.currentProfile.is_liked !== 0) return this.$toast({duration: 1000, message: '您已经操作过了哦'}) // 减少不必要的请求
+      this.footerLoading = true
+      if (Number(isLiked) === 1) { // 不推荐
+        await this.$API.dislike(this.content.id, { time: 0 })
+          .then(res => {
+            if (res.code === 0) {
+              this.content.dislikes++
+              this.currentProfile.is_liked = 1
+              this.$toast.success({duration: 1000, message: res.message})
+            }
+            else this.$toast({duration: 1000, message: res.message})
+          }).catch(err => {
+            console.log(err)
+          }).finally(() => {
+            this.footerLoading = false
+          })
+      } else if (Number(isLiked === 2)) { // 推荐
+        await this.$API.like(this.content.id, { time: 0 })
+          .then(res => {
+            if (res.code === 0) {
+              this.content.likes++
+              this.currentProfile.is_liked = 2
+              this.$toast.success({duration: 1000, message: res.message})
+            }
+            else this.$toast({duration: 1000, message: res.message})
+          }).catch(err => {
+            console.log(err)
+          }).finally(() => {
+            this.footerLoading = false
+          })
       }
     },
     hideClient() {
