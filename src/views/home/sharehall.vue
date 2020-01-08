@@ -37,7 +37,14 @@
         </el-form-item>
       </el-form>
     </div>
-    <h3 class="sharehall-title">分享大厅</h3>
+    <div class="sharehall-head">
+      <h3 class="sharehall-title">分享大厅</h3>
+      <div class="sort">
+        <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
+        &nbsp;/&nbsp;
+        <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
+      </div>
+    </div>
     <!-- pull list -->
 
     <BasePull
@@ -110,8 +117,20 @@ export default {
       ],
       fullscreenLoading: false,
       urlLoading: false,
+      options: [
+        {
+          value: 'time',
+          label: '最新'
+        },
+        {
+          value: 'hot',
+          label: '最热'
+        },
+      ],
+      value: this.$route.query.type || 'time',
       pull: {
         params: {
+          type: this.$route.query.type || 'time',
           pagesize: 20
         },
         time: 0,
@@ -126,6 +145,22 @@ export default {
       handler() {
         sessionStorage.setItem('shareLink', JSON.stringify(this.shareLinkList))
       }
+    },
+    value(newVal) {
+      if (newVal === 'hot') {
+        this.pull.params.type = 'hot'
+      } else if (newVal === 'time') {
+        this.pull.params.type = 'time'
+      } else {
+        this.pull.params.type = 'hot'
+      }
+      this.$router.push({
+        query: {
+          type: newVal
+        }
+      })
+      this.pull.time = Date.now()
+      this.pull.list.length = 0
     }
   },
   async beforeRouteLeave(to, from, next) {
@@ -299,12 +334,21 @@ export default {
   min-height: 100%;
   background-color: #fff;
 }
-
+.sharehall-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 4px;
+  padding: 10px 0;
+  position: sticky;
+  top: 46px;
+  background: #fff;
+  z-index: 9;
+}
 .sharehall-title {
   font-size:14px;
   color:rgba(0,0,0,1);
   line-height:20px;
-  margin: 20px 0 14px;
 }
 
 .push {
@@ -324,6 +368,21 @@ export default {
   margin-top: 20px;
   &:nth-child(1) {
     margin-top: 0;
+  }
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  span {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    &.active {
+      font-weight: bold;
+      color: @purpleDark;
+    }
   }
 }
 </style>
