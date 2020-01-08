@@ -37,7 +37,8 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="sharehall-head" ref="sharehallHead">
+    <div style="width: 100%;height: 1px;" ref="head"></div>
+    <div class="sharehall-head" :class="shareHeadActive && 'active'">
       <h3 class="sharehall-title">分享大厅</h3>
       <div class="sort">
         <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
@@ -119,7 +120,7 @@ export default {
       ],
       fullscreenLoading: false,
       urlLoading: false,
-      options: [
+      options: [ // 排序
         {
           value: 'time',
           label: '最新'
@@ -129,8 +130,8 @@ export default {
           label: '最热'
         },
       ],
-      value: this.$route.query.type || 'time',
-      pull: {
+      value: this.$route.query.type || 'time', // 排序
+      pull: { // 分页
         params: {
           type: this.$route.query.type || 'time',
           pagesize: 20
@@ -139,6 +140,7 @@ export default {
         apiUrl: 'share',
         list: []
       },
+      shareHeadActive: false, // 导航是否到顶部
     }
   },
   watch: {
@@ -190,7 +192,9 @@ export default {
   },
   created() {
     this.initShareLink()
-    this.initUrlInput()
+    this.$nextTick(() => {
+      this.initUrlInput()
+    })
   },
   mounted() {
     window.addEventListener('scroll', throttle(this.shareHeadSetClass, 300))
@@ -213,7 +217,8 @@ export default {
     initUrlInput() {
       let { id, from } = this.$route.query
       if (from === 'share') {
-        this.urlForm.url = id
+        this.urlForm.url = `${process.env.VUE_APP_URL}/share/${id}`
+        this.getUrlData('urlForm')
       }
     },
     // 初始化所有表单内容
@@ -279,6 +284,7 @@ export default {
     async getUrlData(formName) {
       if (await this.setpFunc(formName)) {
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+        if (this.urlLoading) return // 拦截重复请求
         let url = this.urlForm.url.trim()
 
         const urlIncludes = (url, arr) => {
@@ -334,10 +340,10 @@ export default {
     },
     shareHeadSetClass() {
       this.$nextTick(() => {
-        let sharehallHead = this.$refs.sharehallHead
+        let headOffsetTop = this.$refs.head.offsetTop
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop >= 240) sharehallHead.classList.add('active')
-        else sharehallHead.classList.remove('active')
+        if (scrollTop >= headOffsetTop) this.shareHeadActive = true
+        else this.shareHeadActive = false
       })
     }
   }
