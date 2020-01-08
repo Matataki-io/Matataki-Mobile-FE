@@ -46,6 +46,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
+
 import shareFooter from '@/components/share_page/share_footer'
 import shareHeader from '@/components/share_page/share_header'
 import shareMain from '@/components/share_page/share_main'
@@ -91,6 +94,7 @@ export default {
   mounted() {
   },
   computed: {
+    ...mapGetters(['isLogined']),
   },
   methods: {
     init() {
@@ -103,6 +107,7 @@ export default {
     },
     // 客户端打开文章后提交，表示开始阅读
     async reading(id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       await this.$API.reading(id)
         .then(res => console.log(`reading ${res.message}`))
         .catch(err => console.log(`reading err ${err}`))
@@ -189,6 +194,7 @@ export default {
     },
     // 获取当前文章相关信息
     async getCurrentProfile (id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       await this.$API.currentProfile({id})
         .then(res => {
           if (res.code === 0) this.currentProfile = res.data
@@ -199,6 +205,7 @@ export default {
     },
     // 收藏
     async bookmarked(bookmarked) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       this.footerLoading = true
       // 状态码不为200 !!! 所以取消了res.code === 0
       if (bookmarked) {
@@ -232,6 +239,7 @@ export default {
     },
     // 推荐 不推荐
     async like(isLiked) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (this.currentProfile.is_liked !== 0) return this.$toast({duration: 1000, message: '您已经操作过了哦'}) // 减少不必要的请求
       this.footerLoading = true
       if (Number(isLiked) === 1) { // 不推荐
