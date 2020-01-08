@@ -11,30 +11,33 @@
     @getListData="getListData"
   >
     <!-- <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card> -->
-    <div v-for="(item, index) in pull.list" :key="index" class="card">
-      <p class="title">{{item.title || '暂无'}}</p>
-      <p class="summary">{{item.summary || '暂无'}}</p>
-      <!-- <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"></shareOuterCard> -->
-      <!-- <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"></sharePCard> -->
-      <!-- <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"></shareInsideCard> -->
-      <!-- <shareInsideCard cardType="read" v-if="item.type === 'inside'" class="list-card" :key="'shareInsideCard' + index" :idx="index"></shareInsideCard> -->
-      <!-- <shareOuterCard cardType="read" v-if="item.type === 'outer'" class="list-card" :key="'shareOuterCard' + index" :idx="index"></shareOuterCard> -->
-    </div>
+    <template v-for="(item, index) in pull.list">
+      <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="index"></shareOuterCard>
+      <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="index"></sharePCard>
+      <shareInsideCard
+        :card="item"
+        v-else-if="item.ref_sign_id && item.channel_id === 3"
+        cardType="read"
+        :toggleArticle="true"
+        @getArticle="getArticle"
+        class="list-card"
+        :key="index"></shareInsideCard>
+    </template>
   </BasePull>
 </template>
 
 <script>
 // import card from './quote_reference_card.vue'
-// import shareOuterCard from '@/components/share_outer_card/index.vue'
-// import shareInsideCard from '@/components/share_inside_card/index.vue'
-// import sharePCard from '@/components/share_p_card/index.vue'
+import shareOuterCard from '@/components/share_outer_card/index.vue'
+import shareInsideCard from '@/components/share_inside_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
 
 export default {
   components: {
     // card,
-    // shareOuterCard,
-    // shareInsideCard,
-    // sharePCard
+    shareOuterCard,
+    shareInsideCard,
+    sharePCard
   },
   props: {
     nowTime: {
@@ -79,23 +82,11 @@ export default {
   padding: 0 10px;
 }
 .list-card {
-  margin-top: 20px;
+  // margin-top: 10px;
   background-color: transparent;
-  &:nth-child(1) {
-    margin-top: 0;
-  }
+  // &:nth-child(1) {
+    // margin-top: 0;
+  // }
 }
 
-.card {
-  border: 1px solid #dadada;
-  margin: 10px 10px 0;
-  padding: 10px 10px;
-  border-radius: 3px;
-  .title {
-    color: #000;
-  }
-  .summary {
-    color: #5f5f5f;
-  }
-}
 </style>

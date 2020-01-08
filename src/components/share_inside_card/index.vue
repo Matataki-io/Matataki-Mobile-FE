@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="cardUrl" class="card">
+  <router-link :to="cardUrl" class="card" @click.native="toggle">
     <div class="card-info">
       <avatar class="card-avatar" :src="avatarSrc"></avatar>
       <span class="card-username">{{ username }}</span>
@@ -27,6 +27,11 @@ export default {
       type: String,
       default: 'edit' // edit read
     },
+    // 是否拥有切换文章功能
+    toggleArticle: {
+      type: Boolean,
+      default: false
+    },
     idx: {
       type: Number,
       default: 0
@@ -38,8 +43,12 @@ export default {
   },
   computed: {
     cardUrl() {
-      if (this.cardType === 'edit') return {}
-      else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+      if (this.toggleArticle) {
+        return {}
+      } else {
+        if (this.cardType === 'edit') return {}
+        else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+      }
     },
     username() {
       if (this.cardType === 'edit') {
@@ -73,6 +82,11 @@ export default {
         }).catch(() => {})
       return false
     },
+    toggle() {
+      if (this.toggleArticle) {
+        this.$emit('getArticle', this.card.ref_sign_id, false)
+      }
+    }
   }
 }
 </script>

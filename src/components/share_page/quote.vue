@@ -10,8 +10,6 @@
           <slot name="right-prompt">被引用</slot>
         </div>
       </div>
-      <!-- <quoteReference :nowTime="nowTime" @getArticle="getArticle" ref="quoteReference" v-if="idx === 0"></quoteReference> -->
-      <!-- <quoteBereference :nowTime="nowTime"  @getArticle="getArticle" ref="quoteBereference" v-if="idx === 1"></quoteBereference> -->
       <slot v-if="idx === 0" name="ref"></slot>
       <slot v-if="idx === 1" name="beref"></slot>
     </div>
@@ -21,13 +19,7 @@
 
 
 <script>
-// import quoteReference from './quote_reference'
-// import quoteBereference from './quote_bereference'
 export default {
-  components: {
-    // quoteReference,
-    // quoteBereference
-  },
   props: {
     show: {
       type: Boolean,

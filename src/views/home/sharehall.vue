@@ -236,7 +236,7 @@ export default {
     // 发布分享
     async pushShare(formName) {
       if (await this.setpFunc(formName)) {
-        console.log('currentUserInfo', this.currentUserInfo)
+        // console.log('currentUserInfo', this.currentUserInfo)
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         if (this.shareLinkList.length <= 0) return this.$toast({ duration: 1000, message: '分享引用不能为空'})
         // 平台检测
@@ -368,9 +368,10 @@ export default {
   margin: 0 0 4px;
   padding: 10px 20px;
   position: sticky;
-  top: 46px;
+  top: 45px;
   background: #fff;
   z-index: 9;
+  box-sizing: border-box;
   &.active {
     border-bottom: 0.0625rem solid #eaeaea;
     box-shadow: 0 0 10px 4px rgba(0,0,0,.08);

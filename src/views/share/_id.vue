@@ -1,7 +1,8 @@
 <template>
-  <div class="share" @click.stop="hideClient" v-loading="loading">
+  <div class="share" @click.stop="hideClient">
     <BaseHeader :pageinfo="{title: '分享详情'}" customize-header-bc="#fff" :has-bottom-border-line="true" class="header" />
-    <shareHeader
+    <div v-loading="loading">
+      <shareHeader
       :avatar="userInfo.avatar"
       :username="userInfo.nickname || userInfo.username"
       :time="content.create_time"
@@ -10,15 +11,19 @@
     ></shareHeader>
     <shareMain :content="shareContent"></shareMain>
     <div class="empty"></div>
-    <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle">
+    </div>
+    <quote
+      v-show="refernceTotal !== 0 || berefernceTotal !== 0"
+      :show="showQuote"
+      @showQuote="status => showQuote = status">
       <template slot="left-prompt">
         已引用<span>{{refernceTotal}}</span>
       </template>
       <template slot="right-prompt">
         被引用<span>{{berefernceTotal}}</span>
       </template>
-      <quoteReference slot="ref"></quoteReference>
-      <quoteBereference slot="beref"></quoteBereference>
+      <quoteReference :nowTime="nowTime" slot="ref" @getArticle="getArticle"></quoteReference>
+      <quoteBereference :nowTime="nowTime" slot="beref" @getArticle="getArticle"></quoteBereference>
     </quote>
     <shareFooter
       v-loading="footerLoading"
@@ -46,6 +51,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
+
 import shareFooter from '@/components/share_page/share_footer'
 import shareHeader from '@/components/share_page/share_header'
 import shareMain from '@/components/share_page/share_main'
@@ -84,18 +92,42 @@ export default {
     },
   },
   created() {
-    this.init()
+     // 无id
+    let { id = '' } = this.$route.params
+    this.init(id)
     this.getReferenceCount('postsReferences', {}, 'refernce')
     this.getReferenceCount('postsPosts', {}, 'berefernce')
   },
   mounted() {
+    // window.addEventListener('popstate', this._popstateEvent)
+  },
+  destroyed() {
+    // window.removeEventListener('popstate', this._popstateEvent)
   },
   computed: {
+    ...mapGetters(['isLogined']),
   },
   methods: {
-    init() {
-      // 无id
-      let { id = '' } = this.$route.params
+    _popstateEvent() {
+      // bug
+      console.log(this.$route.params)
+      console.log(window.location.href)
+      // this.toggleArticle(window.location.href, null, true)
+      // window.location.reload()
+    },
+    // 切换文章
+    toggleArticle(url, e, popEvent = false) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      const reg = /\/share\/[\d].*/
+      const urlId = url.match(reg)
+      const id = urlId ? urlId[0].slice(7) : -1
+      const idInt = parseInt(id)
+      if (idInt !== -1) this.getArticle(idInt, popEvent)
+      else window.open(url)
+      return false
+    },
+    init(id) {
       if (!id) return this.$router.go(-1)
       this.getDetail(id)
       this.getCurrentProfile(id)
@@ -103,6 +135,7 @@ export default {
     },
     // 客户端打开文章后提交，表示开始阅读
     async reading(id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       await this.$API.reading(id)
         .then(res => console.log(`reading ${res.message}`))
         .catch(err => console.log(`reading err ${err}`))
@@ -189,6 +222,7 @@ export default {
     },
     // 获取当前文章相关信息
     async getCurrentProfile (id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       await this.$API.currentProfile({id})
         .then(res => {
           if (res.code === 0) this.currentProfile = res.data
@@ -199,6 +233,7 @@ export default {
     },
     // 收藏
     async bookmarked(bookmarked) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       this.footerLoading = true
       // 状态码不为200 !!! 所以取消了res.code === 0
       if (bookmarked) {
@@ -232,6 +267,7 @@ export default {
     },
     // 推荐 不推荐
     async like(isLiked) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (this.currentProfile.is_liked !== 0) return this.$toast({duration: 1000, message: '您已经操作过了哦'}) // 减少不必要的请求
       this.footerLoading = true
       if (Number(isLiked) === 1) { // 不推荐
@@ -269,6 +305,18 @@ export default {
     },
     async getArticle(id, popEvent) {
       console.log(id, popEvent)
+
+      // 切换 url不刷新
+      this.$route.params.id = id
+      if (!popEvent) {
+        const url = `${window.location.origin}/share/${id}`
+        history.pushState({}, '', url)
+      }
+
+      this.init(id)
+      // refernce
+      this.nowTime = Date.now()
+
     },
     copy(val) {
       this.$copyText(val).then(
