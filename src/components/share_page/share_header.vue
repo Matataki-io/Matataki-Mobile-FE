@@ -2,7 +2,7 @@
   <div class="share-header">
     <div class="share-header__info">
       <avatar class="avatar" :src="avatarSrc"></avatar>
-      <span class="share-header__username">{{ username }}</span>
+      <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
       <span class="share-header__time">{{ timeFormat }}</span>
       <span class="share-header__read">
         <svg-icon icon-class="eye_blod" class="icon"></svg-icon>
