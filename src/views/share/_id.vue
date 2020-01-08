@@ -8,7 +8,7 @@
       :read="content.read"
       :hash="content.hash"
     ></shareHeader>
-    <shareMain :content="content.short_content"></shareMain>
+    <shareMain :content="shareContent"></shareMain>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
     <shareFooter @share="shareDialogVisible = true" class="footer"></shareFooter>
     <m-dialog v-model="shareDialogVisible">
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       loading: false,
+      shareContent: '', // 分享内容
       content: Object.create(null), // 文章信息
       userInfo: Object.create(null), // 用户信息
       shareDialogVisible: false, // 分享 dialog
@@ -64,14 +65,15 @@ export default {
           if (res.code === 0) {
             this.content = res.data
             this.authorInfo(res.data.uid)
+            this.getIpfsData(res.data.hash)
           } else {
             console.log(res.message)
             this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
+            this.loading = false
           }
         }).catch(err => {
           console.log(err)
           this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
-        }).finally(() => {
           this.loading = false
         })
     },
@@ -86,6 +88,47 @@ export default {
           }
         }).catch(err => {
           console.log(err)
+        })
+    },
+    // 提取内容 删除多余的标签
+    regRemoveContent(str) {
+      // 去除空格
+      const strTrim = str => str.replace(/\s+/g, '')
+      // 去除标签
+      const regRemoveTag = str => str.replace(/<[^>]+>/gi, '')
+      // 去除markdown img
+      const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
+      // 去除 markdown 标签
+      const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
+
+      const regRemoveTagResult = regRemoveTag(str)
+      const regRemoveMarkdownImgResult = regRemoveMarkdownImg(regRemoveTagResult)
+      const regRemoveMarkdownTagResult = regRemoveMarkdownTag(regRemoveMarkdownImgResult)
+      return strTrim(regRemoveMarkdownTagResult)
+    },
+    setWxShare(title, desc) {
+      this.$wechatShare({ title, desc: this.regRemoveContent(desc)})
+    },
+    // 得到ipfs内容
+    async getIpfsData(hash) {
+      if (!hash) return console.log('no hash')
+      await this.$API
+        .getIpfsData(hash)
+        .then(res => {
+          if (res.code === 0) {
+            this.shareContent = res.data.content
+            this.setWxShare('分享详情-瞬MATATAKI', res.data.content)
+          } else {
+            this.$toast({ duration: 1000, message: res.message })
+            console.log(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$toast({ duration: 1000, message: '获取文章内容失败' })
+        })
+        .finally(() => {
+          this.loading = false
         })
     },
     hideClient() {
