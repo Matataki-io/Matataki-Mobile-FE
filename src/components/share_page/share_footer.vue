@@ -1,7 +1,7 @@
 <template>
   <div class="share-footer">
     <div class="icon-num">
-      <svg-icon class="icon active" icon-class="bookmark-solid"/>
+      <svg-icon class="icon" :class="bookmarked && 'active'" icon-class="bookmark-solid" @click="$emit('bookmarked', bookmarked)"/>
       <p>收藏</p>
     </div>
     <div class="icon-num">
@@ -25,6 +25,12 @@
 
 <script>
 export default {
+  props: {
+    bookmarked: {
+      type: Number,
+      default: 0
+    }
+  },
   methods: {
     pushShare() {
       this.$router.push({

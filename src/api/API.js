@@ -612,6 +612,13 @@ minetokenGetResources(tokenId) {
   },
   // 得到用户信息
   getUser(id) { return request.get(`/user/${id}`) },
+  // 增加阅读量
+  read(hash) { return request.post(`/post/show/${hash}`) },
+  // 获取当前用户的文章信息
+  currentProfile(data) { return request.post('/post/currentProfile', data) },
+  // 收藏
+  bookmark(id) { return request.post(`/post/${id}/bookmark`) },
+  unbookmark(id) { return request.delete(`/post/${id}/bookmark`) },
   // 获取推荐文章或者商品
   postsRecommend(params) { return request.get('/posts/recommend', { params }) },
   // -------------------------------- 账号绑定 --------------------------------

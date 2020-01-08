@@ -10,7 +10,12 @@
     ></shareHeader>
     <shareMain :content="shareContent"></shareMain>
     <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
-    <shareFooter @share="shareDialogVisible = true" class="footer"></shareFooter>
+    <shareFooter
+      :bookmarked="currentProfile.is_bookmarked"
+      @bookmarked="bookmarked"
+      @share="shareDialogVisible = true"
+      class="footer">
+    </shareFooter>
     <m-dialog v-model="shareDialogVisible">
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
@@ -43,6 +48,7 @@ export default {
       shareContent: '', // 分享内容
       content: Object.create(null), // 文章信息
       userInfo: Object.create(null), // 用户信息
+      currentProfile: Object.create(null), // 当前相关信息
       shareDialogVisible: false, // 分享 dialog
       showQuote: false, // refernces
       nowTime: 0 // refernces
@@ -50,6 +56,8 @@ export default {
   },
   created() {
     this.getDetail()
+  },
+  mounted() {
   },
   computed: {
   },
@@ -66,6 +74,8 @@ export default {
             this.content = res.data
             this.authorInfo(res.data.uid)
             this.getIpfsData(res.data.hash)
+            this.getCurrentProfile(res.data.id)
+            this.read(res.data.hash)
           } else {
             console.log(res.message)
             this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
@@ -106,6 +116,7 @@ export default {
       const regRemoveMarkdownTagResult = regRemoveMarkdownTag(regRemoveMarkdownImgResult)
       return strTrim(regRemoveMarkdownTagResult)
     },
+    // 设置微信分享
     setWxShare(title, desc) {
       this.$wechatShare({ title, desc: this.regRemoveContent(desc)})
     },
@@ -130,6 +141,46 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    // 增加文章阅读量
+    async read(hash) {
+      await this.$API.read(hash).catch(err => console.log('add read amount error', err))
+    },
+    // 获取当前文章相关信息
+    async getCurrentProfile (id) {
+      await this.$API.currentProfile({id})
+        .then(res => {
+          if (res.code === 0) this.currentProfile = res.data
+          else console.log(res.message)
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    // 收藏
+    async bookmarked(bookmarked) {
+      // 状态码不为200 !!! 所以取消了res.code === 0
+      if (bookmarked) {
+        this.$confirm('是否取消收藏?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          customClass: 'message-box__mobile'
+        }).then(async () => {
+          await this.$API.unbookmark(this.currentProfile.id)
+          .then(res => {
+            this.$toast.success({ duration: 1000, message: '取消成功' })
+            this.currentProfile.is_bookmarked = 0
+          })
+          .catch(err => console.log(err))
+        }).catch(() => {})
+      } else {
+        await this.$API.bookmark(this.currentProfile.id)
+          .then(res => {
+            this.$toast.success({ duration: 1000, message: '收藏成功' })
+            this.currentProfile.is_bookmarked = 1
+          })
+          .catch(err => console.log(err))
+      }
     },
     hideClient() {
       this.showQuote = false
