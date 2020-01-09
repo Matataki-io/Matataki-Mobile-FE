@@ -24,17 +24,17 @@
       <p>{{ card.short_content || "&nbsp;" }}</p>
     </router-link>
     <div class="card-list" v-if="this.card.refs.length !== 0">
-      <div v-for="(item, index) in this.card.refs.slice(0, 1)" :key="index">
-        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"></shareOuterCard>
-        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"></sharePCard>
-        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"></shareInsideCard>
-      </div>
+      <template v-for="(item, index) in this.card.refs.slice(0, 1)">
+        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"  :key="'shareOuterCard' + index"></shareOuterCard>
+        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"  :key="'sharePCard' + index"></sharePCard>
+        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"  :key="'shareInsideCard' + index"></shareInsideCard>
+      </template>
       <div class="card-list__more" :class="toggleMore && 'open'">
-        <div v-for="(item, index) in shareListMore" :key="index">
-          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" ></shareOuterCard>
-          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" ></sharePCard>
-          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"></shareInsideCard>
-        </div>
+        <template v-for="(item, index) in shareListMore">
+          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="'shareOuterCard' + index"></shareOuterCard>
+          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="'shareOuterCard' + index"></sharePCard>
+          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card" :key="'shareOuterCard' + index"></shareInsideCard>
+        </template>
       </div>
       <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
         <span>查看更多</span><i class="el-icon-d-arrow-left icon"></i>
