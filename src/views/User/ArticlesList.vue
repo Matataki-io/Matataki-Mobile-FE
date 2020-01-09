@@ -28,6 +28,7 @@
       @getListData="getListDataTab"
     >
     <!-- 暂时处理  by xiaotian -->
+    <!-- 下次功能调整重构 -->
     <template v-if="listtype === 'bookmark' && activeIndex === 1">
       <router-link class="card-bookmark"
         :to="{name: 'share-id', params: {id: item.id}}"
@@ -169,7 +170,6 @@ export default {
           autoRequestTime: 0
         }
       ]
-
       this.needAccessToken = true
     }
   },
