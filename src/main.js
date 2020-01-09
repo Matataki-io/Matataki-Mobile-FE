@@ -18,7 +18,6 @@ import './registerServiceWorker'
 // import "lib-flexible"; // 适配
 
 // Vue plugins
-import './plugins'
 import './plugins/iview'
 import './plugins/vant'
 import './plugins/element-ui'
