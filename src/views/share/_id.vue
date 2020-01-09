@@ -246,7 +246,9 @@ export default {
           .finally(() => {
             this.footerLoading = false
           })
-        }).catch(() => {})
+        }).catch(() => {
+          this.footerLoading = false
+        })
       } else {
         await this.$API.bookmark(this.currentProfile.id)
           .then(res => {
