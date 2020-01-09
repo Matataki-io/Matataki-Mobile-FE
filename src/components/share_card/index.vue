@@ -37,7 +37,7 @@
         </template>
       </div>
       <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
-        <span>查看更多</span><i class="el-icon-d-arrow-left icon"></i>
+        <span>{{toggleMore ? '收起更多' : '查看更多' }}</span><i class="el-icon-d-arrow-left icon"></i>
       </div>
     </div>
   </div>
@@ -179,7 +179,7 @@ export default {
     .icon {
       position: absolute;
       color: @purpleDark;
-      font-size: 14px;
+      font-size: 13px;
       &:nth-child(1) {
         left: 0;
         top: 0;
@@ -216,7 +216,7 @@ export default {
       content: '';
       width: 0;
       height: 0;
-      border-width: 10px 15px 10px 15px;
+      border-width: 10px;
       border-style: solid;
       border-color: transparent transparent #eaeaea transparent;
       position: absolute;
