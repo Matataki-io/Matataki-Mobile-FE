@@ -821,13 +821,13 @@ export default {
   .but {
     flex: 1;
     background: white;
-    display: -webkit-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     div {
       font-size: 15px;
       color: #000;
-      margin: auto;
-      height: 22px;
       svg {
         vertical-align: sub;
         &.eth_mini {
