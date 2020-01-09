@@ -2,6 +2,9 @@ import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
+import ipfs from '@/common/components/ipfs/index'
+import dialog from '@/common/components/dialog/index'
+
 const requireComponent = require.context(
   // 其组件目录的相对路径
   '../components/baseComponents',
@@ -35,3 +38,7 @@ requireComponent.keys().forEach(fileName => {
     componentConfig.default || componentConfig
   )
 })
+
+
+Vue.component('m-ipfs', ipfs) // ipfs
+Vue.component('m-dialog', dialog) // dialog

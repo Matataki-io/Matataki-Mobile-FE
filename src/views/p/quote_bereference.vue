@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import card from './quote_berefernce_card.vue'
+import card from './quote_bereference_card.vue'
 
 export default {
   components: {
@@ -40,17 +40,7 @@ export default {
   },
   methods: {
     getListData(res) {
-      // console.log('res2', res)
-      let arr = []
-      if (res) {
-          res.list.map(i => {
-          arr.push({
-            url: `${process.env.VUE_APP_PC_URL}/p/${i.id}`,
-            title: i.title,
-          })
-        })
-        this.pull.list = arr
-      }
+      this.pull.list = res.list
     },
     getArticle(idInt, popEvent) {
       this.$emit('getArticle', idInt, popEvent)

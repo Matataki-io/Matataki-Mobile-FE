@@ -221,7 +221,7 @@ export default {
   border-radius: 6px;
   border: none;
   background: #542de0;
-  width: 335px;
+  width: 100%;
   height: 34px;
   display: flex;
   align-items: center;

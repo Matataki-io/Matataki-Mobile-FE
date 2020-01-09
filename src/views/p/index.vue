@@ -588,7 +588,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     cover() {
-      if (this.article.cover) return this.$backendAPI.getAvatarImage(this.article.cover)
+      if (this.article.cover) return this.$API.getImg(this.article.cover)
       return null
     },
     displayPlaceholder() {
@@ -740,6 +740,11 @@ export default {
         window.location.reload()
       }
     })
+    // 移动端似乎不需要监听这个事件, 未和pc端同步code
+    // window.addEventListener('popstate', this._popstateEvent)
+  },
+  destroyed() {
+    // window.removeEventListener('popstate', this._popstateEvent)
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
@@ -769,7 +774,7 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: this.regRemoveContent(this.post.content),
-        imgUrl: this.article.cover ? this.$backendAPI.getAvatarImage(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$API.getImg(this.article.cover) : ''
       })
     },
     // 复制hash
@@ -1272,7 +1277,7 @@ export default {
         if (res.status === 200 && res.data.code === 0) {
           this.followed = res.data.data.is_follow
           this.articleAvatar = res.data.data.avatar
-            ? this.$backendAPI.getImg(res.data.data.avatar)
+            ? this.$API.getImg(res.data.data.avatar)
             : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {

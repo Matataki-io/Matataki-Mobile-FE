@@ -476,7 +476,7 @@ export default {
       }
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
+      if (hash) this.avatar = this.$API.getImg(hash)
       else this.avatar = defaultAvatar
     },
     changeInfo(status) {

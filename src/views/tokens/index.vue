@@ -29,7 +29,9 @@ export default {
   data() {
     return {
       pointLog: {
-        params: {},
+        params: {
+          pageSize: 20
+        },
         apiUrl: 'tokenTokenList',
         list: []
       }

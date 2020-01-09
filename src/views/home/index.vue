@@ -44,22 +44,22 @@ export default {
     return {
       options: [
         {
-          value: 'now',
-          label: '最新文章'
-        },
-        {
           value: 'hot',
           label: '最热文章'
         },
+        {
+          value: 'now',
+          label: '最新文章'
+        },
       ],
-      value: 'now',
+      value: 'hot',
       pull: {
         params: {
           channel: 1,
           extra: 'short_content'
         },
         autoRequestTime: 0,
-        apiUrl: 'homeTimeRanking',
+        apiUrl: 'homeScoreRanking',
         list: [],
       }
     }

@@ -9,12 +9,16 @@
     <!-- 列表 -->
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
-        <h2>
-          {{fandom.title}}
-          <span>（已有{{fandom.groupSize}}人）</span>
-        </h2>
+        <div class="fl title">
+          <el-tooltip :content="fandom.title" class="item" effect="dark" placement="top">
+            <h2>
+              {{ fandom.title }}
+            </h2>
+          </el-tooltip>
+          <span>（{{ fandom.groupSize }}人）</span>
+        </div>
         <p class="condition">
-          持有的{{tokenSymbol}}票>{{ getMinBalance(fandom) }}即可加群
+          持有的{{tokenSymbol}}票 ≥{{ getMinBalance(fandom) }} 即可加群
         </p>
       </div>
       <div>
@@ -34,13 +38,14 @@
       </a>
     </div>
 
-    <el-dialog width="92%" title="入群指南" :visible.sync="showHelp" center>
-      <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p>
+    <el-dialog width="92%" title="入群指南" :visible.sync="showHelp" center custom-class="fandom-popups-title">
+      <!-- <p class="subtitle">根据以下步骤操作加入Fan票的粉丝群</p> -->
       <div class="fl help-step top">
         <div class="help-text">
-          <h3>步骤
-            <div class="help-serial">1</div>
-              </h3>
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step1" />
+          </h3>
           <p class="introduction">绑定Telegram账号</p>
           <p>仅需要绑定一次</p>
         </div>
@@ -55,13 +60,24 @@
           <el-button class="add-button top40" @click="setTelegram()">绑定</el-button>
         </div>
       </div>
+      <div class="fl help-step top">
+        <div class="help-text">
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step2" />
+          </h3>
+          <p class="introduction">完成入群条件</p>
+          <p>购买并持有特定数量的Fan票</p>
+        </div>
+      </div>
       <div class="fl help-step">
         <div class="help-text">
-          <h3>步骤
-            <div class="help-serial">2</div>
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step3" />
           </h3>
           <p class="introduction">点击加群按钮</p>
-          <p>根据机器人的指引入群</p>
+          <p>根据机器人的引导入群</p>
         </div>
       </div>
     </el-dialog>
@@ -84,6 +100,10 @@ export default {
     tokenId: {
       type: Number,
       required: true
+    },
+    balance: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -91,7 +111,6 @@ export default {
       isExpand: false,
       showHelp: false,
       bindStatus: false,
-      balance: 100,
       fandomData: []
     }
   },
@@ -105,7 +124,6 @@ export default {
   mounted() {
     if(this.isLogined) {
       this.getAccountStatus()
-      this.getUserBalance()
     }
     this.getFandomList()
     this.$navigation.once('back', (to, from) => {
@@ -126,7 +144,7 @@ export default {
         return
       }
       console.log('加群：',fandom.name)
-      window.open(`https://t.me/${process.env.VUE_APP_TELEGRAM_FANDOM_BOT}?start=${fandom.id}`)
+      window.location.href = `tg://resolve?domain=${process.env.VUE_APP_TELEGRAM_FANDOM_BOT}&start=${fandom.id}`
     },
     /** 绑定tg账号 */
     setTelegram() {
@@ -189,14 +207,6 @@ export default {
         console.log('err', err)
       })
     },
-    getUserBalance() {
-      this.$API.getUserBalance(this.tokenId).then(res => {
-        if (res.code === 0) {
-          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
-          // console.log('账户余额：', this.balance, res.data)
-        }
-      })
-    },
     getMinBalance(fandom){
       return fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0
     }
@@ -232,10 +242,16 @@ export default {
   margin: 20px 0;
   .fandom-text {
     flex: 1;
-    h2 {
-      font-size: 15px;
-      color: black;
-      margin-bottom: 10px;
+    .title {
+      white-space: nowrap;
+      max-width: 280px;
+      h2 {
+        font-size: 15px;
+        color: black;
+        margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       span {
         font-size: 12px;
         color: #B2B2B2;
@@ -312,15 +328,6 @@ export default {
       }
     }
     .help-serial {
-      height: 16px;
-      width: 16px;
-      display: inline-block;
-      background-color: black;
-      color: white;
-      text-align: center;
-      border-radius: 50%;
-      font-size: 8px;
-      font-weight: 500;
       margin-left: 5px;
     }
   }
@@ -332,6 +339,15 @@ export default {
     .top40 {
       margin-top: 40px;
     }
+  }
+}
+</style>
+
+<style lang="less">
+.fandom-popups-title {
+  border-radius: 6px;
+  .el-dialog__title{
+    font-weight: 600;
   }
 }
 </style>

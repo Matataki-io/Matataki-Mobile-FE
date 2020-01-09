@@ -62,9 +62,14 @@ export default {
         //   name: 'article'
         // },
         {
-          title: '创作大厅',
+          title: '创作',
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
+        },
+        {
+          title: '分享',
+          name: 'sharehall',
+          urlList: ['sharehall']
         },
         // {
         //   title: this.$t('home.navShop'),
@@ -98,7 +103,7 @@ export default {
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+      if (avatar) this.avatar = this.$API.getImg(avatar)
     }
   }
 }

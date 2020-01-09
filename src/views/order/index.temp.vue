@@ -468,7 +468,7 @@ export default {
     color: @purple;
   }
   .van-button--danger {
-    background-color: @purple;
+    background: @purple;
     border: 0.0625rem solid @purple;
   }
 }

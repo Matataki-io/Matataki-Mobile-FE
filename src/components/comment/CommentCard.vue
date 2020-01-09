@@ -73,7 +73,7 @@ export default {
       }
     },
     avatar() {
-      if (this.comment.avatar) return this.$backendAPI.getAvatarImage(this.comment.avatar)
+      if (this.comment.avatar) return this.$API.getImg(this.comment.avatar)
       return ''
     }
   }

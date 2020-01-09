@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import card from './quote_refernce_card.vue'
+import card from './quote_reference_card.vue'
 
 export default {
   components: {
@@ -39,7 +39,6 @@ export default {
     }
   },
   created() {
-    console.log(121212121212)
   },
   methods: {
     getListData(res) {

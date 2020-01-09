@@ -27,6 +27,25 @@
       :show-no-more-icon="listtype !== 'others'"
       @getListData="getListDataTab"
     >
+    <!-- 暂时处理  by xiaotian -->
+    <!-- 下次功能调整重构 -->
+    <template v-if="listtype === 'bookmark' && activeIndex === 1">
+      <router-link class="card-bookmark"
+        :to="{name: 'share-id', params: {id: item.id}}"
+        v-for="(item, index) in item.articles"
+        :key="index">
+        <p>{{item.short_content}}</p>
+        <div>
+          <span>
+            <svg-icon class="icon" icon-class="eye"></svg-icon>{{item.read}}
+          </span>
+          <span>
+            <svg-icon class="icon" icon-class="like_thin"></svg-icon>{{item.likes}}
+          </span>
+        </div>
+      </router-link>
+    </template>
+    <template v-else>
       <ArticleCard
         v-for="(item, index) in item.articles"
         :key="index"
@@ -36,6 +55,7 @@
         :is-other-user="isOtherUser"
         type="article"
       />
+    </template>
     </BasePull>
   </div>
 </template>
@@ -131,14 +151,25 @@ export default {
       this.tabsData = [
         {
           label: this.$t('user.article'),
-          params: {},
+          params: {
+            channel_id: 1
+          },
+          apiUrl: 'userBookmarks',
+          articles: [],
+          loadingText: this.$t('notArticle'),
+          autoRequestTime: 0
+        },
+        {
+          label: '分享',
+          params: {
+            channel_id: 3
+          },
           apiUrl: 'userBookmarks',
           articles: [],
           loadingText: this.$t('notArticle'),
           autoRequestTime: 0
         }
       ]
-
       this.needAccessToken = true
     }
   },
@@ -166,5 +197,31 @@ export default {
 <style lang="less" scoped>
 .card-margin {
   margin: 0 0 10px 0;
+}
+
+.card-bookmark {
+  padding: 20px;
+  background-color: #fff;
+  display: block;
+  margin: 0 0 10px;
+  border-radius: 3px;
+  border-top: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
+  p {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  div {
+    margin-top: 10px;
+    span {
+      color: #949494;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    .icon {
+      margin-right: 2px;
+    }
+  }
 }
 </style>
