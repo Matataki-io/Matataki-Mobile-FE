@@ -236,7 +236,7 @@ export default {
 
   &-more {
     text-align: center;
-    margin-bottom: 10px;
+    padding: 10px 0;
     &.open .icon {
       transform: rotate(90deg);
     }
