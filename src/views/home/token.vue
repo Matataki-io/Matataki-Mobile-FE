@@ -53,7 +53,7 @@ export default {
   },
   created() {
     if (this.isLogined) this.pull.params = {
-      pageSize: 20
+      pagesize: 20
     } // 登录了才能请求数据, login: null只是为了阻断请求
   },
   methods: {
