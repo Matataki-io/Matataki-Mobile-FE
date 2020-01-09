@@ -62,12 +62,12 @@ export default {
         //   name: 'article'
         // },
         {
-          title: '创作大厅',
+          title: '创作',
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
         {
-          title: '分享大厅',
+          title: '分享',
           name: 'sharehall',
           urlList: ['sharehall']
         },
