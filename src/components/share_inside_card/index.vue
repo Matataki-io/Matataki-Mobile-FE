@@ -143,7 +143,7 @@ export default {
     .icon {
       position: absolute;
       color: #000;
-      font-size: 11px;
+      font-size: 8px;
       &:nth-child(1) {
         left: 0;
         top: 0;
