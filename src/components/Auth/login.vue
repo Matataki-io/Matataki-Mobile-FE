@@ -204,6 +204,7 @@ export default {
               // localStorage.setItem('idProvider', config.idProvider)
               this.successToast(this.$t('success.loginSuccess'))
               this.$emit('hide')
+              this.$userMsgChannel.postMessage("login")
               window.location.reload() // 登陆完成刷新一次
             } else {
               this.failToast(this.$t('error.loginFailPasswordOrAccount'))

@@ -207,6 +207,7 @@ export default new Vuex.Store({
       // 成功後的處理
       commit('setAccessToken', accessToken)
       Cookies.set('idProvider', state.userConfig.idProvider, { expires: 365 })
+      if (!oldAccessToken) this._vm.$userMsgChannel.postMessage('login')
       return state.userInfo.accessToken
     },
     /*
@@ -296,6 +297,7 @@ export default new Vuex.Store({
       Cookies.remove('idProvider', { path: '' })
       localStorage.clear()
       sessionStorage.clear()
+      this._vm.$userMsgChannel.postMessage('logout')
     },
     // data: { amount, toaddress, memo }
     async withdraw({ dispatch, getters }, data) {
