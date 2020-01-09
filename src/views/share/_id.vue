@@ -44,7 +44,7 @@
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
         <div class="dialog-content__btn">
-          <div class="btn-icon" @click="copy('http://localhost:8080/share/101167?c=0f2a3ed6')">
+          <div class="btn-icon" @click="copy(shareLink)">
             <svg-icon icon-class="copy3"></svg-icon>
           </div>
           <p class="btn-text">复制邀请链接</p>
@@ -112,6 +112,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    shareLink() {
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${window.location.origin}/share/${this.$route.params.id}` || process.env.VUE_APP_URL
+    }
   },
   methods: {
     init(id) {
