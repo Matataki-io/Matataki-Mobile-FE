@@ -827,6 +827,7 @@ export default {
       font-size: 15px;
       color: #000;
       margin: auto;
+      height: 22px;
       svg {
         vertical-align: sub;
         &.eth_mini {
