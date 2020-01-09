@@ -14,7 +14,7 @@
       <template v-for="(item, index) in pull.list">
         <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="index"></shareOuterCard>
         <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="index"></sharePCard>
-        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" :toggleArticle="true" class="list-card" :key="index" @getArticle="getArticle"></shareInsideCard>
+        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" :toggleArticle="true" from="beref" class="list-card" :key="index" @getArticle="getArticle"></shareInsideCard>
       </template>
   </BasePull>
 </template>
