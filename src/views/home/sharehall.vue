@@ -122,18 +122,18 @@ export default {
       urlLoading: false,
       options: [ // 排序
         {
-          value: 'time',
-          label: '最新'
-        },
-        {
           value: 'hot',
           label: '最热'
         },
+        {
+          value: 'time',
+          label: '最新'
+        },
       ],
-      value: this.$route.query.type || 'time', // 排序
+      value: this.$route.query.type || 'hot', // 排序
       pull: { // 分页
         params: {
-          type: this.$route.query.type || 'time',
+          type: this.$route.query.type || 'hot',
           pagesize: 20
         },
         time: 0,
