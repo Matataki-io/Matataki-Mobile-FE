@@ -14,6 +14,12 @@
           <router-link :to="{ name: 'article' }">
             <svg-icon class="btn-list_btn" icon-class="article" />
           </router-link>
+          <router-link :to="{ name: 'sharehall' }">
+            <svg-icon class="btn-list_btn" icon-class="sharehall" />
+          </router-link>
+          <router-link :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }">
+            <svg-icon class="btn-list_btn" icon-class="write" />
+          </router-link>
           <router-link :to="{ name: 'token' }">
             <svg-icon class="btn-list_btn" icon-class="fan" />
           </router-link>
