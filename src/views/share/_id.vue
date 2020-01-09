@@ -134,9 +134,13 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.content = res.data
-            this.authorInfo(res.data.uid)
-            this.getIpfsData(res.data.hash)
-            this.read(res.data.hash)
+            // 如果不是分享返回上一页
+            if (res.data.channel_id !== 3) return this.$router.go(-1)
+            else {
+              this.authorInfo(res.data.uid)
+              this.getIpfsData(res.data.hash)
+              this.read(res.data.hash)
+            }
           } else {
             console.log(res.message)
             this.$toast({ duration: 1000, message: '获取内容失败, 请刷新后重试' })
