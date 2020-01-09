@@ -34,7 +34,10 @@ export default {
   data() {
     return {
       pull: {
-        params: { uid: this.$route.params.id, pagesize: 20 },
+        params: {
+          uid: this.$route.params.id,
+          pagesize: 20
+        },
         apiUrl: 'userBookmarks',
         list: [],
         loadingText: this.$t('not'),
