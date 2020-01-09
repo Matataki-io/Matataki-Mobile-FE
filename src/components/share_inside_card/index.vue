@@ -32,6 +32,10 @@ export default {
       type: Boolean,
       default: false
     },
+    from : {
+      type: String,
+      default: '', // beref
+    },
     idx: {
       type: Number,
       default: 0
@@ -47,7 +51,11 @@ export default {
         return {}
       } else {
         if (this.cardType === 'edit') return {}
-        else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+        else {
+          // beref use sign_id
+          if (this.from === 'beref') return { name: 'share-id', params: { id: this.card.sign_id } }
+          else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+        }
       }
     },
     username() {
@@ -84,7 +92,9 @@ export default {
     },
     toggle() {
       if (this.toggleArticle) {
-        this.$emit('getArticle', this.card.ref_sign_id, false)
+        // beref use sign_id
+        let id = this.from === 'beref' ? this.card.sign_id : this.card.ref_sign_id
+        this.$emit('getArticle', id, false)
       }
     }
   }
