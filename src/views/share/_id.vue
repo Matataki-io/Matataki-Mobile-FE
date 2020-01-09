@@ -1,6 +1,10 @@
 <template>
   <div class="share" @click.stop="hideClient">
-    <BaseHeader :pageinfo="{title: '分享详情'}" customize-header-bc="#fff" :has-bottom-border-line="true" class="header" />
+    <BaseHeader
+    :pageinfo="{title: '分享详情'}"
+    customize-header-bc="#fff"
+    :has-bottom-border-line="true"
+    class="header" />
     <div v-loading="loading">
       <shareHeader
       :avatar="userInfo.avatar"
@@ -53,6 +57,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
+import { sleep } from '@/common/methods'
 
 import shareFooter from '@/components/share_page/share_footer'
 import shareHeader from '@/components/share_page/share_header'
@@ -99,34 +104,16 @@ export default {
     this.getReferenceCount('postsPosts', {}, 'berefernce')
   },
   mounted() {
-    // window.addEventListener('popstate', this._popstateEvent)
+    // console.log('mounted')
   },
   destroyed() {
-    // window.removeEventListener('popstate', this._popstateEvent)
+    // console.log('destroyed')
+    this.$navigation.cleanRoutes() // 清除路由记录
   },
   computed: {
     ...mapGetters(['isLogined']),
   },
   methods: {
-    _popstateEvent() {
-      // bug
-      console.log(this.$route.params)
-      console.log(window.location.href)
-      // this.toggleArticle(window.location.href, null, true)
-      // window.location.reload()
-    },
-    // 切换文章
-    toggleArticle(url, e, popEvent = false) {
-      if (e && e.preventDefault) e.preventDefault()
-      else if (e && e.stopPropagation) e.stopPropagation()
-      const reg = /\/share\/[\d].*/
-      const urlId = url.match(reg)
-      const id = urlId ? urlId[0].slice(7) : -1
-      const idInt = parseInt(id)
-      if (idInt !== -1) this.getArticle(idInt, popEvent)
-      else window.open(url)
-      return false
-    },
     init(id) {
       if (!id) return this.$router.go(-1)
       this.getDetail(id)
@@ -304,19 +291,21 @@ export default {
       this.showQuote = false
     },
     async getArticle(id, popEvent) {
-      console.log(id, popEvent)
-
-      // 切换 url不刷新
+      // console.log(id, popEvent)
       this.$route.params.id = id
-      if (!popEvent) {
-        const url = `${window.location.origin}/share/${id}`
-        history.pushState({}, '', url)
-      }
+      let { origin } = window.location
+      const url = `${origin}/share/${id}`
+      history.replaceState({}, '', url)
+      // // 切换 url不刷新
+      // if (!popEvent) {
+      //   const url = `${window.location.origin}/share/${id}`
+      //   history.pushState({}, '', url)
+      // }
 
-      this.init(id)
       // refernce
       this.nowTime = Date.now()
 
+      this.init(id)
     },
     copy(val) {
       this.$copyText(val).then(
