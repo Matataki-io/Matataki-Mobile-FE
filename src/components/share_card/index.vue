@@ -23,8 +23,8 @@
       <svg-icon class="icon" icon-class="quotation_marks" />
       <p>{{ card.short_content || "&nbsp;" }}</p>
     </router-link>
-    <div class="card-list" v-if="this.card.refs.length !== 0">
-      <template v-for="(item, index) in this.card.refs.slice(0, 1)">
+    <div class="card-list" v-if="card.refs.length !== 0">
+      <template v-for="(item, index) in card.refs.slice(0, 1)">
         <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"  :key="'shareOuterCard' + index"></shareOuterCard>
         <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"  :key="'sharePCard' + index"></sharePCard>
         <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"  :key="'shareInsideCard' + index"></shareInsideCard>

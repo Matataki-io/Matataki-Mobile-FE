@@ -13,7 +13,7 @@
       <slot v-if="idx === 0" name="ref"></slot>
       <slot v-if="idx === 1" name="beref"></slot>
     </div>
-    <div class="full" :class="show && 'open'"></div>
+    <!-- <div class="full" :class="show && 'open'"></div> -->
   </div>
 </template>
 
@@ -62,6 +62,11 @@ export default {
     })
   },
   mounted() {
+    this.$nextTick( () => {
+      setTimeout(() => {
+        this.showQuote(0)
+      }, 400)
+    })
   },
   methods: {
     showQuote(i) {
