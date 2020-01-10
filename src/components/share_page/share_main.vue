@@ -25,7 +25,7 @@ export default {
   .icon {
     position: absolute;
     color: @purpleDark;
-    font-size: 14px;
+    font-size: 10px;
     &:nth-child(1) {
       left: 0;
       top: 0;
