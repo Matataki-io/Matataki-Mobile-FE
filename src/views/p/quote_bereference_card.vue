@@ -8,8 +8,8 @@
               v-if="card.sign_id !== 0"
               :href="cardUrl"
               @click.stop="toggleArticle(card.sign_id, $event)"
-            >{{ card.title }}</a>
-            <a v-else :href="cardUrl" target="_blank">{{ card.title }}</a>
+            >{{ cardTitle }}</a>
+            <a v-else :href="cardUrl" target="_blank">{{ cardTitle }}</a>
           </div>
         </div>
         <!-- <div class="fl ac jfe related-3">
@@ -37,8 +37,14 @@ export default {
     }
   },
   computed: {
+    cardTitle() {
+      let {channel_id, title, summary} = this.card
+      return channel_id === 1 ? title : channel_id === 3 ? summary : title
+    },
     cardUrl() {
-      return `${process.env.VUE_APP_URL}/p/${this.card.sign_id}`
+      let {channel_id, sign_id} = this.card
+      let routerName = channel_id === 1 ? 'p' : channel_id === 3 ? 'share' : 'p'
+      return `${process.env.VUE_APP_URL}/${routerName}/${sign_id}`
     }
   },
   methods: {
