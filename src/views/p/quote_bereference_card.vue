@@ -5,7 +5,7 @@
         <div class="fl ac related-7">
           <div class="related-list-link">
             <a
-              v-if="card.sign_id !== 0"
+              v-if="card.sign_id !== 0 && card.channel_id === 1"
               :href="cardUrl"
               @click.stop="toggleArticle(card.sign_id, $event)"
             >{{ cardTitle }}</a>
