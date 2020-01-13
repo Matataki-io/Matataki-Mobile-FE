@@ -7,6 +7,7 @@
     class="header" />
     <div v-loading="loading">
       <shareHeader
+      :id="content.uid"
       :avatar="userInfo.avatar"
       :username="userInfo.nickname || userInfo.username"
       :time="content.create_time"
