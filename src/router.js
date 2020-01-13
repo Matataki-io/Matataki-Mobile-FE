@@ -249,16 +249,6 @@ const router = new VueRouter({
         title: '原创-瞬MATATAKI'
       }
     },
-    {
-      path: '/user/:id/bookmark',
-      name: 'user-id-bookmark',
-      props: true,
-      component: () =>
-        import(/* webpackChunkName: "user-id-bookmark" */ './views/user/Bookmark.vue'),
-      meta: {
-        title: '收藏-瞬MATATAKI'
-      }
-    },
     // {
     //   path: '/user/:id/reward',
     //   name: 'Reward',
@@ -292,25 +282,6 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "user-id-fan" */ './views/user/fan.vue'),
       meta: {
         title: '我的粉丝-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/user/:id/buy',
-      name: 'user-id-buy',
-      props: true,
-      component: () => import(/* webpackChunkName: "user-id-buy" */ './views/user/buy/index.vue'),
-      meta: {
-        title: '购买文章-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/user/:id/buy/other',
-      name: 'user-id-buy-other',
-      props: true,
-      component: () =>
-        import(/* webpackChunkName: "user-id-buy-other" */ './views/user/buy/other.vue'),
-      meta: {
-        title: '购买其他-瞬MATATAKI'
       }
     },
     {
@@ -612,8 +583,6 @@ router.beforeEach((to, from, next) => {
     'postminetoken',
     'setting',
     'publish-type-id',
-    'user-id-buy',
-    'user-id-buy-other',
     'buy',
     'buy-other'
   ] // 需要登陆才能进入
