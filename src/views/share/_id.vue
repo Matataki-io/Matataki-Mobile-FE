@@ -47,7 +47,7 @@
           <div class="btn-icon" @click="copy(shareLink)">
             <svg-icon icon-class="copy3"></svg-icon>
           </div>
-          <p class="btn-text">复制邀请链接</p>
+          <p class="btn-text">复制分享链接</p>
         </div>
       </div>
     </m-dialog>
