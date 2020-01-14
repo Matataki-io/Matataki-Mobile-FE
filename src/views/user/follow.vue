@@ -4,7 +4,6 @@
       :params="pull.params"
       :api-url="pull.apiUrl"
       :active-index="0"
-      :now-index="index"
       :auto-request-time="pull.autoRequestTime"
       :loading-text="pull.loadingText"
       :need-access-token="true"

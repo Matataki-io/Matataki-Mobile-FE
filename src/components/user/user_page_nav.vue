@@ -29,6 +29,7 @@ export default {
       return [
         // self 只有自己才能看
         { title: '创作', url: 'user-id', self: false },
+        { title: '分享', url: 'user-id-share', self: false },
         { title: '关注', url: 'user-id-follow', self: false },
         { title: '粉丝', url: 'user-id-fan', self: false },
         { title: '信息', url: 'user-id-info', self: false }
