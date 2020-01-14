@@ -58,7 +58,7 @@
       :auto-request-time="pull.time"
       @getListData="getListData"
     >
-      <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick"></shareCard>
+      <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" @ref="ref"></shareCard>
     </BasePull>
     <Sidebar v-model="showSidebar"></Sidebar>
   </div>
@@ -333,6 +333,10 @@ export default {
     // 引用
     refClick(card) {
       this.urlForm.url = `${process.env.VUE_APP_URL}/share/${card.id}`
+      this.getUrlData('urlForm')
+    },
+    ref(val) {
+      this.urlForm.url = val
       this.getUrlData('urlForm')
     },
     getListData(res) {
