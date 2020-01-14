@@ -1,7 +1,7 @@
 <template>
   <div class="card-share">
     <div class="card-info">
-      <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info__left">
+      <router-link :to="{ name: 'user-id-share', params: { id: card.uid } }" class="card-info__left">
         <avatar class="card-avatar" :src="avatarSrc"></avatar>
         <div class="card-author">
           <span class="card-username">{{ card.nickname || card.author }}</span>

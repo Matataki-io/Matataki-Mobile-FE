@@ -249,6 +249,16 @@ const router = new VueRouter({
         title: '原创-瞬MATATAKI'
       }
     },
+    {
+      path: '/user/:id/share',
+      name: 'user-id-share',
+      props: true,
+      component: () =>
+        import(/* webpackChunkName: "user-id-share" */ './views/user/share.vue'),
+      meta: {
+        title: '分享-瞬MATATAKI'
+      }
+    },
     // {
     //   path: '/user/:id/reward',
     //   name: 'Reward',
