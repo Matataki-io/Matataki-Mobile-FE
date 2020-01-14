@@ -5,7 +5,7 @@
     </div>
     <div class="card-content">
       <p class="card-text">{{ card.title || '暂无' }}</p>
-      <div class="card-info">
+      <div class="card-info" v-if="cardType !== 'edit'">
         <span>
           <svg-icon icon-class="eye" class="icon"></svg-icon>{{ card.real_read_count }}
         </span>
