@@ -61,6 +61,40 @@
       <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" @ref="ref"></shareCard>
     </BasePull>
     <Sidebar v-model="showSidebar"></Sidebar>
+
+    <m-dialog v-model="shareDoneCard" width="320px">
+      <!-- 如果内容过多可以抽离 -->
+      <div class="dialog-content">
+        <img src="@/assets/img/done.png" alt="done" class="share-done">
+        <h4 class="share-done__title">
+          分享已发布
+        </h4>
+        <p class="share-done__desciption">
+          保存分享卡片把思考与灵感传达给更多的人
+        </p>
+        <div
+          ref="shareCard"
+          v-loading="createShareLoading"
+          class="share-card"
+        >
+          <div v-if="createShareLoading" class="share-full" />
+          <img v-if="saveImg" :src="saveImg" alt="save" @click="viewImage(saveImg)">
+          <shareImage
+            ref="shareImage"
+            v-else
+            :content="shareCard.content"
+            :avatarSrc="shareCard.avatarSrc"
+            :username="shareCard.username"
+            :reference="shareCard.reference"
+            :url="shareCard.url"
+            class="share-card__box"
+          />
+        </div>
+        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+          保存并分享卡片
+        </el-button>
+      </div>
+    </m-dialog>
   </div>
 </template>
 
@@ -75,7 +109,14 @@ import { sleep } from '@/common/methods'
 import { getCookie } from '@/utils/cookie'
 import { mapGetters } from 'vuex'
 import throttle from 'lodash/throttle'
+import domtoimage from 'dom-to-image'
+import shareImage from '@/components/share_image/index'
+var tp = require('tp-js-sdk')
 
+import Vue from 'vue'
+import { ImagePreview } from 'vant'
+
+Vue.use(ImagePreview)
 export default {
   components: {
     homeHead,
@@ -83,7 +124,8 @@ export default {
     shareOuterCard,
     sharePCard,
     shareInsideCard,
-    shareCard
+    shareCard,
+    shareImage
   },
   data() {
     let httpTest = (rule, value, callback) => {
@@ -141,6 +183,18 @@ export default {
         list: []
       },
       shareHeadActive: false, // 导航是否到顶部
+      usersLoading: false, // 推荐作者
+      shareDoneCard: false,
+      shareCard: {
+        content: '',
+        avatarSrc: '',
+        username: '',
+        reference: [],
+        url: process.env.VUE_APP_URL
+      },
+      saveImg: '',
+      createShareLoading: false,
+      saveLoading: false // 保存图片loading
     }
   },
   watch: {
@@ -273,6 +327,7 @@ export default {
         this.$API.createShare(data)
           .then(res => {
             if (res.code === 0) {
+              this.createShareCard(res.data)
               this.resetForm()
               this.pull.time = Date.now()
               this.$toast.success({duration: 500, message: '发布成功'})
@@ -360,6 +415,124 @@ export default {
           console.log(error)
         }
       })
+    },
+        // 创建卡片
+    createShareCard(id) {
+      const setShareCard = id => {
+        this.shareCard.content = this.ruleForm.content
+        this.shareCard.reference = this.shareLinkList.slice(0, 10)
+        this.shareCard.url = `${process.env.VUE_APP_URL}/share/${id}`
+      }
+      setShareCard(id)
+      this.$API.getUser(this.currentUserInfo.id).then(res => {
+        if (res.code === 0) {
+          this.shareCard.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.shareCard.username = res.data.nickname || res.data.username
+        }
+      }).catch(err => {
+        console.log(err)
+      }).finally(() => {
+        // 清空图片
+        this.saveImg = ''
+        // 生成图片loading
+        this.createShareLoading = true
+        // 显示dialog
+        this.shareDoneCard = true
+        // setTimeout(() => {
+        // try {
+        // 设置分享卡片高度
+        // const shareImage = this.$refs.shareImage.$el
+        // const shareCard = this.$refs.shareCard
+        // const height = shareImage.offsetHeight || shareImage.clientHeight
+        // console.log('height', Math.ceil(height * 0.28))
+        // const heightScale = Math.ceil(height * 0.28)
+        // shareCard.style.height = `${heightScale}px`
+        // } catch (error) {
+        // console.log(error)
+        // }
+        // }, 1000)
+        this.createShareImage(this.ruleForm.content)
+      })
+    },
+        // 下载图片
+    downloadShareImage() {
+      this.saveLoading = true
+      // base64 to blob
+      function dataURItoBlob(base64Data) {
+        var byteString
+        if (base64Data.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(base64Data.split(',')[1])
+        else
+        byteString = unescape(base64Data.split(',')[1])
+        var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0]
+        var ia = new Uint8Array(byteString.length)
+        for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+        }
+        return new Blob([ia], {type:mimeString})
+      }
+
+      if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
+        console.log('tp 环境')
+        this.$API
+        .ossUploadImage('temp', dataURItoBlob(this.saveImg))
+        .then(res => {
+          if (res.code === 0) {
+            tp.saveImage({
+              url: this.$API.getImg(res.data)
+            })
+          } else {
+            this.$toast({ duration: 1000, message: '保存失败,请重试' })
+          }
+        })
+        .catch(err => {
+          console.log('err', err)
+          if (err.response.status === 401) {
+            this.$toast({ duration: 1000, message: '请登录后保存图片' })
+            this.$store.commit('setLoginModal', true)
+          } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
+      } else {
+        console.log('other 环境')
+        const linkTag = document.querySelector('#downloadImg')
+        if (linkTag) {
+          linkTag.click()
+        } else {
+          const link = document.createElement('a')
+          const { content } = this.shareCard
+          const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
+          link.id = 'downloadImg'
+          link.download = `${name}.png`
+          link.href = this.saveImg
+          link.click()
+        }
+        this.saveLoading = false
+      }
+
+    },
+    // 创建分享的卡片
+    createShareImage() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const dom = this.$refs.shareImage.$el
+          domtoimage.toPng(dom, { quality: 1, width: dom.clientWidth, height: dom.clientHeight })
+            .then(dataUrl => {
+              this.saveImg = dataUrl
+            })
+            .catch(function (error) {
+              console.error('oops, something went wrong!', error)
+            }).finally(() => {
+              // 生成完毕 关闭loading
+              this.createShareLoading = false
+            })
+        }, 1000)
+      })
+    },
+    viewImage(src) {
+      ImagePreview([src])
     }
   }
 }
@@ -431,6 +604,61 @@ export default {
 .pull {
   padding: 0 20px;
 }
+
+.share-done {
+  display: block;
+  margin: 0 auto;
+  width: 124px;
+}
+.share-done__title {
+  font-size:14px;
+  font-weight:bold;
+  color:rgba(0,0,0,1);
+  line-height:20px;
+  padding: 0;
+  margin: 10px 0 0;
+  text-align: center;
+}
+.share-done__desciption {
+  font-size:14px;
+  line-height:20px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: #B2B2B2;
+}
+.share-card {
+  width: 105px;
+  height: 222px;
+  margin: 10px auto 0;
+  // background-color: red;
+  overflow: hidden;
+  border: 1px solid #f1f1f1;
+  position: relative;
+  .share-full {
+    position: absolute;
+    background-color: #fff;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  &__box {
+    // opacity: 0;
+    // transform: scale(0.28);
+    transform-origin: 0 0;
+  }
+  &__btn {
+    display: block;
+    margin: 20px auto 0;
+  }
+}
+
 </style>
 
 <style lang="less">
