@@ -284,14 +284,12 @@ export default {
       // 阅读接口请求完毕才开始计时
       // 如果推荐/不推荐过 不进行调用
       if (parseInt(article.is_liked) === 1 || parseInt(article.is_liked) === 2) return
-      await this.$backendAPI
+      await this.$API
         .reading(article.id)
-        .then(response => {
-          let res = response.data
+        .then(res => {
           if (res.code === 0) {
             this.isReading = true
             this.reading()
-            // console.log('reading done')
           }
         })
         .catch(err => {
