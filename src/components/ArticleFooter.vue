@@ -206,11 +206,9 @@ export default {
         this.handleAlreadyClicked()
         return
       }
-      this.$backendAPI
+      this.$API
         .like(this.article.id, this.timeCount)
-        .then(response => {
-          // console.log(response)
-          let res = response.data
+        .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
             this.token.is_liked = 2
@@ -249,11 +247,9 @@ export default {
         this.handleAlreadyClicked()
         return
       }
-      this.$backendAPI
+      this.$API
         .dislike(this.article.id, this.timeCount)
-        .then(response => {
-          // console.log(response)
-          let res = response.data
+        .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
             this.token.is_liked = 1
