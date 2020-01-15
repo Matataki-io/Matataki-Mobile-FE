@@ -281,9 +281,10 @@ export default {
           }).finally(() => {
             this.footerLoading = false
           })
-      } else if (Number(isLiked === 2)) { // 推荐
+      } else if (Number(isLiked === 2)) { // 推荐 
         await this.$API.like(this.content.id, { time: 0 })
           .then(res => {
+            console.log('res API like token', res)
             if (res.code === 0) {
               this.content.likes++
               this.currentProfile.is_liked = 2
