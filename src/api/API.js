@@ -642,4 +642,11 @@ minetokenGetResources(tokenId) {
   // 暂时不用, 后端说用 p 接口
   // shareDetail(id) { return request.get(`/share/${id}`) },
   shareDetail(id) { return request.get(`/p/${id}`) },
+  postsIdReadnew(id, time) {
+    return request({
+      method: 'POST',
+      url: `/posts/${id}/readnew`,
+      data: { time }
+    })
+  },
 }

@@ -801,29 +801,24 @@ export default {
       const data = {
         id: this.id
       }
-
-      await this.$backendAPI
-        .getCurrentProfile(data)
-        .then(res => {
-          // console.log(`getCurrentProfile ${JSON.stringify(res)}`)
-          if (res.status === 200 && res.data.code === 0) {
-            this.currentProfile = res.data.data
-            this.form.outputToken =
-              res.data.data.holdMineTokens && res.data.data.holdMineTokens.length > 0
-                ? res.data.data.holdMineTokens[0]
-                : {}
-            // console.log('article', this.article)
-            this.differenceTokenFunc()
-            this.calPayFormParams()
-            this.setSSToken(res.data)
-            this.isBookmarked = Boolean(res.data.data.is_bookmarked)
-          } else if (res.data.code === 401) {
-            console.log(res.data.message)
-          } else {
-            console.log(res.data.message)
-          }
-        })
-        .catch(err => console.log(err))
+      this.$API.currentProfile(data).then(res => {
+        if (res.code === 0) {
+          this.currentProfile = res.data
+          this.form.outputToken =
+            res.data.holdMineTokens && res.data.holdMineTokens.length > 0
+              ? res.data.holdMineTokens[0]
+              : {}
+          // console.log('article', this.article)
+          this.differenceTokenFunc()
+          this.calPayFormParams()
+          this.setSSToken(res)
+          this.isBookmarked = Boolean(res.data.is_bookmarked)
+        } else if (res.code === 401) {
+          console.log(res.message)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => console.log(err))
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {

@@ -206,11 +206,9 @@ export default {
         this.handleAlreadyClicked()
         return
       }
-      this.$backendAPI
+      this.$API
         .like(this.article.id, this.timeCount)
-        .then(response => {
-          // console.log(response)
-          let res = response.data
+        .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
             this.token.is_liked = 2
@@ -249,11 +247,9 @@ export default {
         this.handleAlreadyClicked()
         return
       }
-      this.$backendAPI
-        .dislike(this.article.id, this.timeCount)
-        .then(response => {
-          // console.log(response)
-          let res = response.data
+      this.$API
+        .like(this.article.id, this.timeCount)
+        .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
             this.token.is_liked = 1
@@ -284,14 +280,12 @@ export default {
       // 阅读接口请求完毕才开始计时
       // 如果推荐/不推荐过 不进行调用
       if (parseInt(article.is_liked) === 1 || parseInt(article.is_liked) === 2) return
-      await this.$backendAPI
+      await this.$API
         .reading(article.id)
-        .then(response => {
-          let res = response.data
+        .then(res => {
           if (res.code === 0) {
             this.isReading = true
             this.reading()
-            // console.log('reading done')
           }
         })
         .catch(err => {
@@ -302,10 +296,9 @@ export default {
       const _isNDaysAgo = isNDaysAgo(3, this.article.create_time)
       if (this.article.is_readnew !== 1 && !_isNDaysAgo) {
         // console.log('阅读新文章增加积分')
-        this.$backendAPI
+        this.$API
           .postsIdReadnew(this.article.id, this.timeCount)
-          .then(response => {
-            let res = response.data
+          .then(res => {
             if (res.code === 0) {
               this.$toast.success({
                 duration: 1000,
@@ -341,13 +334,13 @@ export default {
     async toggleBookmark() {
       try {
         if (!this.isBookmarked) {
-          const res = await this.$backendAPI.bookmark(this.article.id)
-          if (res.data.code === 0) {
+          const res = await this.$API.bookmark(this.article.id)
+          if (res.code === 0) {
             this.isBookmarked = true
           }
         } else {
-          const res = await this.$backendAPI.unbookmark(this.article.id)
-          if (res.status === 204) {
+          const res = await this.$API.unbookmark(this.article.id)
+          if (res.code === 0) {
             this.isBookmarked = false
           }
         }
