@@ -18,7 +18,7 @@ export default {
     // post hash获取  ， p id 短链接
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
-    },
+  },
   //-------------微信支付-----------------
   wxNativePay(tradeNo, title) {
     return this.orderWxpay({
@@ -649,4 +649,17 @@ minetokenGetResources(tokenId) {
       data: { time }
     })
   },
+  // 删除文章
+  async delArticle({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/post/${id}`
+    })
+  },
+  async addReadAmount(hash) {
+    return request({
+      method: 'POST',
+      url: `/post/show/${hash}`
+    })
+  }
 }
