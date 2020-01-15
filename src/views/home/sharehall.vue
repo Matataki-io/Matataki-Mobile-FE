@@ -186,6 +186,7 @@ export default {
         this.$navigation.cleanRoutes() // 清除路由记录
         sessionStorage.removeItem('shareLink')
         sessionStorage.removeItem('shareRef')
+        sessionStorage.removeItem('articleRef')
         await sleep(100)
         next()
       }
@@ -215,11 +216,16 @@ export default {
 
       console.log(shareLink, this.shareLinkList)
     },
-    initUrlInput() {
-      let id = sessionStorage.getItem('shareRef')
-      if (id) {
-        this.urlForm.url = `${process.env.VUE_APP_URL}/share/${id}`
-        this.getUrlData('urlForm')
+    async initUrlInput() {
+      const shareId = sessionStorage.getItem('shareRef')
+      const articleId = sessionStorage.getItem('articleRef')
+      if (shareId) {
+        this.urlForm.url = `${process.env.VUE_APP_URL}/share/${shareId}`
+        await this.getUrlData('urlForm')
+      }
+      if (articleId) {
+        this.urlForm.url = `${process.env.VUE_APP_URL}/p/${articleId}`
+        await this.getUrlData('urlForm')
       }
     },
     // 初始化所有表单内容
