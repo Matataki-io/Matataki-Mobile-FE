@@ -40,6 +40,14 @@
               首字母降序
               <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
             </div>
+            <div v-else-if="sort === 'time-asc'">
+              时间升序
+              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            </div>
+            <div v-else-if="sort === 'time-desc'">
+              时间降序
+              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            </div>
             <DropdownMenu slot="list">
               <DropdownItem name="general" :selected="sort === 'general'">
                 综合排序
@@ -67,6 +75,12 @@
               </DropdownItem>
               <DropdownItem name="name-desc" :selected="sort === 'name-desc'">
                 首字母降序
+              </DropdownItem>
+              <DropdownItem name="time-asc" :selected="sort === 'time-asc'">
+                时间升序
+              </DropdownItem>
+              <DropdownItem name="time-desc" :selected="sort === 'time-desc'">
+                时间降序
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
