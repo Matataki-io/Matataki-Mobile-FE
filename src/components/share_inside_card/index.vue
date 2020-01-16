@@ -13,8 +13,10 @@
 
     </div>
     <div class="card-content">
-      <svg-icon class="icon" icon-class="quotation_marks" />
-      <svg-icon class="icon" icon-class="quotation_marks" />
+      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
+      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
+      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
+      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
       <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
     </div>
     <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
@@ -203,6 +205,22 @@ export default {
         transform: rotate(-180deg);
       }
     }
+
+    .icon-img {
+      position: absolute;
+      color: #000;
+      width: 8px;
+      &:nth-child(1) {
+        left: 0;
+        top: 0;
+      }
+      &:nth-child(2) {
+        bottom: 0;
+        right: 0;
+        transform: rotate(-180deg);
+      }
+    }
+
 
     .card-text {
       font-size:12px;
