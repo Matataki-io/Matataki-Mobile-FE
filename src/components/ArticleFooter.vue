@@ -305,10 +305,9 @@ export default {
       const _isNDaysAgo = isNDaysAgo(3, this.article.create_time)
       if (this.article.is_readnew !== 1 && !_isNDaysAgo) {
         // console.log('阅读新文章增加积分')
-        this.$backendAPI
+        this.$API
           .postsIdReadnew(this.article.id, this.timeCount)
-          .then(response => {
-            let res = response.data
+          .then(res => {
             if (res.code === 0) {
               this.$toast.success({
                 duration: 1000,
@@ -344,13 +343,13 @@ export default {
     async toggleBookmark() {
       try {
         if (!this.isBookmarked) {
-          const res = await this.$backendAPI.bookmark(this.article.id)
-          if (res.data.code === 0) {
+          const res = await this.$API.bookmark(this.article.id)
+          if (res.code === 0) {
             this.isBookmarked = true
           }
         } else {
-          const res = await this.$backendAPI.unbookmark(this.article.id)
-          if (res.status === 204) {
+          const res = await this.$API.unbookmark(this.article.id)
+          if (res.code === 0) {
             this.isBookmarked = false
           }
         }
