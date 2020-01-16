@@ -1073,7 +1073,7 @@ export default {
         if (/^(0|[1-9][0-9]*)$/.test(idOrName)) {
           try {
             const id = idOrName
-            const res = await this.$API.getUser({ id })
+            const res = await this.$API.getUser(id)
             if (res.code === 0) return { id, username: res.data.username }
           } catch (error) {
             console.error(error)
@@ -1178,7 +1178,7 @@ export default {
         if (/^(0|[1-9][0-9]*)$/.test(idOrName)) {
           try {
             const id = idOrName
-            const res = await this.$API.getUser({ id })
+            const res = await this.$API.getUser(id)
             if (res.code === 0) return { id, username: res.data.username }
           } catch (error) {
             console.error(error)
@@ -1267,7 +1267,7 @@ export default {
     // 获取用户 得到头像
     async setAvatar(id) {
       try {
-        const res = await this.$API.getUser({ id })
+        const res = await this.$API.getUser(id)
         if (res.code === 0) {
           this.followed = res.data.is_follow
           this.articleAvatar = res.data.avatar
