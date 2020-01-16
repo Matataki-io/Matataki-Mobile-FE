@@ -82,6 +82,7 @@
         <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
           保存并分享卡片
         </el-button>
+        <p class="wechat" v-if="iswechat">微信内可长按保存图片</p>
         <shareImage
             ref="shareImage"
             v-if="!saveImg"
@@ -271,6 +272,9 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
+    iswechat() {
+      return /micromessenger/.test(navigator.userAgent.toLowerCase())
+    }
   },
   methods: {
     initShareLink() {
@@ -678,7 +682,13 @@ export default {
     margin: 20px auto 0;
   }
 }
-
+.wechat {
+  text-align: center;
+  font-size: 12px;
+  color: #676767;
+  padding: 0;
+  margin: 10px 0 0;
+}
 </style>
 
 <style lang="less">
