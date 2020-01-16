@@ -4,7 +4,7 @@
       <img :src="coverSrc" :alt="card.title">
     </div>
     <div class="card-content">
-      <p class="card-text">{{ card.title || '暂无' }}</p>
+      <p class="card-text" :class="!shareCard && 'card-sharehall'">{{ card.title || '暂无' }}</p>
       <div class="card-more">
         <div v-if="cardType !== 'edit'" class="card-info">
           <span>
@@ -151,10 +151,15 @@ export default {
     flex: 1;
     max-height: 34px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 2;
+    // -webkit-box-orient: vertical;
     white-space: pre-wrap;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   &-info {
     display: flex;
