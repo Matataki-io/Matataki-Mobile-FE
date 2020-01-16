@@ -91,6 +91,7 @@
             :username="shareCard.username"
             :reference="shareCard.reference"
             :url="shareCard.url"
+            card-type="edit"
             class="share-card__box"
           />
       </div>
@@ -561,7 +562,10 @@ export default {
       })
     },
     viewImage(src) {
-      ImagePreview([src])
+      ImagePreview({
+        images: [src],
+        className: 'share-view__image'
+      })
     }
   }
 }
