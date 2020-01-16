@@ -15,9 +15,9 @@
     <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.summary || '暂无' }}</p>
+      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
     </div>
-    <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
+    <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
   </router-link>
@@ -52,6 +52,11 @@ export default {
       type: Object,
       required: true
     },
+    // 如果是分享卡片 隐藏删除按钮
+    shareCard: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     cardUrl() {
@@ -144,6 +149,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    overflow: hidden;
     .card-avatar {
       margin-right: 5px;
       width: 30px !important;
@@ -163,6 +169,7 @@ export default {
   &-info__user {
     display: flex;
     align-items: center;
+    width: 100%;
   }
   &-operate {
     display: flex;
@@ -197,17 +204,22 @@ export default {
       }
     }
 
-    p {
+    .card-text {
       font-size:12px;
       font-weight:400;
       color:rgba(178,178,178,1);
       line-height:17px;
       overflow: hidden;
-      max-height: 87px;
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
-      -webkit-box-orient: vertical;
+      max-height: 85px;
+      // display: -webkit-box;
+      // -webkit-line-clamp: 5;
+      // -webkit-box-orient: vertical;
       white-space: pre-wrap;
+      &.card-sharehall {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 
