@@ -15,9 +15,7 @@
     <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p :class="!shareCard && 'card-sharehall'">
-        {{ card.summary || '暂无' }}
-      </p>
+      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
     </div>
     <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
@@ -206,7 +204,7 @@ export default {
       }
     }
 
-    p {
+    .card-text {
       font-size:12px;
       font-weight:400;
       color:rgba(178,178,178,1);
