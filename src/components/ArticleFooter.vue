@@ -1,6 +1,7 @@
 <template>
   <footer class="sun-footer">
-    <div class="evaluation">
+    <div class="evaluation fl">
+      <!-- 推荐、不推荐和积分进度条 -->
       <div class="fl purple-box">
         <div>
           <Progress :p="timeCount" :clicked="clicked">
@@ -11,36 +12,34 @@
                   <span class="has-reward">+{{ points.all }}</span>
                 </router-link>
               </div>
-              <!-- <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" /> -->
-              <!-- <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" /> -->
             </template>
           </Progress>
         </div>
         <div class="icon-center fl" :class="renderIconSet('great')">
           <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
-          <p class="tag">{{ token && likes }}</p>
+          <p class="tag">{{ token && likesFormat }}</p>
         </div>
         <div class="icon-center fl" :class="renderIconSet('bullshit')">
           <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
-          <p class="tag">{{ token && dislikes }}</p>
+          <p class="tag">{{ token && dislikesFormat }}</p>
         </div>
       </div>
-    </div>
-    <div class="sun-right-btns">
+      <!-- 引用 -->
+      <div class="icon-center icon-set">
+        <svg-icon icon-class="reference" class="borderless-icon-btn" @click="pushShare" />
+      </div>
+      <!-- 收藏 -->
       <div class="icon-center" :class="bookmarkBtnClass">
         <svg-icon
           :icon-class="'bookmark-solid'"
           class="borderless-icon-btn"
           @click="toggleBookmark"
         />
-        <!-- <p class="tag">{{ $t('articleFooter.bookmark') }}</p> -->
       </div>
+      <!-- 分享 -->
       <div class="icon-center icon-set">
         <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
-        <!-- <p class="tag">{{ $t('share') }}</p> -->
       </div>
-
-      <!-- {{ $t('share') }} -->
     </div>
   </footer>
 </template>
@@ -155,6 +154,16 @@ export default {
         return 'bullshit'
       }
       return 'title'
+    },
+    likesFormat() {
+      if (!this.likes) return 0
+      if (this.likes > 9999) { return (this.likes / 10000).toFixed(1) + '万' }
+      return this.likes
+    },
+    dislikesFormat() {
+      if (!this.dislikes) return 0
+      if (this.dislikes > 9999) { return (this.dislikes / 10000).toFixed(1) + '万' }
+      return this.dislikes
     }
   },
   watch: {
@@ -248,7 +257,7 @@ export default {
         return
       }
       this.$API
-        .like(this.article.id, this.timeCount)
+        .dislike(this.article.id, this.timeCount)
         .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
@@ -350,6 +359,11 @@ export default {
           this.$store.commit('setLoginModal', true)
         }
       }
+    },
+    pushShare() {
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('articleRef', this.$route.params.id)
+      this.$router.push({ name: 'sharehall' })
     }
   }
 }
@@ -378,13 +392,14 @@ export default {
 .evaluation {
   flex: 1;
   height: 37px;
-  margin: 8px 0px 8px 25px;
+  margin: 8px 0px 8px 15px;
   .purple-box {
     margin-bottom: -6px;
     background: #EBE6FF;
     height: 37px;
     border-radius: 1000px;
     display: inline-flex;
+    min-width: 180px;
   }
 }
 .sun-right-btns {
@@ -442,11 +457,16 @@ export default {
 }
 .icon-set p.tag {
   text-align: center;
-  font-size: 18px;
+  // font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   margin-left: 4px;
+  line-height: 25px;
+  white-space: nowrap;
 }
 .icon-center {
-  margin: auto 15px;
+  margin: auto 10px;
+  flex: 1;
+  text-align: center;
 }
 </style>

@@ -17,7 +17,7 @@
           class="lock-img"
           src="@/assets/img/lock.png"
           alt="lock"
-        />
+        /><span class="lock-text">{{ lock }}</span>
       </div>
       <div class="card-footer__info">
         <div>
@@ -41,6 +41,7 @@ import { isNDaysAgo } from '@/common/methods'
 import clampy from '@clampy-js/vue-clampy'
 import Vue from 'vue'
 import moment from 'moment'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -62,6 +63,15 @@ export default {
     friendlyDate() {
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    lock() {
+      if (this.card.pay_symbol) {
+        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+      } else if (this.card.token_symbol) {
+        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+      } else {
+        return ''
+      }
     }
   }
 }
@@ -152,9 +162,19 @@ export default {
         }
       }
     }
-
+    &__lock {
+      display: flex;
+      align-items: center;
+    }
     .lock-img {
-      width: 10px;
+      width: 16px;
+    }
+    .lock-text {
+      color: #b2b2b2;
+      font-size: 12px;
+      line-height: 22px;
+      margin: 0 0 0 4px;
+      font-weight: bold;
     }
   }
 }

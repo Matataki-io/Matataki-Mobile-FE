@@ -4,26 +4,42 @@
       <img :src="coverSrc" :alt="card.title">
     </div>
     <div class="card-content">
-      <p class="card-text">{{ card.title || '暂无' }}</p>
-      <div class="card-info">
-        <span>
-          <svg-icon icon-class="eye" class="icon"></svg-icon>{{ card.real_read_count }}
-        </span>
-        <span>
-          <svg-icon icon-class="like_thin" class="icon"></svg-icon>{{ card.likes }}
-        </span>
+      <p class="card-text" :class="!shareCard && 'card-sharehall'">{{ card.title || '暂无' }}</p>
+      <div class="card-more">
+        <div v-if="cardType !== 'edit'" class="card-info">
+          <span v-if="!shareCard">
+            <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
+          </span>
+          <span v-if="!shareCard">
+            <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
+          </span>
+          <span v-if="!shareCard">
+            <img
+              v-if="card.pay_symbol || card.token_symbol"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            >{{ lock }}
+          </span>
         <!-- <span>
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
         </span> -->
+        </div>
+        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+          <!-- <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" /> -->
+          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        </div>
       </div>
     </div>
-    <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
+    <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
   </router-link>
 </template>
 
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
   props: {
     cardType: {
@@ -37,6 +53,11 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    // 如果是分享卡片 隐藏删除按钮
+    shareCard: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -48,6 +69,15 @@ export default {
       if (this.card.cover) return this.$API.getImg(this.card.cover)
       return ''
     },
+    lock() {
+      if (this.card.pay_symbol) {
+        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+      } else if (this.card.token_symbol) {
+        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+      } else {
+        return ''
+      }
+    }
   },
   methods: {
     removeCard(e) {
@@ -62,6 +92,21 @@ export default {
         }).then(() => {
           this.$emit('removeShareLink', this.idx)
         }).catch(() => {})
+      return false
+    },
+    copy(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$copyText(val).then(
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
+      )
+      return false
+    },
+    ref(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$emit('ref', val)
       return false
     }
   }
@@ -95,10 +140,27 @@ export default {
       object-fit: cover;
     }
   }
+  &-more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &-operate {
+    display: flex;
+    align-items: center;
+    height: 16px;
+    .icon {
+      cursor: pointer;
+      padding: 0 6px;
+      font-size: 26px;
+      color: @purpleDark;
+    }
+  }
   &-content {
     display: flex;
     flex-direction: column;
     height: 50px;
+    width: 100%;
   }
   &-text {
     font-size:12px;
@@ -106,12 +168,17 @@ export default {
     color:rgba(0,0,0,1);
     line-height:17px;
     flex: 1;
-    max-height: 36px;
+    max-height: 34px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 2;
+    // -webkit-box-orient: vertical;
     white-space: pre-wrap;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   &-info {
     display: flex;
@@ -123,6 +190,8 @@ export default {
       margin-left: 10px;
       .icon {
         margin-right: 4px;
+        padding: 0;
+        margin: 0 4px 0 0;
       }
       &:nth-child(1) {
         margin-left: 0;
@@ -148,5 +217,14 @@ export default {
   }
 }
 
-
+.lock-img {
+  margin: 0 4px 0 0;
+  height: 12px;
+}
+.lock-text {
+  color: #b2b2b2;
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0 0 0 4px;
+}
 </style>

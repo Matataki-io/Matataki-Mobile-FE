@@ -1,6 +1,6 @@
 <template>
   <el-popover
-    class="ipfs-block"
+    class="m-ipfs"
     placement="bottom"
     width="300"
     trigger="hover">
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ipfs-block {
+.m-ipfs {
   .ipfs {
     font-size: 20px;
     cursor: pointer;

@@ -1,15 +1,25 @@
 <template>
   <router-link :to="cardUrl" class="card" @click.native="toggle">
     <div class="card-info">
-      <avatar class="card-avatar" :src="avatarSrc"></avatar>
-      <span class="card-username">{{ username }}</span>
+      <div class="card-info__user">
+        <avatar :src="avatarSrc" class="card-avatar" />
+        <span class="card-username">{{ username }}</span>
+      </div>
+      <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+        <!-- <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" /> -->
+        <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+      </div>
+
+
     </div>
     <div class="card-content">
-      <svg-icon class="icon" icon-class="quotation_marks" />
-      <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.summary || '暂无' }}</p>
+      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
+      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
+      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
+      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
+      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
     </div>
-    <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
+    <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
       <i class="el-icon-close icon"></i>
     </span>
   </router-link>
@@ -44,6 +54,11 @@ export default {
       type: Object,
       required: true
     },
+    // 如果是分享卡片 隐藏删除按钮
+    shareCard: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     cardUrl() {
@@ -96,6 +111,21 @@ export default {
         let id = this.from === 'beref' ? this.card.sign_id : this.card.ref_sign_id
         this.$emit('getArticle', id, false)
       }
+    },
+    copy(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$copyText(val).then(
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
+      )
+      return false
+    },
+    ref(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$emit('ref', val)
+      return false
     }
   }
 }
@@ -113,10 +143,15 @@ export default {
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
+  &:active .card-operate {
+    color: @purpleDark;
+  }
   &-info {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
     .card-avatar {
       margin-right: 5px;
       width: 30px !important;
@@ -131,6 +166,22 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+  }
+  &-info__user {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  &-operate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 26px;
+      color: @purpleDark;
     }
   }
   &-content {
@@ -155,17 +206,38 @@ export default {
       }
     }
 
-    p {
+    .icon-img {
+      position: absolute;
+      color: #000;
+      width: 8px;
+      &:nth-child(1) {
+        left: 0;
+        top: 0;
+      }
+      &:nth-child(2) {
+        bottom: 0;
+        right: 0;
+        transform: rotate(-180deg);
+      }
+    }
+
+
+    .card-text {
       font-size:12px;
       font-weight:400;
       color:rgba(178,178,178,1);
       line-height:17px;
       overflow: hidden;
-      max-height: 87px;
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
-      -webkit-box-orient: vertical;
+      max-height: 85px;
+      // display: -webkit-box;
+      // -webkit-line-clamp: 5;
+      // -webkit-box-orient: vertical;
       white-space: pre-wrap;
+      &.card-sharehall {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 
