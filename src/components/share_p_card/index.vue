@@ -13,6 +13,14 @@
           <span v-if="!shareCard">
             <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
           </span>
+          <span v-if="!shareCard">
+            <img
+              v-if="card.pay_symbol || card.token_symbol"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            >{{ lock }}
+          </span>
         <!-- <span>
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
         </span> -->
@@ -30,6 +38,8 @@
 </template>
 
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
   props: {
     cardType: {
@@ -59,6 +69,15 @@ export default {
       if (this.card.cover) return this.$API.getImg(this.card.cover)
       return ''
     },
+    lock() {
+      if (this.card.pay_symbol) {
+        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+      } else if (this.card.token_symbol) {
+        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+      } else {
+        return ''
+      }
+    }
   },
   methods: {
     removeCard(e) {
@@ -198,5 +217,14 @@ export default {
   }
 }
 
-
+.lock-img {
+  margin: 0 4px 0 0;
+  height: 12px;
+}
+.lock-text {
+  color: #b2b2b2;
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0 0 0 4px;
+}
 </style>
