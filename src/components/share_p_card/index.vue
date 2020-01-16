@@ -7,10 +7,10 @@
       <p class="card-text" :class="!shareCard && 'card-sharehall'">{{ card.title || '暂无' }}</p>
       <div class="card-more">
         <div v-if="cardType !== 'edit'" class="card-info">
-          <span>
+          <span v-if="!shareCard">
             <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
           </span>
-          <span>
+          <span v-if="!shareCard">
             <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
           </span>
         <!-- <span>
