@@ -77,11 +77,13 @@
           v-loading="createShareLoading"
           class="share-card"
         >
-          <div v-if="createShareLoading" class="share-full" />
           <img v-if="saveImg" :src="saveImg" alt="save" @click="viewImage(saveImg)">
-          <shareImage
+        </div>
+        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+          保存并分享卡片
+        </el-button>
+        <shareImage
             ref="shareImage"
-            v-else
             :content="shareCard.content"
             :avatarSrc="shareCard.avatarSrc"
             :username="shareCard.username"
@@ -89,10 +91,6 @@
             :url="shareCard.url"
             class="share-card__box"
           />
-        </div>
-        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
-          保存并分享卡片
-        </el-button>
       </div>
     </m-dialog>
   </div>
@@ -109,9 +107,9 @@ import { sleep } from '@/common/methods'
 import { getCookie } from '@/utils/cookie'
 import { mapGetters } from 'vuex'
 import throttle from 'lodash/throttle'
-import domtoimage from 'dom-to-image'
 import shareImage from '@/components/share_image/index'
 var tp = require('tp-js-sdk')
+import html2canvas from 'html2canvas'
 
 import Vue from 'vue'
 import { ImagePreview } from 'vant'
@@ -515,19 +513,28 @@ export default {
     },
     // 创建分享的卡片
     createShareImage() {
+      // 等内容渲染完成后截图
       this.$nextTick(() => {
         setTimeout(() => {
           const dom = this.$refs.shareImage.$el
-          domtoimage.toPng(dom, { quality: 1, width: dom.clientWidth, height: dom.clientHeight })
-            .then(dataUrl => {
-              this.saveImg = dataUrl
-            })
-            .catch(function (error) {
-              console.error('oops, something went wrong!', error)
-            }).finally(() => {
-              // 生成完毕 关闭loading
-              this.createShareLoading = false
-            })
+          html2canvas(dom, {
+            useCORS: true,
+            scrollX: 0,
+            scrollY: 0,
+            width: dom.clientWidth,
+            height: dom.clientHeight
+          })
+          .then(canvas => {
+            // this.saveLocal(canvas)
+            this.saveImg = canvas.toDataURL()
+          })
+          .catch(error => {
+            console.log(error)
+            this.$toast({})
+          }).finally(() => {
+            // 生成完毕 关闭loading
+            this.createShareLoading = false
+          })
         }, 1000)
       })
     },
@@ -635,14 +642,6 @@ export default {
   overflow: hidden;
   border: 1px solid #f1f1f1;
   position: relative;
-  .share-full {
-    position: absolute;
-    background-color: #fff;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
   img {
     width: 100%;
     height: 100%;
@@ -651,7 +650,10 @@ export default {
   &__box {
     // opacity: 0;
     // transform: scale(0.28);
-    transform-origin: 0 0;
+    // transform-origin: 0 0;
+    position: fixed;
+    left: 100%;
+    top: 0;
   }
   &__btn {
     display: block;
