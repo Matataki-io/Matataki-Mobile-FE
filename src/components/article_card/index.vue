@@ -167,13 +167,14 @@ export default {
       align-items: center;
     }
     .lock-img {
-      width: 10px;
+      width: 16px;
     }
     .lock-text {
       color: #b2b2b2;
       font-size: 12px;
       line-height: 22px;
       margin: 0 0 0 4px;
+      font-weight: bold;
     }
   }
 }
