@@ -600,6 +600,14 @@ export default {
     margin: 20px auto 0;
   }
 }
+
+.wechat {
+  text-align: center;
+  font-size: 12px;
+  color: #676767;
+  padding: 0;
+  margin: 10px 0 0;
+}
 </style>
 
 <style lang="less" scoped>
