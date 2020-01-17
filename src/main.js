@@ -24,6 +24,7 @@ import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
 import i18n from './plugins/i18n'
+import './plugins/sentry'
 
 // wechat share
 import wechatShare from './utils/wechat_share'
@@ -36,6 +37,7 @@ import './icons'
 
 import publishMethods from './utils/publish_methods'
 import utils from './utils/utils'
+
 
 // 积分配置
 import point from './config/points'
