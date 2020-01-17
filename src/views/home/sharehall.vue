@@ -236,6 +236,12 @@ export default {
   },
   async beforeRouteLeave(to, from, next) {
     if (this.shareLinkList.length === 0) {
+      // 只要离开page, 删除session storage
+      if (process.browser) {
+        window.sessionStorage.removeItem('shareLink')
+        window.sessionStorage.removeItem('shareRef')
+        window.sessionStorage.removeItem('articleRef')
+      }
       next()
     } else {
       try {
