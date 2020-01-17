@@ -5,7 +5,7 @@ const WebpackCdnPlugin = require('webpack-cdn-plugin')
 const path = require('path')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-
+const vConsolePlugin = require('vconsole-webpack-plugin') 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -45,9 +45,16 @@ module.exports = {
   configureWebpack: config => {
     let configExternals = []
     let configPluginsModules = []
-    let prodPlugins = []
+    let pluginsConfig = [] // 插件配置
     let minimizer = []
     if (isDev) {
+      pluginsConfig = [
+        // vConsole 觉得碍眼可以自行注释
+        new vConsolePlugin({
+          filter: [],  // 需要过滤的入口文件
+          enable: true // 发布代码前记得改回 false
+        }),
+      ]
       console.log(process.env.NODE_ENV)
     } else {
       // 抽离
@@ -132,7 +139,7 @@ module.exports = {
         })
       ]
       // 生产环境的插件配置
-      prodPlugins = [
+      pluginsConfig = [
         // 图片优化
         new ImageminPlugin({
           test: /\.(jpe?g|png|gif)$/i,
@@ -158,7 +165,7 @@ module.exports = {
     }
 
     // 是否显示捆绑包分析页面
-    if (showBundleAnalyzer) prodPlugins.push(new BundleAnalyzerPlugin())
+    if (showBundleAnalyzer) pluginsConfig.push(new BundleAnalyzerPlugin())
     config.optimization = {
       splitChunks: {
         chunks: 'async',
@@ -190,7 +197,7 @@ module.exports = {
         publicPath: '/node_modules',
         crossOrigin: true
       }),
-      ...prodPlugins
+      ...pluginsConfig
     )
   },
 

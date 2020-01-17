@@ -146,6 +146,7 @@ export default {
         url: process.env.VUE_APP_URL
       },
       saveImg: '', // share img src
+      saveImgCanvas: '', // share img src
       createShareLoading: false,
       saveLoading: false // 保存图片loading
     }
@@ -165,6 +166,7 @@ export default {
           url: process.env.VUE_APP_URL
         }
         this.saveImg = ''
+        this.saveImgCanvas = ''
       }
     }
   },
@@ -277,6 +279,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.shareContent = res.data.content
+
+            // share
+            this.setShareContentAndUrl(res.data.content, this.content.id)
             this.setWxShare('分享详情-瞬MATATAKI', res.data.content)
           } else {
             this.$toast({ duration: 1000, message: res.message })
@@ -426,6 +431,7 @@ export default {
       this.shareDoneCard = true
       // 清空图片
       this.saveImg = ''
+      this.saveImgCanvas = ''
       // 生成图片loading
       this.createShareLoading = true
       // 显示dialog
@@ -450,21 +456,54 @@ export default {
     // 下载图片
     downloadShareImage() {
       this.saveLoading = true
-      let linkTag = document.querySelector('#downloadImg')
-      const { content } = this.shareCard
-      const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
 
-      // 没有则创建
-      if (!linkTag) {
-        linkTag = document.createElement('a')
-        linkTag.id = 'downloadImg'
+      if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
+      console.log('tp 环境')
+      this.saveImgCanvas.toBlob(blob => {
+      this.$API
+          .ossUploadImage('temp', blob)
+          .then(res => {
+            if (res.code === 0) {
+              tp.saveImage({
+                url: this.$API.getImg(res.data)
+              })
+            } else {
+              this.$toast({ duration: 1000, message: '保存失败,请重试' })
+            }
+          })
+          .catch(err => {
+            console.log('err', err)
+            if (err.response.status === 401) {
+              this.$toast({ duration: 1000, message: '请登录后保存图片' })
+              this.$store.commit('setLoginModal', true)
+            } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
+          })
+          .finally(() => {
+            this.saveLoading = false
+          })
+        })
+
+      } else {
+        console.log('other 环境')
+        let linkTag = document.querySelector('#downloadImg')
+        const { content } = this.shareCard
+        const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
+
+        // 没有则创建
+        if (!linkTag) {
+          linkTag = document.createElement('a')
+          linkTag.id = 'downloadImg'
+        }
+
+        linkTag.href = this.saveImg
+        linkTag.download = `${name}.png`
+        linkTag.click()
+
+        this.saveLoading = false
       }
 
-      linkTag.href = this.saveImg
-      linkTag.download = `${name}.png`
-      linkTag.click()
 
-      this.saveLoading = false
+
     },
     // 创建分享的卡片
     createShareImage() {
@@ -482,6 +521,7 @@ export default {
           })
             .then(canvas => {
             // this.saveLocal(canvas)
+              this.saveImgCanvas = canvas
               this.saveImg = canvas.toDataURL()
             })
             .catch(error => {
