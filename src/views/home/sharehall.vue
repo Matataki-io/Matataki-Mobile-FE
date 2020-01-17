@@ -194,6 +194,7 @@ export default {
         url: process.env.VUE_APP_URL
       },
       saveImg: '',
+      saveImgCanvas: '',
       createShareLoading: false,
       saveLoading: false // 保存图片loading
     }
@@ -231,11 +232,18 @@ export default {
           url: process.env.VUE_APP_URL
         }
         this.saveImg = ''
+        this.saveImgCanvas = ''
       }
     }
   },
   async beforeRouteLeave(to, from, next) {
     if (this.shareLinkList.length === 0) {
+      // 只要离开page, 删除session storage
+      if (process.browser) {
+        window.sessionStorage.removeItem('shareLink')
+        window.sessionStorage.removeItem('shareRef')
+        window.sessionStorage.removeItem('articleRef')
+      }
       next()
     } else {
       try {
@@ -451,6 +459,7 @@ export default {
       }).finally(() => {
         // 清空图片
         this.saveImg = ''
+        this.saveImgCanvas = ''
         // 生成图片loading
         this.createShareLoading = true
         // 显示dialog
@@ -474,44 +483,33 @@ export default {
         // 下载图片
     downloadShareImage() {
       this.saveLoading = true
-      // base64 to blob
-      function dataURItoBlob(base64Data) {
-        var byteString
-        if (base64Data.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(base64Data.split(',')[1])
-        else
-        byteString = unescape(base64Data.split(',')[1])
-        var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0]
-        var ia = new Uint8Array(byteString.length)
-        for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
-        }
-        return new Blob([ia], {type:mimeString})
-      }
 
       if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
         console.log('tp 环境')
+        this.saveImgCanvas.toBlob(blob => {
         this.$API
-        .ossUploadImage('temp', dataURItoBlob(this.saveImg))
-        .then(res => {
-          if (res.code === 0) {
-            tp.saveImage({
-              url: this.$API.getImg(res.data)
+            .ossUploadImage('temp', blob)
+            .then(res => {
+              if (res.code === 0) {
+                tp.saveImage({
+                  url: this.$API.getImg(res.data)
+                })
+              } else {
+                this.$toast({ duration: 1000, message: '保存失败,请重试' })
+              }
             })
-          } else {
-            this.$toast({ duration: 1000, message: '保存失败,请重试' })
-          }
-        })
-        .catch(err => {
-          console.log('err', err)
-          if (err.response.status === 401) {
-            this.$toast({ duration: 1000, message: '请登录后保存图片' })
-            this.$store.commit('setLoginModal', true)
-          } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
+            .catch(err => {
+              console.log('err', err)
+              if (err.response.status === 401) {
+                this.$toast({ duration: 1000, message: '请登录后保存图片' })
+                this.$store.commit('setLoginModal', true)
+              } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
+            })
+            .finally(() => {
+              this.saveLoading = false
+            })
+            })
+
       } else {
         console.log('other 环境')
         let linkTag = document.querySelector('#downloadImg')
@@ -549,6 +547,7 @@ export default {
           })
           .then(canvas => {
             // this.saveLocal(canvas)
+            this.saveImgCanvas = canvas
             this.saveImg = canvas.toDataURL()
           })
           .catch(error => {

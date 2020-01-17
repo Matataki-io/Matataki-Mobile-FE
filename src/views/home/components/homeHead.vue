@@ -54,8 +54,8 @@ export default {
       return [
         {
           title: this.$t('home.navHome'),
-          name: 'index',
-          urlList: ['index']
+          name: 'home',
+          urlList: ['home']
         },
         // {
         //   title: this.$t('home.navArticle'),
