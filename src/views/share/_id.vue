@@ -279,6 +279,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.shareContent = res.data.content
+
+            // share
+            this.setShareContentAndUrl(res.data.content, this.content.id)
             this.setWxShare('分享详情-瞬MATATAKI', res.data.content)
           } else {
             this.$toast({ duration: 1000, message: res.message })
