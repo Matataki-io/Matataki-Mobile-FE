@@ -327,6 +327,10 @@ export default {
       this.initScrollAnimation()
       this.setDefaultStyle()
     })
+    window.addEventListener('scroll', this.scrollTop)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollTop)
   },
   methods: {
     initScrollAnimation() {
@@ -494,6 +498,17 @@ export default {
     pageTurning(num) {
       this.pageNum = (num + this.pageNum + this.userReviews.length) % this.userReviews.length
       this.aComment = this.userReviews[this.pageNum]
+    },
+    /** 滚动后展开按钮 */
+    scrollTop() {
+      const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+      const btnVisible = this.$refs.btn.getAttribute('data-visible') === 'true'
+      if (scroll >= 100 && !btnVisible) {
+        this.showMoreMenu()
+      }
+      if (scroll < 100 && btnVisible) {
+        this.showMoreMenu()
+      }
     }
   }
 }
