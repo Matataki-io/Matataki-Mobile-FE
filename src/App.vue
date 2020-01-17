@@ -66,6 +66,13 @@ export default {
       deep: true
     }
   },
+    beforeCreate(){
+    try {
+      document.body.removeChild(document.getElementById('loading'))
+    } catch (error) {
+      document.body.removeChild(document.getElementById('loading'))
+    }
+  },
   created() {
     const { signIn, updateNotify } = this
 
