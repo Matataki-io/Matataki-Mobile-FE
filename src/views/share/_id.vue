@@ -41,7 +41,7 @@
       @like="like"
       class="footer">
     </shareFooter>
-    <m-dialog v-model="shareDialogVisible">
+    <m-dialog v-model="shareDialogVisible" :title="$t('share')">
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
         <div class="dialog-content__btn">
@@ -57,6 +57,11 @@
           <p class="btn-text">复制分享链接</p>
         </div>
       </div>
+      <SocialShare
+        :title="shareContent"
+        :link="link"
+        :qq-title="qqtitle"
+      />
     </m-dialog>
 
     <m-dialog v-model="shareDoneCard" width="320px">
@@ -100,6 +105,7 @@
 import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
 import { sleep } from '@/common/methods'
+import SocialShare from '@/components/share/social_share.vue'
 
 import shareFooter from '@/components/share_page/share_footer'
 import shareHeader from '@/components/share_page/share_header'
@@ -122,7 +128,8 @@ export default {
     quote,
     quoteReference,
     quoteBereference,
-    shareImage
+    shareImage,
+    SocialShare
   },
   data() {
     return {
@@ -186,8 +193,15 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    link() {
+      if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
+      else return process.env.VUE_APP_URL
+    },
     shareLink() {
-      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${window.location.origin}/share/${this.$route.params.id}` || process.env.VUE_APP_URL
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${this.link}` || process.env.VUE_APP_URL
+    },
+    qqtitle() {
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享`
     },
     iswechat() {
       return /micromessenger/.test(navigator.userAgent.toLowerCase())
@@ -565,6 +579,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-bottom: 30px;
   &__btn {
     display: flex;
     align-items: center;
