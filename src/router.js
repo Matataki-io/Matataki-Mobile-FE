@@ -456,6 +456,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/minetoken/apply',
+      name: 'minetoken-apply',
+      component: () => import(/* webpackChunkName: "tokens" */ './views/minetoken/apply.vue'),
+      meta: {
+        title: 'Fan票-瞬MATATAKI'
+      }
+    },
+    {
       path: '/ipfs/:hash',
       name: 'ipfs',
       component: () => import(/* webpackChunkName: "ipfs" */ './views/ipfs/index.vue'),
