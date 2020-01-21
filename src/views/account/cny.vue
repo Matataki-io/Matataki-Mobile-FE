@@ -5,7 +5,7 @@
     <div class="account-head">
       <p>待提现</p>
       <div class="fl jsb">
-        <span>{{ amount(cny.balance) }}</span>
+        <span>￥{{ amount(cny.balance) }}</span>
         <div>
           <el-button size="mini" disabled>提现</el-button>
           <el-button size="mini" @click="giftDialogShow = true">转账</el-button>
