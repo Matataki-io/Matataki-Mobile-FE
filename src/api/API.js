@@ -4,6 +4,7 @@ import request from '@/utils/request'
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
 import { paginationUrl } from './pagination_url'
+import { replaceStr } from '@/utils/reg'
 
 
 export default {
