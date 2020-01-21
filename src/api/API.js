@@ -3,6 +3,8 @@ import request from '@/utils/request'
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
+import { paginationUrl } from './pagination_url'
+import { replaceStr } from '@/utils/reg'
 
 
 export default {
@@ -661,5 +663,42 @@ minetokenGetResources(tokenId) {
       method: 'POST',
       url: `/post/show/${hash}`
     })
+  },
+  // 提交积分评论
+  async postPointComment(data) {
+    return request({
+      method: 'POST',
+      url: '/comment/comment',
+      data: data
+    })
+  },
+  /**
+   * BasePull 分页组件
+   * @param {Object} param params参数
+   */
+  async getBackendData({ url, params, urlReplace }) {
+    try {
+      if (!urlReplace) {
+        const pullApiUrl = paginationUrl
+        return request({
+          url: pullApiUrl[url],
+          method: 'get',
+          noLoading: true,
+          params
+        })
+      } else {
+        const pullApiUrl = paginationUrl
+        let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+        return request({
+          url: urlReg,
+          method: 'get',
+          noLoading: true,
+          params
+        })
+      }
+    }
+    catch(err) {
+      console.error(err)
+    }
   }
 }

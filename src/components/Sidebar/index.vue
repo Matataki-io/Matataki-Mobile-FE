@@ -2,6 +2,7 @@
   <van-popup v-model="sidebarShow" position="left" class="sidebar" z-index="1000">
     <div class="container">
       <template v-if="isLogined">
+        <!-- 用户 -->
         <div class="account">
           <div class="top-container">
             <router-link :to="{ name: 'user-id', params: { id } }">
@@ -19,9 +20,7 @@
             >
               <svg-icon class="notification-icon" icon-class="bell" />
             </router-link>
-            <!-- <router-link :to="{ name: 'help' }">
-              <img src="@/assets/newimg/setting.svg" alt="setting" class="setting" />
-            </router-link> -->
+
           </div>
           <p class="account-name">
             {{ username }}
@@ -35,12 +34,9 @@
               <svg-icon class="tokens" icon-class="token" />
             </el-tooltip>
           </p>
-          <!-- <p class="wallet-info">
-            {{ displayBalanceSymbol }}
-            {{ $t('sidebar.walletName') }}
-            ：{{ displayBalance }}
-          </p> -->
+
         </div>
+        <!-- 关注、粉丝 -->
         <div class="follow-info">
           <router-link :to="{ name: 'user-id-follow', params: { id } }">
             <div class="follow">
@@ -59,56 +55,13 @@
             </div>
           </router-link>
         </div>
-        <div class="cell-container">
-          <router-link :to="{ name: 'Asset', params: { id } }">
-            <div class="cell">
-              <div class="cell-left">
-                <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" />
-                <span class="left-text">
-                  {{ $t('sidebar.account') }}
-                </span>
-              </div>
-              <div class="cell-right">
-                <span>
-                  {{ $t('sidebar.accountDes', [stats.accounts]) }}
-                </span>
-              </div>
-            </div>
-          </router-link>
-          <router-link :to="{ name: 'point' }">
-            <div class="cell">
-              <div class="cell-left">
-                <svg-icon class="left-img" icon-class="point1" />
-                <span class="left-text">
-                  {{ $t('sidebar.point') }}
-                </span>
-              </div>
-              <div class="cell-right">
-                <span>{{ stats.points || 0 }}</span>
-              </div>
-            </div>
-          </router-link>
-          <router-link :to="{ name: 'invite' }">
-            <div class="cell">
-              <div class="cell-left">
-                <svg-icon class="left-img" icon-class="box1" />
-                <span class="left-text">
-                  {{ $t('sidebar.invite') }}
-                </span>
-              </div>
-              <div class="cell-right">
-                <span>
-                  {{ $t('sidebar.inviteDes', [stats.referral_amount]) }}
-                </span>
-              </div>
-            </div>
-          </router-link>
-        </div>
+        <!-- 原创、收藏、草稿 -->
         <div class="cell-container">
           <router-link :to="{ name: 'Original', params: { id } }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/yuanchuang.svg" alt="article" class="left-img" />
+                <!-- <img src="@/assets/newimg/yuanchuang.svg" alt="article" class="left-img" /> -->
+                <svg-icon icon-class="yuanchuang" class="left-img icon-feedback" />
                 <span class="left-text">
                   {{ $t('sidebar.original') }}
                 </span>
@@ -124,7 +77,8 @@
           <router-link :to="{ name: 'BookmarkList', params: { id } }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/bookmark.svg" alt="article" class="left-img" />
+                <!-- <img src="@/assets/newimg/bookmark.svg" alt="article" class="left-img" /> -->
+                <svg-icon icon-class="bookmark" class="left-img icon-feedback" />
                 <span class="left-text">
                   {{ $t('sidebar.bookmarks') }}
                 </span>
@@ -137,26 +91,12 @@
               </div>
             </div>
           </router-link>
-          <!-- <router-link :to="{ name: 'Reward', params: { id } }">
-            <div class="cell">
-              <div class="cell-left">
-                <img src="@/assets/newimg/zanshang.svg" alt="article" class="left-img" />
-                <span class="left-text">
-                  {{ $t('sidebar.investment') }}
-                </span>
-              </div>
-              <div class="cell-right">
-                <span
-                  >{{ stats.supports }}
-                  {{ $t('sidebar.article') }}
-                </span>
-              </div>
-            </div>
-          </router-link> -->
+
           <router-link :to="{ name: 'DraftBox', params: { id } }">
             <div class="cell">
               <div class="cell-left">
-                <img src="@/assets/newimg/caogaoxiang.svg" alt="article" class="left-img" />
+                <!-- <img src="@/assets/newimg/caogaoxiang.svg" alt="article" class="left-img" /> -->
+                <svg-icon icon-class="caogaoxiang" class="left-img icon-feedback" />
                 <span class="left-text">
                   {{ $t('sidebar.draft') }}
                 </span>
@@ -170,33 +110,20 @@
             </div>
           </router-link>
         </div>
-        <div class="cell-container">
-          <router-link :to="{ name: 'buy' }">
-            <div class="cell">
-              <div class="cell-left">
-                <img src="@/assets/newimg/goumaijilu.svg" alt="article" class="left-img" />
-                <span class="left-text">
-                  {{ $t('sidebar.buy') }}
-                </span>
-              </div>
-              <div class="cell-right"><span></span></div>
-            </div>
-          </router-link>
-        </div>
-
+        <!-- Fan票 -->
         <div class="cell-container">
           <router-link :to="{ name: 'tokens' }">
             <div class="cell">
               <div class="cell-left">
                 <svg-icon icon-class="tokens1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  持有的Fan票
+                  Fan票夹
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
             </div>
           </router-link>
-          <router-link :to="{ name: 'holdliquidity' }">
+          <!-- <router-link :to="{ name: 'holdliquidity' }">
             <div class="cell">
               <div class="cell-left">
                 <svg-icon icon-class="liquidity" class="left-img"></svg-icon>
@@ -206,31 +133,100 @@
               </div>
               <div class="cell-right"><span></span></div>
             </div>
-          </router-link>
+          </router-link> -->
           <router-link v-if="tokenUser" :to="{ name: 'minetoken' }">
             <div class="cell">
               <div class="cell-left">
                 <svg-icon icon-class="minetoken1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  发行的Fan票
+                  管理Fan票
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+          <router-link v-else :to="{ name: 'minetoken-apply' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon icon-class="minetoken1" class="left-img"></svg-icon>
+                <span class="left-text">
+                  申请Fan票
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
             </div>
           </router-link>
         </div>
+        <!-- 钱包、积分 -->
+        <div class="cell-container">
+          <!-- 钱包详情 -->
+          <router-link :to="{ name: 'accountCny', params: { id } }">
+            <div class="cell">
+              <div class="cell-left">
+                <!-- <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" /> -->
+                <svg-icon icon-class="shouye-zhanghu" class="left-img icon-feedback" />
+                <span class="left-text">
+                  {{ $t('sidebar.account') }}
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+          <!-- 我的积分 -->
+          <!-- <router-link :to="{ name: 'point' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon class="left-img" icon-class="point1" />
+                <span class="left-text">
+                  {{ $t('sidebar.point') }}
+                </span>
+              </div>
+              <div class="cell-right">
+                <span>{{ stats.points || 0 }}</span>
+              </div>
+            </div>
+          </router-link> -->
+          <!-- 消费记录 -->
+          <router-link :to="{ name: 'buy' }">
+            <div class="cell">
+              <div class="cell-left">
+                <!-- <img src="@/assets/newimg/goumaijilu.svg" alt="article" class="left-img" /> -->
+                <svg-icon icon-class="goumaijilu" class="left-img icon-feedback" />
+                <span class="left-text">
+                  {{ $t('sidebar.buy') }}
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+          <!-- 邀请记录 -->
+          <router-link :to="{ name: 'invite' }">
+            <div class="cell">
+              <div class="cell-left">
+                <svg-icon class="left-img" icon-class="box1" />
+                <span class="left-text">
+                  {{ $t('sidebar.invite') }}
+                </span>
+              </div>
+              <div class="cell-right"><span></span></div>
+            </div>
+          </router-link>
+        </div>
+      
       </template>
       <template v-else>
         <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">
           {{ $t('sidebar.login') }}
         </div>
       </template>
-
+      <!-- 其它 -->
       <div class="cell-container">
+        <!-- 使用手册 -->
         <a href="https://matataki.io/p/1060">
           <div class="cell">
             <div class="cell-left">
-              <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" />
+              <!-- <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" /> -->
+              <svg-icon icon-class="gonglue" class="left-img icon-feedback" />
               <span class="left-text">
                 使用手册
               </span>
@@ -238,10 +234,12 @@
             <div class="cell-right"><span></span></div>
           </div>
         </a>
+        <!-- 加入电报 -->
         <a href="https://t.me/smartsignature_io" target="_blank">
           <div class="cell">
             <div class="cell-left">
-              <img src="@/assets/newimg/telegram.svg" alt="article" class="left-img" />
+              <!-- <img src="@/assets/newimg/telegram.svg" alt="article" class="left-img" /> -->
+              <svg-icon icon-class="telegram" class="left-img icon-feedback" />
               <span class="left-text">
                 {{ $t('sidebar.tg') }}
               </span>
@@ -249,21 +247,7 @@
             <div class="cell-right"><span></span></div>
           </div>
         </a>
-      </div>
-      <div class="cell-container">
-        <a href="https://matataki.io/p/616">
-          <div class="cell">
-            <div class="cell-left">
-              <img src="@/assets/img/icon_sidebar_sb.svg" alt="article" class="left-img" />
-              <span class="left-text">
-                {{ $t('sidebar.billboard') }}
-              </span>
-            </div>
-            <div class="cell-right"><span></span></div>
-          </div>
-        </a>
-      </div>
-      <div class="cell-container">
+        <!-- 吐个槽 -->
         <a href="https://support.qq.com/product/98576" target="_blank">
           <div class="cell">
             <div class="cell-left">
@@ -276,24 +260,27 @@
           </div>
         </a>
       </div>
-
+      <!-- 智能公告牌 -->
       <!-- <div class="cell-container">
-        <div class="cell" @click="toggle">
-          <div class="cell-left">
-            <svg-icon icon-class="toggle" class="left-img icon-feedback" />
-            <span class="left-text">
-              {{ $t('sidebar.language') }}
-            </span>
+        <a href="https://matataki.io/p/616">
+          <div class="cell">
+            <div class="cell-left">
+              <img src="@/assets/img/icon_sidebar_sb.svg" alt="article" class="left-img" />
+              <span class="left-text">
+                {{ $t('sidebar.billboard') }}
+              </span>
+            </div>
+            <div class="cell-right"><span></span></div>
           </div>
-          <div class="cell-right"><span></span></div>
-        </div>
+        </a>
       </div> -->
     </div>
     <div v-if="isLogined" class="fl bottom-bar">
       <router-link class="button-card" :to="{name: 'help'}">
         <div class="cell">
           <div class="cell-left center">
-            <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" />
+            <!-- <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" /> -->
+            <svg-icon icon-class="setting" class="left-img icon-feedback" />
             <span class="left-text">
               {{ $t('setting') }}
             </span>
@@ -303,7 +290,8 @@
       <a class="button-card" @click="btnsignOut()">
         <div class="cell">
           <div class="cell-left center">
-            <img src="@/assets/newimg/logout.svg" alt="home" class="left-img" />
+            <!-- <img src="@/assets/newimg/logout.svg" alt="home" class="left-img" /> -->
+            <svg-icon icon-class="logout" class="left-img icon-feedback" />
             <span class="left-text">
               {{ $t('logout') }}
             </span>

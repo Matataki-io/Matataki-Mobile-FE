@@ -456,6 +456,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/minetoken/apply',
+      name: 'minetoken-apply',
+      component: () => import(/* webpackChunkName: "tokens" */ './views/minetoken/apply.vue'),
+      meta: {
+        title: 'Fan票-瞬MATATAKI'
+      }
+    },
+    {
       path: '/ipfs/:hash',
       name: 'ipfs',
       component: () => import(/* webpackChunkName: "ipfs" */ './views/ipfs/index.vue'),
@@ -518,15 +526,6 @@ const router = new VueRouter({
       path: '/token/:id',
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
-      meta: {
-        title: 'Fan票-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/holdliquidity',
-      name: 'holdliquidity',
-      component: () =>
-        import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue'),
       meta: {
         title: 'Fan票-瞬MATATAKI'
       }

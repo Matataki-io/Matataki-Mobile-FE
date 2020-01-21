@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <BaseHeader
-      :pageinfo="{ title: '账户设置' }"
+      :pageinfo="{ title: $t('helpPage.accountSetting') }"
       :has-bottom-border-line="true"
       customize-header-bc="#fff"
     />
@@ -125,7 +125,7 @@ export default {
         },
         {
           type: 'telegram',
-          icon: 'telegram', // 随时可换 防止影响
+          icon: 'telegram2', // 随时可换 防止影响
           typename: 'Telegram',
           username: '', // 最好后端混淆后返回
           loading: false,

@@ -1,10 +1,6 @@
 <template>
   <div class="outer">
     <div class="share-btn-container">
-      <!-- <div class="share-btn">
-        <svg-icon class="share-icon" icon-class="qq" />
-        <p>QQ</p>
-      </div> -->
       <a :href="socialLink.weibo" target="_blank">
         <div class="share-btn">
           <div class="share-bg">
@@ -30,6 +26,24 @@
         </div>
       </a>
     </div>
+    <div class="share-btn-container itop30">
+      <a :href="socialLink.qq" target="_blank">
+        <div class="share-btn">
+          <div class="share-bg">
+            <svg-icon class="share-icon qq" icon-class="qq" />
+          </div>
+          <p>QQ</p>
+        </div>
+      </a>
+      <a :href="socialLink.qzone" target="_blank">
+        <div class="share-btn">
+          <div class="share-bg">
+            <svg-icon class="share-icon qzone" icon-class="qzone" />
+          </div>
+          <p>QQ空间</p>
+        </div>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -45,6 +59,14 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    qqTitle: {
+      type: String,
+      default: ''
+    },
+    summary: {
+      type: String,
+      default: ''
     },
     img: {
       type: String,
@@ -64,13 +86,17 @@ export default {
       )
     },
     socialLink() {
-      const title = this.title
+      const title = this.title.length <= 160 ? this.title : this.title.slice(0, 160) + '...'
       const link = this.link ? this.link : encodeURIComponent(window.location.href)
       const pic = this.cover
+      const qqTitle = (this.qqTitle || this.title).slice(0, 60)
+      const summary = (this.summary || this.title).slice(0, 120)
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
-        twitter: `https://twitter.com/intent/tweet?text=${title}`
+        twitter: `https://twitter.com/intent/tweet?text=${title}`,
+        qq: `http://connect.qq.com/widget/shareqq/index.html?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`,
+        qzone: `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`
       }
     }
   },
@@ -86,6 +112,9 @@ export default {
   justify-content: center;
 }
 .share-btn-container {
+  &.itop30 {
+    margin-top: 30px;
+  }
   .flexCenter();
   justify-content: space-around;
   .share-btn {
@@ -138,6 +167,12 @@ p {
   }
   .twitter {
     color: #00aced;
+  }
+  .qq {
+    color: #4CAFE9;
+  }
+  .qzone {
+    color: #FAB619;
   }
 }
 .code {

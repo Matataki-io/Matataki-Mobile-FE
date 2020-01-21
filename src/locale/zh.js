@@ -38,7 +38,7 @@ export default {
   username: '昵称',
   email: '邮箱',
   articleUtil: '篇', //公用名称
-  referral: '瞬Matataki，助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n',
+  referral: '助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n',
   success: {
     success: '成功',
     copy: '复制成功',
@@ -288,15 +288,15 @@ export default {
     walletName: '钱包余额',
     follow: '关注',
     fans: '粉丝',
-    account: '我的账户',
+    account: '钱包详情',
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
-    invite: '我的邀请',
+    invite: '邀请记录',
     inviteDes: '已邀请{0}个账户',
     original: '我的原创',
     investment: '我的投资',
     draft: '我的草稿',
-    buy: '购买记录',
+    buy: '消费记录',
     login: '立即登录',
     rule: '规则介绍',
     tg: '加入电报',
@@ -462,7 +462,7 @@ export default {
     deleted: '文章已下架'
   },
   invite: {
-    headerTitle: '我的邀请',
+    headerTitle: '邀请记录',
     invited: '已邀请',
     copyLink: '复制链接',
     des1: '每成功邀请一名好友注册可得{0}积分',
@@ -551,6 +551,6 @@ export default {
   },
   // ---------------------------------------help page -------------------------------------
   helpPage: {
-    accountSetting: '账户设置'
+    accountSetting: '账号管理'
   }
 }
