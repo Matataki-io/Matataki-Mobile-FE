@@ -73,7 +73,7 @@ export default {
       return true
     },
     // 发送评论
-    postComment() {
+    async postComment() {
       if (!this.islogin()) return
       if (!this.comment.trim())
         return this.$toast({ duration: 1000, message: this.$t('p.commentContent') })
@@ -81,19 +81,18 @@ export default {
         signId: this.article.id,
         comment: this.comment.trim()
       }
-      this.$backendAPI
-        .postPointComment(data)
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.$toast({ duration: 1000, message: this.$t('p.commentSuccess') })
-            this.comment = ''
-            this.$emit('doneComment')
-          } else this.$toast({ duration: 1000, message: res.data.message })
-        })
-        .catch(e => {
-          console.log(this.$t('p.commentFail'), e)
-          this.$toast({ duration: 1000, message: this.$t('p.commentFail') })
-        })
+      try {
+        const res = await this.$API.postPointComment(data)
+        if (res.code === 0) {
+          this.$toast({ duration: 1000, message: this.$t('p.commentSuccess') })
+          this.comment = ''
+          this.$emit('doneComment')
+        } else this.$toast({ duration: 1000, message: res.message })
+      }
+      catch(e) {
+        console.log(this.$t('p.commentFail'), e)
+        this.$toast({ duration: 1000, message: this.$t('p.commentFail') })
+      }
     },
     postCommentKeyup(e) {
       // TODO 组合键调用方法 Ctrl or ⌘ + Enter

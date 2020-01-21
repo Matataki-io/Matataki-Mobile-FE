@@ -663,6 +663,14 @@ minetokenGetResources(tokenId) {
       url: `/post/show/${hash}`
     })
   },
+  // 提交积分评论
+  async postPointComment(data) {
+    return request({
+      method: 'POST',
+      url: '/comment/comment',
+      data: data
+    })
+  },
   /**
    * BasePull 分页组件
    * @param {Object} param params参数
