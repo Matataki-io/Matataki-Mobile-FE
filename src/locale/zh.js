@@ -551,6 +551,6 @@ export default {
   },
   // ---------------------------------------help page -------------------------------------
   helpPage: {
-    accountSetting: '账户设置'
+    accountSetting: '账号管理'
   }
 }
