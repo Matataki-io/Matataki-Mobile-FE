@@ -160,7 +160,7 @@
         <!-- 钱包、积分 -->
         <div class="cell-container">
           <!-- 钱包详情 -->
-          <router-link :to="{ name: 'Asset', params: { id } }">
+          <router-link :to="{ name: 'accountCny', params: { id } }">
             <div class="cell">
               <div class="cell-left">
                 <!-- <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" /> -->
@@ -186,7 +186,7 @@
               </div>
             </div>
           </router-link> -->
-          <!-- 购买记录 -->
+          <!-- 消费记录 -->
           <router-link :to="{ name: 'buy' }">
             <div class="cell">
               <div class="cell-left">

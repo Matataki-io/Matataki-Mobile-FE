@@ -531,15 +531,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/holdliquidity',
-      name: 'holdliquidity',
-      component: () =>
-        import(/* webpackChunkName: "holdliquidity" */ './views/holdliquidity/index.vue'),
-      meta: {
-        title: 'Fan票-瞬MATATAKI'
-      }
-    },
-    {
       path: '/holdliquidity/:id',
       name: 'holdliquidity-id',
       component: () =>
