@@ -97,7 +97,7 @@ export default {
       // 获取数据
       await this.$backendAPI.userPointStatus()
         .then(res => {
-          console.log('个人统计数据：', res)
+          // console.log('个人统计数据：', res)
           if (res.data.code === 0) this.pointStatus = res.data.data
           else console.log(res.data.message)
         })

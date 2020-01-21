@@ -462,7 +462,7 @@ export default {
     deleted: '文章已下架'
   },
   invite: {
-    headerTitle: '我的邀请',
+    headerTitle: '邀请记录',
     invited: '已邀请',
     copyLink: '复制链接',
     des1: '每成功邀请一名好友注册可得{0}积分',

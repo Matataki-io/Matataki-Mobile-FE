@@ -216,11 +216,11 @@ export default {
       }
       // 获取数据
       try {
-        const res = await this.$backendAPI.getBackendData(
-          { url, params, urlReplace: this.urlReplace },
-          this.needAccessToken
+        const res = await this.$API.getBackendData(
+          { url, params, urlReplace: this.urlReplace }
+          // this.needAccessToken
         )
-        if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data, isEmptyArray)
+        if (res.code === 0) getDataSuccess(res, isEmptyArray)
         else getDataFail()
       } catch (error) {
         console.log(error)
