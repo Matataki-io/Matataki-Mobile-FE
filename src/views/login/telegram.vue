@@ -20,7 +20,17 @@ export default {
   data() {
     return {
       loading: false,
-      TELEGRAM_BOT_NAME: process.env.VUE_APP_TELEGRAM_BOT
+      // TELEGRAM_BOT_NAME: process.env.VUE_APP_TELEGRAM_BOT
+    }
+  },
+  computed: {
+    TELEGRAM_BOT_NAME() {
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+      if (isWeixin()) {
+        return process.env.VUE_APP_TELEGRAM_BOT_IN_WX
+      } else {
+        return process.env.VUE_APP_TELEGRAM_BOT
+      }
     }
   },
   methods: {
