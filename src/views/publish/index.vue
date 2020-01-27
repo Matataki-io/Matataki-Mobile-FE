@@ -328,6 +328,7 @@
     />
     <statement :visible="statementVisible" @close="closeStatement" />
     <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
+    <oneKeyImport v-model="oneKeyImportVisible" @res="importRes"/>
   </div>
 </template>
 
@@ -352,6 +353,8 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import statement from '@/components/statement/index.vue'
 import articleImport from '@/components/article_import/index.vue'
 import { getCookie } from '@/utils/cookie'
+import * as clipboard from 'clipboard-polyfill'
+import oneKeyImport from '@/components/one_key_import/index.vue'
 
 export default {
   name: 'NewPost',
@@ -363,7 +366,8 @@ export default {
     articleTransfer,
     Prompt,
     statement,
-    articleImport
+    articleImport,
+    oneKeyImport,
   },
   data() {
     return {
@@ -414,6 +418,7 @@ export default {
       readSummary: '',
       statementVisible: false, // 原创声明
       importVisible: false, // 导入
+      oneKeyImportVisible:false,
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
@@ -476,6 +481,14 @@ export default {
   created() {
     // 编辑文章不会自动保存
     if (this.$route.params.type === 'edit') this.saveDraft = ''
+    const importRegexp = /^https?:\/\/.+$/;
+    clipboard.readText().then(text => {
+      if (importRegexp.exec(text)) {
+        this.oneKeyImportVisible = true;
+      }
+    }).catch(err => {
+      console.log('paste error:' + err.message);
+    });
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) next()
