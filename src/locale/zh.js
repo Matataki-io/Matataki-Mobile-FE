@@ -340,6 +340,7 @@ export default {
     importAddress: '来源链接：',
     importSuccess: '导入成功',
     importError: '导入失败,目前只支持: 链闻、橙皮书、微信文章',
+    oneKeyImport: '一键导入剪切板内容',
     // statement
     originalStatement: '原创声明',
     statement:
