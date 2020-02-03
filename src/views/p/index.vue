@@ -53,7 +53,7 @@
               </router-link>
               <div class="avatar-right">
                 <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
-                  {{ article.nickname || article.author }}
+                  {{ article.username || '&nbsp;' }}
                 </router-link>
                 <p class="other">
                   {{ $t('p.publishFrom') }}
