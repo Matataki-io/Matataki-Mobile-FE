@@ -45,7 +45,7 @@
     <div class="help-block">
       <a
         class="help-list"
-        href="https://github.com/smart-signature/smart-signature-future"
+        href="https://github.com/Matataki-io/Matataki-Mobile-FE"
         target="_blank"
       >
         <span class="help-list-title">{{ $t('user.about') }}</span>
@@ -145,7 +145,7 @@ export default {
     // 获取用户信息 - 转让状态
     async getMyUserData() {
       try {
-        const res = await this.$backendAPI.getMyUserData()
+        const res = await this.$API.getMyUserData()
         if (res.status === 200 && res.data.code === 0) this.articleTransfer = !!res.data.data.accept
         else console.log('获取转让状态失败')
       } catch (error) {
