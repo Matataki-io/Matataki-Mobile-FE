@@ -335,7 +335,6 @@
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
-import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
@@ -690,7 +689,7 @@ export default {
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
       try {
-        const res = await sendPost({
+        const res = await this.$API.sendPost({
           title,
           author,
           content,
@@ -984,7 +983,6 @@ export default {
         const { hash } = await this.sendPost({ title, author, content })
         this.fullscreenLoading = false
         if (!hash) return // 没有hash停止
-        // console.log('sendPost result :', hash)
         this.publishArticle({
           author,
           title,
