@@ -27,7 +27,7 @@
       </div>
     </div>
     <p class="tips">
-      该功能需要“科学上网”
+      使用该功能需要“科学上网”
     </p>
     <!-- 展开更多 -->
     <div v-if="fandomData.length > 1" class="expand-page">
@@ -84,7 +84,7 @@
         </div>
       </div>
         <p class="tips">
-          该功能需要“科学上网”
+          使用该功能需要“科学上网”
         </p>
     </el-dialog>
   </div>
