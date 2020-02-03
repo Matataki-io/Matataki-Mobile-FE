@@ -13,7 +13,7 @@
 
 <script>
 import { strTrim, internetUrl } from '@/utils/reg'
-import * as clipboard from 'clipboard-polyfill';
+import * as clipboard from 'clipboard-polyfill'
   export default {
     props: {value : Boolean},
     data: () => {
@@ -21,15 +21,15 @@ import * as clipboard from 'clipboard-polyfill';
     },
     watch: {
       value(val) {
-        this.visible = val;
+        this.visible = val
       }
     },
     methods: {
       async doImport() {
-        const url = await clipboard.readText();
+        const url = await clipboard.readText()
         if (!internetUrl(url)) return this.$message.error(this.$t('publish.importAddressError'))
         try {
-          let res = await this.$API.importArticle(url);
+          let res = await this.$API.importArticle(url)
           if (res.code === 0) {
             const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
             res.data.content += templateLink
