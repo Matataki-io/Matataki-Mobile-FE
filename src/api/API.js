@@ -1,5 +1,6 @@
 /* eslint-disable */
 import request from '@/utils/request'
+import qs from 'qs'
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
@@ -20,6 +21,20 @@ export default {
     // post hash获取  ， p id 短链接
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
+  },
+  sendPost({ title, author, desc, content }) {
+    const stringifyData = qs.stringify({
+      'data[title]': title,
+      'data[author]': author,
+      'data[desc]': desc,
+      'data[content]': content
+    })
+    return request({
+      method: 'post',
+      url: `/post/ipfs`,
+      data: stringifyData,
+      config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    })
   },
   //-------------微信支付-----------------
   wxNativePay(tradeNo, title) {

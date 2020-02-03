@@ -336,7 +336,6 @@
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
-import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
@@ -702,14 +701,23 @@ export default {
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
-      const { data } = await sendPost({
-        title,
-        author,
-        content,
-        desc: 'whatever'
-      })
-      if (data.code !== 0) this.failed(this.$t('error.sendPostIpfsFail'))
-      return data
+      try {
+        const res = await this.$API.sendPost({
+          title,
+          author,
+          content,
+          desc: 'whatever'
+        })
+        if (res.code === 0) return res
+        else {
+          this.failed(this.$t('error.sendPostIpfsFail'))
+          return false
+        }
+      } catch (error) {
+        console.log('sendPost error', error)
+        this.failed('上传ipfs失败')
+        return false
+      }
     },
     // 文章标签 tag
     setArticleTag(tagCards) {
@@ -787,9 +795,12 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
+        // 取消钱包签名, 暂注释后面再彻底删除 start
+        // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
+        // 取消钱包签名, 暂注释后面再彻底删除 end
+
         try {
           const response = await this.$API.publishArticle({ article, signature })
 
@@ -873,9 +884,12 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
-      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        signature = await this.getSignatureOfArticle({ author, hash })
-      }
+      // 取消钱包签名, 暂注释后面再彻底删除 start
+      // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+      //   signature = await this.getSignatureOfArticle({ author, hash })
+      // }
+      // 取消钱包签名, 暂注释后面再彻底删除 end
+
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) {
         const promiseArr = []
@@ -981,7 +995,7 @@ export default {
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
         this.fullscreenLoading = false
-        // console.log('sendPost result :', hash)
+        if (!hash) return // 没有hash停止
         this.publishArticle({
           author,
           title,
@@ -1005,6 +1019,8 @@ export default {
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
         this.fullscreenLoading = false
+        if (!hash) return // 没有hash停止
+
         this.editArticle({
           signId: this.signId,
           author,
