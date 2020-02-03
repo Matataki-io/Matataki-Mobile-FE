@@ -480,14 +480,14 @@ export default {
   created() {
     // 编辑文章不会自动保存
     if (this.$route.params.type === 'edit') this.saveDraft = ''
-    const importRegexp = /^https?:\/\/.+$/;
+    const importRegexp = /^https?:\/\/.+$/
     clipboard.readText().then(text => {
       if (importRegexp.exec(text)) {
-        this.oneKeyImportVisible = true;
+        this.oneKeyImportVisible = true
       }
     }).catch(err => {
-      console.log('paste error:' + err.message);
-    });
+      console.log('paste error:' + err.message)
+    })
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) next()
