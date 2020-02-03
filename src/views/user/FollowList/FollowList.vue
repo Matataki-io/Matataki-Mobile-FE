@@ -105,7 +105,7 @@ export default {
         let res = null
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
-        if (res.status === 200 && res.data.code === 0) {
+        if (res.code === 0) {
           this.$toast.success({
             duration: 1000,
             message: `${message}${this.$t('success.success')}`
