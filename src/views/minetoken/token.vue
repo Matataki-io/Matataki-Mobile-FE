@@ -419,7 +419,7 @@ export default {
     // 完成上传
     doneImageUpload(res) {
       // console.log(res)
-      this.form.logo = res.data.data.cover
+      this.form.logo = res.data.cover
       this.imgUploadDone += Date.now()
     },
     removeCoinsIcon() {

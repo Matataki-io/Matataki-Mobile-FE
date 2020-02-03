@@ -1104,7 +1104,7 @@ export default {
     doneImageUpload(res) {
       // console.log(res);
       this.imgUploadDone += Date.now()
-      this.cover = res.data.data.cover
+      this.cover = res.data.cover
     },
     // 删除cover
     removeCover() {

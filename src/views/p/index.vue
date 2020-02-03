@@ -1292,8 +1292,8 @@ export default {
 
       const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
-        if (type === 1) await this.$API.follow({ id })
-        else await this.$API.unfollow({ id })
+        if (type === 1) await this.$API.follow(id)
+        else await this.$API.unfollow(id)
         this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {
