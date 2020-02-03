@@ -7,6 +7,9 @@
       request-access="write"
       radius="6"
     />
+    <p class="tips">
+      该功能需要“科学上网”
+    </p>
   </div>
 </template>
 
@@ -56,8 +59,15 @@ export default {
   min-height: 100%;
   max-height: 100%;
   display: flex;
+  flex-direction: column;
   align-content: center;
-  justify-content: center;
+  align-items: center;
   padding-top: 10%;
+}
+.tips {
+  font-size: 12px;
+  color: #333;
+  padding: 0;
+  margin: 2em 0 0;
 }
 </style>
