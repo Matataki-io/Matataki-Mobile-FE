@@ -15,7 +15,7 @@
           target="_blank"
           itemprop="author"
         >
-          {{ articleData.username || '&nbsp;' }}
+          {{ articleData.nickname || articleData.username || '&nbsp;' }}
         </router-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{
           articleCreateTime
