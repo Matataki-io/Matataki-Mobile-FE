@@ -13,6 +13,7 @@ import store from './store'
 import { backendAPI } from '@/api'
 import API from '@/api/API'
 import errorHandling from '@/common/errorHandling'
+import userStatus from './config/userStatus.js'
 import './registerServiceWorker'
 // import "lib-flexible"; // 适配
 
@@ -51,6 +52,7 @@ Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$publishMethods = publishMethods
 Vue.prototype.$utils = utils
 Vue.prototype.$wechatShare = wechatShare
+Vue.prototype.$userStatus = userStatus
 
 Vue.use(VueClipboard)
 

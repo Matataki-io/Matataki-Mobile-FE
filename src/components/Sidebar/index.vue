@@ -371,7 +371,7 @@ export default {
     },
     currentUserInfo() {
       // 第一次会重复请求两次接口
-      if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+      if (this.currentUserInfo.id) this.getMyUserData()
     },
     async $route() {
       if (this.isLogined) await this.getNotificationCounters()
@@ -382,7 +382,7 @@ export default {
   },
   mounted() {
     // 保证切换正常显示状态
-    if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    if (this.currentUserInfo.id) this.getMyUserData()
   },
   methods: {
     ...mapActions(['signOut', 'getNotificationCounters']),
@@ -398,15 +398,14 @@ export default {
       if (!params.name) return
       this.$router.push(params)
     },
-    async tokenUserId(id) {
-      await this.$backendAPI
-        .tokenUserId(id)
+    async getMyUserData() {
+      await this.$API
+        .getMyUserData()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
-            this.tokenUser = true
-          }
+          const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
+          if (res.code === 0 && statusToken) this.tokenUser = true
         })
-        .catch(err => console.log('get token user error', err))
+        .catch(err => console.error('get my user data error', err))
     },
     async refreshUser() {
       const { isMe } = this
