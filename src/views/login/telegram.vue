@@ -39,7 +39,6 @@ export default {
   methods: {
     login(user) {
       const from = this.$route.query.from
-      alert(user)
       if (from === 'login') {
         this.telegramLogin(user)
       } else {
