@@ -222,8 +222,8 @@ export default {
             this.tokenId = res.data.token.id
             this.minetokenGetResources(res.data.token.id)
           } else {
-            this.$router.push({
-              name: 'postminetoken'
+            this.$router.replace({
+              name: 'postminetoken',
             })
           }
         } else {
