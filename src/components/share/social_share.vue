@@ -103,20 +103,29 @@ export default {
       const pic = this.cover
       const qqTitle = (this.qqTitle || this.title).slice(0, 60)
       const summary = (this.summary || this.title).slice(0, 120)
-      // 用于 Telegram 的即时预览，模板出问题了联系我 --Frank
-      const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${link}&rhash=${process.env.VUE_APP_TELEGRAM_IV_RHASH}`)
+
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${title}`,
         qq: `http://connect.qq.com/widget/shareqq/index.html?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`,
         qzone: `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`,
-        telegram: `https://t.me/share/url?url=${telegramIVLink}`
+        telegram: this.getTgSocialLink()
       }
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    getTgSocialLink() {
+      if(!this.showTg) return ''
+      // tg需要使用电脑版的网址分享（www开头）
+      let tgLink = `${process.env.VUE_APP_PC_URL}/p/${this.$route.params.id}`
+      if (this.isLogined) tgLink += `/?referral=${this.currentUserInfo.id}`
+      // 用于 Telegram 的即时预览，模板出问题了联系我 --Frank
+      const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${encodeURIComponent(tgLink)}&rhash=${process.env.VUE_APP_TELEGRAM_IV_RHASH}`)
+      return `https://t.me/share/url?url=${telegramIVLink}`
+    }
+  }
 }
 </script>
 
