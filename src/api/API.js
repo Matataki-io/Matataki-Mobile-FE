@@ -722,5 +722,20 @@ minetokenGetResources(tokenId) {
       url: '/login/telegram',
       data: data
     })
-  }
+  },
+  // 文章转让
+  transferOwner(from, articleId, uid) {
+    if (from === 'article')
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    if (from === 'draft')
+      return request({
+        method: 'POST',
+        url: '/draft/transferOwner',
+        data: { draftid: articleId, uid }
+      })
+  },
 }
