@@ -2,7 +2,7 @@
   <div class="coins-publish">
     <BaseHeader
       :has-bottom-border-line="true"
-      :pageinfo="{ title: isPost ? '申请发行Fan票' : '编辑Fan票' }"
+      :pageinfo="{ title: isPost ? '发行Fan票' : '编辑Fan票' }"
       customize-header-bc="#fff"
     />
     <div class="fl ac coins-head">
