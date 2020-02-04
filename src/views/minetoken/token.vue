@@ -130,6 +130,9 @@
         >
           {{ isPost ? '发行Fan票' : '保存' }}
         </el-button>
+        <p v-if="isPost" class="tips">
+          创建Fan票过程需要上链，请耐心等候。
+        </p>
       </div>
     </el-form>
   </div>
@@ -531,7 +534,11 @@ export default {
   left: 0;
   right: 0;
   background: #fff;
-  padding: 20px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 80px;
   box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
 }
@@ -579,6 +586,14 @@ export default {
 }
 .social-icons {
   width: 60px;
+}
+.tips {
+  padding: 0;
+  margin: 4px 0 0 0;
+  line-height: 1.2;
+  color: #848484;
+  font-size: 12px;
+  text-align: center;
 }
 </style>
 
