@@ -426,7 +426,7 @@
         :share-info="{
           title: article.title,
           avatar: articleAvatar,
-          name: article.nickname || article.author,
+          name: article.nickname || article.username || '&nbsp;',
           time: articleCreateTimeComputed,
           content: compiledMarkdown,
           shareLink: getShareLink,
