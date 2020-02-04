@@ -42,6 +42,7 @@
         :link="shareInfo.shareLink"
         :summary="filterStr(shareInfo.content)"
         :qq-title="shareInfo.title"
+        :showTg="true"
         class="social-bt"
       />
     </div>
