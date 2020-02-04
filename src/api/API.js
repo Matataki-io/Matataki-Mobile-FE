@@ -715,5 +715,12 @@ minetokenGetResources(tokenId) {
     catch(err) {
       console.error(err)
     }
+  },
+  telegramLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/telegram',
+      data: data
+    })
   }
 }

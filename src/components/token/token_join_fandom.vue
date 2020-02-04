@@ -162,7 +162,7 @@ export default {
       }
       else {
         this.showHelp = false
-        if(!this.bindStatus) this.$router.push({ name: 'login-telegram' })
+        if(!this.bindStatus) this.$router.push({ name: 'login-telegram', query: { from: 'binding' } })
       }
     },
     /** 跳转至账号变更页面 */
