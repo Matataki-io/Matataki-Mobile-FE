@@ -274,6 +274,7 @@
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
+import loadScript from '@/common/load_script'
 export default {
   components: {
     avatar
@@ -322,12 +323,25 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      let scriptSrc = [
+        'https://cdn.bootcss.com/gsap/latest/TweenMax.min.js',
+        'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
+        'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js',
+      ]
+      let PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+      Promise.all(PromiseLoadScript)
+      .then(res => {
+        console.log('done', res)
+        this.initScrollAnimation()
+        this.setDefaultStyle()
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
       window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
       window.addEventListener('scroll', throttle(this.scrollTop, 300))
 
       this._resizeHomeHeight()
-      this.initScrollAnimation()
-      this.setDefaultStyle()
     })
   },
   destroyed() {
@@ -472,7 +486,7 @@ export default {
     /** 滚动后展开按钮 */
     scrollTop() {
       try {
-        const { btnMenu } = this.$refs
+        const btnMenu = document.querySelector('.btn-menu')
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
         const btnVisible = btnMenu.classList.contains('open')
         if (scroll >= 100 && !btnVisible) {
