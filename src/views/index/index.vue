@@ -274,7 +274,7 @@
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
-import loadScript from '@/common/load_script'
+import loadScript from '@/utils/load_script'
 export default {
   components: {
     avatar
@@ -355,7 +355,6 @@ export default {
     })
   },
   destroyed() {
-    // 这里有问题
     window.removeEventListener('resize', this.resizeEvent)
     window.removeEventListener('scroll', this.scrollEvent)
   },
