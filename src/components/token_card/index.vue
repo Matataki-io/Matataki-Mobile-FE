@@ -1,8 +1,6 @@
 <template>
-  <div class="fl card">
-    <router-link :to="{ name: 'token-id', params: { id: card.id } }">
-      <avatar :src="cover" size="30px" />
-    </router-link>
+  <router-link  :to="{ name: 'token-id', params: { id: card.id } }" class="fl card">
+    <avatar :src="cover" size="30px" />
     <div class="cards-content">
       <div class="fl">
         <router-link class="card-title" :to="{ name: 'token-id', params: { id: card.id } }">
@@ -52,7 +50,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 <script>
 import avatar from '@/components/avatar/index.vue'
@@ -158,6 +156,7 @@ export default {
 
   &-amount {
     font-size: 14px;
+    color: #b2b2b2;
   }
   &-column {
     float: left;
