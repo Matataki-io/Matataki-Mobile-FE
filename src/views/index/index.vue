@@ -336,76 +336,76 @@ export default {
   },
   methods: {
     initScrollAnimation() {
-      try {
-          const initStory = () => {
-          const componentStory = document.querySelectorAll('.component-story')
-          const controller = new ScrollMagic.Controller()
-          // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      const initStory = () => {
+        const componentStory = document.querySelectorAll('.component-story')
+        const controller = new ScrollMagic.Controller()
+        // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
 
-          componentStory.forEach((el, i) => {
-            const childHeaderInner = el.querySelector(
-              '.component-story__header .component-story__inner'
-            )
-            const childSumaryInner = el.querySelector(
-              '.component-story__summary .component-story__inner'
-            )
+        componentStory.forEach((el, i) => {
+          const childHeaderInner = el.querySelector(
+            '.component-story__header .component-story__inner'
+          )
+          const childSumaryInner = el.querySelector(
+            '.component-story__summary .component-story__inner'
+          )
 
-            const timelinemax = new TimelineMax()
-
-            // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
-            timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
-            timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
-
-            // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
-
-            const scene = new ScrollMagic.Scene({
-              triggerElement: el,
-              triggerHook: 1,
-              duration: '200%'
-              // offset: -clientHeight
-            })
-              .setTween(timelinemax)
-              // .addIndicators({
-              //   colorTrigger: 'black',
-              //   colorStart: 'black',
-              //   colorEnd: 'black',
-              //   indent: 10
-              // })
-              .addTo(controller)
-          })
-        }
-        const initRoadmap = () => {
-          const controller = new ScrollMagic.Controller()
           const tl = new TimelineMax()
-          const roadmap = document.querySelector('.roadmap')
-          const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
 
-          roadmapBlock.forEach((el, i) => {
-            tl.to(el, 0.3, {
-              x: function() {
-                return i % 2 === 0 ? 0 : '100%'
-              },
-              y: 0,
-              opacity: 1,
-              ease: Linear.easeNone
-            })
-          })
+          // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
-          const scene1 = new ScrollMagic.Scene({
-            triggerElement: roadmap
-            // triggerHook: 1,
-            // duration: '160%'
+          // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
+
+          const scene = new ScrollMagic.Scene({
+            triggerElement: el,
+            triggerHook: 1,
+            duration: '200%'
             // offset: -clientHeight
           })
             .setTween(tl)
             // .addIndicators({
-            // colorTrigger: 'black',
-            // colorStart: 'black',
-            // colorEnd: 'black',
-            // indent: 10
+            //   colorTrigger: 'black',
+            //   colorStart: 'black',
+            //   colorEnd: 'black',
+            //   indent: 10
             // })
             .addTo(controller)
-        }
+        })
+      }
+      const initRoadmap = () => {
+        const controller = new ScrollMagic.Controller()
+        const tl = new TimelineMax()
+        const roadmap = document.querySelector('.roadmap')
+        const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
+
+        roadmapBlock.forEach((el, i) => {
+          tl.to(el, 0.3, {
+            x: function() {
+              return i % 2 === 0 ? 0 : '100%'
+            },
+            y: 0,
+            opacity: 1,
+            ease: Linear.easeNone
+          })
+        })
+
+        const scene1 = new ScrollMagic.Scene({
+          triggerElement: roadmap
+          // triggerHook: 1,
+          // duration: '160%'
+          // offset: -clientHeight
+        })
+          .setTween(tl)
+          // .addIndicators({
+          // colorTrigger: 'black',
+          // colorStart: 'black',
+          // colorEnd: 'black',
+          // indent: 10
+          // })
+          .addTo(controller)
+      }
+      try {
         initStory()
         initRoadmap()
       } catch (error) {
@@ -426,9 +426,6 @@ export default {
         this.$refs.evaluation.style.height = (clientHeight - 257) + 'px'
       }
     },
-    /**
-     * 设置默认样式, 从css里面抽离出来, 减少样式的印象
-     */
     setDefaultStyle() {
       try {
         const tl = new TimelineMax()
