@@ -10,7 +10,7 @@
             {{ tokenData.symbol }}
           </h2>
           <router-link :to="{name: 'user-id', params: { id: currentUserInfo.id }}" class="card-username">
-            {{ currentUserInfo.nickname || currentUserInfo.name }}
+            {{ name }}
             <i class="el-icon-arrow-right"></i>
           </router-link>
         </div>
@@ -42,6 +42,10 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
       return this.tokenData.logo ? this.$API.getImg(this.tokenData.logo) : ''
+    },
+    name() {
+      let name = (this.currentUserInfo.nickname || this.currentUserInfo.username) || ''
+      return name.length > 12 ? name.slice(0, 12) + '...' : name
     }
   },
   watch: {
@@ -108,7 +112,7 @@ export default {
       line-height: 20px;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 250px;
+      max-width: 100px;
     }
   }
 }
