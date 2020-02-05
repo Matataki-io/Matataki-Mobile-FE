@@ -6,11 +6,11 @@
       <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo" />
       <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary" />
       <!-- btn -->
-      <div class="btn-menu">
-        <div ref="btn" class="btn" @click="showMoreMenu">
+      <div class="btn-menu" ref="btnMenu">
+        <div class="btn" @click="showMoreMenu">
           <svg-icon icon-class="add" />
         </div>
-        <div ref="btnList" class="btn-list">
+        <div class="btn-list">
           <router-link :to="{ name: 'article' }">
             <svg-icon class="btn-list_btn" icon-class="article" />
           </router-link>
@@ -312,7 +312,7 @@ export default {
           content: '程序员日常漫画做了很多年，虽然已经完成出本的愿望（我没有跟QB交易），但出本上瘾正在企划2本新刊，身在11区也能通过matataki发行阿宅币在国内贩售新的漫画内容真是太棒了~~~'
         },
         {
-           id: 775,
+          id: 775,
           avatar: this.$API.getImg('/avatar/2019/12/14/51f801a26860752f34dc233e256e03e5.png'),
           name: '行者说币',
           content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
@@ -323,14 +323,16 @@ export default {
   mounted() {
     this.$nextTick(() => {
       window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+      window.addEventListener('scroll', throttle(this.scrollTop, 300))
+
       this._resizeHomeHeight()
       this.initScrollAnimation()
       this.setDefaultStyle()
     })
-    window.addEventListener('scroll', this.scrollTop)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.scrollTop)
+      window.removeEventListener('resize', throttle(this._resizeHomeHeight, 300))
+      window.removeEventListener('scroll', throttle(this.scrollTop, 300))
   },
   methods: {
     initScrollAnimation() {
@@ -411,9 +413,8 @@ export default {
       }
     },
     _resizeHomeHeight() {
-      console.log('clientHeight', '???????')
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-      console.log('clientHeight', clientHeight)
+      // console.log('clientHeight', clientHeight)
       if (clientHeight < 600) {
         this.$refs.home.style.height = 600 + 'px'
         this.$refs.evaluation.style['padding-top'] = ((740 / 2) - (257 + 113)) + 'px'
@@ -430,24 +431,17 @@ export default {
      */
     setDefaultStyle() {
       try {
-        const { btnList } = this.$refs
-        const timeline = new TimelineLite()
-
-        TweenMax.set('.btn-list', {
-          opacity: 0,
-          y: 0
-        })
-
-        TweenMax.set('.story', {
+        const tl = new TimelineMax()
+        tl.set('.story', {
           perspective: 1000
         })
-        // TweenMax.set('.component-story', {
+        // tl.set('.component-story', {
         //   z: -40
         // })
-        TweenMax.set('.component-story .component-story__header .component-story__inner', {
+        tl.set('.component-story .component-story__header .component-story__inner', {
           y: '-10%'
         })
-        TweenMax.set('.roadmap .roadmap-time__block', {
+        tl.set('.roadmap .roadmap-time__block', {
           y: 20,
           opacity: 0
         })
@@ -457,41 +451,20 @@ export default {
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
+      const { btnMenu } = this.$refs
       try {
-        const { btn, btnList } = this.$refs
-        const timeline = new TimelineLite()
-        const btnVisible = btn.getAttribute('data-visible') === 'true'
-        btn.setAttribute('data-visible', !btnVisible)
-
-        if (btnVisible) {
-          timeline.to(btn, 0.2, {
-            rotation: 0
-          })
-          timeline.to(
-            btnList,
-            0.2,
-            {
-              y: 0,
-              opacity: 0
-            },
-            '-=0.1'
-          )
-        } else {
-          timeline.to(btn, 0.2, {
-            rotation: 45
-          })
-          timeline.to(
-            btnList,
-            0.2,
-            {
-              y: 10,
-              opacity: 1
-            },
-            '-=0.1'
-          )
-        }
+        btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
       } catch (error) {
-        console.log('showMoreMenu', error)
+        // 万一遇到ie不支持 💀💀💀
+        let classVal = btnMenu.getAttribute('class')
+        // includes 通杀????
+        let hasClass = classVal.includes ? classVal.includes('open') : false
+        if (hasClass) {
+          classVal = classVal.replace('open', '').trim()
+        } else {
+          classVal = classVal.concat(' open')
+        }
+        btnMenu.setAttribute('class', classVal)
       }
     },
     /** 翻页 */
@@ -501,13 +474,18 @@ export default {
     },
     /** 滚动后展开按钮 */
     scrollTop() {
-      const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
-      const btnVisible = this.$refs.btn.getAttribute('data-visible') === 'true'
-      if (scroll >= 100 && !btnVisible) {
-        this.showMoreMenu()
-      }
-      if (scroll < 100 && btnVisible) {
-        this.showMoreMenu()
+      try {
+        let { btnMenu } = this.$refs
+        const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+        const btnVisible = btnMenu.classList.contains('open')
+        if (scroll >= 100 && !btnVisible) {
+          this.showMoreMenu()
+        }
+        if (scroll < 100 && btnVisible) {
+          this.showMoreMenu()
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   }
