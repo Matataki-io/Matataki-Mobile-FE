@@ -1,6 +1,7 @@
 <template>
   <div class="token">
     <home-head @login="showSidebar = true" />
+    <myTokenHeader />
     <div class="tokens-list">
       <div class="fl jsb">
         <div class="tokens-list-nav">
@@ -109,13 +110,15 @@ import homeHead from '../home/components/homeHead.vue'
 import tokenCard from '@/components/token_card/index.vue'
 // import userPagination from '@/components/user/user_pagination.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
+import myTokenHeader from '@/components/token/my_token_header.vue'
 
 export default {
   components: {
     // avatar,
     tokenCard,
     homeHead,
-    Sidebar
+    Sidebar,
+    myTokenHeader
     // userPagination
   },
   data() {
