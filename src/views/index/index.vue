@@ -329,11 +329,18 @@ export default {
         'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js',
       ]
       let PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+      let timer = null
       Promise.all(PromiseLoadScript)
       .then(res => {
         console.log('done', res)
-        this.initScrollAnimation()
-        this.setDefaultStyle()
+        clearInterval(timer)
+        let timer = setInterval(() => {
+          if (TweenMax && ScrollMagic) {
+            this.initScrollAnimation()
+            this.setDefaultStyle()
+            clearInterval(timer)
+          }
+        }, 300)
       })
       .catch(err => {
         console.log('error', err)
@@ -345,8 +352,9 @@ export default {
     })
   },
   destroyed() {
-      window.removeEventListener('resize', throttle(this._resizeHomeHeight, 300))
-      window.removeEventListener('scroll', throttle(this.scrollTop, 300))
+    // 这里有问题
+    window.removeEventListener('resize', throttle(this._resizeHomeHeight, 300))
+    window.removeEventListener('scroll', throttle(this.scrollTop, 300))
   },
   methods: {
     initScrollAnimation() {
@@ -462,7 +470,7 @@ export default {
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btnMenu } = this.$refs
+      const btnMenu = document.querySelector('.btn-menu')
       try {
         btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
       } catch (error) {
