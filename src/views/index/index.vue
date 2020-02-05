@@ -458,7 +458,7 @@ export default {
         // 万一遇到ie不支持 💀💀💀
         let classVal = btnMenu.getAttribute('class')
         // includes 通杀????
-        let hasClass = classVal.includes ? classVal.includes('open') : false
+        const hasClass = classVal.includes ? classVal.includes('open') : false
         if (hasClass) {
           classVal = classVal.replace('open', '').trim()
         } else {
@@ -475,7 +475,7 @@ export default {
     /** 滚动后展开按钮 */
     scrollTop() {
       try {
-        let { btnMenu } = this.$refs
+        const { btnMenu } = this.$refs
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
         const btnVisible = btnMenu.classList.contains('open')
         if (scroll >= 100 && !btnVisible) {
