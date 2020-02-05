@@ -8,46 +8,47 @@
           <Dropdown class="dropdown" trigger="click" @on-click="toggleSort">
             <div v-if="sort === 'general'">
               综合排序
+              <i class="el-icon-arrow-down"></i>
             </div>
             <div v-else-if="sort === 'unit-price-desc'">
               单价最高
-              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-down"></i>
             </div>
             <div v-else-if="sort === 'unit-price-asc'">
               单价最低
-              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-up"></i>
             </div>
             <div v-else-if="sort === 'liquidity-desc'">
               流动金最高
-              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-down"></i>
             </div>
             <div v-else-if="sort === 'liquidity-asc'">
               流动金最低
-              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-up"></i>
             </div>
             <div v-else-if="sort === 'exchange-desc'">
               24h 成交量最高
-              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-down"></i>
             </div>
             <div v-else-if="sort === 'exchange-asc'">
               24h 成交量最低
-              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-up"></i>
             </div>
             <div v-else-if="sort === 'name-asc'">
               首字母升序
-              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-up"></i>
             </div>
             <div v-else-if="sort === 'name-desc'">
               首字母降序
-              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-down"></i>
             </div>
             <div v-else-if="sort === 'time-asc'">
               时间升序
-              <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-up"></i>
             </div>
             <div v-else-if="sort === 'time-desc'">
               时间降序
-              <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+              <i class="el-icon-arrow-down"></i>
             </div>
             <DropdownMenu slot="list">
               <DropdownItem name="general" :selected="sort === 'general'">
