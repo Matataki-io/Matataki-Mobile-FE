@@ -2,7 +2,7 @@
 export default (src) => {
   return new Promise((resolve, reject) => {
     const scriptAll = document.getElementsByTagName('script')
-    let hasScript = [].slice.call(scriptAll).some(i => i.src === src)
+    const hasScript = [].slice.call(scriptAll).some(i => i.src === src)
     if (hasScript) {
       resolve()
       return
