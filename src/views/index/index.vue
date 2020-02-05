@@ -333,7 +333,6 @@ export default {
       Promise.all(PromiseLoadScript)
       .then(res => {
         console.log('done', res)
-        clearInterval(timer)
         let timer = setInterval(() => {
           if (TweenMax && ScrollMagic) {
             this.initScrollAnimation()
@@ -495,6 +494,7 @@ export default {
     scrollTop() {
       try {
         const btnMenu = document.querySelector('.btn-menu')
+        if (!btnMenu) return
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
         const btnVisible = btnMenu.classList.contains('open')
         if (scroll >= 100 && !btnVisible) {
