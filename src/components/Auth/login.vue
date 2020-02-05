@@ -49,11 +49,19 @@
           </div>
           GitHub
         </div>
+      </div>
+      <div class="oauth">
         <div class="oauth-card">
           <div class="oauth-bg bg-green" @click="getWeixinCode">
             <svg-icon class="github" icon-class="weixin" />
           </div>
           微信
+        </div>
+        <div class="oauth-card">
+          <div class="oauth-bg bg-tg" @click="telegramLogin">
+            <svg-icon class="github" icon-class="telegram2" />
+          </div>
+          Telegram
         </div>
       </div>
     </div>
@@ -107,6 +115,10 @@ export default {
   methods: {
     ...mapActions(['signIn']),
     ...mapActions("metamask", ["fetchAccount", "login"]),
+    telegramLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-telegram', query: { from: 'login' } })
+    },
     getWeixinCode() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if(isWeixin()) {
@@ -249,16 +261,20 @@ export default {
     font-weight: 400;
   }
   .oauth {
+    margin-top: 10px;
     .eos {
       font-size: 24px;
     }
     .github {
+      color: #fff;
       font-size: 22px;
     }
     .flexCenter();
 
     .oauth-card {
       margin-left: 1rem;
+      .flexCenter();
+      flex-direction: column;
     }
     .oauth-bg {
       cursor: pointer;
@@ -288,6 +304,9 @@ export default {
 }
 .bg-green {
   background: #44b549;
+}
+.bg-tg {
+  background: #0088cc;
 }
 
 .flexCenter {
