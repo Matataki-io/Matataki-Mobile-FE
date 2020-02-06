@@ -82,6 +82,7 @@
                 size="small"
                 placeholder="请选择"
                 style="width: 100%;"
+                filterable
               >
                 <el-option
                   v-for="item in readSelectOptions"
