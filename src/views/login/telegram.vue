@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="loading">
+  <div class="tg-container" v-loading="loading">
     <TelegramLogin
       @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
@@ -88,8 +88,8 @@ export default {
   }
 }
 </script>
-<style lang="less">
-.container {
+<style scoped lang="less">
+.tg-container {
   min-height: 100%;
   max-height: 100%;
   display: flex;
@@ -97,11 +97,11 @@ export default {
   align-content: center;
   align-items: center;
   padding-top: 10%;
-}
-.tips {
-  font-size: 12px;
-  color: #333;
-  padding: 0;
-  margin: 2em 0 0;
+  .tips {
+    font-size: 12px;
+    color: #333;
+    padding: 0;
+    margin: 2em 0 0;
+  }
 }
 </style>
