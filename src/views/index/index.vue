@@ -335,6 +335,7 @@ export default {
       Promise.all(PromiseLoadScript)
       .then(res => {
         console.log('done', res)
+        clearInterval(timer)
         timer = setInterval(() => {
           if (TweenMax && ScrollMagic) {
             this.initScrollAnimation()
