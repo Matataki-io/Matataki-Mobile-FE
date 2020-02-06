@@ -1,8 +1,11 @@
 /* eslint-disable */
 import request from '@/utils/request'
+import qs from 'qs'
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
+import { paginationUrl } from './pagination_url'
+import { replaceStr } from '@/utils/reg'
 
 
 export default {
@@ -18,7 +21,21 @@ export default {
     // post hash获取  ， p id 短链接
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
-    },
+  },
+  sendPost({ title, author, desc, content }) {
+    const stringifyData = qs.stringify({
+      'data[title]': title,
+      'data[author]': author,
+      'data[desc]': desc,
+      'data[content]': content
+    })
+    return request({
+      method: 'post',
+      url: `/post/ipfs`,
+      data: stringifyData,
+      config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    })
+  },
   //-------------微信支付-----------------
   wxNativePay(tradeNo, title) {
     return this.orderWxpay({
@@ -643,4 +660,83 @@ minetokenGetResources(tokenId) {
   // 暂时不用, 后端说用 p 接口
   // shareDetail(id) { return request.get(`/share/${id}`) },
   shareDetail(id) { return request.get(`/p/${id}`) },
+  postsIdReadnew(id, time) {
+    return request({
+      method: 'POST',
+      url: `/posts/${id}/readnew`,
+      data: { time }
+    })
+  },
+  // 删除文章
+  async delArticle({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/post/${id}`
+    })
+  },
+  async addReadAmount(hash) {
+    return request({
+      method: 'POST',
+      url: `/post/show/${hash}`
+    })
+  },
+  // 提交积分评论
+  async postPointComment(data) {
+    return request({
+      method: 'POST',
+      url: '/comment/comment',
+      data: data
+    })
+  },
+  /**
+   * BasePull 分页组件
+   * @param {Object} param params参数
+   */
+  async getBackendData({ url, params, urlReplace }) {
+    try {
+      if (!urlReplace) {
+        const pullApiUrl = paginationUrl
+        return request({
+          url: pullApiUrl[url],
+          method: 'get',
+          noLoading: true,
+          params
+        })
+      } else {
+        const pullApiUrl = paginationUrl
+        let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+        return request({
+          url: urlReg,
+          method: 'get',
+          noLoading: true,
+          params
+        })
+      }
+    }
+    catch(err) {
+      console.error(err)
+    }
+  },
+  telegramLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/telegram',
+      data: data
+    })
+  },
+  // 文章转让
+  transferOwner(from, articleId, uid) {
+    if (from === 'article')
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    if (from === 'draft')
+      return request({
+        method: 'POST',
+        url: '/draft/transferOwner',
+        data: { draftid: articleId, uid }
+      })
+  },
 }

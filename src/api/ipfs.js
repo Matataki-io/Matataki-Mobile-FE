@@ -1,6 +1,5 @@
-import axios from 'axios'
 import qs from 'qs'
-import { accessTokenAPI } from '@/api/backend'
+import request from '@/utils/request'
 
 export const apiServer = process.env.VUE_APP_API
 function sendPost({ title, author, desc, content }) {
@@ -14,13 +13,11 @@ function sendPost({ title, author, desc, content }) {
   //   data: stringifyData,
   //   config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
   // });
-  const token = accessTokenAPI.get()
-  return axios({
+  return request({
     method: 'post',
-    url: `${apiServer}/post/ipfs`,
+    url: '/post/ipfs',
     data: stringifyData,
     config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
-    headers: { 'x-access-token': token }
   })
 }
 

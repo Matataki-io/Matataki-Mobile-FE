@@ -4,8 +4,8 @@
       <router-link :to="{ name: 'user-id', params: { id: card.id } }">
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
       </router-link>
-      <router-link :to="{ name: 'user-id', params: { id: card.id } }">
-        <span class="username">{{ card.username }}</span>
+      <router-link class="username" :to="{ name: 'user-id', params: { id: card.id } }">
+        {{ card.username }}
       </router-link>
     </div>
     <p class="card-date">{{ friendlyDate }}</p>
@@ -53,12 +53,16 @@ export default {
   .info {
     display: flex;
     align-items: center;
+    overflow: hidden;
     .username {
       margin-left: 10px;
       font-size: 16px;
       font-weight: 400;
       color: #000;
       line-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

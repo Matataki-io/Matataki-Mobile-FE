@@ -54,6 +54,15 @@
     margin-bottom: 100px;
     bottom: 0;
     position: absolute;
+    &.open {
+      .btn {
+        transform: rotate(45deg);
+      }
+      .btn-list {
+        opacity: 1;
+        transform: translate(-50%, 10px);
+      }
+    }
   }
 
   .btn {
@@ -68,6 +77,7 @@
     justify-content: center;
     z-index: 9;
     cursor: pointer;
+    transition: all .2s;
 
     &:hover {
       background-color: mix(#fff, #542DE0, 10%);
@@ -81,7 +91,7 @@
     z-index: 9;
     left: 23px;
     bottom: -150%;
-    transform: translate(-50%, 10px);
+    transform: translate(-50%, 0px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,6 +99,8 @@
     padding: 14px 20px;
     cursor: default;
     opacity: 0;
+    transition: all .2s;
+    // transition-delay: 0.1s;
 
     a {
       margin: 0 10px;

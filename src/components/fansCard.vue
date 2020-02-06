@@ -1,14 +1,12 @@
 <template>
   <div class="fans-card">
     <router-link
-      target="_blank"
       :to="{ name: 'user-id', params: { id: type === 'follow' ? card.fuid : card.uid } }"
     >
       <avatar class="avatar" :src="avatar" />
     </router-link>
     <div class="fans-info">
       <router-link
-        target="_blank"
         class="name"
         :title="name"
         :to="{ name: 'user-id', params: { id: type === 'follow' ? card.fuid : card.uid } }"

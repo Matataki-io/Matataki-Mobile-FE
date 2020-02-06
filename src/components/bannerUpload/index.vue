@@ -232,9 +232,9 @@ export default {
       }
 
       try {
-        const res = await this.$backendAPI.uploadImage(this.updateType, file)
-        // console.log(this.files[0]);
-        if (res.status === 200 && res.data.code === 0) {
+        const res = await this.$API.uploadImage(this.updateType, file)
+        // console.log(res);
+        if (res.code === 0) {
           this.$emit('doneImageUpload', {
             type: this.updateType,
             data: res.data

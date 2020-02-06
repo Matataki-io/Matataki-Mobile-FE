@@ -66,7 +66,8 @@ export default {
         params: {
           filter: 3,
           sort: 'popular-desc',
-          onlyCreator: 1
+          onlyCreator: 1,
+          pagesize: 20
           // extra: 'short_content' // 好像接口没有提供这个功能
         },
         autoRequestTime: 0,

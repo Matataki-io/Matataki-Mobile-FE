@@ -28,6 +28,9 @@
     content="瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。" />
   <meta name="keywords"
     content="岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS" />
+  <style>
+    html,body,.loading{height:100%}.loading{display:flex;align-items:center;justify-content:center}.spinner{width:50px;height:50px;display:flex;align-items:center;justify-content:space-between}.spinner>div{width:6px;height:100%;background-color:#4facfe;display:inline-block;animation:scaleAnimation 1.2s infinite ease-in-out}.spinner .spinner-rect2{animation-delay:-1.1s}.spinner .spinner-rect3{animation-delay:-1s}.spinner .spinner-rect4{animation-delay:-0.9s}.spinner .spinner-rect5{animation-delay:-0.8s}@keyframes scaleAnimation{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}.loading-not__done{display:none;position:fixed;left:0;right:0;bottom:40px;text-align:center}.loading-not__done .not-done-container{width:90%;margin:0 auto;text-align:left}.loading-not__done .not-more{width:10px;height:10px}.loading-not__done .not-title{color:#909090;font-size:14px;font-weight:500;margin:0 0 20px 0}.loading-not__done .not-description{color:#000;font-size:12px;font-weight:500;padding:0;margin:5px 0}.loading-not__done .not-note{color:#8a8a8a;font-size:12px;padding:0;margin:10px 0 0}
+  </style>
   <!-- import stylesheet -->
   <script>
     var _hmt = _hmt || [];
@@ -51,17 +54,62 @@
 </head>
 
 <body>
+  <div id="loading" class="loading">
+    <div class="spinner">
+      <div class="spinner-rect1"></div>
+      <div class="spinner-rect2"></div>
+      <div class="spinner-rect3"></div>
+      <div class="spinner-rect4"></div>
+      <div class="spinner-rect5"></div>
+    </div>
+
+    <div class="loading-not__done" id="loadingNotDone">
+      <div class="not-done-container">
+        <h3 class="not-title">加载遇到问题</h3>
+
+        <p class="not-description">需 2 两步操作，恢复正常访问</p>
+        <p class="not-description">第一步：强制刷新</p>
+        <p class="not-description">在APP右上方点击
+          <svg class="not-more" t="1579248221293" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3639" width="200" height="200"><path d="M512 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#4D4D4D" p-id="3640"></path><path d="M512 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#4D4D4D" p-id="3641"></path><path d="M512 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#4D4D4D" p-id="3642"></path></svg>
+          更多，刷新页面
+        </p>
+        <p class="not-description">第二步：清除浏览器缓存</p>
+        <p class="not-description">可在浏览器设置内手动清理或强制刷新</p>
+        <p class="not-description">微信内可以进【我】点击【设置】进入【通用】</p>
+        <p class="not-description">进入【存储空间】点击【清理微信缓存】(平台之间有差异)</p>
+
+        <p class="not-note">如果还未解决你的问题，可联系管理</p>
+      </div>
+    </div>
+  </div>
   <noscript>
     <strong>We're sorry but matataki doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
   <div id="app"></div>
-  <script src="https://cdn.bootcss.com/gsap/latest/TimelineLite.min.js"></script>
-  <script src="https://cdn.bootcss.com/gsap/latest/TimelineMax.min.js"></script>
-  <script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
-  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-  <script src="https://cdn.bootcss.com/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
+  <script>
+    // 未压缩, emmm....
+    (() => {
+      // 长时间未加载提示
+      var timer = null
+      var time = 0
+      clearInterval(timer)
+      timer = setInterval(() => {
+        // 如果没有loading 停止
+        var loadingDom = document.querySelector('#loading')
+        if (!loadingDom) clearInterval(timer)
+        time++
+        if (time >= 40) {
+          clearInterval(timer)
+          // 如果有loading 超时提示文字
+          if (loadingDom) {
+            var loadingNotDone = document.querySelector('#loadingNotDone')
+            loadingNotDone.style.display = 'block'
+          }
+        }
+      }, 1000)
+    })()
+  </script>
   <!-- built files will be auto injected -->
 </body>
 

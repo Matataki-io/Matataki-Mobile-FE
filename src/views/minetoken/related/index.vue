@@ -70,7 +70,8 @@ export default {
         apiUrl: 'minetokenRelated',
         params: {
           filter: 3,
-          sort: 'time-desc'
+          sort: 'time-desc',
+          pagesize: 20
         }
       },
       currentPage: 1,
@@ -96,7 +97,8 @@ export default {
     onCheckedFilterChanged: debounce(function () {
       this.pull.params = {
         filter: this.filter,
-        sort: this.pull.params.sort
+        sort: this.pull.params.sort,
+        pagesize: 20
       }
     }, 500),
     getListData(res) {
@@ -105,7 +107,8 @@ export default {
     toggleOrdering(sort) {
       this.pull.params = {
         filter: this.filter,
-        sort
+        sort,
+        pagesize: 20
       }
     }
   }

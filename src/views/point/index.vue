@@ -1,24 +1,25 @@
 <template>
   <div class="point">
-    <BaseHeader :pageinfo="{ title: $t('point.title') }" customize-header-bc="#fff" />
-    <van-tabs v-model="active" swipeable color="#542de0">
-      <van-tab :title="$t('point.task')">
-        <task></task>
-      </van-tab>
-      <van-tab :title="$t('point.list')">
-        <point></point>
-      </van-tab>
-    </van-tabs>
+    <BaseHeader
+      :has-bottom-border-line="true"
+      :pageinfo="{ title: $t('sidebar.account') }"
+      customize-header-bc="#fff"
+    />
+    <accountNav />
+    <!-- <task></task> -->
+    <point></point>
   </div>
 </template>
 
 <script>
-import task from './components/task.vue'
+// import task from './components/task.vue'
 import point from './components/point.vue'
+import accountNav from '@/components/account_nav/index.vue'
 
 export default {
   components: {
-    task,
+    // task,
+    accountNav,
     point
   },
   data() {

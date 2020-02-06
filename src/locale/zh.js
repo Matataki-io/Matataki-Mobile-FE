@@ -38,7 +38,7 @@ export default {
   username: '昵称',
   email: '邮箱',
   articleUtil: '篇', //公用名称
-  referral: '瞬Matataki，助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n',
+  referral: '助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n',
   success: {
     success: '成功',
     copy: '复制成功',
@@ -288,15 +288,15 @@ export default {
     walletName: '钱包余额',
     follow: '关注',
     fans: '粉丝',
-    account: '我的账户',
+    account: '钱包详情',
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
-    invite: '我的邀请',
+    invite: '邀请记录',
     inviteDes: '已邀请{0}个账户',
     original: '我的原创',
     investment: '我的投资',
     draft: '我的草稿',
-    buy: '购买记录',
+    buy: '消费记录',
     login: '立即登录',
     rule: '规则介绍',
     tg: '加入电报',
@@ -340,6 +340,7 @@ export default {
     importAddress: '来源链接：',
     importSuccess: '导入成功',
     importError: '导入失败,目前只支持: 链闻、橙皮书、微信文章',
+    oneKeyImport: '一键导入剪切板内容',
     // statement
     originalStatement: '原创声明',
     statement:
@@ -353,7 +354,7 @@ export default {
     statement6: '6.通过其他侵犯著作权或其他权益方式形成的内容。',
     statement7: '在取得原作者或权利人同意后，对作品进行改编、翻译再创作的，视同原创。',
     statement8:
-      '瞬MATATAKI鼓励用户发布原创文章，勾选本原创声明的文章会展示原创标识。但本原创声明仅是您对文章内容原创性的单方承诺，并不表示瞬MATATAKI认可了文章的原创性。若您在勾选本原创声明后，文章被证明并非独立原创，瞬MATATAKI将按照平台规范删除等。'
+      '瞬MATATAKI鼓励用户发布原创文章，勾选本原创声明的文章会展示原创标识。但本原创声明仅是您对文章内容原创性的单方承诺，并不表示瞬MATATAKI认可了文章的原创性。若您在勾选本原创声明后，文章被证明并非独立原创，瞬MATATAKI将按照平台规范下架等。'
   },
   search: {
     hot: '热门搜索',
@@ -462,7 +463,7 @@ export default {
     deleted: '文章已下架'
   },
   invite: {
-    headerTitle: '我的邀请',
+    headerTitle: '邀请记录',
     invited: '已邀请',
     copyLink: '复制链接',
     des1: '每成功邀请一名好友注册可得{0}积分',
@@ -551,6 +552,6 @@ export default {
   },
   // ---------------------------------------help page -------------------------------------
   helpPage: {
-    accountSetting: '账户设置'
+    accountSetting: '账号管理'
   }
 }

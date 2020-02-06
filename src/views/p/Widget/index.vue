@@ -9,31 +9,42 @@
     :closable="false"
     @on-visible-change="change"
   >
-    <div v-if="widgetModalStatus === 0" class="widget-content-button">
-      <div class="widget-button" @click="createWidget">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/widget.svg" alt="widget" />
+    <div v-if="widgetModalStatus === 0" >
+      <div class="widget-content-button">
+        <div class="widget-button" @click="createWidget">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/widget.svg" alt="widget" />
+          </div>
+          <p>
+            {{ $t('p.createWidget') }}
+          </p>
         </div>
-        <p>
-          {{ $t('p.createWidget') }}
-        </p>
-      </div>
-      <div class="widget-button" @click="widgetModalStatus = 4">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/share.svg" alt="widget" />
+        <div class="widget-button" @click="widgetModalStatus = 4">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/share.svg" alt="widget" />
+          </div>
+          <p>
+            {{ $t('p.createLongImg') }}
+          </p>
         </div>
-        <p>
-          {{ $t('p.createLongImg') }}
-        </p>
-      </div>
-      <div class="widget-button" @click="copyCode(getClipboard)">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/link.svg" alt="link" />
+        <div class="widget-button" @click="copyCode(getClipboard)">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/link.svg" alt="link" />
+          </div>
+          <p>
+            {{ $t('p.copyInviteLink') }}
+          </p>
         </div>
-        <p>
-          {{ $t('p.copyInviteLink') }}
-        </p>
       </div>
+      <SocialShare
+        :img="shareInfo.cover"
+        :title="getClipboard"
+        :link="shareInfo.shareLink"
+        :summary="filterStr(shareInfo.content)"
+        :qq-title="shareInfo.title"
+        :showTg="true"
+        class="social-bt"
+      />
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
       <p class="widget-title">{{ $t('p.createWidget') }}</p>
@@ -108,11 +119,13 @@ import { sleep } from '@/common/methods'
 import { strTrim } from '@/common/reg' // 开发用
 import QRCodeDialog from './QRCodeDialog'
 import { urlAddress } from '@/api/backend'
+import SocialShare from '@/components/share/social_share.vue'
 // const urlAddress = 'http://localhost:8080'; // 开发用
 
 export default {
   name: 'Widget',
   components: {
+    SocialShare,
     QRCodeDialog
   },
   props: ['widgetModal', 'id', 'getClipboard', 'invite', 'shareInfo'],
@@ -194,7 +207,12 @@ export default {
       this.$emit('changeWidgetModal', status)
       await sleep(300)
       !status && this.resetStatus()
-    }
+    },
+    filterStr(str) {
+      let re = /<[^>]+>/gi
+      str = str.replace(re, '')
+      return str
+    },
   }
 }
 </script>

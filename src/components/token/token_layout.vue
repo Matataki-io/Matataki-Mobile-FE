@@ -67,7 +67,7 @@
       <div class="link">
         <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
       </div>
-      <p class="warning" v-if="!minetokenToken.contract_address">fan票正在发布中，请稍后过来操作!</p>
+      <p class="warning" v-if="!minetokenToken.contract_address">Fan票正在部署中，请耐心等候。</p>
 
     </div>
 
@@ -821,12 +821,13 @@ export default {
   .but {
     flex: 1;
     background: white;
-    display: -webkit-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     div {
       font-size: 15px;
       color: #000;
-      margin: auto;
       svg {
         vertical-align: sub;
         &.eth_mini {

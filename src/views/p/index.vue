@@ -53,7 +53,7 @@
               </router-link>
               <div class="avatar-right">
                 <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
-                  {{ article.nickname || article.author }}
+                  {{ article.nickname || article.username || '&nbsp;' }}
                 </router-link>
                 <p class="other">
                   {{ $t('p.publishFrom') }}
@@ -426,7 +426,7 @@
         :share-info="{
           title: article.title,
           avatar: articleAvatar,
-          name: article.nickname || article.author,
+          name: article.nickname || article.username || '&nbsp;',
           time: articleCreateTimeComputed,
           content: compiledMarkdown,
           shareLink: getShareLink,
@@ -603,10 +603,10 @@ export default {
       // console.debug(this.article);
       const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
       const shareLink = this.isLogined
-        ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
+        ? `${articleUrl}/?referral=${currentUserInfo.id}`
         : articleUrl
       return `《${article.title}》by ${article.nickname ||
-        article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t(
+        article.username} \n${shareLink} \n${this.$t('p.clipboardText1')} \n ${this.$t(
         'p.clipboardText2'
       )}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
@@ -750,7 +750,7 @@ export default {
     ...mapActions(['makeShare', 'makeOrder']),
     // 增加文章阅读量
     async addReadAmount(hash) {
-      await this.$backendAPI
+      await this.$API
         .addReadAmount(hash)
         .catch(err => console.log('add read amount error', err))
     },
@@ -801,29 +801,24 @@ export default {
       const data = {
         id: this.id
       }
-
-      await this.$backendAPI
-        .getCurrentProfile(data)
-        .then(res => {
-          // console.log(`getCurrentProfile ${JSON.stringify(res)}`)
-          if (res.status === 200 && res.data.code === 0) {
-            this.currentProfile = res.data.data
-            this.form.outputToken =
-              res.data.data.holdMineTokens && res.data.data.holdMineTokens.length > 0
-                ? res.data.data.holdMineTokens[0]
-                : {}
-            // console.log('article', this.article)
-            this.differenceTokenFunc()
-            this.calPayFormParams()
-            this.setSSToken(res.data)
-            this.isBookmarked = Boolean(res.data.data.is_bookmarked)
-          } else if (res.data.code === 401) {
-            console.log(res.data.message)
-          } else {
-            console.log(res.data.message)
-          }
-        })
-        .catch(err => console.log(err))
+      this.$API.currentProfile(data).then(res => {
+        if (res.code === 0) {
+          this.currentProfile = res.data
+          this.form.outputToken =
+            res.data.holdMineTokens && res.data.holdMineTokens.length > 0
+              ? res.data.holdMineTokens[0]
+              : {}
+          // console.log('article', this.article)
+          this.differenceTokenFunc()
+          this.calPayFormParams()
+          this.setSSToken(res)
+          this.isBookmarked = Boolean(res.data.is_bookmarked)
+        } else if (res.code === 401) {
+          console.log(res.message)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => console.log(err))
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
@@ -873,14 +868,14 @@ export default {
     },
     async getIpfsData() {
       if (!this.article.hash) return
-      await this.$backendAPI
+      await this.$API
         .getIpfsData(this.article.hash)
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.post.content = res.data.data.content
+          if (res.code === 0) {
+            this.post.content = res.data.content
             this.setWxShare()
           } else {
-            console.log(res.data.message)
+            console.log(res.message)
           }
         })
         .catch(err => {
@@ -891,16 +886,15 @@ export default {
 
     // 得到文章信息 hash id, supportDialog 为 true 则只更新文章信息
     async getArticleInfo(id, supportDialog = false) {
-      await this.$backendAPI
+      await this.$API
         .getArticleInfo(id)
         .then(res => {
-          console.info(`getArticleInfo ${JSON.stringify(res.data)}`)
-          const { likes, dislikes } = res.data.data
+          const { likes, dislikes } = res.data
           this.likes = likes
           this.dislikes = dislikes
-          if (res.status === 200 && res.data.code === 0) {
+          if (res.code === 0) {
             // 判断是否为付费阅读文章
-            let { data } = res.data
+            let { data } = res
             this.article = data
             this.getCurrentProfile()
 
@@ -920,7 +914,7 @@ export default {
             this.setAvatar(data.uid)
             this.addReadAmount(this.article.hash)
           } else {
-            this.$toast({ duration: 1000, message: res.data.message })
+            this.$toast({ duration: 1000, message: res.message })
           }
         })
         .catch(err => {
@@ -933,11 +927,11 @@ export default {
     },
     // 获取文章内容 from ipfs
     async getArticleDatafromIPFS(hash) {
-      await this.$backendAPI
-        .getArticleDatafromIPFS(hash)
+      await this.$API
+        .getIpfsData(hash)
         .then(({ data }) => {
           // console.log(data);
-          this.setPost(data.data)
+          this.setPost(data)
         })
         .catch(err => {
           console.error(err)
@@ -1079,8 +1073,8 @@ export default {
         if (/^(0|[1-9][0-9]*)$/.test(idOrName)) {
           try {
             const id = idOrName
-            const { status, data } = await this.$backendAPI.getUser({ id })
-            if (status === 200 && data.code === 0) return { id, username: data.data.username }
+            const res = await this.$API.getUser(id)
+            if (res.code === 0) return { id, username: res.data.username }
           } catch (error) {
             console.error(error)
           }
@@ -1184,8 +1178,8 @@ export default {
         if (/^(0|[1-9][0-9]*)$/.test(idOrName)) {
           try {
             const id = idOrName
-            const { status, data } = await this.$backendAPI.getUser({ id })
-            if (status === 200 && data.code === 0) return { id, username: data.data.username }
+            const res = await this.$API.getUser(id)
+            if (res.code === 0) return { id, username: res.data.username }
           } catch (error) {
             console.error(error)
           }
@@ -1254,8 +1248,8 @@ export default {
       const delArticleFunc = async id => {
         if (!id) return fail(this.$t('p.noId'))
         try {
-          const response = await this.$backendAPI.delArticle({ id })
-          if (response.status === 200 && response.data.code === 0) delSuccess()
+          const res = await this.$API.delArticle({ id })
+          if (res.code === 0) delSuccess()
           else fail(this.$t('p.deleteFail'))
         } catch (error) {
           return fail(error)
@@ -1273,11 +1267,11 @@ export default {
     // 获取用户 得到头像
     async setAvatar(id) {
       try {
-        const res = await this.$backendAPI.getUser({ id })
-        if (res.status === 200 && res.data.code === 0) {
-          this.followed = res.data.data.is_follow
-          this.articleAvatar = res.data.data.avatar
-            ? this.$API.getImg(res.data.data.avatar)
+        const res = await this.$API.getUser(id)
+        if (res.code === 0) {
+          this.followed = res.data.is_follow
+          this.articleAvatar = res.data.avatar
+            ? this.$API.getImg(res.data.avatar)
             : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
@@ -1298,8 +1292,8 @@ export default {
 
       const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
-        if (type === 1) await this.$backendAPI.follow({ id })
-        else await this.$backendAPI.unfollow({ id })
+        if (type === 1) await this.$API.follow(id)
+        else await this.$API.unfollow(id)
         this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {

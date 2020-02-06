@@ -1,33 +1,33 @@
 <template>
-    <div class="related-list">
-      <div
-        :class="!card.summary && 'no-margin-bottom'"
-        class="related-list-title">
-        <div class="fl jsb">
-          <div class="fl ac related-7">
-            <div class="related-list-link">
-              <a
-                v-if="currentSite(card.url)"
-                :href="card.url"
-                @click="toggleArticle(card.url, $event)"
-              >{{ card.title }}</a>
-              <a v-else :href="card.url" target="_blank">{{ card.title }}</a>
-            </div>
-          </div>
-          <div class="fl ac jfe related-3">
-            <span class="related-id">{{ card.number }}</span>
+  <div class="related-list">
+    <div
+      :class="!card.summary && 'no-margin-bottom'"
+      class="related-list-title">
+      <div class="fl jsb">
+        <div class="fl ac related-7">
+          <div class="related-list-link">
+            <a
+              v-if="card.ref_sign_id !== 0 && card.channel_id === 1"
+              :href="card.url"
+              @click="toggleArticle(card.ref_sign_id, $event)"
+            >{{ card.title }}</a>
+            <a v-else :href="card.url" target="_blank">{{ card.title }}</a>
           </div>
         </div>
-        <div class="fl ac related-link">
-          <a class="link" href="javascript:void(0);">{{ card.url }}</a>
-          <svg-icon @click="copyCode(card.url)" class="icon-copy" icon-class="copy2" />
-          <a :href="card.url" target="_blank">
-            <svg-icon class="icon-share" icon-class="jump" />
-          </a>
+        <div class="fl ac jfe related-3">
+          <span class="related-id">{{ card.number }}</span>
         </div>
-        <p class="summary" v-if="card.summary">{{ card.summary }}</p>
       </div>
+      <div class="fl ac related-link">
+        <a class="link" href="javascript:void(0);">{{ card.url }}</a>
+        <svg-icon @click="copyCode(card.url)" class="icon-copy" icon-class="copy2" />
+        <a :href="card.url" target="_blank">
+          <svg-icon class="icon-share" icon-class="jump" />
+        </a>
+      </div>
+      <p class="summary" v-if="card.summary">{{ card.summary }}</p>
     </div>
+  </div>
 </template>
 
 <script>
@@ -41,18 +41,11 @@ export default {
   },
   methods: {
     // 切换文章
-    toggleArticle(url, e, popEvent = false) {
+    toggleArticle(id, e, popEvent = false) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
-      const reg = /\/p\/[\d].*/
-      const urlId = url.match(reg)
-      const id = urlId ? urlId[0].slice(3) : -1
-      const idInt = parseInt(id)
-
-      // this.getArticle(idInt, popEvent)
-
-      if (idInt !== -1) this.$emit('getArticle', idInt, popEvent)
-      else window.open(url)
+      if (id !== 0) this.$emit('getArticle', id, popEvent)
+      else window.open(this.card.url)
       return false
     },
     copyCode(code) {
@@ -65,41 +58,6 @@ export default {
         }
       )
     },
-    // 判断文章关联链接是本站还是外站
-    currentSite(link) {
-      const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
-      const linkArr = link.match(reg)
-      const prot = linkArr && linkArr[3] ? linkArr[3] : ''
-      const linkHost = linkArr ? linkArr[1] + '://' + linkArr[2] + prot : ''
-
-      // 地址
-      const urlList = {
-        development: [
-          process.env.VUE_APP_URL,
-          process.env.VUE_APP_PC_URL,
-          process.env.WX_SHARE_HOST,
-          'http://localhost:8080',
-          'https://localhost:8080',
-          'http://127.0.0.1:8080'
-        ],
-        staging: [
-          process.env.VUE_APP_URL,
-          process.env.VUE_APP_PC_URL,
-          process.env.WX_SHARE_HOST,
-          'http://localhost:8080',
-          'https://localhost:8080',
-          'http://127.0.0.1:8080'
-        ],
-        production: [
-          process.env.VUE_APP_URL,
-          process.env.VUE_APP_PC_URL,
-          process.env.WX_SHARE_HOST
-        ]
-      }
-
-      const currentUrlList = urlList[process.env.NODE_ENV]
-      return currentUrlList.includes(linkHost)
-    }
   }
 }
 </script>

@@ -30,7 +30,13 @@
           <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
       </div>
-      <SocialShare :img="img" :title="shareLink" />
+      <SocialShare
+        :img="img"
+        :title="shareLink"
+        :link="link"
+        :summary="summary"
+        :qq-title="qqTitle"
+      />
       <wechat v-if="pageType !== 2" style="margin: 60px 0 0 0;" :link="link" />
       <div v-else class="invite-synopsis">
         邀请有奖：<br>
@@ -154,17 +160,21 @@ export default {
     },
     shareLink() {
       const slogan = [
-        `我在瞬MATATAKI发现了Fan票「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」${
-          process.env.VUE_APP_URL
-        }/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
-        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`,
+        `我在瞬MATATAKI发现了Fan票「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」${this.link} 持有Fan票，让连接不止于关注！`,
+        `${this.minetokenUser.nickname}的个人主页：\n${this.link}`,
         this.referralLink1()
       ]
       return slogan[this.pageType]
     },
     link() {
-      if (process.browser) return window.location.href
-      else return process.env.VUE_APP_URL
+      if (process.browser) {
+        const slogan = [
+          `${process.env.VUE_APP_URL}/token/${this.$route.params.id}?referral=${this.currentUserInfo.id}`,
+          `${process.env.VUE_APP_URL}/user/${this.$route.params.id}?referral=${this.currentUserInfo.id}`,
+          `${process.env.VUE_APP_URL}?referral=${this.currentUserInfo.id}`
+        ]
+        return slogan[this.pageType]
+      } else return process.env.VUE_APP_URL
     },
     id() {
       return this.article.id
@@ -177,6 +187,20 @@ export default {
           .$route.params.id || 0}' frameborder=0></iframe>`,
         ''
       ][this.pageType]
+    },
+    summary() {
+      return ([
+        '持有Fan票，让连接不止于关注！',
+        '瞬Matataki',
+        this.$t('referral')
+      ])[this.pageType]
+    },
+    qqTitle() {
+      return ([
+        `「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」的Fan票主页`,
+        `${this.minetokenUser.nickname}的个人主页`,
+        '瞬Matataki'
+      ])[this.pageType]
     }
   },
   watch: {
@@ -221,8 +245,8 @@ export default {
     },
     referralLink1() {
       if (process.browser) {
-        if (this.currentUserInfo && this.currentUserInfo.id) return `${this.$t('referral')}${window.location.origin}?referral=${this.currentUserInfo.id}`
-        else return `${this.$t('referral')}${window.location.origin}`
+        if (this.currentUserInfo && this.currentUserInfo.id) return `瞬Matataki，${this.$t('referral')}${this.link}`
+        else return `瞬Matataki，${this.$t('referral')}${window.location.origin}`
       } else return ''
     }
   }

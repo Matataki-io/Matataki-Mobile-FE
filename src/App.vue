@@ -27,7 +27,8 @@ export default {
   },
   data() {
     return {
-      isRouterAlive: true
+      isRouterAlive: true,
+      time: null
     }
   },
   provide() {
@@ -65,6 +66,13 @@ export default {
       deep: true
     }
   },
+    beforeCreate(){
+    try {
+      document.body.removeChild(document.getElementById('loading'))
+    } catch (error) {
+      document.body.removeChild(document.getElementById('loading'))
+    }
+  },
   created() {
     const { signIn, updateNotify } = this
 
@@ -88,7 +96,9 @@ export default {
     window.updateNotify = updateNotify
     this.getViewMode()
   },
-  mounted() {},
+  mounted() {
+    this.removeOverflowHide()
+  },
   methods: {
     ...mapActions(['signIn']),
     getViewMode() {
@@ -135,6 +145,31 @@ export default {
       await this.$nextTick()
       await sleep(800)
       this.isRouterAlive = true
+    },
+    removeOverflowHide() {
+      // 这段代码也是无奈之举
+      // 这里的代码, 如果没有找到为什么会设置 overflow hideen, 就删除了的话, 就等着加班吧 !!!
+      clearInterval(this.time)
+      this.time = setInterval(() => {
+        const bodyDom = document.querySelector('body')
+        if (bodyDom.style.overflow) {
+          const dialog = document.querySelectorAll('.el-dialog__wrapper')
+          let dialogStatus = false
+          // 循环 所有元素有一个不是node 说明是展开的dialog
+          for (let i = 0; i < dialog.length; i++) {
+            if (dialog[i].style.display !== 'none') {
+              dialogStatus = true
+              break
+            }
+          }
+          // 此时body hidden 否则 auto
+          if (dialogStatus) {
+            bodyDom.style.overflow = 'hidden'
+          } else {
+            bodyDom.style.overflow = 'auto'
+          }
+        }
+      }, 1000)
     }
   }
 }

@@ -28,12 +28,11 @@ export default {
     user() {
       return [
         // self 只有自己才能看
-        { title: '文章', url: 'user-id', self: false },
+        { title: '创作', url: 'user-id', self: false },
+        { title: '分享', url: 'user-id-share', self: false },
         { title: '关注', url: 'user-id-follow', self: false },
         { title: '粉丝', url: 'user-id-fan', self: false },
-        { title: '购买', url: 'user-id-buy', self: true },
-        { title: '收藏', url: 'user-id-bookmark', self: true },
-        { title: '个人信息', url: 'user-id-info', self: false }
+        { title: '信息', url: 'user-id-info', self: false }
       ]
     }
   }
@@ -44,6 +43,7 @@ export default {
 .user-nav {
   margin-bottom: 10px;
   padding: 0 20px;
+  text-align: center;
   a {
     flex: 1;
     margin-right: 0px;
