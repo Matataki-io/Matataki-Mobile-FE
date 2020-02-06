@@ -65,7 +65,7 @@ export default {
       pull: {
         params: {
           filter: 3,
-          sort: 'popular-desc',
+          sort: 'time-desc',
           onlyCreator: 1,
           pagesize: 20
           // extra: 'short_content' // 好像接口没有提供这个功能
