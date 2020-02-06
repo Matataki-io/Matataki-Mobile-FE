@@ -774,9 +774,9 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
+        // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
         try {
           const response = await this.$API.publishArticle({ article, signature })
 
@@ -858,11 +858,11 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
-      const { author, hash } = article
+      const { author } = article
       let signature = null
-      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        signature = await this.getSignatureOfArticle({ author, hash })
-      }
+      // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+      //   signature = await this.getSignatureOfArticle({ author, hash })
+      // }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) {
         const promiseArr = []
@@ -966,18 +966,17 @@ export default {
 
         this.fullscreenLoading = true
         // 发布文章
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
-        // console.log('sendPost result :', hash)
-        this.publishArticle({
+        const data = { title, author, content }
+        await this.publishArticle({
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           cover,
           isOriginal,
           shortContent: this.readSummary
         })
+        this.fullscreenLoading = false
       }
       // 编辑发送
       const editPost = async () => {
@@ -990,19 +989,19 @@ export default {
 
         this.fullscreenLoading = true
         // 编辑文章
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
+        const data = { title, author, content }
         this.editArticle({
           signId: this.signId,
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary
         })
+        this.fullscreenLoading = false
       }
       if (type === 'draft') draftPost()
       else if (type === 'edit') editPost()
