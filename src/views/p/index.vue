@@ -79,7 +79,7 @@
             </template>
           </div>
         </header>
-        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash"></ipfs>
+        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="id"></ipfs>
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>

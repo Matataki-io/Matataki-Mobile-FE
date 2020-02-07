@@ -11,12 +11,14 @@
       <router-link class="ipfs" :to="{ name: 'ipfs', params: { hash: hash } }">
         IPFS Hash: {{ hash || 'Loading...' }}
       </router-link>
+      <a :href="renderedHtmlLink" v-if="latestVersionOnIpfs"> 分布式入口</a>
     </div>
     <img class="ipfs-img" src="@/assets/img/ipfs.png" alt="ipfs" />
   </div>
 </template>
 
 <script>
+import { getIpfsByArticleId } from '@/api/ipfs'
 export default {
   components: {},
   props: {
@@ -27,14 +29,27 @@ export default {
     isHide: {
       type: Boolean,
       required: false
+    },
+    postId: {
+      type: Number,
+      required: false
     }
   },
   data() {
-    return {}
+    return {
+      history: []
+    }
   },
   computed: {
     getCopyIpfsHash() {
       return `${this.hash}`
+    },
+    latestVersionOnIpfs() {
+      return this.history.slice(-1)[0]
+    },
+    renderedHtmlLink() {
+      if (!this.latestVersionOnIpfs) return undefined
+      return `https://ipfs.io/ipfs/${this.latestVersionOnIpfs.htmlHash}`
     }
   },
   methods: {
@@ -49,6 +64,11 @@ export default {
         }
       )
     }
+  },
+  async created() {
+    const { data } = await getIpfsByArticleId(this.postId)
+    this.history = data
+    console.info('getIpfsByArticleId', data)
   }
 }
 </script>
