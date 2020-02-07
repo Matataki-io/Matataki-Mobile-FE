@@ -57,6 +57,10 @@
       </div>
 
       <div class="edit-card-list">
+        <div class="card-block">
+          <span>社交账号</span>
+          <p class="note">仅用于信息展示</p>
+        </div>
         <div v-for="(item, index) in social" :key="index" class="card-block">
           <div class="social-icons">
             <socialIcon :icon="item.symbol" />
@@ -107,7 +111,7 @@ export default {
         {
           symbol: 'Wechat',
           type: 'wechat',
-          name: '微信',
+          name: '微信22',
           placeholder: '微信号',
           url: '',
           value: ''
@@ -421,6 +425,11 @@ export default {
       }
     }
   }
+}
+.note {
+  font-size: 14px;
+  font-weight: 500;
+  color: #b2b2b2;
 }
 
 .imgcard {

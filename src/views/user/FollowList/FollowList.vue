@@ -103,9 +103,9 @@ export default {
       const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         let res = null
-        if (type === 1) res = await this.$backendAPI.follow({ id })
-        else res = await this.$backendAPI.unfollow({ id })
-        if (res.status === 200 && res.data.code === 0) {
+        if (type === 1) res = await this.$API.follow(id)
+        else res = await this.$API.unfollow(id)
+        if (res.code === 0) {
           this.$toast.success({
             duration: 1000,
             message: `${message}${this.$t('success.success')}`

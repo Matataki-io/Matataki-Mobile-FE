@@ -45,8 +45,8 @@ export default {
   methods: {
     async follow() {
       try {
-        const res = await this.$backendAPI.follow({ id: this.source })
-        if (res.data && res.data.code === 0) {
+        const res = await this.$API.follow(this.source)
+        if (res.code === 0) {
           this.followed = true
           this.$message.success(`${this.actionText}${this.$t('success.success')}`)
         } else {

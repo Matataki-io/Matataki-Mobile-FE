@@ -1,12 +1,15 @@
 <template>
-  <div class="container" v-loading="loading">
+  <div class="tg-container" v-loading="loading">
     <TelegramLogin
-      @callback="telegramLogin"
+      @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
       request-access="write"
       radius="6"
     />
+    <p class="tips">
+      使用该功能需要“科学上网”
+    </p>
   </div>
 </template>
 
@@ -34,7 +37,31 @@ export default {
     }
   },
   methods: {
+    login(user) {
+      const from = this.$route.query.from
+      if (from === 'login') {
+        this.telegramLogin(user)
+      } else {
+        this.telegramBinding(user)
+      }
+    },
     telegramLogin(user) {
+      this.loading = true
+      this.$API
+        .telegramLogin({
+          telegramParams: user,
+          telegramBotName: this.TELEGRAM_BOT_NAME
+        })
+        .then(res => {
+          this.$store.commit('setAccessToken', res.data)
+          this.$store.commit('setUserConfig', { idProvider: 'telegram' })
+          this.$router.back(-1)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    telegramBinding(user) {
       this.loading = true
       this.$API
         .accountBind({
@@ -55,19 +82,26 @@ export default {
           this.$message.error(`绑定失败${params.platform.toUpperCase()}`)
         })
         .finally(() => {
-          this.loading = true
+          this.loading = false
         })
     }
   }
 }
 </script>
-<style lang="less">
-.container {
+<style scoped lang="less">
+.tg-container {
   min-height: 100%;
   max-height: 100%;
   display: flex;
+  flex-direction: column;
   align-content: center;
-  justify-content: center;
+  align-items: center;
   padding-top: 10%;
+  .tips {
+    font-size: 12px;
+    color: #333;
+    padding: 0;
+    margin: 2em 0 0;
+  }
 }
 </style>

@@ -107,19 +107,19 @@ export default {
       if (!this.buttonStatus) return
       let transferUsername = this.searchUsernameInfo.id
       try {
-        const res = await this.$backendAPI.transferOwner(
+        const res = await this.$API.transferOwner(
           this.from,
           this.articleId,
           transferUsername
         )
-        if (res.status === 200 && res.data.code === 0) {
+        if (res.code === 0) {
           this.$toast({
             duration: 1000,
             position: 'bottom',
             message: this.$t('p.articleTransferSuccess')
           })
           this.change(false)
-          this.$router.push({ name: 'index' })
+          window.location.reload()
         } else {
           this.$toast({
             duration: 1000,

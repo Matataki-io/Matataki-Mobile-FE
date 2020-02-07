@@ -1,5 +1,6 @@
 /* eslint-disable */
 import request from '@/utils/request'
+import qs from 'qs'
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
@@ -20,6 +21,20 @@ export default {
     // post hash获取  ， p id 短链接
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
+  },
+  sendPost({ title, author, desc, content }) {
+    const stringifyData = qs.stringify({
+      'data[title]': title,
+      'data[author]': author,
+      'data[desc]': desc,
+      'data[content]': content
+    })
+    return request({
+      method: 'post',
+      url: `/post/ipfs`,
+      data: stringifyData,
+      config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    })
   },
   //-------------微信支付-----------------
   wxNativePay(tradeNo, title) {
@@ -360,7 +375,7 @@ minetokenGetResources(tokenId) {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
+    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
     signature = null
   ) {
     // 账号类型
@@ -372,7 +387,7 @@ minetokenGetResources(tokenId) {
         author,
         cover,
         fissionFactor,
-        hash,
+        data,
         platform: idProvider,
         publickey: signature ? signature.publicKey : null,
         sign: signature ? signature.signature : null,
@@ -383,7 +398,8 @@ minetokenGetResources(tokenId) {
         commentPayPoint,
         cc_license,
         shortContent
-      }
+      },
+      timeout: 30000
     })
   },
   /**
@@ -700,5 +716,27 @@ minetokenGetResources(tokenId) {
     catch(err) {
       console.error(err)
     }
-  }
+  },
+  telegramLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/telegram',
+      data: data
+    })
+  },
+  // 文章转让
+  transferOwner(from, articleId, uid) {
+    if (from === 'article')
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    if (from === 'draft')
+      return request({
+        method: 'POST',
+        url: '/draft/transferOwner',
+        data: { draftid: articleId, uid }
+      })
+  },
 }

@@ -40,7 +40,7 @@
         </router-link>
       </div>
 
-      <p class="warning" v-if="!tokenDetailData.token.contract_address">fan票正在发布中，请稍后过来操作!</p>
+      <p class="warning" v-if="!tokenDetailData.token.contract_address">Fan票正在部署中，请耐心等候。</p>
     </div>
     <div class="line" />
 
@@ -222,8 +222,8 @@ export default {
             this.tokenId = res.data.token.id
             this.minetokenGetResources(res.data.token.id)
           } else {
-            this.$router.push({
-              name: 'postminetoken'
+            this.$router.replace({
+              name: 'postminetoken',
             })
           }
         } else {

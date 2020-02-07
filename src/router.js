@@ -48,7 +48,7 @@ const router = new VueRouter({
       path: '/sharehall',
       name: 'sharehall',
       props: true,
-      component: () => import(/* webpackChunkName: "policy" */ './views/home/sharehall.vue'),
+      component: () => import(/* webpackChunkName: "sharehall",  webpackPrefetch: true */ './views/home/sharehall.vue'),
       meta: {
         title: '分享大厅-瞬MATATAKI'
       }
@@ -57,7 +57,7 @@ const router = new VueRouter({
       path: '/share/:id',
       name: 'share-id',
       props: true,
-      component: () => import(/* webpackChunkName: "policy" */ './views/share/_id.vue'),
+      component: () => import(/* webpackChunkName: "share-id" */ './views/share/_id.vue'),
       meta: {
         title: '分享详情-瞬MATATAKI'
       }
@@ -66,7 +66,7 @@ const router = new VueRouter({
       path: '/ring/:id',
       name: 'ring-id',
       component: () =>
-        import(/* webpackChunkName: "ring-id", webpackPrefetch: true  */ './views/ring/index.vue'),
+        import(/* webpackChunkName: "ring-id" */ './views/ring/index.vue'),
       meta: {
         title: 'fan票圈详情-瞬MATATAKI'
       }
@@ -75,20 +75,20 @@ const router = new VueRouter({
       path: '/ring/:id/founder',
       name: 'ring-id-founder',
       component: () =>
-        import(/* webpackChunkName: "ring-id-founder", webpackPrefetch: true  */ './views/ring/founder.vue'),
+        import(/* webpackChunkName: "ring-id-founder" */ './views/ring/founder.vue'),
       meta: {
         title: 'fan票圈创始人详情-瞬MATATAKI'
       }
     },
-    {
-      path: '/shop',
-      name: 'shop',
-      component: () =>
-        import(/* webpackChunkName: "shop", webpackPrefetch: true  */ './views/home/shop.vue'),
-      meta: {
-        title: '商品-瞬MATATAKI'
-      }
-    },
+    // {
+    //   path: '/shop',
+    //   name: 'shop',
+    //   component: () =>
+    //     import(/* webpackChunkName: "shop" */ './views/home/shop.vue'),
+    //   meta: {
+    //     title: '商品-瞬MATATAKI'
+    //   }
+    // },
     {
       path: '/about',
       name: 'About',
@@ -152,7 +152,7 @@ const router = new VueRouter({
       path: '/user/:id',
       name: 'user-id',
       component: () =>
-        import(/* webpackChunkName: "user-id", webpackPrefetch: true */ './views/user/index.vue'),
+        import(/* webpackChunkName: "user-id" */ './views/user/index.vue'),
       meta: {
         title: '个人主页-瞬MATATAKI'
       }
@@ -490,15 +490,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/token',
-      name: 'token',
-      component: () =>
-        import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
-      meta: {
-        title: 'Fan票-瞬MATATAKI'
-      }
-    },
-    {
       path: '/order/:id',
       name: 'order-id',
       component: () => import(/* webpackChunkName: "order-id" */ './views/order/index.vue'),
@@ -523,11 +514,20 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/token',
+      name: 'token',
+      component: () =>
+        import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
+      meta: {
+        title: 'Fan票-瞬MATATAKI'
+      }
+    },
+    {
       path: '/token/:id',
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
       meta: {
-        title: 'Fan票-瞬MATATAKI'
+        title: 'Fan票详情-瞬MATATAKI'
       }
     },
     {
@@ -582,7 +582,22 @@ const router = new VueRouter({
       name: 404,
       component: () => import(/* webpackChunkName: "404" */ './views/404/index.vue')
     }
-  ]
+  ],
+  /**
+   * 为了解决切换页面, 滚动条的位置没有改变的问题
+   * https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#%E5%BC%82%E6%AD%A5%E6%BB%9A%E5%8A%A8
+   * @param {*} to 路由对象
+   * @param {*} from 路由对象
+   * @param {*} savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用
+   */
+  scrollBehavior (to, from, savedPosition) {
+    // console.log('route', to, from, savedPosition)
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 router.beforeEach((to, from, next) => {
   const hasLoginPage = [
@@ -618,5 +633,7 @@ router.afterEach(to => {
     })
   }
 })
+
+
 
 export default router

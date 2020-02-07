@@ -53,7 +53,7 @@
               </router-link>
               <div class="avatar-right">
                 <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
-                  {{ article.nickname || article.author }}
+                  {{ article.nickname || article.username || '&nbsp;' }}
                 </router-link>
                 <p class="other">
                   {{ $t('p.publishFrom') }}
@@ -79,7 +79,7 @@
             </template>
           </div>
         </header>
-        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash"></ipfs>
+        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="id"></ipfs>
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -426,7 +426,7 @@
         :share-info="{
           title: article.title,
           avatar: articleAvatar,
-          name: article.nickname || article.author,
+          name: article.nickname || article.username || '&nbsp;',
           time: articleCreateTimeComputed,
           content: compiledMarkdown,
           shareLink: getShareLink,
@@ -1292,8 +1292,8 @@ export default {
 
       const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
-        if (type === 1) await this.$API.follow({ id })
-        else await this.$API.unfollow({ id })
+        if (type === 1) await this.$API.follow(id)
+        else await this.$API.unfollow(id)
         this.$toast.success({ duration: 1000, message: `${message}${this.$t('success.success')}` })
         this.followed = type === 1
       } catch (error) {

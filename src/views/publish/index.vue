@@ -82,6 +82,7 @@
                 size="small"
                 placeholder="请选择"
                 style="width: 100%;"
+                filterable
               >
                 <el-option
                   v-for="item in readSelectOptions"
@@ -328,6 +329,7 @@
     />
     <statement :visible="statementVisible" @close="closeStatement" />
     <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
+    <oneKeyImport v-model="oneKeyImportVisible" @res="importRes"/>
   </div>
 </template>
 
@@ -335,7 +337,6 @@
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { mavonEditor } from 'mavon-editor'
-import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor/dist/css/index.css' // editor css
@@ -352,6 +353,8 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import statement from '@/components/statement/index.vue'
 import articleImport from '@/components/article_import/index.vue'
 import { getCookie } from '@/utils/cookie'
+import * as clipboard from 'clipboard-polyfill'
+import oneKeyImport from '@/components/one_key_import/index.vue'
 
 export default {
   name: 'NewPost',
@@ -363,7 +366,8 @@ export default {
     articleTransfer,
     Prompt,
     statement,
-    articleImport
+    articleImport,
+    oneKeyImport,
   },
   data() {
     return {
@@ -414,6 +418,7 @@ export default {
       readSummary: '',
       statementVisible: false, // 原创声明
       importVisible: false, // 导入
+      oneKeyImportVisible:false,
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
@@ -476,6 +481,14 @@ export default {
   created() {
     // 编辑文章不会自动保存
     if (this.$route.params.type === 'edit') this.saveDraft = ''
+    const importRegexp = /^https?:\/\/.+$/
+    clipboard.readText().then(text => {
+      if (importRegexp.exec(text)) {
+        this.oneKeyImportVisible = true
+      }
+    }).catch(err => {
+      console.log('paste error:' + err.message)
+    })
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) next()
@@ -689,14 +702,23 @@ export default {
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
-      const { data } = await sendPost({
-        title,
-        author,
-        content,
-        desc: 'whatever'
-      })
-      if (data.code !== 0) this.failed(this.$t('error.sendPostIpfsFail'))
-      return data
+      try {
+        const res = await this.$API.sendPost({
+          title,
+          author,
+          content,
+          desc: 'whatever'
+        })
+        if (res.code === 0) return res
+        else {
+          this.failed(this.$t('error.sendPostIpfsFail'))
+          return false
+        }
+      } catch (error) {
+        console.log('sendPost error', error)
+        this.failed('上传ipfs失败')
+        return false
+      }
     },
     // 文章标签 tag
     setArticleTag(tagCards) {
@@ -774,9 +796,9 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
+        // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
         try {
           const response = await this.$API.publishArticle({ article, signature })
 
@@ -858,11 +880,11 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
-      const { author, hash } = article
+      const { author } = article
       let signature = null
-      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        signature = await this.getSignatureOfArticle({ author, hash })
-      }
+      // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+      //   signature = await this.getSignatureOfArticle({ author, hash })
+      // }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) {
         const promiseArr = []
@@ -966,18 +988,17 @@ export default {
 
         this.fullscreenLoading = true
         // 发布文章
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
-        // console.log('sendPost result :', hash)
-        this.publishArticle({
+        const data = { title, author, content }
+        await this.publishArticle({
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           cover,
           isOriginal,
           shortContent: this.readSummary
         })
+        this.fullscreenLoading = false
       }
       // 编辑发送
       const editPost = async () => {
@@ -990,19 +1011,19 @@ export default {
 
         this.fullscreenLoading = true
         // 编辑文章
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
+        const data = { title, author, content }
         this.editArticle({
           signId: this.signId,
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary
         })
+        this.fullscreenLoading = false
       }
       if (type === 'draft') draftPost()
       else if (type === 'edit') editPost()
@@ -1075,7 +1096,7 @@ export default {
     doneImageUpload(res) {
       // console.log(res);
       this.imgUploadDone += Date.now()
-      this.cover = res.data.data.cover
+      this.cover = res.data.cover
     },
     // 删除cover
     removeCover() {

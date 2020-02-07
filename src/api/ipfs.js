@@ -1,6 +1,5 @@
-import axios from 'axios'
 import qs from 'qs'
-import { accessTokenAPI } from '@/api/backend'
+import request from '@/utils/request'
 
 export const apiServer = process.env.VUE_APP_API
 function sendPost({ title, author, desc, content }) {
@@ -14,18 +13,22 @@ function sendPost({ title, author, desc, content }) {
   //   data: stringifyData,
   //   config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
   // });
-  const token = accessTokenAPI.get()
-  return axios({
+  return request({
     method: 'post',
-    url: `${apiServer}/post/ipfs`,
+    url: '/post/ipfs',
     data: stringifyData,
     config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
-    headers: { 'x-access-token': token }
   })
 }
 
+function getIpfsByArticleId(id) {
+  return request({
+    method: 'get',
+    url: `/p/${id}/ipfs/`
+  })
+}
 // eslint-disable-next-line import/prefer-default-export
-export { sendPost }
+export { sendPost, getIpfsByArticleId }
 
 // 图片上传接口
 export const ifpsUpload = `${apiServer}/ipfs/upload`

@@ -85,7 +85,10 @@ export default {
       )
     },
     htmlStr() {
-      return xssFilter(this.filterStr(this.shareInfo.content).substr(0, 300))
+      // TODO:这边感觉有点问题, 只优先完成了 保留换行和去掉img引起的空行
+      let filterStrRes = this.filterStr(this.shareInfo.content)
+      let removeSpaceRes = this.removeSpace(filterStrRes)
+      return xssFilter(removeSpaceRes.substr(0, 400))
     },
     QRCode: QRCode
   },
@@ -104,6 +107,9 @@ export default {
       let re = /<[^>]+>/gi
       str = str.replace(re, '')
       return str
+    },
+    removeSpace(str) {
+      return str.replace(/\n\s*\n/gi, '\n')
     },
     close() {
       this.$emit('change', false)
@@ -303,9 +309,13 @@ export default {
   min-height: 290px;
   p {
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 25px;
+    max-height: 200px;
+    overflow: hidden;
     padding: 0;
     margin: 0;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 }
 

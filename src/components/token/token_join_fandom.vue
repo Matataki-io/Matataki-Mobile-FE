@@ -1,10 +1,10 @@
 <template>
   <div v-if="fandomData.length > 0" class="fandom-card">
     <div class="fl">
-    <h2 class="token-title">
-      加入{{tokenSymbol}}粉丝群
-    </h2>
-    <a @click="showHelp = true" class="help-click">入群指南 <i class="el-icon-arrow-right"></i></a>
+      <h2 class="token-title">
+        加入{{tokenSymbol}}粉丝群
+      </h2>
+      <a @click="showHelp = true" class="help-click">入群指南 <i class="el-icon-arrow-right"></i></a>
     </div>
     <!-- 列表 -->
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
@@ -26,6 +26,9 @@
         <div v-else class="disable top10">持票不足</div>
       </div>
     </div>
+    <p class="tips">
+      使用该功能需要“科学上网”
+    </p>
     <!-- 展开更多 -->
     <div v-if="fandomData.length > 1" class="expand-page">
       <a v-if="isExpand" @click="isExpand = false">
@@ -80,6 +83,9 @@
           <p>根据机器人的引导入群</p>
         </div>
       </div>
+        <p class="tips">
+          使用该功能需要“科学上网”
+        </p>
     </el-dialog>
   </div>
 </template>
@@ -156,7 +162,7 @@ export default {
       }
       else {
         this.showHelp = false
-        if(!this.bindStatus) this.$router.push({ name: 'login-telegram' })
+        if(!this.bindStatus) this.$router.push({ name: 'login-telegram', query: { from: 'binding' } })
       }
     },
     /** 跳转至账号变更页面 */
@@ -340,6 +346,13 @@ export default {
       margin-top: 40px;
     }
   }
+}
+
+.tips {
+  font-size: 12px;
+  color: #bbb;
+  padding: 0;
+  margin: 10px 0 0;
 }
 </style>
 
