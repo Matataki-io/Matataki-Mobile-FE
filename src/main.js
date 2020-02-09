@@ -11,16 +11,17 @@ import Navigation from 'vue-navigation' // 记录路由并缓存页面，像原�
 
 // Vue plugins
 import (/* webpackChunkName: "pluginsBroadcastChannel" */ './plugins/broadcastChannel')
+import (/* webpackChunkName: "pluginsSentry" */ './plugins/sentry')
+import (/* webpackChunkName: "registerServiceWorker" */ './registerServiceWorker')
+import (/* webpackChunkName: "assetsGt" */ '@/assets/gt.js')
+
+import '@/assets/css/index.less'
 import './plugins/iview'
 import './plugins/vant'
 import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
-import (/* webpackChunkName: "pluginsSentry" */ './plugins/sentry')
-import (/* webpackChunkName: "registerServiceWorker" */ './registerServiceWorker')
 import './icons'
-import (/* webpackChunkName: "assetsGlobalStyle" */ '@/assets/css/index.less') // global css
-import (/* webpackChunkName: "assetsGt" */ '@/assets/gt.js')
 
 import i18n from './plugins/i18n'
 
