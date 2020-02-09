@@ -68,3 +68,6 @@ new Vue({
 // 8759.09 KiB      2167.78 KiB
 // 8682.07 KiB      2145.48 KiB
 // 8408.18 KiB      2090.59 KiB
+
+// dist/js/chunk-libs.8a671db1.js            1538.20 KiB      471.62 KiB
+// dist/js/app.9d1dda2f.js                   326.40 KiB       94.46 KiB

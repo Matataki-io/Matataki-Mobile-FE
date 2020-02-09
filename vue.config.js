@@ -42,12 +42,7 @@ console.log(process.env.NODE_ENV)
 const configureWebpack = () => {
   let configExternals = Object.create(null)
   let configPluginsModules = []
-  let pluginsConfig = [
-    new WebpackBar({
-      name: 'client',
-      profile: false
-    })
-  ]
+  let pluginsConfig = []
   showMonitor && pluginsConfig.push(new WebpackMonitor({
     capture: true, // -> default 'true'
     target: '../monitor/myStatsStore.json', // default -> '../monitor/stats.json'
@@ -55,6 +50,9 @@ const configureWebpack = () => {
     port: 3030, // default -> 8081
     excludeSourceMaps: true // default 'true'
   }))
+
+  // 是否显示捆绑包分析页面
+  showBundleAnalyzer && pluginsConfig.push(new BundleAnalyzerPlugin())
   // 插件配置
   let minimizer = []
 
@@ -162,6 +160,7 @@ const configureWebpack = () => {
         }
       })
     ]
+
     // 生产环境的插件配置
     pluginsConfig.push(
       // 图片优化
@@ -186,9 +185,6 @@ const configureWebpack = () => {
       })
     )
   }
-
-  // 是否显示捆绑包分析页面
-  if (showBundleAnalyzer) pluginsConfig.push(new BundleAnalyzerPlugin())
   return {
     externals: configExternals,
     optimization : {
@@ -217,6 +213,10 @@ const configureWebpack = () => {
       minimizer: minimizer
     },
     plugins: [
+      new WebpackBar({
+        name: 'client',
+        profile: false
+      }),
       new WebpackCdnPlugin({
         modules: configPluginsModules,
         publicPath: '/node_modules',
