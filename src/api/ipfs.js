@@ -21,8 +21,14 @@ function sendPost({ title, author, desc, content }) {
   })
 }
 
+function getIpfsByArticleId(id) {
+  return request({
+    method: 'get',
+    url: `/p/${id}/ipfs/`
+  })
+}
 // eslint-disable-next-line import/prefer-default-export
-export { sendPost }
+export { sendPost, getIpfsByArticleId }
 
 // 图片上传接口
 export const ifpsUpload = `${apiServer}/ipfs/upload`

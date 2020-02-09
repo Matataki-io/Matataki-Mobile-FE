@@ -375,7 +375,7 @@ minetokenGetResources(tokenId) {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
+    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
     signature = null
   ) {
     // 账号类型
@@ -387,7 +387,7 @@ minetokenGetResources(tokenId) {
         author,
         cover,
         fissionFactor,
-        hash,
+        data,
         platform: idProvider,
         publickey: signature ? signature.publicKey : null,
         sign: signature ? signature.signature : null,
@@ -398,7 +398,8 @@ minetokenGetResources(tokenId) {
         commentPayPoint,
         cc_license,
         shortContent
-      }
+      },
+      timeout: 30000
     })
   },
   /**
