@@ -95,7 +95,7 @@ export default {
         ]
       }
 
-      const currentUrlList = urlList[process.env.NODE_ENV]
+      const currentUrlList = urlList[process.env.VUE_NODE_ENV]
       return currentUrlList.includes(linkHost)
     }
   }
