@@ -73,11 +73,8 @@ const configureWebpack = () => {
       'vuex': 'Vuex',
       'moment': 'moment',
       'element-ui': 'ELEMENT',
-      'mavon-editor': 'MavonEditor',
-      // // eosjs: 'Eos'
       'vant': 'vant',
       'iview': 'iview',
-      'xss': 'xss',
       'html2canvas': 'html2canvas',
     }
     // cdn
@@ -113,18 +110,6 @@ const configureWebpack = () => {
         style: 'lib/theme-chalk/index.css'
       },
       {
-        name: 'mavon-editor',
-        var: 'mavonEditor',
-        cssOnly: true,
-        style: 'dist/css/index.css'
-      },
-      {
-        name: 'mavon-editor',
-        var: 'mavonEditor',
-        prodUrl:
-          'https://cdn.jsdelivr.net/gh/zhaokuohaha/mavonEditor@feature/lib-name/dist/mavon-editor.js'
-      },
-      {
         name: 'vant',
         path: 'lib/vant.min.js'
       },
@@ -133,17 +118,9 @@ const configureWebpack = () => {
         path: 'dist/iview.min.js'
       },
       {
-        name: 'xss',
-        path: 'dist/xss.min.js'
-      },
-      {
         name: 'html2canvas',
         path: 'dist/html2canvas.min.js'
       },
-      /* {
-        name: 'eosjs',
-        var: 'Eos',
-      }, */
     ]
     minimizer = [
       // minify your JavaScript.
