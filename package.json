@@ -39,7 +39,6 @@
     "iview": "^3.3.0",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",
-    "lib-flexible": "^0.3.2",
     "lodash": "^4.17.15",
     "mavon-editor": "^2.7.0",
     "moment": "^2.24.0",
@@ -86,6 +85,7 @@
     "eslint-loader": "^2.1.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.2.2",
+    "html-webpack-plugin": "3.2.0",
     "imagemin-mozjpeg": "8.0.0",
     "imagemin-webpack-plugin": "2.4.2",
     "jsdom": "15.1.0",
@@ -98,6 +98,8 @@
     "ontology-ts-sdk": "^1.0.22",
     "postcss-pxtorem": "^4.0.1",
     "prettier": "^1.18.2",
+    "script-ext-html-webpack-plugin": "2.1.4",
+    "speed-measure-webpack-plugin": "1.3.1",
     "style-resources-loader": "^1.2.1",
     "svg-sprite-loader": "^4.1.6",
     "svgo": "^1.2.2",
@@ -109,6 +111,8 @@
     "vue-template-compiler": "^2.6.6",
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cdn-plugin": "^3.1.1"
+    "webpack-cdn-plugin": "^3.1.1",
+    "webpack-monitor": "1.0.14",
+    "webpackbar": "4.0.0"
   }
 }

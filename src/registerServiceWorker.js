@@ -5,7 +5,7 @@ import { register } from 'register-service-worker'
 const consoleForSW = str =>
   console.log('%c%s', 'color: red; background: yellow; font-size: 16px;', `[Service worker] ${str}`)
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.VUE_NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready() {
       consoleForSW(

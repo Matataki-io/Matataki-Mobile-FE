@@ -22,7 +22,7 @@ const ontology = {
 }
 
 ontology.currentUsingNode =
-  process.env.NODE_ENV === 'production'
+  process.env.VUE_NODE_ENV === 'production'
     ? ontology.nodes.mainNetwork[0]
     : ontology.nodes.testNetwork.polaris[0]
 
