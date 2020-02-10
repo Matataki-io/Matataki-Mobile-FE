@@ -16,7 +16,7 @@
             <h4>{{ tokenDetail.name || '' }}</h4>
           </div>
         </div>
-        <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}</div>
+        <div class="number">{{ userBalance || 0 }}</div>
       </div>
       <div class="fl jsb publish-tokens">
         <div class="username">创始人：{{ userDetail.nickname || userDetail.username }}</div>
@@ -91,6 +91,9 @@
             clearable>
           </el-input>
         </el-form-item>
+        <p v-if="form.balance" class="balance">
+          Fan票余额&nbsp;{{ form.balance }}，<a @click="form.tokens = form.balance" href="javascript:;">全部转入</a>
+        </p>
         <el-form-item>
           <el-button type="primary" size="small" @click="submitForm('form')">
             确定
@@ -108,6 +111,7 @@
 import card from './components/tokens_detail_card.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index.vue'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -116,7 +120,9 @@ export default {
   },
   data() {
     let validateToken = (rule, value, callback) => {
-      if (Number(value) < this.form.min) {
+      if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
+        callback(new Error('发送的数量小数不能超过4位'))
+      } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
       } else if (Number(value) > this.form.max) {
         callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
@@ -134,6 +140,7 @@ export default {
         apiUrl: 'tokenUserLogs',
         list: []
       },
+      userBalance: 0,
       giftDialog: false,
       form: {
         tokenname: '',
@@ -143,7 +150,8 @@ export default {
         tokenId: '',
         tokens: 1,
         min: 0.0001,
-        max: 99999999 // 默认最大
+        max: 99999999, // 默认最大
+        balance: 0
       },
       rules: {
         tokens: [
@@ -158,6 +166,9 @@ export default {
     cover() {
       return this.tokenDetail.logo ? this.$API.getImg(this.tokenDetail.logo) : ''
     }
+  },
+  mounted() {
+    this.getUserBalance()
   },
   methods: {
     getListData(res) {
@@ -218,6 +229,7 @@ export default {
       this.form.decimals = ''
       this.form.tokens = 1
       this.form.max = 99999999
+      this.form.balance = 0
       this.$refs.form.resetFields()
     },
     giftDialogClose(done) {
@@ -262,8 +274,15 @@ export default {
       this.form.tokenname = symbol
       this.form.tokenId = tokenId
       this.form.decimals = decimals
-      this.form.max = Number(amount)
+      this.form.max = this.userBalance
+      this.form.balance = this.userBalance
       this.giftDialog = true
+    },
+    getUserBalance() {
+      if (!this.$route.params.id) return
+      this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
+        if (res.code === 0) this.userBalance = parseFloat(utils.fromDecimal(res.data, 4))
+      })
     }
   }
 }
@@ -361,6 +380,19 @@ export default {
     justify-content: center;
     color: #8c8c8c;
     font-size: 20px;
+  }
+}
+.balance {
+  padding: 0;
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #777777;
+  word-spacing: 1px;
+  a {
+    font-size: 14px;
+    color: #542de0;
+    cursor: pointer;
   }
 }
 </style>
