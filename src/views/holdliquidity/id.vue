@@ -38,12 +38,13 @@
       <card v-for="item in pointLog.list" :key="item.id" :card="item"></card>
     </BasePull>
     <div class="fixed-bottom">
-      <el-button class="fix-button" @click="showGift">赠送</el-button>
+      <!-- <el-button class="fix-button" @click="showGift">赠送</el-button> -->
       <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetail.symbol } }">
         <el-button class="fix-button" type="primary">交易</el-button>
       </router-link>
     </div>
-
+    <!-- TODO: 发布后再无修改立即删除 -->
+<!--
     <el-dialog
       title="赠送Fan票"
       :visible.sync="giftDialog"
@@ -56,6 +57,7 @@
         :model="form"
         label-width="70px"
         class="gift-form"
+        :rules="rules"
       >
         <el-form-item label="Fan票">
           <p class="tokenname">
@@ -80,8 +82,15 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="发送数量" prop="">
-          <el-input-number v-model="form.tokens" size="small" :min="1" :max="form.max" />
+        <el-form-item label="发送数量" prop="tokens">
+          <el-input
+            placeholder="请输入内容"
+            v-model="form.tokens"
+            :max="form.max"
+            :min="form.min"
+            size="small"
+            clearable>
+          </el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="submitForm('form')">
@@ -92,7 +101,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -107,6 +116,15 @@ export default {
     avatar
   },
   data() {
+    let validateToken = (rule, value, callback) => {
+      if (Number(value) < this.form.min) {
+        callback(new Error('发送数量不能少于0.0001'))
+      } else if (Number(value) > this.form.max) {
+        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
+      } else {
+        callback()
+      }
+    }
     return {
       tokenDetail: Object.create(null),
       userDetail: Object.create(null),
@@ -125,7 +143,13 @@ export default {
         userId: '',
         tokenId: '',
         tokens: 1,
+        min: 0.0001,
         max: 99999999 // 默认最大
+      },
+      rules: {
+        tokens: [
+          { validator: validateToken, trigger: 'blur' }
+        ]
       },
       reload: 0,
       transferLoading: false
@@ -155,7 +179,7 @@ export default {
         to: this.form.userId,
         amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
       }
-      this.$backendAPI
+      this.$API
         .transferMinetoken(data)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
@@ -231,17 +255,18 @@ export default {
           console.log(this.transferLoading)
         })
     },
-    showGift() {
-      if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
-      let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
+    // TODO: 发布后再无修改立即删除
+    // showGift() {
+    //   if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
+    //   let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
 
-      // console.log(Math.floor(Number(amount)))
-      this.form.tokenname = symbol
-      this.form.tokenId = tokenId
-      this.form.decimals = decimals
-      this.form.max = Math.floor(Number(amount))
-      this.giftDialog = true
-    }
+    //   // console.log(Math.floor(Number(amount)))
+    //   this.form.tokenname = symbol
+    //   this.form.tokenId = tokenId
+    //   this.form.decimals = decimals
+    //   this.form.max = Number(amount)
+    //   this.giftDialog = true
+    // }
   }
 }
 </script>
@@ -249,7 +274,7 @@ export default {
 <style lang="less" scoped>
 .tokens {
   background-color: #fff;
-  padding: 45px 0 140px 0;
+  padding: 45px 0 100px 0;
   min-height: 100%;
 }
 .tokens-head {
@@ -308,10 +333,16 @@ export default {
   right: 0;
   padding: 15px 20px 15px 20px;
   box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
-  height: 130px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  a {
+    width: 100%;
+    display: block;
+  }
   .fix-button {
     width: 100%;
-    margin: 5px 0;
   }
 }
 
