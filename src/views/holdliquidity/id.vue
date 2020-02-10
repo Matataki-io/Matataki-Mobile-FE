@@ -38,12 +38,13 @@
       <card v-for="item in pointLog.list" :key="item.id" :card="item"></card>
     </BasePull>
     <div class="fixed-bottom">
-      <el-button class="fix-button" @click="showGift">赠送</el-button>
+      <!-- <el-button class="fix-button" @click="showGift">赠送</el-button> -->
       <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetail.symbol } }">
         <el-button class="fix-button" type="primary">交易</el-button>
       </router-link>
     </div>
-
+    <!-- TODO: 发布后再无修改立即删除 -->
+<!--
     <el-dialog
       title="赠送Fan票"
       :visible.sync="giftDialog"
@@ -100,7 +101,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -254,17 +255,18 @@ export default {
           console.log(this.transferLoading)
         })
     },
-    showGift() {
-      if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
-      let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
+    // TODO: 发布后再无修改立即删除
+    // showGift() {
+    //   if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
+    //   let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
 
-      // console.log(Math.floor(Number(amount)))
-      this.form.tokenname = symbol
-      this.form.tokenId = tokenId
-      this.form.decimals = decimals
-      this.form.max = Number(amount)
-      this.giftDialog = true
-    }
+    //   // console.log(Math.floor(Number(amount)))
+    //   this.form.tokenname = symbol
+    //   this.form.tokenId = tokenId
+    //   this.form.decimals = decimals
+    //   this.form.max = Number(amount)
+    //   this.giftDialog = true
+    // }
   }
 }
 </script>
@@ -272,7 +274,7 @@ export default {
 <style lang="less" scoped>
 .tokens {
   background-color: #fff;
-  padding: 45px 0 140px 0;
+  padding: 45px 0 100px 0;
   min-height: 100%;
 }
 .tokens-head {
@@ -331,10 +333,16 @@ export default {
   right: 0;
   padding: 15px 20px 15px 20px;
   box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
-  height: 130px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  a {
+    width: 100%;
+    display: block;
+  }
   .fix-button {
     width: 100%;
-    margin: 5px 0;
   }
 }
 
