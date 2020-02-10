@@ -262,7 +262,7 @@ export default {
       this.form.tokenname = symbol
       this.form.tokenId = tokenId
       this.form.decimals = decimals
-      this.form.max = Math.floor(Number(amount))
+      this.form.max = Number(amount)
       this.giftDialog = true
     }
   }
