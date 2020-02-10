@@ -538,17 +538,6 @@ const API = {
     })
   },
   /**
-   * 转移token
-   * @param {*} data tokenId to amount
-   */
-  transferMinetoken(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/minetoken/transfer',
-      data: data
-    })
-  },
-  /**
    * 获取token详情
    * 请求头：x-access-token
    * 用户发行了token，data为对象，没有发行token，data为null

@@ -56,6 +56,7 @@
         :model="form"
         label-width="70px"
         class="gift-form"
+        :rules="rules"
       >
         <el-form-item label="Fan票">
           <p class="tokenname">
@@ -80,8 +81,15 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="发送数量" prop="">
-          <el-input-number v-model="form.tokens" size="small" :min="1" :max="form.max" />
+        <el-form-item label="发送数量" prop="tokens">
+          <el-input
+            placeholder="请输入内容"
+            v-model="form.tokens"
+            :max="form.max"
+            :min="form.min"
+            size="small"
+            clearable>
+          </el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="submitForm('form')">
@@ -107,6 +115,15 @@ export default {
     avatar
   },
   data() {
+    let validateToken = (rule, value, callback) => {
+      if (Number(value) < this.form.min) {
+        callback(new Error('发送数量不能少于0.0001'))
+      } else if (Number(value) > this.form.max) {
+        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
+      } else {
+        callback()
+      }
+    }
     return {
       tokenDetail: Object.create(null),
       userDetail: Object.create(null),
@@ -125,7 +142,13 @@ export default {
         userId: '',
         tokenId: '',
         tokens: 1,
+        min: 0.0001,
         max: 99999999 // 默认最大
+      },
+      rules: {
+        tokens: [
+          { validator: validateToken, trigger: 'blur' }
+        ]
       },
       reload: 0,
       transferLoading: false
@@ -155,7 +178,7 @@ export default {
         to: this.form.userId,
         amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
       }
-      this.$backendAPI
+      this.$API
         .transferMinetoken(data)
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
