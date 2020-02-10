@@ -92,15 +92,18 @@
           </el-input>
         </el-form-item>
         <p v-if="form.balance" class="balance">
-          Fan票余额&nbsp;{{ form.balance }}，<a @click="form.tokens = form.balance" href="javascript:;">全部转入</a>
+          余额&nbsp;{{ form.balance }}&nbsp;
+          <a @click="form.tokens = form.balance" href="javascript:;">全部转入</a>
         </p>
         <el-form-item>
-          <el-button type="primary" size="small" @click="submitForm('form')">
-            确定
-          </el-button>
-          <el-button size="small" @click="formClose">
-            取消
-          </el-button>
+          <div class="form-button">
+            <el-button @click="submitForm('form')" type="primary" size="small">
+              确定
+            </el-button>
+          <!-- <el-button @click="formClose" size="small"> -->
+          <!-- 取消 -->
+          <!-- </el-button> -->
+          </div>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -236,10 +239,10 @@ export default {
       this.formEmpty()
       done()
     },
-    formClose() {
-      this.giftDialog = false
-      this.formEmpty()
-    },
+    // formClose() {
+    //   this.giftDialog = false
+    //   this.formEmpty()
+    // },
     closeUser() {
       this.form.userId = ''
       this.form.useravatar = ''
@@ -384,7 +387,7 @@ export default {
 }
 .balance {
   padding: 0;
-  margin: 0 0 6px;
+  margin: 0 0 40px 70px;
   font-size: 14px;
   font-weight: 400;
   color: #777777;
@@ -393,6 +396,14 @@ export default {
     font-size: 14px;
     color: #542de0;
     cursor: pointer;
+  }
+}
+.form-button {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 </style>
