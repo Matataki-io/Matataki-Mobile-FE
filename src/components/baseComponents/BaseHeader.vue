@@ -107,7 +107,8 @@ export default {
   },
   data() {
     return {
-      scrollToggleStatus: false
+      scrollToggleStatus: false,
+      scrollThrottle: null
     }
   },
   computed: {
@@ -129,10 +130,11 @@ export default {
     }
   },
   created() {
-    this.addHandleScroll()
+    this.scrollThrottle = throttle(this.handleScroll, 150)
+    window.addEventListener('scroll', this.scrollThrottle)
   },
   destroyed() {
-    this.removeHandleScroll()
+    window.removeEventListener('scroll', this.scrollThrottle)
   },
   // 依據 https://blog.csdn.net/m0_37728716/article/details/81289317
   // 從 crearted 改成 mounted
@@ -159,9 +161,12 @@ export default {
       } else {
         this.$router.push({ name: 'article' })
       }
-    },
-    addHandleScroll() {
-      window.addEventListener('scroll', throttle(this.handleScroll, 150))
+
+      // hack 因为vue-navigation的关系,导致文章的popover返回列表页面没有关闭弹框
+      const hasPopover = document.querySelectorAll('.el-popover')
+      const hasPopoverShow = [].slice.call(hasPopover).some(i => i.style.display !== 'none')
+      hasPopoverShow && document.querySelector('body').click()
+
     },
     handleScroll() {
       const scrollTop =
@@ -174,9 +179,6 @@ export default {
       }
       // console.log(this.isScrollEmit, this.scrollToggleStatus);
       this.isScrollEmit && this.$emit('scrollToggleStatus', this.scrollToggleStatus)
-    },
-    removeHandleScroll() {
-      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 }
@@ -206,7 +208,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 9999;
   transition: all 0.6s;
   &.bc {
     // background-color: #fff;

@@ -22,6 +22,8 @@ export default {
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
   },
+  // 获取文章的ipfs hash信息
+  getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   sendPost({ title, author, desc, content }) {
     const stringifyData = qs.stringify({
       'data[title]': title,
