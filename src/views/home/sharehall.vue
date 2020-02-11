@@ -196,7 +196,8 @@ export default {
       saveImg: '',
       saveImgCanvas: '',
       createShareLoading: false,
-      saveLoading: false // 保存图片loading
+      saveLoading: false, // 保存图片loading
+      scrollThrottle: null
     }
   },
   watch: {
@@ -274,10 +275,11 @@ export default {
     })
   },
   mounted() {
-    window.addEventListener('scroll', throttle(this.shareHeadSetClass, 300))
+    this.scrollThrottle = throttle(this.shareHeadSetClass, 300)
+    window.addEventListener('scroll', this.scrollThrottle)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.shareHeadSetClass)
+    window.removeEventListener('scroll', this.scrollThrottle)
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
