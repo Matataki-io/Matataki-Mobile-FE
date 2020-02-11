@@ -1,7 +1,7 @@
 <template>
   <el-popover
     placement="top"
-    trigger="hover"
+    trigger="click"
     class="components-ipfs_all"
     width="307"
   >

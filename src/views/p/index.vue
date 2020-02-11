@@ -747,6 +747,8 @@ export default {
     // 移动端似乎不需要监听这个事件, 未和pc端同步code
     // window.addEventListener('popstate', this._popstateEvent)
   },
+  beforeDestroy() {
+  },
   destroyed() {
     // window.removeEventListener('popstate', this._popstateEvent)
   },
