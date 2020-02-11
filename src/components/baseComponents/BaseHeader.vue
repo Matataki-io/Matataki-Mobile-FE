@@ -161,6 +161,12 @@ export default {
       } else {
         this.$router.push({ name: 'article' })
       }
+
+      // hack 因为vue-navigation的关系,导致文章的popover返回列表页面没有关闭弹框
+      const hasPopover = document.querySelectorAll('.el-popover')
+      const hasPopoverShow = [].slice.call(hasPopover).some(i => i.style.display !== 'none')
+      hasPopoverShow && document.querySelector('body').click()
+
     },
     handleScroll() {
       const scrollTop =
