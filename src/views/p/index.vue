@@ -1233,12 +1233,10 @@ export default {
     },
     // 删除文章
     delArticleButton() {
-      const jumpTo = name => this.$router.push({ name })
       const delSuccess = async () => {
         this.$Modal.remove()
         this.$toast({ duration: 2000, message: this.$t('p.deleteArticle') })
-        // await sleep(3000)
-        jumpTo('index')
+        this.$router.push({name: 'index'})
       }
       const fail = err => {
         this.$Modal.remove()

@@ -14,12 +14,12 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', redirect: '/article' },
+    { path: '/', name: 'index', redirect: '/article' },
     {
       path: '/home',
       name: 'home',
       component: () =>
-        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'),
+        import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
       }
