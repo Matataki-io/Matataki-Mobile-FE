@@ -64,6 +64,7 @@
                 </p>
               </div>
             </div>
+            <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
             <template v-if="!isMe(article.uid)">
               <template v-if="!followed">
                 <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
@@ -485,6 +486,7 @@ import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 import { getCookie } from '@/utils/cookie'
 import quote from './quote.vue'
+import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -512,7 +514,8 @@ export default {
     ArticleFooter,
     commentInput,
     avatar,
-    quote
+    quote,
+    ipfsAll
   },
   data() {
     return {
@@ -582,7 +585,8 @@ export default {
       priceHasPaied: false,
       hasPaied: false,
       showQuote: false, // refernces
-      nowTime: 0 // refernces
+      nowTime: 0, // refernces
+      articleIpfsArray: [] // ipfs hash
     }
   },
   computed: {
@@ -897,6 +901,7 @@ export default {
             let { data } = res
             this.article = data
             this.getCurrentProfile()
+            this.getArticleIpfs(this.id)
 
             const isProduct = data.channel_id === 2
             if (((data.tokens && data.tokens.length !== 0) || (data.prices && data.prices.length !== 0)) && !isProduct) {
@@ -1406,6 +1411,7 @@ export default {
 
             // created
             this.getCurrentProfile()
+            this.getArticleIpfs(this.id)
             // mounted
             this.setAvatar(res.data.uid) // 头像
             this.addReadAmount(res.data.hash) // 增加阅读量
@@ -1445,6 +1451,19 @@ export default {
           console.log('err', err)
         })
     },
+    // 获取文章的ipfs hash信息
+    async getArticleIpfs(id = this.$route.params.id) {
+      await this.$API.getArticleIpfs(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.articleIpfsArray = res.data
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log('err', err)
+        })
+    }
   }
 }
 </script>
