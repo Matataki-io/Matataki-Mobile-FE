@@ -1,5 +1,5 @@
 <template>
-  <div class="article" @click.stop="hideClient">
+  <div class="article">
     <BaseHeader
       :pageinfo="{ title: article.channel_id === 2 ? $t('p.articleTitle') : $t('p.shopTitle') }"
     >
@@ -60,11 +60,12 @@
                   {{ articleCreateTimeComputed }}
                   <svg-icon icon-class="view" class="avatar-read" />
                   {{ article.read || 0 }}
-                  {{ $t('read') }}
+                  &nbsp;
+                  <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
+                  <span class="article-ipfs" v-if="isHideIpfsHash">IPFS</span>
                 </p>
               </div>
             </div>
-            <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
             <template v-if="!isMe(article.uid)">
               <template v-if="!followed">
                 <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
@@ -586,7 +587,8 @@ export default {
       hasPaied: false,
       showQuote: false, // refernces
       nowTime: 0, // refernces
-      articleIpfsArray: [] // ipfs hash
+      articleIpfsArray: [], // ipfs hash
+      bodyClickEvent: null
     }
   },
   computed: {
@@ -744,6 +746,12 @@ export default {
         window.location.reload()
       }
     })
+    this.$nextTick(() => {
+      this.bodyClickEvent = () => {
+        this.hideClient()
+      }
+      document.querySelector('body').addEventListener('click', this.bodyClickEvent)
+    })
     // 移动端似乎不需要监听这个事件, 未和pc端同步code
     // window.addEventListener('popstate', this._popstateEvent)
   },
@@ -751,6 +759,7 @@ export default {
   },
   destroyed() {
     // window.removeEventListener('popstate', this._popstateEvent)
+    window.removeEventListener('click', this.bodyClickEvent)
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),

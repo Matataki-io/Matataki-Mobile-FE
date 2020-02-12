@@ -77,7 +77,7 @@ export default {
 
 .components-ipfs_all {
   .ipfs_all__icon {
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
   }
   .ipfs_all__title {
@@ -134,7 +134,7 @@ export default {
 
   .ipfs_all__description {
     padding: 0;
-    margin: 0 0 10px;
+    margin: 0;
     font-size:10px;
     color:rgba(178,178,178,1);
     line-height:17px;
