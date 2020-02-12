@@ -76,7 +76,7 @@ export default {
         })
     },
     cover(src) {
-      return src ? this.$API.getImg(src) : ''
+      return src ? this.$ossProcess(src, {h: 200}) : ''
     },
     viewP(id) {
       this.$router.push({

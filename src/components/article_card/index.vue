@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     avatar() {
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, {h: 60}) : ''
     },
     friendlyDate() {
       const time = moment(this.card.create_time)

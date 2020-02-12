@@ -22,12 +22,14 @@ import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
 import './icons'
+import ossProcess from './utils/oss_process'
 
 import i18n from './plugins/i18n'
 
 Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
+Vue.prototype.$ossProcess = ossProcess
 
 Vue.config.productionTip = false
 
