@@ -82,17 +82,26 @@
         </span>
       </div>
     </div>
+    <div class="help-block">
+      <div class="help-list" @click="clearCache">
+        <span class="help-list-title">一键清除缓存</span>
+        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+      </div>
+    </div>
     <div class="signout">
-      <p class="version">-version3.0.1-</p>
+      <p class="version">-version{{ version || '1.0.0' }}-</p>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  enable as enableDarkMode,
-  disable as disableDarkMode,
-} from 'darkreader'
+import store from '@/utils/store.js'
+import packageConfig from '../../../package.json'
+import { removeCookie } from '@/utils/cookie'
+// import {
+//   enable as enableDarkMode,
+//   disable as disableDarkMode,
+// } from 'darkreader'
 export default {
   naem: 'Help',
   data() {
@@ -112,29 +121,38 @@ export default {
       ]
     }
   },
+  computed: {
+    version() {
+      return packageConfig.version
+    }
+  },
   created() {
     this.getMyUserData()
     this.getViewMode()
   },
   methods: {
     getViewMode() {
-      const viewMode = localStorage.getItem('viewMode')
+      const viewMode = store.get('viewMode')
       if (viewMode && viewMode === 'night') {
         this.siteViewMode = true
       } else {
         this.siteViewMode = false
       }
     },
-    changeViewMode(value) {
+    async changeViewMode(value) {
+      const { enable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const { disable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const enableDarkMode = enable
+      const disableDarkMode = disable
       if (value) {
-        localStorage.setItem('viewMode', 'night')
+        store.set('viewMode', 'night')
         enableDarkMode({
           brightness: 100,
           contrast: 90,
           sepia: 10,
         })
       } else {
-        localStorage.setItem('viewMode', 'day')
+        store.set('viewMode', 'day')
         disableDarkMode()
       }
     },
@@ -169,6 +187,30 @@ export default {
         console.log(`转让状态错误${error}`)
         this.$toast.fail({ duration: 1000, message: this.$t('error.fail') })
       }
+    },
+    clearCache() {
+      // 没有用vuex的signOut方法, 直接window reload了
+      this.$confirm('清除浏览器缓存, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'message-box__mobile'
+      }).then(() => {
+        // TODO: 这里需要清除所有cookie
+        removeCookie('ACCESS_TOKEN')
+        removeCookie('idProvider')
+        store.clearAll()
+        sessionStorage.clear()
+        this.$message({
+          type: 'success',
+          message: '清除成功!'
+        })
+        this.$router.push({ name: 'index' })
+        setTimeout(() => {
+          this.$userMsgChannel.postMessage('logout')
+          window.location.reload()
+        }, 1000)
+      }).catch(() => { })
     }
   }
 }
