@@ -90,6 +90,7 @@ import { mapGetters } from 'vuex'
 import moment from 'moment'
 import QRCode from './components/Qrcode'
 import utils from '@/utils/utils'
+import store from '@/utils/store.js'
 
 const interval = 5000
 export default {
@@ -298,7 +299,7 @@ export default {
           openid = this.currentUserInfo.name
         } else {
           // 不是微信账号需要先获取openid
-          openid = window.localStorage.getItem('WX_OPENID')
+          openid = store.get('WX_OPENID')
         }
         this.$API.jsapiPay(tradeNo, openid).then(res => {
           this.weakWeixinPay(res)
@@ -319,7 +320,7 @@ export default {
     getWeixinOpenId() {
       if (!this.isInWeixin) return
       if (this.isWeixinAccount) return
-      if (window.localStorage.getItem('WX_OPENID')) return
+      if (store.get('WX_OPENID')) return
       const { code, state } = this.$route.query
       if (!code || state !== 'weixin') {
         const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
@@ -332,7 +333,7 @@ export default {
       } else {
         this.$API.getWeixinOpenId(code).then(res => {
           if (res.openid) {
-            window.localStorage.setItem('WX_OPENID', res.openid)
+            store.set('WX_OPENID', res.openid)
           }
         })
       }

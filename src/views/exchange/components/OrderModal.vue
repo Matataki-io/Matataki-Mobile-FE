@@ -120,6 +120,8 @@ import QRCode from "./Qrcode";
 import { mapGetters } from "vuex";
 import utils from "@/utils/utils";
 import moment from "moment";
+import store from '@/utils/store.js'
+
 const interval = 5000;
 export default {
   name: "OrderModal",
@@ -267,7 +269,7 @@ export default {
       clearInterval(this.timer)
     },
     loginAndPay() {
-      const openid = this.isWeixinUser ? this.currentUserInfo.name : window.localStorage.getItem('WX_OPENID')
+      const openid = this.isWeixinUser ? this.currentUserInfo.name : store.get('WX_OPENID')
       const requestParams = this.makeOrderParams(openid)
       console.log(requestParams);
       this.$API.wxpay(requestParams).then(res => {
