@@ -97,7 +97,7 @@
 <script>
 import store from '@/utils/store.js'
 import packageConfig from '../../../package.json'
-import { removeCookie } from '@/utils/cookie'
+import { removeCookie, clearAllCookie } from '@/utils/cookie'
 // import {
 //   enable as enableDarkMode,
 //   disable as disableDarkMode,
@@ -196,7 +196,8 @@ export default {
         type: 'warning',
         customClass: 'message-box__mobile'
       }).then(() => {
-        // TODO: 这里需要清除所有cookie
+        clearAllCookie()
+        // 防止没有清除干净
         removeCookie('ACCESS_TOKEN')
         removeCookie('idProvider')
         store.clearAll()
