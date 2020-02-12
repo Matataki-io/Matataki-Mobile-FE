@@ -15,8 +15,9 @@ import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
-
 import AuthModal from '@/components/Auth/index.vue'
+import store from '@/utils/store.js'
+
 
 // import {
 //   enable as enableDarkMode,
@@ -110,7 +111,7 @@ export default {
       const enableDarkMode = enable
       const disableDarkMode = disable
 
-      const viewMode = localStorage.getItem('viewMode')
+      const viewMode = store.get('viewMode')
       if (viewMode && viewMode === 'night') {
         enableDarkMode({
           brightness: 100,
