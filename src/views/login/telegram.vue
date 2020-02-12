@@ -97,6 +97,7 @@ export default {
   align-content: center;
   align-items: center;
   padding-top: 10%;
+  background: #fff;
   .tips {
     font-size: 12px;
     color: #333;
