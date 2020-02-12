@@ -663,12 +663,12 @@
     margin-right: 10px;
   }
   .lock-img {
-    width: 36px;
+    width: 20px;
   }
   &-info {
     width: 100%;
     &-title {
-      font-size: 16px;
+      font-size: 20px;
       color: #000000;
       padding: 0;
       margin: 0;
@@ -690,9 +690,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    span {
+    p {
       color:rgba(178,178,178,1);
-      margin-left: 6px;
+    }
+    a {
+      color: #542DE0;
+    }
+    .price {
+      flex: 1;
+      flex-flow: row wrap;
     }
   }
   .lock-pay-text {
@@ -717,8 +723,9 @@
     list-style-type: none;
     padding: 0;
     margin: 10px 0 0 0;
+    width: 100%;
     li {
-      margin-bottom: 5px;
+      margin-bottom: 10px;
     }
   }
   .help-icon {
@@ -807,4 +814,22 @@
   color:rgba(84,45,224,1);
   line-height:14px;
   margin-left: 4px;
+}
+
+.avatar {
+  bottom: -1px;
+  position: relative;
+  margin: 0 5px;
+  width: 16px;
+  height: 16px;
+}
+
+.prompt-svg {
+  position: relative;
+  bottom: -1px;
+  width: 16px;
+  height: 16px;
+  &.left-8px{
+    margin-left: 8px;
+  }
 }
