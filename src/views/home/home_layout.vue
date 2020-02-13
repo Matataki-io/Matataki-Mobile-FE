@@ -76,7 +76,7 @@ export default {
         })
     },
     cover(src) {
-      return src ? this.$ossProcess(src, {h: 200}) : ''
+      return src ? this.$ossProcess(src, {h: 200, interlace: 1}) : ''
     },
     viewP(id) {
       this.$router.push({
