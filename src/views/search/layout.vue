@@ -1,11 +1,17 @@
 <template>
   <div class="search">
     <van-sticky>
-      <search :search-query-val="searchQueryVal" @backBtn="$router.go(-1)"></search>
-      <van-dropdown-menu active-color="#542de0">
-        <van-dropdown-item v-model="value1" :options="option1" @change="menuChange" />
-        <van-dropdown-item v-model="value2" disabled :options="option2" />
-      </van-dropdown-menu>
+      <div :class="showShadow && 'shadow'">
+        <search :search-query-val="searchQueryVal" @backBtn="$router.go(-1)"></search>
+        <div class="type-tabs">
+          <router-link v-for="(tag, index) in option1" :key="index" :to="{name: tag.name, query: {q: $route.query.q}}" :class="$route.name === tag.name && 'active'">
+            {{ tag.text }}
+            <span>
+              {{ tag.numResults > 99 ? '99+' : tag.numResults }}
+            </span>
+          </router-link>
+        </div>
+      </div>
     </van-sticky>
     <BasePull
       :loading-text="$t('notContent')"
@@ -16,13 +22,7 @@
       @getListData="getListData"
     >
       <template v-if="option1[value1].value !== 2">
-        <ArticleCard
-          v-for="item in articleCardData.articles"
-          :key="item.id"
-          :now-index="option1[value1].value"
-          :article="item"
-          :is-search-card="true"
-        />
+        <artcleCard v-for="item in articleCardData.articles" :key="item.id" :card="item" class="list-card" />
       </template>
       <template v-else>
         <searchUserList v-for="item in articleCardData.articles" :key="item.id" :card="item" />
@@ -33,13 +33,14 @@
 
 <script>
 import search from '@/components/search/index.vue'
-import ArticleCard from '@/components/ArticleCard.vue'
+import artcleCard from '@/components/article_card/index.vue'
 import searchUserList from '@/components/search_user_list/index.vue'
+import throttle from 'lodash/throttle'
 
 export default {
   components: {
     search,
-    ArticleCard,
+    artcleCard,
     searchUserList
   },
   props: {
@@ -58,17 +59,19 @@ export default {
       value1: 0,
       value2: 0,
       option1: [
-        { text: this.$t('search.optionText11'), value: 0, name: 'search' },
-        { text: this.$t('search.optionText12'), value: 1, name: 'search/shop' },
-        { text: this.$t('search.optionText13'), value: 2, name: 'search/user' }
+        { text: this.$t('search.optionText11'), value: 0, name: 'search', numResults: 1222 },
+        { text: this.$t('search.optionText12'), value: 1, name: 'search/shop', numResults: 46 },
+        { text: this.$t('search.optionText13'), value: 2, name: 'search/user', numResults: 7 },
+        { text: this.$t('search.optionText14'), value: 2, name: 'search/user', numResults: 7 }
       ],
-      option2: [{ text: this.$t('search.optionText21'), value: 0 }],
       articleCardData: {
         params: {},
         apiUrl: this.apiUrlPath,
         articles: [],
         isAtuoRequest: false
-      }
+      },
+      showShadow: false,
+      scrollEvent: null
     }
   },
   created() {
@@ -76,6 +79,11 @@ export default {
   },
   mounted() {
     this.query()
+    this.scrollEvent = throttle(this.scrollTop, 300)
+    window.addEventListener('scroll', this.scrollEvent)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
     setMenu() {
@@ -112,6 +120,15 @@ export default {
     getListData(res) {
       // console.log(res)
       this.articleCardData.articles = res.list
+    },
+    /** 滚动后展开按钮 */
+    scrollTop() {
+      try {
+        const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+        this.showShadow = scroll > 50
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
@@ -131,5 +148,43 @@ export default {
 }
 .back {
   width: 20px;
+}
+.shadow {
+  box-shadow: 0 0 30px 0 rgba(0,0,0,.15);
+  transition: all 600ms;
+}
+.type-tabs {
+  display: flex;
+  background-color: #fff;
+  width: 100%;
+  height: 44px;
+  border-top: 1px solid #ebedf0;
+  padding: 0 20px;
+  align-items: center;
+  a {
+    color: rgba(178, 178, 178, 1);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 40px;
+    margin-right: 5px;
+    flex: 1;
+    max-width: 76px;
+    &.active {
+      color: #000;
+      font-weight: 600;
+    }
+    span {
+      display: inline-block;
+      color: #B2B2B2;
+      font-size:14px;
+      font-weight:400;
+      line-height:16px;
+    }
+  }
+}
+
+.list-card {
+  padding: 0 20px;
+  margin: 20px 0 0;
 }
 </style>

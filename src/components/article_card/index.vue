@@ -8,8 +8,8 @@
       <span class="card-head__time">{{friendlyDate}}</span>
     </div>
     <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
-      <p class="card-title">{{card.title}}</p>
-      <p class="card-content" v-if="card.short_content">{{card.short_content}}</p>
+      <p class="card-title" v-html="card.title" />
+      <p class="card-content" v-if="card.short_content" v-html="card.short_content" />
       <div class="card-footer">
       <div class="card-footer__lock">
         <img
