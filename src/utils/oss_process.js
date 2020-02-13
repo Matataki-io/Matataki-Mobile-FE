@@ -1,8 +1,35 @@
 import API from '@/api/API'
-// oss process image
-export default (src, {w, h} = {}) => {
-  let process = '?x-oss-process=image/resize'
-  w && (process += `,w_${w}`)
-  h && (process += `,h_${h}`)
-  return (w || h) ? API.getImg(src).concat(process) : API.getImg(src)
+
+const isSupportWebp = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0
+console.log(isSupportWebp)
+/** oss process image
+ * @param {String} src 地址
+ * @param {String} w 宽度
+ * @param {String} h 高度
+*/
+export default (src, {w, h, interlace} = {}) => {
+  let ossprocess = '?x-oss-process=image'
+
+  // 对宽高的处理
+  const whStatus = !!(w || h)
+  whStatus && (ossprocess += '/resize') // 如果有w or h 添加 resize
+  w && (ossprocess += `,w_${w}`)
+  h && (ossprocess += `,h_${h}`)
+
+  // 渐进显示处理
+  const interlaceStatus = (interlace && interlace === 1)
+  interlaceStatus && (ossprocess += `/format,jpg/interlace,${interlace}`) // 如果有interlace并且为1
+
+  // 是否支持webp 没有设置interlace
+  if (isSupportWebp && !interlaceStatus) {
+    ossprocess += '/format,webp'
+  }
+
+  return (whStatus || interlaceStatus) ? API.getImg(src).concat(ossprocess) : API.getImg(src)
 }
+
+// console.log(this.$ossProcess('123'))
+// console.log(this.$ossProcess('123', {h: 60}))
+// console.log(this.$ossProcess('123', {interlace: 0}))
+// console.log(this.$ossProcess('123', {interlace: 1}))
+// console.log(this.$ossProcess('123', {h: 60, interlace: 1}))
