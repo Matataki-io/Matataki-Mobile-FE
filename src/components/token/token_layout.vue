@@ -315,7 +315,7 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
-      return this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
+      return this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo, {h: 90}) : ''
     },
     amount() {
       const tokenamount = precision(

@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     cover(cover) {
-      return cover ? this.$ossProcess(cover) : ''
+      return cover ? this.$ossProcess(cover, {h: 60}) : ''
     },
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.decimals)

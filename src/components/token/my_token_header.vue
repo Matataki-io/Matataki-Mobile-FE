@@ -41,7 +41,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
-      return this.tokenData.logo ? this.$ossProcess(this.tokenData.logo) : ''
+      return this.tokenData.logo ? this.$ossProcess(this.tokenData.logo, {h: 90}) : ''
     },
     name() {
       let name = (this.currentUserInfo.nickname || this.currentUserInfo.username) || ''
