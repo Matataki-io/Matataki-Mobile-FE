@@ -429,7 +429,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     coverEditor() {
-      return this.$API.getImg(this.cover)
+      return this.$ossProcess(this.cover)
     },
     isShowTransfer() {
       return this.$route.query.from === 'draft'
@@ -1037,7 +1037,7 @@ export default {
           .ossUploadImage('article', imgfile)
           .then(res => {
             if (res.code === 0) {
-              this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
+              this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
             } else {
               this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
               this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
@@ -1066,7 +1066,7 @@ export default {
                 .ossUploadImage('article', blob)
                 .then(res => {
                   if (res.code === 0) {
-                    this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
+                    this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
                   } else {
                     this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
                     this.$refs.md.$img2Url(pos, '上传图片失败,请重试')

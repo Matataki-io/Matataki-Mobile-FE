@@ -27,7 +27,7 @@ export default {
       return moment(this.card.create_time).format('MMMDo HH:mm')
     },
     cover() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar)
       return ''
     }
   },

@@ -11,7 +11,6 @@ import { replaceStr } from '@/utils/reg'
 
 export const urlAddress = process.env.VUE_APP_URL
 export const apiServer = process.env.VUE_APP_API
-const ssImgAddress = 'https://ssimg.frontenduse.top'
 
 // https://github.com/axios/axios/issues/535
 const axiosforApiServer = axios.create({

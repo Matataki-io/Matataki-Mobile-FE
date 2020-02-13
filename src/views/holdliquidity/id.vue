@@ -157,7 +157,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.tokenDetail.logo ? this.$API.getImg(this.tokenDetail.logo) : ''
+      return this.tokenDetail.logo ? this.$ossProcess(this.tokenDetail.logo) : ''
     }
   },
   methods: {
@@ -242,7 +242,7 @@ export default {
           if (res.status === 200 && res.data.code === 0) {
             console.log(res)
             this.form.useravatar = res.data.data.avatar
-              ? this.$API.getImg(res.data.data.avatar)
+              ? this.$ossProcess(res.data.data.avatar)
               : ''
             this.form.userId = res.data.data.id
           } else return this.$message.warning(res.data.message)
