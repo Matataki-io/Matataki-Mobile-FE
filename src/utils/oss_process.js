@@ -1,13 +1,15 @@
 import API from '@/api/API'
 
-const isSupportWebp = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0
+const isSupportWebp = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0
 console.log(isSupportWebp)
 /** oss process image
  * @param {String} src 地址
  * @param {String} w 宽度
  * @param {String} h 高度
 */
-export default (src, {w, h, interlace} = {}) => {
+
+// interlaceOrWebp 是否开启webp和interlace (这个还没想好要不要)
+export default (src, { w, h, interlace } = {}) => {
   let ossprocess = '?x-oss-process=image'
 
   // 对宽高的处理
