@@ -82,10 +82,10 @@ export default {
     },
     avatarSrc() {
       if (this.cardType === 'edit') {
-        if (this.card.user.avatar) return this.$API.getImg(this.card.user.avatar)
+        if (this.card.user.avatar) return this.$ossProcess(this.card.user.avatar)
         return ''
       } else if (this.cardType === 'read') {
-        if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+        if (this.card.avatar) return this.$ossProcess(this.card.avatar)
         return ''
       } else return ''
     },

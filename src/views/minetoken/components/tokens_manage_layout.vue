@@ -196,7 +196,7 @@ export default {
     tokenCover() {
       if (this.tokenDetailData.token) {
         const logo = this.tokenDetailData.token.logo
-        return logo ? this.$API.getImg(logo) : ''
+        return logo ? this.$ossProcess(logo) : ''
       } else return ''
     },
     tokenWidget() {
@@ -279,7 +279,7 @@ export default {
       return moment(time).format('MMMDo HH:mm')
     },
     // cover(cover) {
-    //   return cover ? this.$API.getImg(cover) : ''
+    //   return cover ? this.$ossProcess(cover) : ''
     // },
     // tokenAmount(amount) {
     //   const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)

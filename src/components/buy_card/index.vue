@@ -90,7 +90,7 @@ export default {
     },
     buyCover() {
       if (!this.buy) return ''
-      return this.buy.cover ? this.$API.getImg(this.buy.cover) : ''
+      return this.buy.cover ? this.$ossProcess(this.buy.cover) : ''
     }
   },
   methods: {

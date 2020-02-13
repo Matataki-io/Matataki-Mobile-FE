@@ -267,7 +267,7 @@ export default {
   },
   computed: {
     coinsCover() {
-      return this.form.logo ? this.$API.getImg(this.form.logo) : ''
+      return this.form.logo ? this.$ossProcess(this.form.logo) : ''
     },
     isPost() {
       return this.$route.name === 'postminetoken'

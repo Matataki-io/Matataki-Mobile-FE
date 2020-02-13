@@ -736,7 +736,7 @@ export default {
     // 需要多少Fan票LOGO
     needTokenLogo() {
       if (this.article.tokens.length !== 0) {
-        return this.$API.getImg(this.article.tokens[0].logo)
+        return this.$ossProcess(this.article.tokens[0].logo)
       } else return ''
     },
     limitValue() {
@@ -825,7 +825,7 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: this.regRemoveContent(this.post.content),
-        imgUrl: this.article.cover ? this.$API.getImg(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
     },
     // 复制hash

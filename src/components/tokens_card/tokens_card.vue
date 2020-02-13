@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
+      return cover ? this.$ossProcess(cover) : ''
     },
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.card.decimals)

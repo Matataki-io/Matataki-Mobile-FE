@@ -110,11 +110,11 @@ export default {
       return this.article.id // 原来是 id 现在用id进入
     },
     avatar() {
-      if (this.article.avatar) return this.$API.getImg(this.article.avatar)
+      if (this.article.avatar) return this.$ossProcess(this.article.avatar)
       return ''
     },
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover)
       return ''
     },
     articleEosValue() {

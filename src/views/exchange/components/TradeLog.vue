@@ -94,7 +94,7 @@ export default {
     },
     logo() {
       if (!this.minetokenToken.logo) return ''
-      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+      return this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
     },
     volume() {
       const tokenamount = precision(

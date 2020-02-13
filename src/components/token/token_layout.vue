@@ -315,7 +315,7 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
-      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+      return this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
     },
     amount() {
       const tokenamount = precision(
@@ -426,7 +426,7 @@ export default {
           this.$wechatShare({
             title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
             desc: this.minetokenToken.brief || '暂无',
-            imgUrl: this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+            imgUrl: this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
           })
         } else {
           this.$message.success(res.message)
