@@ -25,16 +25,15 @@ import './icons'
 import ossProcess from './utils/oss_process'
 
 import i18n from './plugins/i18n'
-
 Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$ossProcess = ossProcess
+Vue.prototype._ = require('lodash')
 
 Vue.config.productionTip = false
 
 Vue.use(Navigation, { router, store, keyName: 'c' })
-
 // Register moment's default language
 moment.locale('zh-CN')
 /*

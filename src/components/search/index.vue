@@ -8,6 +8,8 @@
       show-action
       shape="round"
       @search="onSearch"
+      @input="autoSearch"
+      id="searchBox"
     >
       <div slot="action" @click="onSearch">{{ $t('search.btn') }}</div>
     </van-search>
@@ -27,12 +29,15 @@ export default {
     return {
       searchVal: this.searchQueryVal
     }
-  },
+    },
+    mounted() {
+      document.getElementById('searchBox').focus();
+    },
   watch: {
     searchQueryVal(val) {
       this.searchVal = val
     }
-  },
+    },
   methods: {
     onSearch() {
       if (!this.searchVal.trim()) return this.$toast(this.$t('warning.searchContent'))
@@ -46,6 +51,12 @@ export default {
           q: this.searchVal.trim()
         }
       })
+    },
+    autoSearch() {
+      this._.debounce(() => {
+        if (!this.searchVal.trim()) return;
+        this.search();
+      }, 1000)();
     }
   }
 }
