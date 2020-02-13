@@ -62,7 +62,8 @@
                   {{ article.read || 0 }}
                   &nbsp;
                   <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
-                  <span class="article-ipfs" v-if="isHideIpfsHash">IPFS</span>
+                  &nbsp;
+                  <span class="article-head__ipfs" v-if="isHideIpfsHash">IPFS</span>
                 </p>
               </div>
             </div>
@@ -611,7 +612,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover, {h: 240})
       return null
     },
     displayPlaceholder() {
@@ -1320,7 +1321,7 @@ export default {
         if (res.code === 0) {
           this.followed = res.data.is_follow
           this.articleAvatar = res.data.avatar
-            ? this.$API.getImg(res.data.avatar)
+            ? this.$ossProcess(res.data.avatar, {h: 60})
             : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
