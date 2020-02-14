@@ -2,7 +2,7 @@
   <div class="search">
     <van-sticky>
       <div :class="showShadow && 'shadow'">
-        <search :search-query-val="searchQueryVal" @backBtn="$router.go(-1)"></search>
+        <search :search-query-val="searchQueryVal" :search-type="searchType" @backBtn="$router.go(-1)"></search>
         <div class="type-tabs">
           <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'">
             {{ tag }}
@@ -232,7 +232,7 @@ export default {
     max-width: 76px;
     &.active {
       color: #000;
-      font-weight: 600;
+      font-weight: bold;
     }
     span {
       display: inline-block;
