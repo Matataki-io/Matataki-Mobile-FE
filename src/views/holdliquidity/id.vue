@@ -43,65 +43,6 @@
         <el-button class="fix-button" type="primary">交易</el-button>
       </router-link>
     </div>
-    <!-- TODO: 发布后再无修改立即删除 -->
-<!--
-    <el-dialog
-      title="赠送Fan票"
-      :visible.sync="giftDialog"
-      width="90%"
-      :before-close="giftDialogClose"
-    >
-      <el-form
-        ref="form"
-        v-loading="transferLoading"
-        :model="form"
-        label-width="70px"
-        class="gift-form"
-        :rules="rules"
-      >
-        <el-form-item label="Fan票">
-          <p class="tokenname">
-            {{ form.tokenname }}
-          </p>
-        </el-form-item>
-        <el-form-item label="接受对象">
-          <el-input
-            v-model="form.username"
-            placeholder="请输入赠送的对象"
-            size="medium"
-            @keyup.enter.native="searchUser"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="searchUser" />
-          </el-input>
-        </el-form-item>
-        <el-form-item v-if="form.userId" label="" prop="">
-          <div class="avatar-content">
-            <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
-            <div class="gift-ful" @click="closeUser">
-              <i class="el-icon-close" />
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="发送数量" prop="tokens">
-          <el-input
-            placeholder="请输入内容"
-            v-model="form.tokens"
-            :max="form.max"
-            :min="form.min"
-            size="small"
-            clearable>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="small" @click="submitForm('form')">
-            确定
-          </el-button>
-          <el-button size="small" @click="formClose">
-            取消
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog> -->
   </div>
 </template>
 
@@ -116,15 +57,6 @@ export default {
     avatar
   },
   data() {
-    let validateToken = (rule, value, callback) => {
-      if (Number(value) < this.form.min) {
-        callback(new Error('发送数量不能少于0.0001'))
-      } else if (Number(value) > this.form.max) {
-        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
-      } else {
-        callback()
-      }
-    }
     return {
       tokenDetail: Object.create(null),
       userDetail: Object.create(null),
@@ -136,21 +68,6 @@ export default {
         list: []
       },
       giftDialog: false,
-      form: {
-        tokenname: '',
-        username: '',
-        useravatar: '',
-        userId: '',
-        tokenId: '',
-        tokens: 1,
-        min: 0.0001,
-        max: 99999999 // 默认最大
-      },
-      rules: {
-        tokens: [
-          { validator: validateToken, trigger: 'blur' }
-        ]
-      },
       reload: 0,
       transferLoading: false
     }
@@ -171,102 +88,6 @@ export default {
       const tokenamount = precision(amount, 'CNY', this.tokenDetail.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-
-    transferMinetoken() {
-      this.transferLoading = true
-      const data = {
-        tokenId: this.form.tokenId,
-        to: this.form.userId,
-        amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-      }
-      this.$API
-        .transferMinetoken(data)
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.$message.success(res.data.message)
-            this.reload = Date.now()
-          } else {
-            this.$message.error(res.data.message)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.error('赠送token失败')
-        })
-        .finally(() => {
-          this.transferLoading = false
-        })
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          if (this.form.userId && this.form.tokenId) this.transferMinetoken()
-          else {
-            this.$message.warning('请选择用户')
-          }
-        } else return false
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    formEmpty() {
-      this.form.tokenname = ''
-      this.form.username = ''
-      this.form.useravatar = ''
-      this.form.userId = ''
-      this.form.tokenId = ''
-      this.form.decimals = ''
-      this.form.tokens = 1
-      this.form.max = 99999999
-      this.$refs.form.resetFields()
-    },
-    giftDialogClose(done) {
-      this.formEmpty()
-      done()
-    },
-    formClose() {
-      this.giftDialog = false
-      this.formEmpty()
-    },
-    closeUser() {
-      this.form.userId = ''
-      this.form.useravatar = ''
-    },
-    async searchUser() {
-      if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
-      this.transferLoading = true
-      await this.$backendAPI
-        .searchUsername(this.form.username.trim())
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            console.log(res)
-            this.form.useravatar = res.data.data.avatar
-              ? this.$ossProcess(res.data.data.avatar)
-              : ''
-            this.form.userId = res.data.data.id
-          } else return this.$message.warning(res.data.message)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.transferLoading = false
-          console.log(this.transferLoading)
-        })
-    },
-    // TODO: 发布后再无修改立即删除
-    // showGift() {
-    //   if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
-    //   let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
-
-    //   // console.log(Math.floor(Number(amount)))
-    //   this.form.tokenname = symbol
-    //   this.form.tokenId = tokenId
-    //   this.form.decimals = decimals
-    //   this.form.max = Number(amount)
-    //   this.giftDialog = true
-    // }
   }
 }
 </script>

@@ -9,7 +9,7 @@
       <div class="fl jsb">
         <div class="info">
           <router-link :to="{ name: 'token-id', params: { id: tokenDetail.id } }">
-            <avatar :src="cover" size="30px" />
+            <avatar :src="cover" />
           </router-link>
           <div class="user-info">
             <h3>{{ tokenDetail.symbol || '' }}</h3>
@@ -64,22 +64,27 @@
           </p>
         </el-form-item>
         <el-form-item label="接受对象">
-          <el-input
-            v-model="form.username"
-            placeholder="请输入赠送的对象"
-            size="medium"
-            @keyup.enter.native="searchUser"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="searchUser" />
+          <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="small" style="z-index: 2;">
+            <el-button slot="append" @click="searchUser" icon="el-icon-search" />
           </el-input>
-        </el-form-item>
-        <el-form-item v-if="form.userId" label="" prop="">
-          <div class="avatar-content">
-            <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
-            <div class="gift-ful" @click="closeUser">
-              <i class="el-icon-close" />
+          <!-- 搜索结果 -->
+          <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
+            <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
+              <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
+              <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
             </div>
           </div>
+        </el-form-item>
+        <!-- 结果 -->
+        <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
+          <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
+            <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
+            <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
+            <div @click="closeUser" class="gift-ful">
+              <i class="el-icon-close" />
+            </div>
+          </router-link>
+          <div class="avatar-content" />
         </el-form-item>
         <el-form-item label="发送数量" prop="tokens">
           <el-input
@@ -97,7 +102,7 @@
         </p>
         <el-form-item>
           <div class="form-button">
-            <el-button @click="submitForm('form')" type="primary" size="small">
+            <el-button :disabled="toUserInfoIndex === -1"  @click="submitForm('form')" type="primary" size="small">
               确定
             </el-button>
           <!-- <el-button @click="formClose" size="small"> -->
@@ -113,7 +118,8 @@
 <script>
 import card from './components/tokens_detail_card.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
-import avatar from '@/components/avatar/index.vue'
+import { xssFilter } from '@/utils/xss'
+import avatar from '@/common/components/avatar'
 import utils from '@/utils/utils'
 
 export default {
@@ -162,7 +168,9 @@ export default {
         ]
       },
       reload: 0,
-      transferLoading: false
+      transferLoading: false,
+      searchUserList: [], // 搜索结果
+      toUserInfoIndex: -1 // 转让的对象
     }
   },
   computed: {
@@ -186,20 +194,28 @@ export default {
     },
 
     transferMinetoken() {
+      const toUserInfoIndex = this.toUserInfoIndex
+      if (toUserInfoIndex === -1) return
+
+      let toId = toUserInfoIndex === -1 ? -1 : this.searchUserList[toUserInfoIndex].id
       this.transferLoading = true
       const data = {
         tokenId: this.form.tokenId,
-        to: this.form.userId,
+        to: toId,
         amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
       }
       this.$API
         .transferMinetoken(data)
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.$message.success(res.data.message)
+          console.log('res', res)
+          if (res.code === 0) {
+            this.$message.success(res.message)
             this.reload = Date.now()
+
+            // 和pc端不一样 重新获取一次user balance
+            this.getUserBalance()
           } else {
-            this.$message.error(res.data.message)
+            this.$message.error(res.message)
           }
         })
         .catch(err => {
@@ -213,9 +229,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.form.userId && this.form.tokenId) this.transferMinetoken()
-          else {
+          if (this.toUserInfoIndex === -1) {
             this.$message.warning('请选择用户')
+          } else {
+            this.transferMinetoken()
           }
         } else return false
       })
@@ -234,6 +251,9 @@ export default {
       this.form.max = 99999999
       this.form.balance = 0
       this.$refs.form.resetFields()
+
+      this.searchUserList = [] // 搜索结果
+      this.toUserInfoIndex = -1 // 转让的对象
     },
     giftDialogClose(done) {
       this.formEmpty()
@@ -243,31 +263,45 @@ export default {
     //   this.giftDialog = false
     //   this.formEmpty()
     // },
-    closeUser() {
-      this.form.userId = ''
-      this.form.useravatar = ''
+    closeUser(e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.toUserInfoIndex = -1
+      this.searchUserList = []
+      return false
     },
     async searchUser() {
-      if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
+      const searchName = this.form.username.trim()
+      if (!searchName) return this.$message.warning('用户名不能为空')
+
+      this.toUserInfoIndex = -1
+
       this.transferLoading = true
-      await this.$backendAPI
-        .searchUsername(this.form.username.trim())
-        .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            console.log(res)
-            this.form.useravatar = res.data.data.avatar
-              ? this.$ossProcess(res.data.data.avatar)
-              : ''
-            this.form.userId = res.data.data.id
-          } else return this.$message.warning(res.data.message)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.transferLoading = false
-          console.log(this.transferLoading)
-        })
+
+      const params = {
+        word: searchName,
+        pagesize: 10
+      }
+
+      this.$API.search('user', params).then(res => {
+        if (res.code === 0) {
+          this.searchUserList = res.data.list
+          if (res.data.list.length === 0) {
+            // 没有结果
+            this.$message.warning('没有搜索结果')
+          }
+        } else {
+          // 失败
+          this.$message.warning(res.message)
+        }
+      }).catch(err => {
+        // 出错
+        console.log(err)
+        this.searchUserList = []
+      }).finally(() => {
+        this.transferLoading = false
+      })
+
     },
     showGift() {
       if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
@@ -277,15 +311,33 @@ export default {
       this.form.tokenname = symbol
       this.form.tokenId = tokenId
       this.form.decimals = decimals
+
       this.form.max = this.userBalance
       this.form.balance = this.userBalance
+
       this.giftDialog = true
     },
     getUserBalance() {
       if (!this.$route.params.id) return
       this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
-        if (res.code === 0) this.userBalance = parseFloat(utils.fromDecimal(res.data, 4))
+        if (res.code === 0) {
+          const balance = parseFloat(utils.fromDecimal(res.data, 4))
+
+          this.userBalance = balance
+
+          this.form.max = balance
+          this.form.balance = balance
+        }
       })
+    },
+    continueUser(i) {
+      this.toUserInfoIndex = i
+    },
+    searchUserAvatar(src) {
+      return src ? this.$ossProcess(src, { h: 60 }) : ''
+    },
+    searchUserTitle(html) {
+      return html ? xssFilter(html) : ''
     }
   }
 }
@@ -366,25 +418,7 @@ export default {
     margin: 0;
   }
 }
-.gift-avatar {
-  border: 1px solid #ececec;
-}
-.avatar-content {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  position: relative;
-  .gift-ful {
-    cursor: pointer;
-    position: absolute;
-    top: -10px;
-    right: -20px;
-    align-items: center;
-    justify-content: center;
-    color: #8c8c8c;
-    font-size: 20px;
-  }
-}
+
 .balance {
   padding: 0;
   margin: 0 0 40px 70px;
@@ -406,4 +440,74 @@ export default {
     padding-right: 40px;
   }
 }
+
+
+.transfer—search__list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  background: #fff;
+  border: 1px solid #B2B2B2;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 1;
+  padding: 4px 0 0 0;
+  &__avatar {
+    margin-right: 10px;
+    flex: 0 0 30px;
+  }
+  & > div {
+    width: 100%;
+    margin: 0;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    &:hover {
+      background: #f1f1f1;
+    }
+    span {
+      font-size:14px;
+      font-weight:400;
+      color:rgba(178,178,178,1);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}
+
+.search-user {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 10px;
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    flex: 0 0 40px;
+  }
+  span {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(178,178,178,1);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .gift-ful {
+    cursor: pointer;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 20px;
+  }
+}
+
 </style>
