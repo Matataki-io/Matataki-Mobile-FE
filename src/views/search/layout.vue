@@ -4,28 +4,34 @@
       <div :class="showShadow && 'shadow'">
         <search :search-query-val="searchQueryVal" @backBtn="$router.go(-1)"></search>
         <div class="type-tabs">
-          <router-link v-for="(tag, index) in option1" :key="index" :to="{name: tag.name, query: {q: $route.query.q}}" :class="$route.name === tag.name && 'active'">
-            {{ tag.text }}
+          <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'">
+            {{ tag }}
             <span>
-              {{ tag.numResults > 99 ? '99+' : tag.numResults }}
+              {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
             </span>
-          </router-link>
+          </p>
         </div>
       </div>
     </van-sticky>
     <BasePull
       :loading-text="$t('notContent')"
-      :params="articleCardData.params"
-      :api-url="articleCardData.apiUrl"
+      :params="articleCardData[searchType].params"
+      :api-url="articleCardData[searchType].apiUrl"
       :need-access-token="true"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       @getListData="getListData"
     >
-      <template v-if="option1[value1].value !== 2">
-        <artcleCard v-for="item in articleCardData.articles" :key="item.id" :card="item" class="list-card" />
+      <template v-if="searchType === 0">
+        <artcleCard v-for="item in articleCardData[0].articles" :key="item.id" :card="item" class="list-card" />
       </template>
-      <template v-else>
-        <searchUserList v-for="item in articleCardData.articles" :key="item.id" :card="item" />
+      <template v-else-if="searchType === 1">
+        <artcleCard v-for="item in articleCardData[1].articles" :key="item.id" :card="item" class="list-card" />
+      </template>
+      <template v-else-if="searchType === 2">
+        <artcleCard v-for="item in articleCardData[2].articles" :key="item.id" :card="item" class="list-card" />
+      </template>
+      <template v-else-if="searchType === 3">
+        <searchUserList v-for="item in articleCardData[3].articles" :key="item.id" :card="item" />
       </template>
     </BasePull>
   </div>
@@ -58,27 +64,57 @@ export default {
       searchQueryVal: '',
       value1: 0,
       value2: 0,
-      option1: [
-        { text: this.$t('search.optionText11'), value: 0, name: 'search', numResults: 1222 },
-        { text: this.$t('search.optionText12'), value: 1, name: 'search/shop', numResults: 46 },
-        { text: this.$t('search.optionText13'), value: 2, name: 'search/user', numResults: 7 },
-        { text: this.$t('search.optionText14'), value: 2, name: 'search/user', numResults: 7 }
+      tagList: [
+        this.$t('search.optionText11'),
+        this.$t('search.optionText12'),
+        this.$t('search.optionText13'),
+        this.$t('search.optionText14')
       ],
-      articleCardData: {
-        params: {},
-        apiUrl: this.apiUrlPath,
-        articles: [],
-        isAtuoRequest: false
-      },
+      articleCardData: [
+        {
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchArticleList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {},
+          apiUrl: 'searchShareList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {},
+          apiUrl: 'searchTokenList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {},
+          apiUrl: 'searchUserList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        }
+      ],
       showShadow: false,
-      scrollEvent: null
+      scrollEvent: null,
+      searchType: Number(this.$route.query.type) || 0
     }
   },
   created() {
     this.setMenu()
+    this.query()
+    console.log('我被重新调用了！')
   },
   mounted() {
-    this.query()
+    this.getOtherResults()
     this.scrollEvent = throttle(this.scrollTop, 300)
     window.addEventListener('scroll', this.scrollEvent)
   },
@@ -103,25 +139,39 @@ export default {
         word: this.searchQueryVal
       }
 
-      this.articleCardData.params = Object.assign(params, this.params)
+      this.articleCardData[this.searchType].params = Object.assign(params, this.articleCardData[this.searchType].params)
 
       // console.log(this.articleCardData.params)
     },
-    menuChange(val) {
-      let name = this.option1[val].name
-      // console.log(name)
+    // menuChange(val) {
+    //   let name = this.option1[val].name
+    //   // console.log(name)
+    //   this.$router.replace({
+    //     name: name,
+    //     query: {
+    //       q: this.searchQueryVal.trim()
+    //     }
+    //   })
+    // },
+
+    /** 切换搜索条目 */
+    toggleType(type) {
+      this.searchType = type
       this.$router.replace({
-        name: name,
-        query: {
+        // query: Object.assign(this.$route.query, {
+        // })
+        query:{
+          type: this.searchType,
           q: this.searchQueryVal.trim()
         }
       })
     },
     getListData(res) {
-      // console.log(res)
-      this.articleCardData.articles = res.list
+      console.log(res)
+      this.articleCardData[this.searchType].articles = res.list
+      this.articleCardData[this.searchType].count = res.data.data.count || 0
     },
-    /** 滚动后展开按钮 */
+    /** 监听滚动状态（用于显示阴影） */
     scrollTop() {
       try {
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
@@ -129,7 +179,29 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
+    getOtherResults() {
+      const otherRoutings = this.articleCardData.filter((value, index) => index !== this.searchType)
+      for (let i = 0; i < otherRoutings.length; i++) {
+        this.getSearchDate(otherRoutings[i])
+      }
+    },
+    async getSearchDate(otherRouting) {
+      otherRouting.params.page = 1
+      otherRouting.params.pagesize = 9
+      otherRouting.params.word = this.searchQueryVal
+      const getDataFail = message => message ? console.error(message) : console.error('获取数据失败')
+
+      // 获取数据
+      try {
+        const res = await this.$API.getBackendData({ url: otherRouting.apiUrl, params: otherRouting.params }, false)
+        // console.log('结果：', otherRouting.apiUrl, res)
+        if (res.code === 0) {
+          otherRouting.articles = res.data.list
+          otherRouting.count = res.data.count
+        } else getDataFail(res.message)
+      } catch (error) { getDataFail() }
+    },
   }
 }
 </script>
@@ -161,7 +233,7 @@ export default {
   border-top: 1px solid #ebedf0;
   padding: 0 20px;
   align-items: center;
-  a {
+  p {
     color: rgba(178, 178, 178, 1);
     font-size: 16px;
     font-weight: 400;
