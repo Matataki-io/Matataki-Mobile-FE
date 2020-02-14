@@ -15,15 +15,15 @@
       </router-link>
       <div class="card-quote" @click="$emit('refClick', card)">
         <svg-icon class="icon" icon-class="quote" />
-        <span>引用&nbsp;{{card.beRefs.length}}</span>
+        <span>引用&nbsp;{{card.beRefs ? card.beRefs.length : ''}}</span>
       </div>
     </div>
     <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.short_content || "&nbsp;" }}</p>
+      <p class="search-res" v-html="card.short_content || '&nbsp;'" />
     </router-link>
-    <div class="card-list" v-if="card.refs.length !== 0">
+    <div class="card-list" v-if="card.refs && card.refs.length !== 0">
       <template v-for="(item, index) in card.refs.slice(0, 1)">
         <shareOuterCard @ref="val => $emit('ref', val)" :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"  :key="'shareOuterCard' + index"></shareOuterCard>
         <sharePCard @ref="val => $emit('ref', val)" :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"  :key="'sharePCard' + index"></sharePCard>
@@ -69,7 +69,7 @@ export default {
   },
   computed: {
     shareListMore() {
-      if (this.card.refs.length > 1) return this.card.refs.slice(1)
+      if (this.card.refs && this.card.refs.length > 1) return this.card.refs.slice(1)
       else return []
     },
     time() {
@@ -256,4 +256,12 @@ export default {
   }
 }
 
+</style>
+
+<style lang="less">
+.search-res em {
+  font-weight: bold;
+  font-style: normal;
+  color: @purpleDark;
+}
 </style>
