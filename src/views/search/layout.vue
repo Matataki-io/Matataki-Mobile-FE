@@ -157,14 +157,11 @@ export default {
     /** 切换搜索条目 */
     toggleType(type) {
       this.searchType = type
-      this.$router.replace({
-        // query: Object.assign(this.$route.query, {
-        // })
-        query:{
-          type: this.searchType,
-          q: this.searchQueryVal.trim()
-        }
-      })
+
+      let { origin } = window.location
+      const url = `${origin}/search?type=${type}&q=${this.searchQueryVal.trim()}`
+      history.replaceState({}, '', url)
+
     },
     getListData(res) {
       console.log(res)
