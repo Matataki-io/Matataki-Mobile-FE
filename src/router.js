@@ -406,24 +406,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/search/shop',
-      name: 'search/shop',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/shop" */ './views/search/shop.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/search/user',
-      name: 'search/user',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/user" */ './views/search/user.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
       path: '/exchange',
       name: 'exchange',
       component: () => import(/* webpackChunkName: "exchange" */ './views/exchange/index.vue'),
