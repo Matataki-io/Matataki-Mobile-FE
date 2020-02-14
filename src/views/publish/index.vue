@@ -140,7 +140,7 @@
           </div>
         </transition>
         <transition name="fade">
-          <div v-show="readauThority">
+          <div v-show="isPermissionNeed">
             <h3>内容摘要</h3>
             <el-input
               v-model="readSummary"
@@ -405,7 +405,7 @@ export default {
       readSelectOptions: [], // 阅读tokenlist
       readSelectValue: '', // 阅读tokenlist show value
       paymentTokenVisible: false, // 支付可见
-      paymentToken: 1, // 支付token
+      paymentToken: 0, // 支付token
       paymentSelectOptions: [
         {
           id: -1,
@@ -434,6 +434,9 @@ export default {
     isShowTransfer() {
       return this.$route.query.from === 'draft'
     },
+    isPermissionNeed() {
+      return this.readauThority || this.paymentTokenVisible
+    },
     CCLicenseCredit() {
       if (!this.isOriginal) return null
       let ShareAlike = false
@@ -449,6 +452,33 @@ export default {
       const chinese = convertLicenseToChinese(license)
       const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
       return { license, chinese, url }
+    },
+    requireToken() {
+      let tokenArr = []
+      if (this.readauThority) {
+        // 持通证
+        // 获取当前选择的通证种
+        const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [
+        {
+          tokenId: token[0].id,
+          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+        }]
+      }
+      return tokenArr
+    },
+    requireBuy() {
+      const { type } = this.$route.params
+      if (this.paymentToken === 0) return null
+      if (type === 'edit' && !this.paymentTokenVisible) {
+        return null
+      } else {
+        const data = {
+          price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        return data
+      }
     }
   },
   watch: {
@@ -790,15 +820,14 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
+      article.requireBuy = this.requireBuy
+      article.requireToken = this.requireToken
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
       try {
         const { author, hash } = article
         let signature = null
-        // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        //   signature = await this.getSignatureOfArticle({ author, hash })
-        // }
         try {
           const response = await this.$API.publishArticle({ article, signature })
 
@@ -880,6 +909,8 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      article.requireBuy = this.requireBuy
+      article.requireToken = this.requireToken
       const { author } = article
       let signature = null
       // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
