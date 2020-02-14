@@ -741,4 +741,8 @@ minetokenGetResources(tokenId) {
         data: { draftid: articleId, uid }
       })
   },
+  // --------------------------- 搜索 ------------------------------------
+  search(type, params) {
+    return request.get(`/search/${type}`, { params })
+  }
 }
