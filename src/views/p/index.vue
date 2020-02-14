@@ -1,5 +1,5 @@
 <template>
-  <div class="article" @click.stop="hideClient">
+  <div class="article">
     <BaseHeader
       :pageinfo="{ title: article.channel_id === 2 ? $t('p.articleTitle') : $t('p.shopTitle') }"
     >
@@ -60,7 +60,10 @@
                   {{ articleCreateTimeComputed }}
                   <svg-icon icon-class="view" class="avatar-read" />
                   {{ article.read || 0 }}
-                  {{ $t('read') }}
+                  &nbsp;
+                  <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
+                  &nbsp;
+                  <span class="article-head__ipfs" v-if="isHideIpfsHash">IPFS</span>
                 </p>
               </div>
             </div>
@@ -79,7 +82,7 @@
             </template>
           </div>
         </header>
-        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="id"></ipfs>
+        <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -101,21 +104,38 @@
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
-              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
+              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}全文` }}
             </h3>
-            <h5 v-if="isPriceArticle && !hasPaied" class="lock-info-subtitle">购买后即可解锁全部精彩内容</h5>
+            <h5 class="lock-info-subtitle">
+              {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
+              <el-tooltip class="item" effect="dark" content="满足全部条件后即可阅读全文。" placement="top">
+                <svg-icon icon-class="anser" class="prompt-svg left-8px" />
+              </el-tooltip>
+            </h5>
             <p v-if="!isMe(article.uid)" class="lock-info-des">
               <ul>
-                <li v-if="isPriceArticle">
-                  价格：{{ getArticlePrice }} CNY
+                <li v-if="isPriceArticle" class="fl">
+                  <div class="fl price">
+                    支付 {{ getArticlePrice }}
+                    <svg-icon icon-class="currency" class="avatar" />
+                    CNY
+                  </div>
+                  <el-tooltip class="item" effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="top">
+                    <svg-icon icon-class="anser" class="prompt-svg" />
+                  </el-tooltip>
                 </li>
                 <li v-if="isTokenArticle">
-                  条件：持有 {{ needTokenAmount }} {{ needTokenSymbol }} 以上的Fan票
+                  <div class="fl price">
+                    持有 {{ needTokenAmount }}
+                    <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
+                      <avatar :size="'18px'" :src="needTokenLogo" class="avatar" /> 
+                      {{ needTokenSymbol }}（{{ needTokenName }}）
+                    </router-link>
+                  </div>
                   <!-- 不显示 - 号 -->
-                  <span>{{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+                  <p>{{ !tokenHasPaied ? '还需持有' : '已持有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</p>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -472,7 +492,7 @@ import { ontAddressVerify } from '@/common/reg'
 import { precision } from '@/utils/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
-import ipfs from './ipfs.vue'
+// import ipfs from './ipfs.vue'
 import statement from './statement.vue'
 // import ArticleInfo from './ArticleInfo.vue'
 import Widget from './Widget/index.vue'
@@ -485,6 +505,7 @@ import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 import { getCookie } from '@/utils/cookie'
 import quote from './quote.vue'
+import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 // MarkdownIt 实例
 const markdownIt = mavonEditor.getMarkdownIt()
@@ -507,12 +528,13 @@ export default {
     Widget,
     tagCard,
     articleTransfer,
-    ipfs,
+    // ipfs,
     statement,
     ArticleFooter,
     commentInput,
     avatar,
-    quote
+    quote,
+    ipfsAll
   },
   data() {
     return {
@@ -582,13 +604,15 @@ export default {
       priceHasPaied: false,
       hasPaied: false,
       showQuote: false, // refernces
-      nowTime: 0 // refernces
+      nowTime: 0, // refernces
+      articleIpfsArray: [], // ipfs hash
+      bodyClickEvent: null
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover, {h: 240})
       return null
     },
     displayPlaceholder() {
@@ -691,10 +715,28 @@ export default {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少Fan票名称
+    // Fan票ID
+    needTokenId() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].id
+      } else return -1
+    },
+    // 需要多少Fan票代号
     needTokenSymbol() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
+      } else return ''
+    },
+    // 需要多少Fan票名称
+    needTokenName() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].name
+      } else return ''
+    },
+    // 需要多少Fan票LOGO
+    needTokenLogo() {
+      if (this.article.tokens.length !== 0) {
+        return this.$ossProcess(this.article.tokens[0].logo)
       } else return ''
     },
     limitValue() {
@@ -740,11 +782,20 @@ export default {
         window.location.reload()
       }
     })
+    this.$nextTick(() => {
+      this.bodyClickEvent = () => {
+        this.hideClient()
+      }
+      document.querySelector('body').addEventListener('click', this.bodyClickEvent)
+    })
     // 移动端似乎不需要监听这个事件, 未和pc端同步code
     // window.addEventListener('popstate', this._popstateEvent)
   },
+  beforeDestroy() {
+  },
   destroyed() {
     // window.removeEventListener('popstate', this._popstateEvent)
+    window.removeEventListener('click', this.bodyClickEvent)
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
@@ -774,7 +825,7 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: this.regRemoveContent(this.post.content),
-        imgUrl: this.article.cover ? this.$API.getImg(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
     },
     // 复制hash
@@ -897,6 +948,7 @@ export default {
             let { data } = res
             this.article = data
             this.getCurrentProfile()
+            this.getArticleIpfs(this.id)
 
             const isProduct = data.channel_id === 2
             if (((data.tokens && data.tokens.length !== 0) || (data.prices && data.prices.length !== 0)) && !isProduct) {
@@ -1233,12 +1285,10 @@ export default {
     },
     // 删除文章
     delArticleButton() {
-      const jumpTo = name => this.$router.push({ name })
       const delSuccess = async () => {
         this.$Modal.remove()
         this.$toast({ duration: 2000, message: this.$t('p.deleteArticle') })
-        // await sleep(3000)
-        jumpTo('index')
+        this.$router.push({name: 'index'})
       }
       const fail = err => {
         this.$Modal.remove()
@@ -1271,7 +1321,7 @@ export default {
         if (res.code === 0) {
           this.followed = res.data.is_follow
           this.articleAvatar = res.data.avatar
-            ? this.$API.getImg(res.data.avatar)
+            ? this.$ossProcess(res.data.avatar, {h: 60})
             : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
@@ -1408,6 +1458,7 @@ export default {
 
             // created
             this.getCurrentProfile()
+            this.getArticleIpfs(this.id)
             // mounted
             this.setAvatar(res.data.uid) // 头像
             this.addReadAmount(res.data.hash) // 增加阅读量
@@ -1447,6 +1498,19 @@ export default {
           console.log('err', err)
         })
     },
+    // 获取文章的ipfs hash信息
+    async getArticleIpfs(id = this.$route.params.id) {
+      await this.$API.getArticleIpfs(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.articleIpfsArray = res.data
+          } else {
+            console.log(res.message)
+          }
+        }).catch(err => {
+          console.log('err', err)
+        })
+    }
   }
 }
 </script>

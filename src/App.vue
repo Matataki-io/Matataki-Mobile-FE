@@ -16,10 +16,13 @@ import { mapActions, mapGetters } from 'vuex'
 import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'
-import {
-  enable as enableDarkMode,
-  disable as disableDarkMode,
-} from 'darkreader'
+import store from '@/utils/store.js'
+
+
+// import {
+//   enable as enableDarkMode,
+//   disable as disableDarkMode,
+// } from 'darkreader'
 
 export default {
   components: {
@@ -101,8 +104,14 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
-    getViewMode() {
-      const viewMode = localStorage.getItem('viewMode')
+    async getViewMode() {
+
+      const { enable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const { disable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const enableDarkMode = enable
+      const disableDarkMode = disable
+
+      const viewMode = store.get('viewMode')
       if (viewMode && viewMode === 'night') {
         enableDarkMode({
           brightness: 100,

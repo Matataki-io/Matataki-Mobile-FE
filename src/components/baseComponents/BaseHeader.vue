@@ -107,7 +107,8 @@ export default {
   },
   data() {
     return {
-      scrollToggleStatus: false
+      scrollToggleStatus: false,
+      scrollThrottle: null
     }
   },
   computed: {
@@ -129,10 +130,11 @@ export default {
     }
   },
   created() {
-    this.addHandleScroll()
+    this.scrollThrottle = throttle(this.handleScroll, 150)
+    window.addEventListener('scroll', this.scrollThrottle)
   },
   destroyed() {
-    this.removeHandleScroll()
+    window.removeEventListener('scroll', this.scrollThrottle)
   },
   // 依據 https://blog.csdn.net/m0_37728716/article/details/81289317
   // 從 crearted 改成 mounted
@@ -160,9 +162,6 @@ export default {
         this.$router.push({ name: 'article' })
       }
     },
-    addHandleScroll() {
-      window.addEventListener('scroll', throttle(this.handleScroll, 150))
-    },
     handleScroll() {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -174,9 +173,6 @@ export default {
       }
       // console.log(this.isScrollEmit, this.scrollToggleStatus);
       this.isScrollEmit && this.$emit('scrollToggleStatus', this.scrollToggleStatus)
-    },
-    removeHandleScroll() {
-      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 }

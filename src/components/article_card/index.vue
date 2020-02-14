@@ -8,8 +8,8 @@
       <span class="card-head__time">{{friendlyDate}}</span>
     </div>
     <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
-      <p class="card-title">{{card.title}}</p>
-      <p class="card-content" v-if="card.short_content">{{card.short_content}}</p>
+      <p class="card-title search-res" v-html="card.title" />
+      <p class="card-content search-res" v-if="card.short_content" v-html="card.short_content" />
       <div class="card-footer">
       <div class="card-footer__lock">
         <img
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     avatar() {
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, {h: 60}) : ''
     },
     friendlyDate() {
       const time = moment(this.card.create_time)
@@ -177,5 +177,13 @@ export default {
       font-weight: bold;
     }
   }
+}
+</style>
+
+<style lang="less">
+.search-res em {
+  font-weight: bold;
+  font-style: normal;
+  color: @purpleDark;
 }
 </style>

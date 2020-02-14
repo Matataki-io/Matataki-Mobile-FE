@@ -365,7 +365,7 @@ export default {
       this.loading = false
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$API.getImg(hash)
+      if (hash) this.avatar = this.$ossProcess(hash)
     },
     // 完成上传
     async doneImageUpload(res) {

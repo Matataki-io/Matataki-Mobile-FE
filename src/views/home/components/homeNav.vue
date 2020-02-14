@@ -21,22 +21,21 @@ export default {
   data() {
     return {
       navShow: true,
-      oldScrollTop: 100
+      oldScrollTop: 100,
+      scrollThrottle: null
     }
   },
   created() {},
   mounted() {
     setTimeout(() => {
-      this.addHandleScroll()
+      this.scrollThrottle = throttle(this.handleScroll, 300)
+      window.addEventListener('scroll', this.scrollThrottle)
     }, 150)
   },
   destroyed() {
-    this.removeHandleScroll()
+    window.removeEventListener('scroll', this.scrollThrottle)
   },
   methods: {
-    addHandleScroll() {
-      window.addEventListener('scroll', throttle(this.handleScroll, 300))
-    },
     handleScroll() {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -51,9 +50,6 @@ export default {
 
       if (scrollTop <= 50) this.navShow = true
     },
-    removeHandleScroll() {
-      window.removeEventListener('scroll', this.handleScroll)
-    }
   }
 }
 </script>

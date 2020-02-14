@@ -69,10 +69,10 @@ export default {
   },
   computed: {
     cover() {
-      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+      return this.card.logo ? this.$ossProcess(this.card.logo) : ''
     },
     coverUser() {
-      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+      return this.card.logo ? this.$ossProcess(this.card.logo) : ''
     },
     name() {
       let name = this.card.nickname || this.card.username

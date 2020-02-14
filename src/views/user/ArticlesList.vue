@@ -211,6 +211,8 @@ export default {
     color: #333;
     font-size: 14px;
     font-weight: bold;
+    word-break: break-all;
+    white-space: pre-wrap;
   }
   div {
     margin-top: 10px;

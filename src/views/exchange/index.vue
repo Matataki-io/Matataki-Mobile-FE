@@ -30,6 +30,7 @@
 import { mapGetters } from 'vuex'
 import Swap from './components/swap.vue'
 import Pool from './components/pool.vue'
+import store from '@/utils/store.js'
 
 export default {
   components: {
@@ -81,7 +82,7 @@ export default {
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
         } else {
           this.$API.getWeixinOpenId(code).then(res => {
-            window.localStorage.setItem('WX_OPENID', res.openid)
+            store.set('WX_OPENID', res.openid)
           })
         }
       }

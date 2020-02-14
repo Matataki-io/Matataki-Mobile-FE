@@ -196,7 +196,8 @@ export default {
       saveImg: '',
       saveImgCanvas: '',
       createShareLoading: false,
-      saveLoading: false // 保存图片loading
+      saveLoading: false, // 保存图片loading
+      scrollThrottle: null
     }
   },
   watch: {
@@ -274,10 +275,11 @@ export default {
     })
   },
   mounted() {
-    window.addEventListener('scroll', throttle(this.shareHeadSetClass, 300))
+    this.scrollThrottle = throttle(this.shareHeadSetClass, 300)
+    window.addEventListener('scroll', this.scrollThrottle)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.shareHeadSetClass)
+    window.removeEventListener('scroll', this.scrollThrottle)
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -451,7 +453,7 @@ export default {
 
       this.$API.getUser(this.currentUserInfo.id).then(res => {
         if (res.code === 0) {
-          this.shareCard.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.shareCard.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
           this.shareCard.username = res.data.nickname || res.data.username
         }
       }).catch(err => {
@@ -492,7 +494,7 @@ export default {
             .then(res => {
               if (res.code === 0) {
                 tp.saveImage({
-                  url: this.$API.getImg(res.data)
+                  url: this.$ossProcess(res.data)
                 })
               } else {
                 this.$toast({ duration: 1000, message: '保存失败,请重试' })

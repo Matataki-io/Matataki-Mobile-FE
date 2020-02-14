@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="card-text">
-        <p v-clampy="2" class="title search-res" v-html="xssTitle"></p>
+        <p class="title search-res" v-html="xssTitle"></p>
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
           <p v-if="type === 'article'" class="read-ups">
@@ -110,11 +110,11 @@ export default {
       return this.article.id // 原来是 id 现在用id进入
     },
     avatar() {
-      if (this.article.avatar) return this.$API.getImg(this.article.avatar)
+      if (this.article.avatar) return this.$ossProcess(this.article.avatar)
       return ''
     },
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover)
       return ''
     },
     articleEosValue() {
@@ -239,6 +239,10 @@ export default {
   line-height: 18px;
   height: 36px;
   overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .img-outer {

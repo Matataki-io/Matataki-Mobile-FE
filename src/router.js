@@ -14,12 +14,12 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', redirect: '/article' },
+    { path: '/', name: 'index', redirect: '/article' },
     {
       path: '/home',
       name: 'home',
       component: () =>
-        import(/* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'),
+        import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
       }
@@ -401,24 +401,6 @@ const router = new VueRouter({
       name: 'search',
       props: true,
       component: () => import(/* webpackChunkName: "search" */ './views/search/index.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/search/shop',
-      name: 'search/shop',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/shop" */ './views/search/shop.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/search/user',
-      name: 'search/user',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/user" */ './views/search/user.vue'),
       meta: {
         title: '搜索-瞬MATATAKI'
       }

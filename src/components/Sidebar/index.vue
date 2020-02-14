@@ -463,7 +463,7 @@ export default {
       }
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$API.getImg(hash)
+      if (hash) this.avatar = this.$ossProcess(hash, {h: 90})
       else this.avatar = defaultAvatar
     },
     changeInfo(status) {

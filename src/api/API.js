@@ -22,6 +22,8 @@ export default {
     const url = reg.test(hashOrId) ? 'p' : 'post'
     return request({ url: `/${url}/${hashOrId}` })
   },
+  // 获取文章的ipfs hash信息
+  getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   sendPost({ title, author, desc, content }) {
     const stringifyData = qs.stringify({
       'data[title]': title,
@@ -375,7 +377,9 @@ minetokenGetResources(tokenId) {
    */
   _sendArticle(
     url,
-    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license },
+    { signId = null, author, data, title, fissionFactor,
+       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license,
+       requireToken, requireBuy },
     signature = null
   ) {
     // 账号类型
@@ -397,7 +401,9 @@ minetokenGetResources(tokenId) {
         tags,
         commentPayPoint,
         cc_license,
-        shortContent
+        shortContent,
+        requireToken,
+        requireBuy
       },
       timeout: 30000
     })
@@ -739,4 +745,8 @@ minetokenGetResources(tokenId) {
         data: { draftid: articleId, uid }
       })
   },
+  // --------------------------- 搜索 ------------------------------------
+  search(type, params) {
+    return request.get(`/search/${type}`, { params })
+  }
 }

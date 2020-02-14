@@ -229,7 +229,7 @@ export default {
         this.$wechatShare({
           title: `${nickname || username}的个人主页`,
           desc: introduction || '暂无',
-          imgUrl: avatar ? this.$API.getImg(avatar) : ''
+          imgUrl: avatar ? this.$ossProcess(avatar) : ''
         })
       }
 
@@ -255,7 +255,7 @@ export default {
     },
     setImage(hash) {
       if (hash) {
-        return this.$API.getImg(hash)
+        return this.$ossProcess(hash)
       } else return ''
     },
     async tokenUserId(id) {

@@ -10,6 +10,7 @@ import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 
 if (!window.Vue) Vue.use(Vuex)
+import store from '@/utils/store.js'
 
 // That's vuex's need, sorry eslint
 /* eslint-disable no-param-reassign */
@@ -295,7 +296,7 @@ export default new Vuex.Store({
       commit('setNickname')
       Cookies.remove('ACCESS_TOKEN', { path: '' })
       Cookies.remove('idProvider', { path: '' })
-      localStorage.clear()
+      store.clear()
       sessionStorage.clear()
       this._vm.$userMsgChannel.postMessage('logout')
     },
