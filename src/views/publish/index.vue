@@ -140,7 +140,7 @@
           </div>
         </transition>
         <transition name="fade">
-          <div v-show="readauThority">
+          <div v-show="isPermissionNeed">
             <h3>内容摘要</h3>
             <el-input
               v-model="readSummary"
@@ -434,6 +434,9 @@ export default {
     isShowTransfer() {
       return this.$route.query.from === 'draft'
     },
+    isPermissionNeed() {
+      return this.readauThority || this.paymentTokenVisible
+    },
     CCLicenseCredit() {
       if (!this.isOriginal) return null
       let ShareAlike = false
@@ -467,7 +470,7 @@ export default {
     },
     requireBuy() {
       const { type } = this.$route.params
-      if (this.paymentToken === 0) return null;
+      if (this.paymentToken === 0) return null
       if (type === 'edit' && !this.paymentTokenVisible) {
         return null
       } else {
