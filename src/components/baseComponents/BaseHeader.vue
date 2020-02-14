@@ -202,7 +202,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 999;
   transition: all 0.6s;
   &.bc {
     // background-color: #fff;

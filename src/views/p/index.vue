@@ -82,7 +82,7 @@
             </template>
           </div>
         </header>
-        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="id"></ipfs>
+        <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -492,7 +492,7 @@ import { ontAddressVerify } from '@/common/reg'
 import { precision } from '@/utils/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
-import ipfs from './ipfs.vue'
+// import ipfs from './ipfs.vue'
 import statement from './statement.vue'
 // import ArticleInfo from './ArticleInfo.vue'
 import Widget from './Widget/index.vue'
@@ -528,7 +528,7 @@ export default {
     Widget,
     tagCard,
     articleTransfer,
-    ipfs,
+    // ipfs,
     statement,
     ArticleFooter,
     commentInput,
