@@ -83,30 +83,6 @@ async function getSignature(msgParams = {
   return signature
 }
 
-async function getSignatureForPublish(hash) {
-  const message = {
-    time: new Date().getTime(),
-    hash: hash
-  }
-  const msgParams = {
-    types: {
-      EIP712Domain,
-      Article: [
-        { name: 'hash', type: 'string' },
-        { name: 'time', type: 'uint256' }
-      ]
-    },
-    primaryType: 'Article',
-    domain: {
-      name: 'Matataki 瞬',
-      version: '1'
-    },
-    message
-  }
-  const signature = await getSignature(msgParams)
-  return { signature, msgParams }
-}
-
 async function getSignatureForLogin() {
   const netId = await fetchId()
   let [from] = await window.web3.eth.getAccounts()
@@ -141,4 +117,4 @@ async function getSignatureForLogin() {
   return { signature, msgParams }
 }
 
-export { connect, getSignatureForPublish, getSignatureForLogin }
+export { connect, getSignatureForLogin }
