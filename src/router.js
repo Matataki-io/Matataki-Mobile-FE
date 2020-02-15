@@ -141,6 +141,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/login/twitter_logined',
+      name: 'twitterLogin',
+      component: () => import(/* webpackChunkName: "twitterLogin" */ './views/login/twitter_logined.vue'),
+      mata: {
+        title: 'Twitter Login'
+      }
+    },
+    {
       path: '/login/telegram',
       name: 'login-telegram',
       component: () => import(/* webpackChunkName: "telegramLogin" */ './views/login/telegram.vue'),
