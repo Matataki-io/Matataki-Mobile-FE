@@ -43,7 +43,7 @@
       <div class="edit-card-list">
         <div v-for="(item, index) in about" :key="index" class="card-block">
           <span>{{ '相关网站' + (index + 1) }}</span>
-          <input v-model="about[index]" placeholder="请填写网站链接，包含http(s)://" />
+          <input v-model="about[index]" placeholder="请填写网站链接" />
           <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
             <i class="el-icon-minus" />
           </div>

@@ -165,7 +165,7 @@
       </h2>
       <ul v-if="resourcesWebsites.length !== 0">
         <li v-for="(item, index) in resourcesWebsites" :key="index">
-          <a target="_blank" :href="item">{{ item }}</a>
+          <a target="_blank" :href="formatUrl(item)">{{ item }}</a>
         </li>
       </ul>
       <span v-else class="not">暂无</span>
@@ -492,6 +492,12 @@ export default {
     },
     openEtherscan() {
       window.open('http://rinkeby.etherscan.io/address/' + this.minetokenToken.contract_address)
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if(isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }
