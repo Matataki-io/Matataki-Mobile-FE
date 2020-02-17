@@ -481,8 +481,8 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor-matataki'
+import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
 import { xssFilter } from '@/common/xss'

@@ -46,14 +46,14 @@ export default {
       tagNum: Number(this.$route.query.tab) || 0,
       pointLog: [{
         params: {
-          pageSize: 20
+          pagesize: 20
         },
         apiUrl: 'tokenTokenList',
         list: []
       },
       {
         params: {
-          pageSize: 20
+          pagesize: 20
         },
         apiUrl: 'liquidityLogs',
         list: []
