@@ -120,8 +120,8 @@ export default {
       }
     },
     formatUrl(url) {
-      const isHttp = url.indexOf('http://');
-      const isHttps = url.indexOf('https://');
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
       if(isHttp !== 0 && isHttps !== 0) url = 'http://' + url
       return url
     }

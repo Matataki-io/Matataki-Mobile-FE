@@ -494,8 +494,8 @@ export default {
       window.open('http://rinkeby.etherscan.io/address/' + this.minetokenToken.contract_address)
     },
     formatUrl(url) {
-      const isHttp = url.indexOf('http://');
-      const isHttps = url.indexOf('https://');
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
       if(isHttp !== 0 && isHttps !== 0) url = 'http://' + url
       return url
     }
