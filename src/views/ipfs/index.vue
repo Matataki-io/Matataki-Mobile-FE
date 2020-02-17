@@ -43,7 +43,7 @@
 
 <script>
 import moment from 'moment'
-import { mavonEditor } from 'mavon-editor'
+import { mavonEditor } from 'mavon-editor-matataki'
 import { xssFilter } from '@/utils/xss'
 
 // MarkdownIt 实例
