@@ -58,7 +58,9 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ balance }} {{ minetokenToken.symbol }}
+                <router-link v-if="isLogined" :to="{ name: 'tokens' }">
+                  {{ balance }} {{ minetokenToken.symbol }}
+                </router-link>
               </p>
             </div>
           </div>
