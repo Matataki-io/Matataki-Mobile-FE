@@ -4,7 +4,7 @@
     <h3 class="search-title">{{ $t('search.hot') }}</h3>
     <ul class="search-recommend">
       <li v-for="(item, index) in searchRecommendList" :key="index">
-        <router-link :to="{ name: 'search', query: { q: item.word } }">{{ item.word }}</router-link>
+        <router-link :to="{ name: 'search', query: { type, q: item.word } }">{{ item.word }}</router-link>
       </li>
     </ul>
   </div>
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       searchRecommendList: [],
-      showSearchStatus: this.showSearch
+      showSearchStatus: this.showSearch,
+      type: 0
     }
   },
   watch: {
@@ -43,6 +44,7 @@ export default {
     // document.querySelector('body').style.overflow = ''
   },
   mounted() {
+    this.getType()
     this.getRecommend()
   },
   methods: {
@@ -61,8 +63,13 @@ export default {
           console.log(this.$t('error.getSearchRecommend'), err)
         })
     },
+    getType() {
+      const names = ['sharehall', 'token']
+      const type = names.indexOf(this.$route.name) + 1
+      this.type = type
+    },
     backBtn() {
-      this.showSearch = false
+      this.showSearchStatus = false
       this.$emit('showSearchStatus')
     }
   }
