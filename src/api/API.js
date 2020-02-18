@@ -723,10 +723,18 @@ minetokenGetResources(tokenId) {
       console.error(err)
     }
   },
+  // telegram登录
   telegramLogin(data) {
     return request({
       method: 'POST',
       url: '/login/telegram',
+      data: data
+    })
+  },
+  // twitter 登录
+  async twitterLogin(data) { return await request({
+      method: 'POST',
+      url: '/login/twitter',
       data: data
     })
   },
