@@ -455,10 +455,9 @@
         @changeWidgetModal="status => (widgetModal = status)"
       />
       <article-transfer
-        :transfer-modal="transferModal"
-        :article-id="article.id"
-        :from="'article'"
-        @changeTransferModal="status => (transferModal = status)"
+        v-model="transferModal"
+        :article-id="Number(article.id)"
+        from="article"
       />
     </div>
     <div v-else class="deleted-container">
