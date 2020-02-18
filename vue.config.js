@@ -76,7 +76,6 @@ const configureWebpack = () => {
       'vant': 'vant',
       'iview': 'iview',
       'html2canvas': 'html2canvas',
-      'hellojs': 'hellojs',
     }
     // cdn
     configPluginsModules = [
@@ -113,10 +112,6 @@ const configureWebpack = () => {
       {
         name: 'vant',
         path: 'lib/vant.min.js'
-      },
-      {
-        name: 'hellojs',
-        path: 'dist/hello.all.min.js'
       },
       {
         name: 'iview',
