@@ -732,7 +732,8 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
-  async twitterLogin(data) { return await request({
+  twitterLogin(data) {
+    return request({
       method: 'POST',
       url: '/login/twitter',
       data: data
