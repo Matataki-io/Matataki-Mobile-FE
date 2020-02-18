@@ -152,7 +152,7 @@ export default {
     async onLoad(isEmptyArray = false) {
       // console.log("开始分页");
       // 如果传了参数但是为null 阻止请求 场景发生在文章获取分享列表处
-      for (const [key, value] of Object.entries(this.params)) if (!value) return this.loading = false
+      for (const [key, value] of Object.entries(this.params)) if (value == null) return this.loading = false
       const params = this.params || {}
       params.page = this.page
       const url = this.apiUrl
