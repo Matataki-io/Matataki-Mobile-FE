@@ -85,7 +85,7 @@
           <el-input
             v-model="about[index]"
             class="input"
-            placeholder="请填写网站链接，包含http(s)://"
+            placeholder="请填写网站链接"
           />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
