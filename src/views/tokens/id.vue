@@ -44,12 +44,7 @@
       </router-link>
     </div>
 
-    <el-dialog
-      title="赠送Fan票"
-      :visible.sync="giftDialog"
-      width="90%"
-      :before-close="giftDialogClose"
-    >
+     <m-dialog v-model="giftDialog" width="90%" title="赠送Fan票" class="transfer-dialog">
       <el-form
         ref="form"
         v-loading="transferLoading"
@@ -64,28 +59,27 @@
           </p>
         </el-form-item>
         <el-form-item label="接受对象">
-          <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="small" style="z-index: 2;">
-            <el-button slot="append" @click="searchUser" icon="el-icon-search" />
-          </el-input>
-          <!-- 搜索结果 -->
-          <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
-            <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
-              <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
-              <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
+            <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
+            <!-- 搜索结果 -->
+            <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
+              <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
+                <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
+                <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
+              </div>
             </div>
-          </div>
         </el-form-item>
         <!-- 结果 -->
-        <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
-          <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
-            <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
-            <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
-            <div @click="closeUser" class="gift-ful">
-              <i class="el-icon-close" />
-            </div>
-          </router-link>
-          <div class="avatar-content" />
-        </el-form-item>
+        <transition name="result">
+          <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
+            <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
+              <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
+              <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
+              <div @click="closeUser" class="gift-ful">
+                <i class="el-icon-close" />
+              </div>
+            </router-link>
+          </el-form-item>
+        </transition>
         <el-form-item label="发送数量" prop="tokens">
           <el-input
             placeholder="请输入内容"
@@ -105,17 +99,15 @@
             <el-button :disabled="toUserInfoIndex === -1"  @click="submitForm('form')" type="primary" size="small">
               确定
             </el-button>
-          <!-- <el-button @click="formClose" size="small"> -->
-          <!-- 取消 -->
-          <!-- </el-button> -->
           </div>
         </el-form-item>
       </el-form>
-    </el-dialog>
+     </m-dialog>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import card from './components/tokens_detail_card.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { xssFilter } from '@/utils/xss'
@@ -176,6 +168,23 @@ export default {
   computed: {
     cover() {
       return this.tokenDetail.logo ? this.$ossProcess(this.tokenDetail.logo) : ''
+    },
+       searchUserName() {
+      return this.form.username
+    }
+  },
+  watch: {
+    giftDialog(newVal) {
+      if (!newVal) {
+        this.formEmpty()
+      }
+    },
+    searchUserName: {
+      deep: true,
+      immediate: true,
+      handler: function () {
+        this.searchUser()
+      }
     }
   },
   mounted() {
@@ -255,14 +264,6 @@ export default {
       this.searchUserList = [] // 搜索结果
       this.toUserInfoIndex = -1 // 转让的对象
     },
-    giftDialogClose(done) {
-      this.formEmpty()
-      done()
-    },
-    // formClose() {
-    //   this.giftDialog = false
-    //   this.formEmpty()
-    // },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
@@ -270,13 +271,11 @@ export default {
       this.searchUserList = []
       return false
     },
-    async searchUser() {
+    searchUser: debounce(function () {
       const searchName = this.form.username.trim()
-      if (!searchName) return this.$message.warning('用户名不能为空')
+      if (!searchName) return
 
       this.toUserInfoIndex = -1
-
-      this.transferLoading = true
 
       const params = {
         word: searchName,
@@ -298,11 +297,9 @@ export default {
         // 出错
         console.log(err)
         this.searchUserList = []
-      }).finally(() => {
-        this.transferLoading = false
       })
 
-    },
+    }, 300),
     showGift() {
       if (!this.tokenDetail.id) return this.$toast({ duration: 1000, message: '请稍后重试' })
       let { symbol, id: tokenId, total_supply: amount, decimals } = this.tokenDetail
@@ -446,7 +443,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  top: 28px;
+  top: 32px;
   background: #fff;
   border: 1px solid #B2B2B2;
   border-top: none;
@@ -510,4 +507,14 @@ export default {
   }
 }
 
+
+// result transition
+.result-enter-active,
+.result-leave-active {
+  transition: opacity .2s;
+}
+.result-enter,
+.result-leave-to {
+  opacity: 0
+}
 </style>
