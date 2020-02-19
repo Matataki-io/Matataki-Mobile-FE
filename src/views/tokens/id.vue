@@ -200,7 +200,7 @@ export default {
   watch: {
     giftDialog(newVal) {
       if (newVal) {
-        this.historyUserFunc('post')
+        this.historyUserFunc('token')
       } else {
         this.formEmpty()
       }
@@ -528,10 +528,10 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 10px;
+  // margin-top: 10px;
   &-avatar {
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
     margin-right: 10px;
     flex: 0 0 40px;
   }
