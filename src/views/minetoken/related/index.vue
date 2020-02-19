@@ -42,12 +42,14 @@
       :auto-request-time="0"
       @getListData="getListData"
     >
-      <ArticleCard
+    <div class="list">
+      <artcleCard
         v-for="(item, i) in articles"
-        :key="i"
-        :article="item"
-        type="article"
+        :key="i + item.id"
+        :card="item"
+        class="list-card"
       />
+    </div>
     </BasePull>
   </div>
 </template>
@@ -55,12 +57,12 @@
 <script>
 import debounce from 'lodash/debounce'
 import { mapGetters } from 'vuex'
-import ArticleCard from '@/components/ArticleCard.vue'
+import artcleCard from '@/components/article_card/index.vue'
 
 export default {
   name: 'MinetokenRelated',
   components: {
-    ArticleCard
+    artcleCard
   },
   props: ['id'],
   data() {
@@ -161,6 +163,13 @@ export default {
       height: 24px;
     margin: 4px 4px 4px 0;
     }
+  }
+}
+
+.list {
+  padding: 0 20px;
+  .list-card {
+    margin: 20px 0 0;
   }
 }
 </style>
