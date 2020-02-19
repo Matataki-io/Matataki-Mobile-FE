@@ -125,6 +125,8 @@ export default {
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
   line-height: 17px;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 .type {
   font-size: 12px;
