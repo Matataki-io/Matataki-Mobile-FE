@@ -26,6 +26,7 @@ import {
   TabPane,
   Table,
   TableColumn,
+  Tag,
   Divider,
   Image,
   Checkbox,
@@ -56,6 +57,7 @@ Vue.use(Input)
   .use(TabPane)
   .use(Table)
   .use(TableColumn)
+  .use(Tag)
   .use(Divider)
   .use(Image)
   .use(Radio)
