@@ -66,6 +66,7 @@ export default {
         params: {
           filter: 3,
           sort: 'time-desc',
+          onlyCreator: 0,
           pagesize: 20
           // extra: 'short_content' // 好像接口没有提供这个功能
         },
