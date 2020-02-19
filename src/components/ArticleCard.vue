@@ -63,7 +63,7 @@ import Vue from 'vue'
 import { isNDaysAgo } from '@/common/methods'
 import { precision } from '@/common/precisionConversion'
 
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 Vue.use(clampy)
 

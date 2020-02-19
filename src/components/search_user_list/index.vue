@@ -29,7 +29,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 export default {
   components: {
