@@ -11,14 +11,6 @@
       @getListData="getListDataTab"
     >
       <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
-      <!-- <ArticleCard
-        v-for="(itemChild, index) in pull.list"
-        :key="index"
-        :class="listtype !== 'others' && 'card-margin'"
-        :article="itemChild"
-        :now-index="0"
-        type="article"
-      /> -->
     </BasePull>
     </div>
   </userPage>
@@ -28,12 +20,9 @@
 import userPage from '@/components/user/user_page.vue'
 import artcleCard from '@/components/article_card/index.vue'
 
-// import { ArticleCard } from '@/components/'
-
 export default {
   components: {
     userPage,
-    // ArticleCard,
     artcleCard
   },
   data() {

@@ -26,18 +26,20 @@
       :api-url="apiUrl"
       @getListData="getListData"
     >
-      <ArticleCard v-for="(item, index) in tagList" :key="index" :article="item" type="article" />
+    <div class="list">
+      <artcleCard class="list-card" v-for="item in tagList" :key="item.id" :card="item"></artcleCard>
+    </div>
     </BasePull>
   </div>
 </template>
 
 <script>
 import tagColor from '@/common/tagColor'
-import { ArticleCard } from '@/components/'
+import artcleCard from '@/components/article_card/index.vue'
 
 export default {
   name: 'Tag',
-  components: { ArticleCard },
+  components: { artcleCard },
   // inject: ["reload", "openReload"], // 刷新页面的解决方案
   // beforeRouteEnter: (to, from, next) => next(vm => vm.reload()),
   data() {
@@ -70,5 +72,12 @@ export default {
   }
 }
 </script>
-
+<style lang="less" scoped>
+.list {
+  padding: 0 20px;
+  .list-card {
+    margin: 20px 0 0;
+  }
+}
+</style>
 <style src="./index.less" scoped lang="less"></style>
