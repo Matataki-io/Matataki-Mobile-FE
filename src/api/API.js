@@ -757,5 +757,9 @@ minetokenGetResources(tokenId) {
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
+  },
+  // 常用候选列表
+  historyUser(params) {
+    return request.get(`/history/user`, { params })
   }
 }
