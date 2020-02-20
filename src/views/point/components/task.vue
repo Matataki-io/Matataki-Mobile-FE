@@ -160,12 +160,12 @@ export default {
   methods: {
     // 防抖防止不必要的调用
     getUserPointStatus: debounce(async function() {
-      await this.$backendAPI
+      await  this.$API
         .userPointStatus()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
+          if (res.code === 0) {
             this.fullscreenLoading = false
-            this.pointStatus = res.data.data
+            this.pointStatus = res.data
           }
           else console.log(res.message)
         })
@@ -185,12 +185,12 @@ export default {
     profile() {
       if (!this.isLoginFunc()) return
       // console.log('领取资料设置积分')
-      this.$backendAPI
+      this.$API
         .userClaimTaskPoint({
           type: 'profile'
         })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
+          if (res.code === 0) {
             this.$toast({
               duration: 1500,
               message: this.$t('point.receiveSuccess')
@@ -199,7 +199,7 @@ export default {
           } else
             this.$toast({
               duration: 1500,
-              message: res.data.message
+              message: res.message
             })
         })
         .catch(err => {
@@ -213,12 +213,12 @@ export default {
     feedback() {
       if (!this.isLoginFunc()) return
       // console.log('领取老用户回馈积分')
-      this.$backendAPI
+      this.$API
         .userClaimTaskPoint({
           type: 'login'
         })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
+          if (res.code === 0) {
             this.$toast({
               duration: 1500,
               message: this.$t('point.receiveSuccess')
@@ -227,7 +227,7 @@ export default {
           } else
             this.$toast({
               duration: 1500,
-              message: res.data.message
+              message: res.message
             })
         })
         .catch(err => {
