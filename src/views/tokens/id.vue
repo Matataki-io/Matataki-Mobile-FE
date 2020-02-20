@@ -104,7 +104,7 @@
         </transition>
         <el-form-item label="发送数量" prop="tokens">
           <el-input
-            placeholder="请输入内容"
+            placeholder="请输入数量"
             v-model="form.tokens"
             :max="form.max"
             :min="form.min"
@@ -144,7 +144,9 @@ export default {
   },
   data() {
     let validateToken = (rule, value, callback) => {
-      if (!/^[0-9]+(\.[0-9]{1,4})?$/.test(value)) {
+      if (!value) {
+        callback('发送数量不能为空')
+      } else if (!/^[0-9]+(\.[0-9]{1,4})?$/.test(value)) {
         callback(new Error('发送的数量小数不能超过4位'))
       } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
