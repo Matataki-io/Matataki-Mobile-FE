@@ -20,8 +20,8 @@
             <div class="social-icons">
               <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
             </div>
-            <a v-if="item.url" class="url-text" :href="item.url + '/' + item.content">
-              {{ item.url + '/' + item.content }}
+            <a v-if="item.url" class="url-text" :href="item.url + item.content">
+              {{ item.type !== 'email' ? item.url + item.content : item.content }}
             </a>
             <span v-else class="url-text">{{ item.content }}</span>
           </div>
@@ -54,6 +54,12 @@ export default {
       social: [],
       socialTemplate: [
         {
+          icon: 'Email',
+          type: 'email',
+          url: 'mailto:',
+          content: ''
+        },
+        {
           icon: 'QQ',
           type: 'qq',
           content: ''
@@ -66,7 +72,7 @@ export default {
         {
           icon: 'Weibo',
           type: 'weibo',
-          url: 'https://www.weibo.com',
+          url: 'https://www.weibo.com/',
           content: ''
         },
         {
@@ -77,19 +83,19 @@ export default {
         {
           icon: 'Twitter',
           type: 'twitter',
-          url: 'https://twitter.com',
+          url: 'https://twitter.com/',
           content: ''
         },
         {
           icon: 'Facebook',
           type: 'facebook',
-          url: 'https://facebook.com',
+          url: 'https://facebook.com/',
           content: ''
         },
         {
           icon: 'Github',
           type: 'github',
-          url: 'https://github.com',
+          url: 'https://github.com/',
           content: ''
         }
       ],
