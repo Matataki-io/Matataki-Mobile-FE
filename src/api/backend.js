@@ -214,46 +214,6 @@ const API = {
       data: data
     })
   },
-  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
-    })
-  },
-  async updateDraft({
-    id,
-    title,
-    content,
-    cover,
-    fissionFactor,
-    isOriginal,
-    tags,
-    commentPayPoint
-  }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
-    })
-  },
   async delDraft({ id }) {
     return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
   },
