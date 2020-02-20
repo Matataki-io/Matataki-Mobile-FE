@@ -140,8 +140,8 @@ export default {
       }
     },
     async changeViewMode(value) {
-      const { enable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
-      const { disable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const { enable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
+      const { disable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
       const enableDarkMode = enable
       const disableDarkMode = disable
       if (value) {
