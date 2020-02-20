@@ -66,49 +66,6 @@ const API = {
     }
     return axiosforApiServer(config)
   },
-  async sendArticle(
-    url,
-    {
-      signId = null,
-      author,
-      hash,
-      title,
-      fissionFactor,
-      cover,
-      isOriginal,
-      tags,
-      commentPayPoint,
-      shortContent
-    },
-    signature = null
-  ) {
-    return this.accessBackend({
-      method: 'POST',
-      url,
-      data: {
-        author,
-        cover,
-        fissionFactor,
-        hash,
-        platform: 'need',
-        publickey: signature ? signature.publicKey : null,
-        sign: signature ? signature.signature : null,
-        signId,
-        title,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint,
-        shortContent
-      }
-    })
-  },
-  async publishArticle({ article, signature }) {
-    return this.sendArticle('/post/publish', article, signature)
-  },
-  async editArticle({ article, signature }) {
-    // console.log(article, signature)
-    return this.sendArticle('/post/edit', article, signature)
-  },
   async reportOrder(order) {
     const data = {
       ...order,
@@ -257,46 +214,6 @@ const API = {
       data: data
     })
   },
-  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
-    })
-  },
-  async updateDraft({
-    id,
-    title,
-    content,
-    cover,
-    fissionFactor,
-    isOriginal,
-    tags,
-    commentPayPoint
-  }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
-    })
-  },
   async delDraft({ id }) {
     return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
   },
@@ -416,25 +333,6 @@ const API = {
   async login({ username, password }) {
     return axiosforApiServer.post('/login/account', { username, password })
   },
-  // 获取首页统计数据
-  postsStats() {
-    return axiosforApiServer.get('/posts/stats')
-  },
-  // 获取任务状态
-  userPointStatus() {
-    return this.accessBackend({
-      method: 'GET',
-      url: '/user/pointStatus'
-    })
-  },
-  // 领取任务积分
-  userClaimTaskPoint(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/claimTaskPoint',
-      data: data
-    })
-  },
   registerGT() {
     return axiosforApiServer({
       url: `/gt/register-slide?t=${new Date().getTime()}`,
@@ -545,27 +443,6 @@ const API = {
     return this.accessBackend({
       method: 'get',
       url: '/token/minetoken'
-    })
-  },
-  tokenUserId(id) {
-    return this.accessBackend({
-      method: 'get',
-      url: `/token/user/${id}`
-    })
-  },
-  async getUserLinks({ id }) {
-    return this.accessBackend({ url: `/user/${id}/links` })
-  },
-  bookmark(id) {
-    return this.accessBackend({
-      method: 'post',
-      url: `/post/${id}/bookmark`
-    })
-  },
-  unbookmark(id) {
-    return this.accessBackend({
-      method: 'delete',
-      url: `/post/${id}/bookmark`
     })
   }
 }

@@ -14,6 +14,7 @@ import (/* webpackChunkName: "pluginsBroadcastChannel" */ './plugins/broadcastCh
 import (/* webpackChunkName: "pluginsSentry" */ './plugins/sentry')
 import (/* webpackChunkName: "registerServiceWorker" */ './registerServiceWorker')
 import (/* webpackChunkName: "assetsGt" */ '@/assets/gt.js')
+import (/* webpackChunkName: "animate.css" */ 'animate.css')
 
 import '@/assets/css/index.less'
 import './plugins/iview'

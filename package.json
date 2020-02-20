@@ -24,6 +24,7 @@
     "@sentry/browser": "5.11.1",
     "@sentry/integrations": "5.11.1",
     "@vant/touch-emulator": "^1.0.0",
+    "animate.css": "3.7.2",
     "axios": "^0.19.0",
     "better-scroll": "^2.0.0-alpha.15",
     "broadcast-channel": "^3.0.3",

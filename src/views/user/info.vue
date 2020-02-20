@@ -103,18 +103,18 @@ export default {
     async getMyUserLinks() {
       this.loading = true
       try {
-        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+        const res = await this.$API.getUserLinks({
           id: this.$route.params.id
         })
-        if (resLinks.code === 0) {
-          const data = resLinks.data
+        if (res.code === 0) {
+          const data = res.data
           this.urls = data.websites
           data.socialAccounts.forEach(item => {
             this.socialTemplate.find(age => age.type === item.type).content = item.value
           })
           this.social = this.socialTemplate.filter(age => age.content !== '' && age.content != null)
           this.loading = false
-        } else console.log('获取用户信息失败,', resLinks)
+        } else console.log('获取用户信息失败,', res.message)
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
       }

@@ -43,7 +43,7 @@
           邀请有奖
         </el-button>
       </div>
-    </div>  
+    </div>
     <Share
       :share-modal-show="shareModalShow"
       :minetoken-user="{ nickname: 123 }"
@@ -80,10 +80,10 @@ export default {
   },
   methods: {
     getPostsStats() {
-      this.$backendAPI
+      this.$API
         .postsStats()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) this.postsStats = res.data.data
+          if (res.code === 0) this.postsStats = res.data
         })
         .catch(err => console.log(`${err}`))
     },
@@ -95,11 +95,11 @@ export default {
         return
       }
       // 获取数据
-      await this.$backendAPI.userPointStatus()
+      await this.$API.userPointStatus()
         .then(res => {
           // console.log('个人统计数据：', res)
-          if (res.data.code === 0) this.pointStatus = res.data.data
-          else console.log(res.data.message)
+          if (res.code === 0) this.pointStatus = res.data
+          else console.log(res.message)
         })
         .catch(err => console.log('获取个人统计数据失败', err))
     }, 1000),

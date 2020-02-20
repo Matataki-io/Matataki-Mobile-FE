@@ -353,12 +353,12 @@ export default {
       setUser(userData)
 
       try {
-        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+        const res = await this.$API.getUserLinks({
           id: this.currentUserInfo.id
         })
-        if (resLinks.code === 0) {
-          setLinks(resLinks.data)
-        } else console.log('获取用户信息失败')
+        if (res.code === 0) {
+          setLinks(res.data)
+        } else console.log('获取用户信息失败', res.message)
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
       }
