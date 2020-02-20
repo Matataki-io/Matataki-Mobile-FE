@@ -259,12 +259,12 @@ export default {
       } else return ''
     },
     async tokenUserId(id) {
-      await this.$backendAPI
+      await this.$API
         .tokenUserId(id)
         .then(res => {
-          if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
+          if (res.code === 0 && res.data.id > 0) {
             this.tokenUser = true
-            this.tokenData = res.data.data
+            this.tokenData = res.data
           }
         })
         .catch(err => console.log('get token user error', err))
