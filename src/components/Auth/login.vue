@@ -63,6 +63,12 @@
           </div>
           Telegram
         </div>
+        <!-- <div class="oauth-card">
+          <div class="oauth-bg bg-twitter" @click="walletLogin('Twitter')">
+            <svg-icon class="twitter" icon-class="twitter" />
+          </div>
+          Twitter
+        </div> -->
       </div>
     </div>
   </section>
@@ -158,6 +164,25 @@ export default {
         }
       }
     },
+    async twitterLogin() {
+      this.loading = true;
+      try {
+        const res = await this.hello('twitter').login()
+        const res2 = await this.$API.twitterLogin({
+          oauth_token: res.authResponse.oauth_token,
+          oauth_token_secret: res.authResponse.oauth_token_secret
+        });
+        await this.$store.commit('setLoginModal', false)
+        this.loading = false;
+        await this.$store.commit('setAccessToken', res2.data)
+        await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
+        window.location.reload();
+      } catch (error) {
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.error(error.toString());
+      }
+    },
     async walletLogin(type) {
       if (type === 'GitHub') {
         this.setPathToSession('githubFrom')
@@ -168,6 +193,9 @@ export default {
       } else if (type === 'MetaMask') {
         this.loginWithMetaMask();
         return
+      } else if (type === "Twitter") {
+        this.twitterLogin();
+        return;
       }
       await this.signInx(type)
       // this.change(false)
@@ -265,7 +293,7 @@ export default {
     .eos {
       font-size: 24px;
     }
-    .github {
+    .github, .twitter {
       color: #fff;
       font-size: 22px;
     }
@@ -308,7 +336,9 @@ export default {
 .bg-tg {
   background: #0088cc;
 }
-
+.bg-twitter {
+  background: #00ACED;
+}
 .flexCenter {
   display: flex;
   align-items: center;

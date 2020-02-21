@@ -5,7 +5,7 @@
     <div class="account-head">
       <p>待提现</p>
       <div class="fl jsb">
-        <span>￥{{ amount(cny.balance) }}</span>
+        <span>￥{{ playerincome }}</span>
         <div>
           <el-button size="mini" disabled>提现</el-button>
           <el-button size="mini" @click="giftDialogShow = true">转账</el-button>
@@ -26,7 +26,7 @@
         <card v-for="(item, index) in pull.list" :key="index" :card="item"></card>
       </BasePull>
     </div>
-    <giftDialog v-model="giftDialogShow"/>
+    <giftDialog v-model="giftDialogShow" :balance="playerincome"/>
   </div>
 </template>
 
@@ -55,11 +55,18 @@ export default {
       giftDialogShow: false
     }
   },
-  methods: {
-    amount(amount) {
-      const tokenamount = precision(amount, 'CNY', 4)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+  computed: {
+    playerincome() {
+      if (this.cny.balance) {
+        const tokenamount = precision(this.cny.balance, 'CNY', 4)
+        return Number(this.$publishMethods.formatDecimal(tokenamount, 4))
+      } else {
+        return 0
+      }
+
     },
+  },
+  methods: {
     getListData(res) {
       // console.log(res)
       this.cny = res.data.data

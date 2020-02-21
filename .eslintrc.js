@@ -37,6 +37,9 @@ module.exports = {
     browser: true,
     node: true
   },
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
   extends: [
     'plugin:vue/essential',
     'prettier',
@@ -48,8 +51,5 @@ module.exports = {
     // "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
     quotes: [2, 'single'], // https://eslint.org/docs/2.0.0/rules/quotes
     semi: [2, 'never'] // https://eslint.org/docs/2.0.0/rules/semi
-  },
-  parserOptions: {
-    parser: 'babel-eslint'
   }
 }

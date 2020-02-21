@@ -58,7 +58,9 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ balance }} {{ minetokenToken.symbol }}
+                <router-link v-if="isLogined" :to="{ name: 'tokens' }">
+                  {{ balance }} {{ minetokenToken.symbol }}
+                </router-link>
               </p>
             </div>
           </div>
@@ -73,16 +75,16 @@
 
     <div class="fl function-bar">
       <div class="but" @click="openEtherscan()">
-          <div>
-            <svg-icon class="eth_mini" icon-class="eth_mini" />
-            链上查看
-          </div>
+        <svg-icon class="eth_mini" icon-class="eth_mini" />
+        链上查看
       </div>
-      <div class="but midline" @click="shareModalShow = true">
-        <div>
-          <svg-icon class="share1" icon-class="share1" />
-          分享Fan票
-        </div>
+      <router-link class="but" v-if="showTokenSetting" :to="{name: 'minetoken'}">
+        <svg-icon class="setting" icon-class="setting" />
+        管理
+      </router-link>
+      <div class="but" @click="shareModalShow = true">
+        <svg-icon class="share1" icon-class="share1" />
+        分享Fan票
       </div>
     </div>
 
@@ -163,7 +165,7 @@
       </h2>
       <ul v-if="resourcesWebsites.length !== 0">
         <li v-for="(item, index) in resourcesWebsites" :key="index">
-          <a target="_blank" :href="item">{{ item }}</a>
+          <a target="_blank" :href="formatUrl(item)">{{ item }}</a>
         </li>
       </ul>
       <span v-else class="not">暂无</span>
@@ -384,7 +386,7 @@ export default {
     },
     createTime() {
       return moment(this.minetokenToken.create_time).format('lll')
-    }
+    },
   },
   watch: {
     currentUserInfo() {
@@ -455,8 +457,8 @@ export default {
       try {
         const res = await this.$API.tokenUserId(id)
 
-        if (res.status === 200 && res.data.code === 0 && res.data.data.id > 0) {
-          this.showTokenSetting = res.data.data.id === Number(this.$route.params.id)
+        if (res.code === 0 && res.data.id > 0) {
+          this.showTokenSetting = res.data.id === Number(this.$route.params.id)
         }
       } catch (err) {
         console.error('get token user error', err)
@@ -490,6 +492,12 @@ export default {
     },
     openEtherscan() {
       window.open('http://rinkeby.etherscan.io/address/' + this.minetokenToken.contract_address)
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if(isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }
@@ -818,6 +826,7 @@ export default {
   z-index: 99999;
   border-top: 0.0625rem solid #DBDBDB;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
   .but {
     flex: 1;
     background: white;
@@ -825,23 +834,25 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    div {
-      font-size: 15px;
-      color: #000;
-      svg {
-        vertical-align: sub;
-        &.eth_mini {
-          font-size: 20px;
-        }
-        &.share1 {
-          font-size: 18px;
-          margin-right: 3px;
-        }
-      }
-    }
-  }
-  .midline {
+    font-size: 15px;
+    color: #000;
+    text-decoration: none;
     border-left: 1px solid #DBDBDB;
+    &:nth-child(1) {
+      border-left: none;
+    }
+    .eth_mini {
+      font-size: 20px;
+      margin-right: 0px;
+    }
+    .share1 {
+      font-size: 14px;
+      margin-right: 3px;
+    }
+    .setting {
+      font-size: 15px;
+      margin-right: 3px;
+    }
   }
 }
 </style>

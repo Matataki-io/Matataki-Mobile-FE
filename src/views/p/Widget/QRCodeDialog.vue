@@ -54,7 +54,7 @@
 <script>
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 var tp = require('tp-js-sdk')
 

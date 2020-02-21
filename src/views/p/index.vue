@@ -61,9 +61,9 @@
                   <svg-icon icon-class="view" class="avatar-read" />
                   {{ article.read || 0 }}
                   &nbsp;
-                  <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
+                  <ipfsAll :articleIpfsArray="articleIpfsArray" />
                   &nbsp;
-                  <span class="article-head__ipfs" v-if="isHideIpfsHash">IPFS</span>
+                  <span class="article-head__ipfs">IPFS</span>
                 </p>
               </div>
             </div>
@@ -455,10 +455,9 @@
         @changeWidgetModal="status => (widgetModal = status)"
       />
       <article-transfer
-        :transfer-modal="transferModal"
-        :article-id="article.id"
-        :from="'article'"
-        @changeTransferModal="status => (transferModal = status)"
+        v-model="transferModal"
+        :article-id="Number(article.id)"
+        from="article"
       />
     </div>
     <div v-else class="deleted-container">
@@ -481,11 +480,11 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor-matataki'
+import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 // import { sleep, isNDaysAgo } from '@/common/methods'
 import { isNDaysAgo } from '@/common/methods'
 import { ontAddressVerify } from '@/common/reg'

@@ -1,12 +1,11 @@
 <template>
   <div class="mw help">
-    <BaseHeader :pageinfo="{ title: $t('setting') }" />
+    <BaseHeader :pageinfo="{ title: $t('setting') }" customize-header-bc="#fff" :has-bottom-border-line="true" />
     <div class="help-block">
-      <a class="help-list" href="https://matataki.io/p/1060" target="_blank">
-        <span class="help-list-title">{{ $t('user.rule') }}</span>
-        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+      <a class="help-list" href="https://www.yuque.com/matataki" target="_blank">
+        <span class="help-list-title">帮助和支持</span>
+        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
-
       <a
         v-for="(item, index) in helpDoc"
         :key="index"
@@ -18,7 +17,7 @@
       </a>
     </div>
 
-    <div class="help-block">
+    <div class="help-block" v-if="isLogined">
       <div class="help-list">
         <span class="help-list-title">{{ $t('user.transfer') }}</span>
         <span class="help-list-sub">
@@ -54,7 +53,7 @@
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
-      <a class="help-list" href="https://www.matataki.io/p/1059" target="_blank">
+      <a class="help-list" href="https://www.yuque.com/matataki/matataki_version" target="_blank">
         <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
@@ -98,10 +97,8 @@
 import store from '@/utils/store.js'
 import packageConfig from '../../../package.json'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
-// import {
-//   enable as enableDarkMode,
-//   disable as disableDarkMode,
-// } from 'darkreader'
+import { mapGetters } from 'vuex'
+
 export default {
   naem: 'Help',
   data() {
@@ -122,6 +119,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
     version() {
       return packageConfig.version
     }
@@ -140,8 +138,8 @@ export default {
       }
     },
     async changeViewMode(value) {
-      const { enable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
-      const { disable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const { enable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
+      const { disable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
       const enableDarkMode = enable
       const disableDarkMode = disable
       if (value) {
@@ -162,6 +160,7 @@ export default {
     },
     // 获取用户信息 - 转让状态
     async getMyUserData() {
+      if (!this.isLogined) return
       try {
         const res = await this.$API.getMyUserData()
         if (res.status === 200 && res.data.code === 0) this.articleTransfer = !!res.data.data.accept

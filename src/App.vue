@@ -106,8 +106,8 @@ export default {
     ...mapActions(['signIn']),
     async getViewMode() {
 
-      const { enable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
-      const { disable } = await import(/* webpackChunkName: darkreader */ 'darkreader')
+      const { enable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
+      const { disable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')
       const enableDarkMode = enable
       const disableDarkMode = disable
 
@@ -189,6 +189,7 @@ export default {
   /*text-align: center;*/
   margin: auto;
   height: 100%;
+  max-width: 750px;
 }
 
 .backtop {

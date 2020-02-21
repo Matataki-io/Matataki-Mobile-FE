@@ -10,15 +10,18 @@
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
+    <wechatTips v-if="isWeixin" class="wechat-tips"></wechatTips>
   </div>
 </template>
 
 <script>
 import TelegramLogin from '@/components/TelegramLogin'
+import wechatTips from '@/components/wechat_tips'
 export default {
   name: 'telegramLogin',
   components: {
-    TelegramLogin
+    TelegramLogin,
+    wechatTips
   },
   data() {
     return {
@@ -27,6 +30,9 @@ export default {
     }
   },
   computed: {
+    isWeixin () {
+      return /micromessenger/.test(navigator.userAgent.toLowerCase())
+    },
     TELEGRAM_BOT_NAME() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if (isWeixin()) {
@@ -55,7 +61,12 @@ export default {
         .then(res => {
           this.$store.commit('setAccessToken', res.data)
           this.$store.commit('setUserConfig', { idProvider: 'telegram' })
-          this.$router.back(-1)
+
+          // 两个地方的back -1 vue里面没有想到什么好的判断上一页的办法, 暂时直接返回需要的页面
+          // this.$router.back(-1)
+          this.$router.push({
+            name: 'article'
+          })
         })
         .finally(() => {
           this.loading = false
@@ -75,7 +86,10 @@ export default {
           } else {
             this.$message.warning(res.message)
           }
-          this.$router.back(-1)
+          // this.$router.back(-1)
+          this.$router.push({
+            name: 'setting-account'
+          })
         })
         .catch(err => {
           console.log(err)
@@ -104,5 +118,15 @@ export default {
     padding: 0;
     margin: 2em 0 0;
   }
+}
+
+.wechat-tips {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  z-index: 9999;
 }
 </style>

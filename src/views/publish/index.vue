@@ -336,10 +336,10 @@
 <script>
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
-import { mavonEditor } from 'mavon-editor'
+import { mavonEditor } from 'mavon-editor-matataki'
 import { strTrim } from '@/common/reg'
 
-import 'mavon-editor/dist/css/index.css' // editor css
+import 'mavon-editor-matataki/dist/css/index.css' // editor css
 // import { sleep } from '@/common/methods'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { CreativeCommonsLicenseGenerator, convertLicenseToChinese } from '@/utils/CreativeCommons'
@@ -962,23 +962,6 @@ export default {
         this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }
     },
-    // // 更新草稿
-    // async updateDraft(article) {
-    //   // 设置文章标签 🏷️
-    //   article.tags = this.setArticleTag(this.tagCards)
-    //   // 设置积分
-    //   article.commentPayPoint = this.commentPayPoint
-    //   try {
-    //     const response = await this.$backendAPI.updateDraft(article)
-    //     if (response.status === 200 && response.data.code === 0) {
-    //       this.$toast({ duration: 1000, message: this.$t('success.draftUpdate') })
-    //       this.$navigation.cleanRoutes() // 清除路由记录
-    //       this.$router.go(-1)
-    //     } else this.failed(this.$t('error.failTry'))
-    //   } catch (error) {
-    //     this.failed(this.$t('error.failTry'))
-    //   }
-    // },
     // 发布||修改按钮
     sendThePost() {
       // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page

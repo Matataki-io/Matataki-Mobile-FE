@@ -45,27 +45,21 @@
         </div>
       </router-link>
     </template>
-    <template v-else>
-      <ArticleCard
-        v-for="(item, index) in item.articles"
-        :key="index"
-        :class="listtype !== 'others' && 'card-margin'"
-        :article="item"
-        :now-index="activeIndex"
-        :is-other-user="isOtherUser"
-        type="article"
-      />
-    </template>
+    <div class="list" v-else>
+      <artcleCard class="list-card" v-for="item in item.articles" :key="item.id" :card="item"></artcleCard>
+    </div>
     </BasePull>
   </div>
 </template>
 
 <script>
-import { ArticleCard } from '@/components/'
+import artcleCard from '@/components/article_card/index.vue'
 
 export default {
   name: 'ArticlesList',
-  components: { ArticleCard },
+  components: {
+    artcleCard
+    },
   props: {
     listtype: {
       type: String,
@@ -198,7 +192,12 @@ export default {
 .card-margin {
   margin: 0 0 10px 0;
 }
-
+.list {
+  padding: 0 20px;
+  .list-card {
+    margin: 20px 0 0;
+  }
+}
 .card-bookmark {
   padding: 20px;
   background-color: #fff;

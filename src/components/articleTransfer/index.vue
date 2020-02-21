@@ -1,125 +1,171 @@
 <template>
-  <Modal
+  <!-- <Modal
     v-model="transferModalCopy"
     class="widget"
-    width="375"
     class-name="widget-flex"
     footer-hide
     :closable="false"
     @on-visible-change="change"
-  >
-    <div v-if="widgetModalStatus === 0" class="widget-writecontent">
-      <p class="widget-title">{{ $t('p.articleTransferTitle') }}</p>
-      <div class="widget-input-container">
-        <van-field
+  > -->
+  <m-dialog v-model="showModal" :title="$t('p.articleTransferTitle')" width="90%" class="transfer-dialog">
+    <el-form
+      ref="form"
+      v-show="widgetModalStatus === 0"
+      @submit.native.prevent
+      label-width="70px"
+    >
+
+      <el-form-item label="接受对象">
+        <el-input
           v-model="transferUsername"
-          class="widget-input"
           :placeholder="$t('p.articleTransferPlaceholder')"
-          @input="changeTransferId"
+          size="small"
+          style="z-index: 2;"
         />
+        <!-- 常用候选对象列表 -->
+        <template v-if="historyUser.length !== 0">
+          <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+            {{
+              (item.nickname || item.username).length > 20
+                ? `${(item.nickname || item.username).slice(0, 20)}...`
+                : item.nickname || item.username
+            }}
+          </el-tag>
+        </template>
         <!-- 搜索结果 -->
-        <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="widget-input-user">
-          <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
-            <avatar :src="searchUserAvatar(item.avatar)" class="widget-input-avater" />
+        <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
+          <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
+            <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
             <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
           </div>
         </div>
-        <!-- 结果 -->
-        <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
-          <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
-          <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
-        </router-link>
-        <span v-if="errorMessage" class="error-info">
-          {{ $t('p.articleTransferNotUser') }}
-        </span>
-      </div>
-      <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">
-          {{ $t('p.articleTransferHelp') }}
-        </a>
-        <a
-          class="create"
-          href="javascript:;"
-          :class="[toUserInfoIndex === -1 && 'gray']"
-          @click="transferArticle"
-        >
-          {{ $t('p.articleTransferBtn') }}
-        </a>
-      </div>
-    </div>
-    <div v-if="widgetModalStatus === 1" class="widget-help">
+      </el-form-item>
+
+      <!-- 结果 -->
+      <transition name="result">
+        <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
+          <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
+            <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
+            <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
+            <div @click="closeUser" class="gift-ful">
+              <i class="el-icon-close" />
+            </div>
+          </router-link>
+        </el-form-item>
+      </transition>
+
+      <a @click="widgetModalStatus = 1" class="transfer-help" href="javascript:;">{{ $t('p.articleTransferHelp') }}</a>
+      <el-form-item>
+        <div class="form-button">
+          <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
+            {{ $t('p.articleTransferBtn') }}
+          </el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+
+    <div v-show="widgetModalStatus === 1" class="widget-help">
       <p class="widget-help-title">
         {{ $t('p.articleTransferHelpTitle') }}
       </p>
       <p class="widget-help-content">
         {{ $t('p.articleTransferHelpDes') }}
       </p>
-      <br />
+      <br>
       <p class="widget-help-title">
         {{ $t('p.articleTransferHelpStepTitle') }}
       </p>
       <p class="widget-help-content">
-        1.{{ $t('p.articleTransferHelpStepDes1') }}<br />
-        2.{{ $t('p.articleTransferHelpStepDes2') }}<br />
+        1.{{ $t('p.articleTransferHelpStepDes1') }}<br>
+        2.{{ $t('p.articleTransferHelpStepDes2') }}<br>
         3.{{ $t('p.articleTransferHelpStepDes3') }}
       </p>
-      <a class="widget-help-button" href="javascript:;" @click="backPage">
-        {{ $t('p.articleTransferHelpBtn') }}
-      </a>
+      <div class="form-button">
+        <el-button @click="widgetModalStatus = 0" type="primary" size="small">
+          {{ $t('p.articleTransferHelpBtn') }}
+        </el-button>
+      </div>
     </div>
-  </Modal>
+
+
+  </m-dialog>
+
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
-import { sleep } from '@/common/methods'
-import { strTrim } from '@/common/reg'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
 
 export default {
   name: 'ArticleTransfer',
-  props: ['transferModal', 'articleId', 'from'],
   components: {
     avatar
   },
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+    articleId: {
+      type: Number,
+      required: true
+    },
+    from: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      transferModalCopy: this.transferModal,
-      // 0 默认
-      // 1 转让
       widgetModalStatus: 0,
-      oldWidgetModalStatus: 0,
       transferUsername: '',
-      errorMessage: false, // 错误信息 默认不显示
+      showModal: false,
       searchUserList: [], // 搜索结果
-      toUserInfoIndex: -1 // 转让的对象
+      toUserInfo: null, // 转让的对象
+      historyUser: [] // 历史转让用户
     }
   },
   watch: {
-    transferModal(newVal) {
-      this.transferModalCopy = newVal
+    showModal(newVal) {
+      this.$emit('input', newVal)
+    },
+    value(newVal) {
+      if (newVal) {
+        this.historyUserFunc('post')
+      } else {
+        this.resetStatus()
+      }
+      this.showModal = newVal
+    },
+    transferUsername() {
+      this.searchUser()
     }
   },
   methods: {
-    reviewHelp() {
-      this.widgetModalStatus = 1
+    submitForm(formName) {
+      // 这里没有用表单验证
+      if (this.$utils.isNull(this.toUserInfo)) {
+        this.$message.warning('请选择用户')
+      } else {
+        this.transferArticle()
+      }
     },
-    backPage() {
-      this.widgetModalStatus = this.oldWidgetModalStatus
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     },
+    // 转让文章
     async transferArticle() {
-      const toUserInfoIndex = this.toUserInfoIndex
+      const toUserInfo = this.toUserInfo
+      if (this.$utils.isNull(toUserInfo)) return
 
-      if (toUserInfoIndex === -1) return
-      const transferUsername = this.searchUserList[toUserInfoIndex].id
-
+      const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
 
       try {
         const res = await this.$API.transferOwner(
           this.from,
           this.articleId,
-          transferUsername
+          toId
         )
         if (res.code === 0) {
           this.$toast({
@@ -127,8 +173,8 @@ export default {
             position: 'bottom',
             message: this.$t('p.articleTransferSuccess')
           })
-          this.change(false)
-          window.location.reload()
+          this.showModal = false // 移动端需要手动关闭 不然莫名其妙的遮罩层还在!!!
+          this.$router.push({ name: 'article' })
         } else {
           this.$toast({
             duration: 1000,
@@ -145,28 +191,23 @@ export default {
         })
       }
     },
+    // 重置状态
     resetStatus() {
       this.widgetModalStatus = 0
       this.transferUsername = ''
-      this.errorMessage = false
 
       this.searchUserList = [] // 搜索结果
-      this.toUserInfoIndex = -1 // 转让的对象
+      this.toUserInfo = null
     },
-    async change(status) {
-      this.transferModalCopy = status
-      this.$emit('changeTransferModal', status)
-      await sleep(300)
-      !status && this.resetStatus()
-    },
-    changeTransferId: debounce(function () {
+    // 搜索用户
+    searchUser: debounce(function () {
       const searchName = this.transferUsername.trim()
       if (!searchName) {
-        this.errorMessage = false
+        this.searchUserList = []
         return
       }
 
-      this.toUserInfoIndex = -1
+      this.toUserInfo = null
 
       const params = {
         word: searchName,
@@ -178,48 +219,53 @@ export default {
           this.searchUserList = res.data.list
           if (res.data.list.length === 0) {
             // 没有结果
-            this.errorMessage = true
-          } else {
-            // 有结果
-            this.errorMessage = false
+            this.$message.warning('没有搜索结果')
           }
         } else {
           // 失败
-          this.errorMessage = false
           this.$message.warning(res.message)
         }
       }).catch(err => {
         // 出错
         console.log(err)
         this.searchUserList = []
-        this.errorMessage = false
       })
 
 
     }, 300),
-    continueUser(i) {
-      this.toUserInfoIndex = i
+    continueUser(val) {
+      this.toUserInfo = val
     },
     searchUserAvatar(src) {
       return src ? this.$ossProcess(src, { h: 60 }) : ''
     },
     searchUserTitle(html) {
       return html ? xssFilter(html) : ''
+    },
+    // 取消搜索后的用户
+    closeUser(e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.toUserInfo = null
+      this.searchUserList = []
+      return false
+    },
+    // 获取常用用户列表
+    historyUserFunc(type) {
+      this.$API.historyUser({
+        type
+      }).then(res => {
+        if (res.code === 0) {
+          this.historyUser = res.data.slice(0, 10)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
 </script>
 
-<style lang="less">
-/*样式覆盖*/
-// .widget-flex {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-
-//   .ivu-modal {
-//     top: 0;
-//   }
-// }
-</style>
 <style src="./index.less" scoped lang="less"></style>
