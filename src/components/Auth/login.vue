@@ -63,12 +63,12 @@
           </div>
           Telegram
         </div>
-        <div class="oauth-card">
+        <!-- <div class="oauth-card">
           <div class="oauth-bg bg-twitter" @click="walletLogin('Twitter')">
             <svg-icon class="twitter" icon-class="twitter" />
           </div>
           Twitter
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
