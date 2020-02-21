@@ -6,10 +6,6 @@
         <span class="help-list-title">帮助和支持</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
-      <a class="help-list" href="https://matataki.io/p/1060" target="_blank">
-        <span class="help-list-title">{{ $t('user.rule') }}</span>
-        <img src="@/assets/img/icon_arrow.svg" alt="view" />
-      </a>
       <a
         v-for="(item, index) in helpDoc"
         :key="index"
