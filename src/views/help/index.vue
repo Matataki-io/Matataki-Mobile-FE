@@ -1,12 +1,15 @@
 <template>
   <div class="mw help">
-    <BaseHeader :pageinfo="{ title: $t('setting') }" />
+    <BaseHeader :pageinfo="{ title: $t('setting') }" customize-header-bc="#fff" :has-bottom-border-line="true" />
     <div class="help-block">
+      <a class="help-list" href="https://www.yuque.com/matataki" target="_blank">
+        <span class="help-list-title">帮助和支持</span>
+        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+      </a>
       <a class="help-list" href="https://matataki.io/p/1060" target="_blank">
         <span class="help-list-title">{{ $t('user.rule') }}</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
-
       <a
         v-for="(item, index) in helpDoc"
         :key="index"
@@ -18,7 +21,7 @@
       </a>
     </div>
 
-    <div class="help-block">
+    <div class="help-block" v-if="isLogined">
       <div class="help-list">
         <span class="help-list-title">{{ $t('user.transfer') }}</span>
         <span class="help-list-sub">
@@ -54,7 +57,7 @@
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
-      <a class="help-list" href="https://www.yuque.com/matataki/matatakibot_version" target="_blank">
+      <a class="help-list" href="https://www.yuque.com/matataki/matataki_version" target="_blank">
         <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
@@ -83,12 +86,6 @@
       </div>
     </div>
     <div class="help-block">
-      <a class="help-list" href="https://www.yuque.com/matataki" target="_blank">
-        <span class="help-list-title">帮助文档</span>
-        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
-      </a>
-    </div>
-    <div class="help-block">
       <div class="help-list" @click="clearCache">
         <span class="help-list-title">一键清除缓存</span>
         <img src="@/assets/img/icon_arrow.svg" alt="view" />
@@ -104,10 +101,8 @@
 import store from '@/utils/store.js'
 import packageConfig from '../../../package.json'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
-// import {
-//   enable as enableDarkMode,
-//   disable as disableDarkMode,
-// } from 'darkreader'
+import { mapGetters } from 'vuex'
+
 export default {
   naem: 'Help',
   data() {
@@ -128,6 +123,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
     version() {
       return packageConfig.version
     }
@@ -168,6 +164,7 @@ export default {
     },
     // 获取用户信息 - 转让状态
     async getMyUserData() {
+      if (!this.isLogined) return
       try {
         const res = await this.$API.getMyUserData()
         if (res.status === 200 && res.data.code === 0) this.articleTransfer = !!res.data.data.accept

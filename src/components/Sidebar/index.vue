@@ -214,14 +214,14 @@
         </div>
       </template>
       <template v-else>
-        <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">
+        <div class="login-btn" href="javascript:;" @click="loginOrSignOut">
           {{ $t('sidebar.login') }}
         </div>
       </template>
       <!-- 其它 -->
       <div class="cell-container">
         <!-- 使用手册 -->
-        <a href="https://www.yuque.com/matataki/matataki">
+        <a href="https://www.yuque.com/matataki/matataki" target="_blank">
           <div class="cell">
             <div class="cell-left">
               <!-- <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" /> -->
@@ -274,7 +274,7 @@
         </a>
       </div> -->
     </div>
-    <div v-if="isLogined" class="fl bottom-bar">
+    <div class="fl bottom-bar">
       <router-link class="button-card" :to="{name: 'help'}">
         <div class="cell">
           <div class="cell-left center">
@@ -286,13 +286,13 @@
           </div>
         </div>
       </router-link>
-      <a class="button-card" @click="btnsignOut()">
+      <a class="button-card" @click="loginOrSignOut">
         <div class="cell">
           <div class="cell-left center">
             <!-- <img src="@/assets/newimg/logout.svg" alt="home" class="left-img" /> -->
             <svg-icon icon-class="logout" class="left-img icon-feedback" />
             <span class="left-text">
-              {{ $t('logout') }}
+              {{ isLogined ? $t('logout') : $t('sidebar.login') }}
             </span>
           </div>
         </div>
@@ -385,13 +385,17 @@ export default {
   },
   methods: {
     ...mapActions(['signOut', 'getNotificationCounters']),
-    btnsignOut() {
-      this.signOut()
-      this.jumpTo({ name: 'article' })
-      this.$toast.success({
-        duration: 1500,
-        message: this.$t('success.logoutSuccess')
-      })
+    loginOrSignOut() {
+      if (this.isLogined) {
+        this.signOut()
+        this.jumpTo({ name: 'article' })
+        this.$toast.success({
+          duration: 1500,
+          message: this.$t('success.logoutSuccess')
+        })
+      } else {
+        this.$store.commit('setLoginModal', true)
+      }
     },
     jumpTo(params) {
       if (!params.name) return
