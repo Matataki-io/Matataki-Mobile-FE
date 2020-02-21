@@ -212,7 +212,6 @@
             </div>
           </router-link>
         </div>
-      
       </template>
       <template v-else>
         <div class="login-btn" href="javascript:;" @click="$store.commit('setLoginModal', true)">
@@ -222,7 +221,7 @@
       <!-- 其它 -->
       <div class="cell-container">
         <!-- 使用手册 -->
-        <a href="https://matataki.io/p/1060">
+        <a href="https://www.yuque.com/matataki/matataki">
           <div class="cell">
             <div class="cell-left">
               <!-- <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" /> -->
