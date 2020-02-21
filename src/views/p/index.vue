@@ -61,9 +61,9 @@
                   <svg-icon icon-class="view" class="avatar-read" />
                   {{ article.read || 0 }}
                   &nbsp;
-                  <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
+                  <ipfsAll :articleIpfsArray="articleIpfsArray" />
                   &nbsp;
-                  <span class="article-head__ipfs" v-if="isHideIpfsHash">IPFS</span>
+                  <span class="article-head__ipfs">IPFS</span>
                 </p>
               </div>
             </div>
