@@ -54,7 +54,7 @@
           <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
         </div>
       </a>
-      <a class="help-list" href="https://www.matataki.io/p/1059" target="_blank">
+      <a class="help-list" href="https://www.yuque.com/matataki/matatakibot_version" target="_blank">
         <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
@@ -81,6 +81,12 @@
           />
         </span>
       </div>
+    </div>
+    <div class="help-block">
+      <a class="help-list" href="https://www.yuque.com/matataki" target="_blank">
+        <span class="help-list-title">帮助文档</span>
+        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+      </a>
     </div>
     <div class="help-block">
       <div class="help-list" @click="clearCache">
