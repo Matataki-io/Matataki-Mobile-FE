@@ -61,7 +61,12 @@ export default {
         .then(res => {
           this.$store.commit('setAccessToken', res.data)
           this.$store.commit('setUserConfig', { idProvider: 'telegram' })
-          this.$router.back(-1)
+
+          // 两个地方的back -1 vue里面没有想到什么好的判断上一页的办法, 暂时直接返回需要的页面
+          // this.$router.back(-1)
+          this.$router.push({
+            name: 'article'
+          })
         })
         .finally(() => {
           this.loading = false
@@ -81,7 +86,10 @@ export default {
           } else {
             this.$message.warning(res.message)
           }
-          this.$router.back(-1)
+          // this.$router.back(-1)
+          tiis.$router.push({
+            name: 'setting-account'
+          })
         })
         .catch(err => {
           console.log(err)
