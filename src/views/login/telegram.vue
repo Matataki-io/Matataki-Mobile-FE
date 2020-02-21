@@ -87,7 +87,7 @@ export default {
             this.$message.warning(res.message)
           }
           // this.$router.back(-1)
-          tiis.$router.push({
+          this.$router.push({
             name: 'setting-account'
           })
         })
