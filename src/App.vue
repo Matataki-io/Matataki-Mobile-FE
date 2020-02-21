@@ -189,6 +189,7 @@ export default {
   /*text-align: center;*/
   margin: auto;
   height: 100%;
+  max-width: 750px;
 }
 
 .backtop {
