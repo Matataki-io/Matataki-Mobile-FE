@@ -54,7 +54,7 @@
 <script>
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 var tp = require('tp-js-sdk')
 
@@ -124,7 +124,7 @@ export default {
             .then(res => {
               if (res.code === 0) {
                 tp.saveImage({
-                  url: this.$API.getImg(res.data)
+                  url: this.$ossProcess(res.data)
                 })
               } else {
                 this.$toast({ duration: 1000, message: '保存失败,请重试' })

@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.slide.cover ? this.$API.getImg(this.slide.cover) : ''
+      return this.slide.cover ? this.$ossProcess(this.slide.cover) : ''
     },
     slideNums() {
       return this.slideIndex === 0

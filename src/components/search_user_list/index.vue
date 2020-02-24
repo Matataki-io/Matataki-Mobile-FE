@@ -1,12 +1,8 @@
 <template>
-  <div class="user-list">
-    <router-link :to="{ name: 'user-id', params: { id: card.id } }">
-      <avatar size="40px" class="avatar" :src="avatarSrc" />
-    </router-link>
+  <router-link :to="{ name: 'user-id', params: { id: card.id } }" class="user-list" tag="div">
+    <avatar size="40px" class="avatar" :src="avatarSrc" />
     <div class="user-info">
-      <router-link :to="{ name: 'user-id', params: { id: card.id } }">
-        <p class="user-title search-res" v-html="userTitle" />
-      </router-link>
+      <p class="user-title search-res" v-html="userTitle" />
       <p class="user-num">
         <span>{{ $t('follow') }}: {{ card && card.follows }}</span>
         &nbsp;
@@ -27,13 +23,13 @@
         {{ followBtnText }}
       </el-button>
     </template>
-  </div>
+  </router-link>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 export default {
   components: {
@@ -48,7 +44,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     avatarSrc() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar)
       return ''
     },
     userTitle() {
@@ -114,7 +110,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   background: rgba(255, 255, 255, 1);
-  padding: 10px;
+  padding: 10px 20px;
   transition: all 0.3s;
   box-sizing: border-box;
 }

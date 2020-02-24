@@ -61,8 +61,9 @@
                   <svg-icon icon-class="view" class="avatar-read" />
                   {{ article.read || 0 }}
                   &nbsp;
-                  <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHideIpfsHash" />
-                  <span class="article-ipfs" v-if="isHideIpfsHash">IPFS</span>
+                  <ipfsAll :articleIpfsArray="articleIpfsArray" />
+                  &nbsp;
+                  <span class="article-head__ipfs">IPFS</span>
                 </p>
               </div>
             </div>
@@ -81,7 +82,7 @@
             </template>
           </div>
         </header>
-        <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="id"></ipfs>
+        <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
         <div class="markdown-body" v-html="compiledMarkdown"></div>
@@ -454,10 +455,9 @@
         @changeWidgetModal="status => (widgetModal = status)"
       />
       <article-transfer
-        :transfer-modal="transferModal"
-        :article-id="article.id"
-        :from="'article'"
-        @changeTransferModal="status => (transferModal = status)"
+        v-model="transferModal"
+        :article-id="Number(article.id)"
+        from="article"
       />
     </div>
     <div v-else class="deleted-container">
@@ -480,18 +480,18 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor-matataki'
+import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 // import { sleep, isNDaysAgo } from '@/common/methods'
 import { isNDaysAgo } from '@/common/methods'
 import { ontAddressVerify } from '@/common/reg'
 import { precision } from '@/utils/precisionConversion'
 
 import CommentsList from './CommentsList.vue'
-import ipfs from './ipfs.vue'
+// import ipfs from './ipfs.vue'
 import statement from './statement.vue'
 // import ArticleInfo from './ArticleInfo.vue'
 import Widget from './Widget/index.vue'
@@ -527,7 +527,7 @@ export default {
     Widget,
     tagCard,
     articleTransfer,
-    ipfs,
+    // ipfs,
     statement,
     ArticleFooter,
     commentInput,
@@ -611,7 +611,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover, {h: 240})
       return null
     },
     displayPlaceholder() {
@@ -735,7 +735,7 @@ export default {
     // 需要多少Fan票LOGO
     needTokenLogo() {
       if (this.article.tokens.length !== 0) {
-        return this.$API.getImg(this.article.tokens[0].logo)
+        return this.$ossProcess(this.article.tokens[0].logo)
       } else return ''
     },
     limitValue() {
@@ -824,7 +824,7 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: this.regRemoveContent(this.post.content),
-        imgUrl: this.article.cover ? this.$API.getImg(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
     },
     // 复制hash
@@ -1320,7 +1320,7 @@ export default {
         if (res.code === 0) {
           this.followed = res.data.is_follow
           this.articleAvatar = res.data.avatar
-            ? this.$API.getImg(res.data.avatar)
+            ? this.$ossProcess(res.data.avatar, {h: 60})
             : ''
         } else console.log(this.$t('error.getUserInfoError'))
       } catch (error) {
@@ -1504,7 +1504,7 @@ export default {
           if (res.code === 0) {
             this.articleIpfsArray = res.data
           } else {
-            this.$message.error(res.message)
+            console.log(res.message)
           }
         }).catch(err => {
           console.log('err', err)

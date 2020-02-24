@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+      return this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
     },
     amount() {
       const tokenamount = precision(

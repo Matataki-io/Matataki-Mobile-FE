@@ -459,7 +459,7 @@ export default {
     },
     // 设置用户信息
     setShareUser(avatar, username) {
-      this.shareCard.avatarSrc = avatar ? this.$API.getImg(avatar) : ''
+      this.shareCard.avatarSrc = avatar ? this.$ossProcess(avatar) : ''
       this.shareCard.username = username
     },
     // 设置引用
@@ -479,7 +479,7 @@ export default {
           .then(res => {
             if (res.code === 0) {
               tp.saveImage({
-                url: this.$API.getImg(res.data)
+                url: this.$ossProcess(res.data)
               })
             } else {
               this.$toast({ duration: 1000, message: '保存失败,请重试' })

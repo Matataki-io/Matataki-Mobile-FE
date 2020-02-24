@@ -75,7 +75,6 @@ const configureWebpack = () => {
       'element-ui': 'ELEMENT',
       'vant': 'vant',
       'iview': 'iview',
-      'html2canvas': 'html2canvas',
     }
     // cdn
     configPluginsModules = [
@@ -116,10 +115,6 @@ const configureWebpack = () => {
       {
         name: 'iview',
         path: 'dist/iview.min.js'
-      },
-      {
-        name: 'html2canvas',
-        path: 'dist/html2canvas.min.js'
       },
     ]
     minimizer = [

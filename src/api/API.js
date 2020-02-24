@@ -638,6 +638,7 @@ minetokenGetResources(tokenId) {
   currentProfile(data) { return request.post('/post/currentProfile', data) },
   // 收藏
   bookmark(id) { return request.post(`/post/${id}/bookmark`) },
+  // 取消收藏
   unbookmark(id) { return request.delete(`/post/${id}/bookmark`) },
   // 点赞
   like(id, data) { return request.post(`/posts/${id}/like`, data) },
@@ -719,10 +720,19 @@ minetokenGetResources(tokenId) {
       console.error(err)
     }
   },
+  // telegram登录
   telegramLogin(data) {
     return request({
       method: 'POST',
       url: '/login/telegram',
+      data: data
+    })
+  },
+  // twitter 登录
+  twitterLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/twitter',
       data: data
     })
   },
@@ -741,4 +751,32 @@ minetokenGetResources(tokenId) {
         data: { draftid: articleId, uid }
       })
   },
+  // --------------------------- 搜索 ------------------------------------
+  search(type, params) {
+    return request.get(`/search/${type}`, { params })
+  },
+  // 常用候选列表
+  historyUser(params) {
+    return request.get(`/history/user`, { params })
+  },
+  // 获取首页统计数据
+  postsStats() {
+    return request.get('/posts/stats')
+  },
+  // 获取任务状态
+  userPointStatus() {
+    return request.get('/user/pointStatus')
+  },
+  // 领取任务积分
+  userClaimTaskPoint(data) {
+    return request({
+      method: 'POST',
+      url: '/user/claimTaskPoint',
+      data: data
+    })
+  },
+  // 获取用户信息链接
+  getUserLinks({ id }) {
+    return request.get(`/user/${id}/links`)
+  }
 }

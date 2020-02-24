@@ -21,6 +21,10 @@ export default {
     searchQueryVal: {
       type: String,
       default: ''
+    },
+    searchType: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -39,12 +43,17 @@ export default {
       this.search()
     },
     search() {
-      const name = this.$route.name
-      this.$router.push({
-        name: name === 'search/shop' || name === 'search/user' ? name : 'search',
-        query: {
-          q: this.searchVal.trim()
-        }
+      const names = ['sharehall', 'token']
+      const type = names.indexOf(this.$route.name) + 1
+
+      const query = {}
+      if (this.searchType) query.type = this.searchType
+      else if (type)  query.type = type
+      query.q = this.searchVal.trim()
+
+      this.$router[this.$route.name === 'search' ? 'replace' : 'push']({
+        name: 'search',
+        query
       })
     }
   }

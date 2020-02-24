@@ -141,6 +141,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/login/twitter_logined',
+      name: 'twitterLogin',
+      component: () => import(/* webpackChunkName: "twitterLogin" */ './views/login/twitter_logined.vue'),
+      mata: {
+        title: 'Twitter Login'
+      }
+    },
+    {
       path: '/login/telegram',
       name: 'login-telegram',
       component: () => import(/* webpackChunkName: "telegramLogin" */ './views/login/telegram.vue'),
@@ -401,24 +409,6 @@ const router = new VueRouter({
       name: 'search',
       props: true,
       component: () => import(/* webpackChunkName: "search" */ './views/search/index.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/search/shop',
-      name: 'search/shop',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/shop" */ './views/search/shop.vue'),
-      meta: {
-        title: '搜索-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/search/user',
-      name: 'search/user',
-      props: true,
-      component: () => import(/* webpackChunkName: "search/user" */ './views/search/user.vue'),
       meta: {
         title: '搜索-瞬MATATAKI'
       }

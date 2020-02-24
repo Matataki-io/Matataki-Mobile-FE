@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     getImg(url) {
-      return this.$API.getImg(url);
+      return this.$ossProcess(url);
     },
     handleClose() {
       this.search = "";

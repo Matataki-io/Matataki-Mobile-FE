@@ -92,11 +92,11 @@ export default {
       return this.draftbox.id // 原来是 hash 现在用id进入
     },
     avatar() {
-      if (this.draftbox.avatar) return this.$API.getImg(this.draftbox.avatar)
+      if (this.draftbox.avatar) return this.$ossProcess(this.draftbox.avatar)
       return ''
     },
     cover() {
-      if (this.draftbox.cover) return this.$API.getImg(this.draftbox.cover)
+      if (this.draftbox.cover) return this.$ossProcess(this.draftbox.cover)
       return ''
     }
   },

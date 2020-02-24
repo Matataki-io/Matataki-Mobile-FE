@@ -59,7 +59,7 @@ export default {
       return moment(this.buy.create_time).format('lll')
     },
     buyCover() {
-      return this.buy.cover ? this.$API.getImg(this.buy.cover) : ''
+      return this.buy.cover ? this.$ossProcess(this.buy.cover) : ''
     }
   },
   methods: {

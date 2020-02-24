@@ -1,5 +1,5 @@
 <template>
-  <div v-if="fandomData.length > 0" class="fandom-card">
+  <div v-loading="loading" class="fandom-card">
     <div class="fl">
       <h2 class="token-title">
         加入{{tokenSymbol}}粉丝群
@@ -27,7 +27,7 @@
       </div>
     </div>
     <p class="tips">
-      使用该功能需要“科学上网”
+      {{ fandomData.length > 0 ? '使用该功能需要“科学上网”' : '暂无Fan票粉丝群' }}
     </p>
     <!-- 展开更多 -->
     <div v-if="fandomData.length > 1" class="expand-page">
@@ -117,14 +117,18 @@ export default {
       isExpand: false,
       showHelp: false,
       bindStatus: false,
-      fandomData: []
+      fandomData: [],
+      loading: true
     }
   },
   computed: {
     ...mapGetters(['isLogined']),
     /** 控制数据是否展开 */
     fandomList() {
-      return this.isExpand ? this.fandomData : [this.fandomData[0]]
+      if(this.fandomData.length > 0) {
+        return this.isExpand ? this.fandomData : [this.fandomData[0]]
+      }
+      return []
     }
   },
   mounted() {
@@ -202,8 +206,9 @@ export default {
         headers: {}
       })
       _axios.get(`/api/token/${this.tokenId}`).then(res => {
-        console.log('粉丝币列表：',res)
+        // console.log('粉丝群列表：',res)
         const { data } = res
+        this.loading = false
         if (data.status) {
           this.fandomData = data.result
         } else {

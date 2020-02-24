@@ -33,17 +33,12 @@
           <span>{{ $t('profile') + '*' }}</span>
           <input v-model="newIntroduction" :placeholder="$t('rule.notExceedStr', ['20'])" />
         </div>
-
-        <div class="card-block">
-          <span>{{ $t('email') + '*' }}</span>
-          <input v-model="newEmail" :placeholder="$t('rule.loginEmailMessage')" />
-        </div>
       </div>
 
       <div class="edit-card-list">
         <div v-for="(item, index) in about" :key="index" class="card-block">
           <span>{{ '相关网站' + (index + 1) }}</span>
-          <input v-model="about[index]" placeholder="请填写网站链接，包含http(s)://" />
+          <input v-model="about[index]" placeholder="请填写网站链接" />
           <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
             <i class="el-icon-minus" />
           </div>
@@ -92,7 +87,6 @@ export default {
       imgUploadDone: 0, // 图片是否上传完成
       introduction: '', // 简介
       newIntroduction: '', // 简介
-      email: '',
       newEmail: '',
       setProfile: false, // 是否编辑信息
       linksData: null,
@@ -100,6 +94,14 @@ export default {
       socialModify: false,
       about: [''],
       social: [
+        {
+          symbol: 'Email',
+          type: 'email',
+          name: 'Email',
+          placeholder: '邮箱',
+          url: '',
+          value: ''
+        },
         {
           symbol: 'QQ',
           type: 'qq',
@@ -167,8 +169,7 @@ export default {
     newNickName(newVal) {
       if (
         newVal !== this.nickname ||
-        this.introduction !== this.newIntroduction ||
-        this.email !== this.newEmail
+        this.introduction !== this.newIntroduction
       )
         this.setProfile = true
       else this.setProfile = false
@@ -177,17 +178,6 @@ export default {
     newIntroduction(newVal) {
       if (
         newVal !== this.introduction ||
-        this.nickname !== this.newNickName ||
-        this.email !== this.newEmail
-      )
-        this.setProfile = true
-      else this.setProfile = false
-    },
-    // 监听内容修改 如果内容改动则改变setProfile
-    newEmail(newVal) {
-      if (
-        newVal !== this.email ||
-        this.introduction !== this.newIntroduction ||
         this.nickname !== this.newNickName
       )
         this.setProfile = true
@@ -254,12 +244,10 @@ export default {
 
         const requestData = {
           nickname: this.newNickName,
-          introduction: this.newIntroduction,
-          email: this.newEmail
+          introduction: this.newIntroduction
         }
         if (this.newNickName === this.nickname) delete requestData.nickname
         if (this.newIntroduction === this.introduction) delete requestData.introduction
-        if (this.newEmail === this.email) delete requestData.email
 
         await this.$backendAPI.setProfile(requestData)
 
@@ -325,8 +313,6 @@ export default {
       const setUser = data => {
         this.nickname = data.nickname
         this.newNickName = this.nickname || data.username
-        this.email = data.email
-        this.newEmail = this.email
         this.introduction = data.introduction
         this.newIntroduction = this.introduction
         this.setAvatarImage(data.avatar)
@@ -353,19 +339,19 @@ export default {
       setUser(userData)
 
       try {
-        const { data: resLinks } = await this.$backendAPI.getUserLinks({
+        const res = await this.$API.getUserLinks({
           id: this.currentUserInfo.id
         })
-        if (resLinks.code === 0) {
-          setLinks(resLinks.data)
-        } else console.log('获取用户信息失败')
+        if (res.code === 0) {
+          setLinks(res.data)
+        } else console.log('获取用户信息失败', res.message)
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
       }
       this.loading = false
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$API.getImg(hash)
+      if (hash) this.avatar = this.$ossProcess(hash)
     },
     // 完成上传
     async doneImageUpload(res) {

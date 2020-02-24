@@ -63,7 +63,7 @@ import Vue from 'vue'
 import { isNDaysAgo } from '@/common/methods'
 import { precision } from '@/common/precisionConversion'
 
-import { xssFilter } from '@/common/xss'
+import { xssFilter } from '@/utils/xss'
 
 Vue.use(clampy)
 
@@ -110,11 +110,11 @@ export default {
       return this.article.id // 原来是 id 现在用id进入
     },
     avatar() {
-      if (this.article.avatar) return this.$API.getImg(this.article.avatar)
+      if (this.article.avatar) return this.$ossProcess(this.article.avatar)
       return ''
     },
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover)
       return ''
     },
     articleEosValue() {
