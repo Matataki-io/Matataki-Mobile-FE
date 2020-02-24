@@ -10,7 +10,8 @@
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
-    <wechatTips v-if="isWeixin" class="wechat-tips"></wechatTips>
+    <wechatTips v-if="isShowingTip" class="wechat-tips"
+     @dismiss="dismiss"></wechatTips>
   </div>
 </template>
 
@@ -26,12 +27,15 @@ export default {
   data() {
     return {
       loading: false,
-      // TELEGRAM_BOT_NAME: process.env.VUE_APP_TELEGRAM_BOT
+      proceedToLogin: false
     }
   },
   computed: {
     isWeixin () {
       return /micromessenger/.test(navigator.userAgent.toLowerCase())
+    },
+    isShowingTip() {
+      return !this.proceedToLogin
     },
     TELEGRAM_BOT_NAME() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
@@ -98,6 +102,13 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    dismiss() {
+      if (this.isWeixin) {
+        this.$message.error('你还在微信浏览器里面，请切换到系统浏览器，谢谢。')
+      } else {
+        this.proceedToLogin = true
+      }
     }
   }
 }

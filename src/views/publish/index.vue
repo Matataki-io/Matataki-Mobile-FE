@@ -379,7 +379,6 @@ export default {
       toolbars: {},
       fissionNum: 2,
       cover: '',
-      signature: '',
       signId: '',
       id: '',
       isOriginal: false, // 是否原创
@@ -827,9 +826,8 @@ export default {
       const { failed } = this
       try {
         const { author, hash } = article
-        let signature = null
         try {
-          const response = await this.$API.publishArticle({ article, signature })
+          const response = await this.$API.publishArticle({ article })
 
           if (response.code !== 0) throw new Error(response.message)
 
@@ -912,11 +910,7 @@ export default {
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
       const { author } = article
-      let signature = null
-      // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-      //   signature = await this.getSignatureOfArticle({ author, hash })
-      // }
-      const response = await this.$API.editArticle({ article, signature })
+      const response = await this.$API.editArticle({ article })
       if (response.code === 0) {
         const promiseArr = []
         promiseArr.push(this.postMineTokens(response.data)) // 持Fan票阅读
@@ -1032,7 +1026,6 @@ export default {
           title,
           data,
           fissionFactor,
-          signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary
