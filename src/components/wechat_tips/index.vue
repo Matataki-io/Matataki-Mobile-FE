@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("https://at.alicdn.com/t/font_1653786_k6stmlp9y4f.css");
+// @import url("https://at.alicdn.com/t/font_1653786_k6stmlp9y4f.css");
 .wechat-tips {
   display: flex;
   flex-direction: column;
