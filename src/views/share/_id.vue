@@ -4,7 +4,9 @@
     :pageinfo="{title: '分享详情'}"
     customize-header-bc="#fff"
     :has-bottom-border-line="true"
-    class="header" />
+    class="header" >
+      <shareHeadRight v-if="isMe(content.uid)" slot="right" :id="content.uid"></shareHeadRight>
+    </BaseHeader>
     <div v-loading="loading">
       <shareHeader
       :id="content.uid"
@@ -13,9 +15,9 @@
       :time="content.create_time"
       :read="content.read"
       :hash="content.hash"
-    ></shareHeader>
-    <shareMain :content="shareContent"></shareMain>
-    <div class="empty"></div>
+      ></shareHeader>
+      <shareMain :content="shareContent"></shareMain>
+      <div class="empty"></div>
     </div>
     <quote
       v-show="refernceTotal !== 0 || berefernceTotal !== 0"
@@ -117,6 +119,7 @@ import shareImage from '@/components/share_image/index'
 import html2canvas from 'html2canvas'
 import Vue from 'vue'
 import { ImagePreview } from 'vant'
+import shareHeadRight from '@/components/share_page/share_head_right'
 
 Vue.use(ImagePreview)
 
@@ -129,7 +132,8 @@ export default {
     quoteReference,
     quoteBereference,
     shareImage,
-    SocialShare
+    SocialShare,
+    shareHeadRight
   },
   data() {
     return {
@@ -155,7 +159,7 @@ export default {
       saveImg: '', // share img src
       saveImgCanvas: '', // share img src
       createShareLoading: false,
-      saveLoading: false // 保存图片loading
+      saveLoading: false, // 保存图片loading
     }
   },
   watch: {
@@ -192,7 +196,7 @@ export default {
     this.$navigation.cleanRoutes() // 清除路由记录
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
     link() {
       if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
       else return process.env.VUE_APP_URL
@@ -553,7 +557,7 @@ export default {
         images: [src],
         className: 'share-view__image'
       })
-    }
+    },
   }
 }
 </script>
@@ -564,7 +568,7 @@ export default {
   background-color: #fff;
 }
 .header {
-  z-index: 9999;
+  z-index: 3000;
 }
 .footer {
   z-index: 99;

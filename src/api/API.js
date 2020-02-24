@@ -742,18 +742,28 @@ minetokenGetResources(tokenId) {
   },
   // 文章转让
   transferOwner(from, articleId, uid) {
-    if (from === 'article')
+    // 文章
+    if (from === 'article') {
       return request({
         method: 'POST',
         url: '/post/transferOwner',
         data: { signid: articleId, uid }
       })
-    if (from === 'draft')
+    } else if (from === 'draft') {
+       // 草稿
       return request({
         method: 'POST',
         url: '/draft/transferOwner',
         data: { draftid: articleId, uid }
       })
+    } else {
+      // 其他
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    }
   },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
