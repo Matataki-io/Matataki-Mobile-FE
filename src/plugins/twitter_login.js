@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const HelloJs = require('hellojs/dist/hello.all.js')
+const HelloJs = require('hellojs-xiaotian/dist/hello.all.js')
 const VueHello = require('vue-hellojs')
 
 HelloJs.init({
