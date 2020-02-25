@@ -104,6 +104,14 @@
             </div>
           </div>
         </transition>
+        <div v-show="readauThority" class="related-add">
+          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+            <div class="add-icon disable">
+              <i class="el-icon-plus" />
+            </div>
+          </el-tooltip>
+          <span>添加更多</span>
+        </div>
         <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
           设置支付
         </el-checkbox>
@@ -153,6 +161,27 @@
             />
           </div>
         </transition>
+      </div>
+      
+      <!-- 编辑权限 （功能开发中） -->
+      <div class="post-content">
+        <div>
+          <h3>
+            编辑权限 （功能开发中）
+            <el-tooltip class="item" effect="dark" placement="top-start">
+              <div slot="content">
+                添加编辑权限后，<br />读者在持有特定数量的Fan票或支付特定费用后可编辑文章。
+              </div>
+              <svg-icon class="help-icon" icon-class="help" />
+            </el-tooltip>
+          </h3>
+          <el-checkbox size="small" disabled>
+            设置持Fan票
+          </el-checkbox>
+        </div>
+        <el-checkbox size="small" style="margin-top: 10px;" disabled>
+          设置支付
+        </el-checkbox>
       </div>
 
       <div v-if="$route.params.type !== 'edit'" class="fission">
