@@ -9,11 +9,6 @@
     <div class="animated fadeInUp other-tips__head" v-else>
       <h3>你是否正在应用内置浏览器查看本页？</h3>
       为了正常使用电报登录，请用第三方浏览器打开此页面
-      <!-- <br> -->
-      <!-- <div class="icons">
-        <i class="iconfont icon-3dots"></i>
-        <i class="iconfont icon-safari"></i>
-      </div> -->
       <svg-icon class="arrow" icon-class="arrow_top_right"></svg-icon>
     </div>
 
@@ -53,7 +48,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// @import url("https://at.alicdn.com/t/font_1653786_k6stmlp9y4f.css");
 .wechat-tips {
   display: flex;
   flex-direction: column;
