@@ -25,6 +25,4 @@ jobs:
     - name: npm install, build, and test
       run: |
         yarn
-        # Download env file before building for Production Build
-        wget ${{ secrets.secret_env_file_link }} -O .env
         yarn run build
