@@ -484,7 +484,7 @@ import { mavonEditor } from 'mavon-editor-matataki'
 import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
-import { xssFilter } from '@/utils/xss'
+import { xssFilter, xssImageProcess } from '@/utils/xss'
 // import { sleep, isNDaysAgo } from '@/common/methods'
 import { isNDaysAgo } from '@/common/methods'
 import { ontAddressVerify } from '@/common/reg'
@@ -618,7 +618,12 @@ export default {
       return this.$t('p.investmentPlaceholder', [this.currentUserInfo.idProvider])
     },
     compiledMarkdown() {
-      return markdownIt.render(xssFilter(this.post.content))
+      // 前提: 都在自己的平台下
+      // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
+      // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
+      // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
+      let md = markdownIt.render(this.post.content)
+      return this.$utils.compose(xssFilter, xssImageProcess)(md)
     },
     getClipboard() {
       const { article, currentUserInfo } = this
