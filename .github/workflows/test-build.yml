@@ -25,4 +25,4 @@ jobs:
     - name: npm install, build, and test
       run: |
         yarn
-        yarn run build
+        yarn run build-matataki-dev
