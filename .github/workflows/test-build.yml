@@ -5,6 +5,7 @@ on:
     branches:
       - frank/dev
       - testing
+      - master
 
 jobs:
   build:
@@ -23,9 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
       run: |
-        npm install
+        yarn
         # Download env file before building for Production Build
         wget ${{ secrets.secret_env_file_link }} -O .env
-        npm run build
-      env:
-        CI: true
+        yarn run build
