@@ -107,9 +107,6 @@ const API = {
     if (referral) Object.assign(params, { referral: referral })
     return axiosforApiServer.post('/login/auth', params)
   },
-  async getArticleDatafromIPFS(hash) {
-    return axios.get(`${apiServer}/post/ipfs/${hash}`)
-  },
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
