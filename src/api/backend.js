@@ -189,14 +189,6 @@ const API = {
           })
     }
   },
-  // 提交积分评论
-  postPointComment(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/comment/comment',
-      data: data
-    })
-  },
   async setProfile({ nickname, introduction, email, accept }) {
     return this.accessBackend({
       method: 'POST',
