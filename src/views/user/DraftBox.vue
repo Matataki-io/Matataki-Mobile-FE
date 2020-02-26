@@ -68,10 +68,14 @@ export default {
     // 删除草稿
     async asyncSuccessDel(id, index) {
       try {
-        const response = await this.$backendAPI.delDraft({ id })
-        if (response.status !== 200) return console.log(this.$t('user.deleteDraftFail'))
-        this.draftBoxList.splice(index, 1) // 前端手动删除一下数据
-        this.$Modal.remove()
+        const res = await this.$API.delDraft({ id })
+        if (res.code === 0) {
+          this.$message.success(res.message)
+          this.draftBoxList.splice(index, 1) // 前端手动删除一下数据
+          this.$Modal.remove()
+        } else {
+          return this.$message.error(res.message)
+        }
       } catch (error) {
         return console.log(this.$t('user.deleteDraftFail'))
       }

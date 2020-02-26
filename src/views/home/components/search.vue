@@ -53,11 +53,11 @@ export default {
     },
     // 获得推荐
     async getRecommend() {
-      await this.$backendAPI
+      await this.$API
         .searchRecommend({ area: 1 })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) this.searchRecommendList = res.data.data
-          else console.log(this.$t('error.getSearchRecommend'))
+          if (res.code === 0) this.searchRecommendList = res.data
+          else console.log(res.message)
         })
         .catch(err => {
           console.log(this.$t('error.getSearchRecommend'), err)

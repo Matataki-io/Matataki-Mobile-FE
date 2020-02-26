@@ -107,57 +107,8 @@ const API = {
     if (referral) Object.assign(params, { referral: referral })
     return axiosforApiServer.post('/login/auth', params)
   },
-  async getArticleDatafromIPFS(hash) {
-    return axios.get(`${apiServer}/post/ipfs/${hash}`)
-  },
-  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
-  async getArticleInfo(hashOrId) {
-    const reg = /^[0-9]*$/
-    // post hash获取  ， p id 短链接
-    const url = reg.test(hashOrId) ? 'p' : 'post'
-    return this.accessBackend({ url: `/${url}/${hashOrId}` })
-  },
-  async follow({ id }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/follow/follow',
-      data: { uid: id }
-    })
-  },
-  async unfollow({ id }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/follow/unfollow',
-      data: { uid: id }
-    })
-  },
-  async getMyUserData() {
-    return this.accessBackend({ url: '/user/stats' })
-  },
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
-  },
-  async sendComment({ comment, signId }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/post/comment',
-      // eslint-disable-next-line camelcase
-      data: { comment, sign_id: signId }
-    })
-  },
-  // be Used in Article Page
-  async addReadAmount(hash) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/post/show/${hash}`
-    })
-  },
-  // 删除文章
-  async delArticle({ id }) {
-    return this.accessBackend({
-      method: 'DELETE',
-      url: `/post/${id}`
-    })
   },
   // 设置头像
   async uploadAvatar(data = { avatar: null }) {
@@ -206,45 +157,6 @@ const API = {
           })
     }
   },
-  // 提交积分评论
-  postPointComment(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/comment/comment',
-      data: data
-    })
-  },
-  async delDraft({ id }) {
-    return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
-  },
-  async getDraft({ id }) {
-    return this.accessBackend({ url: `/draft/${id}` })
-  },
-  async setProfile({ nickname, introduction, email, accept }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/setProfile',
-      data: {
-        nickname,
-        introduction,
-        email,
-        accept
-      }
-    })
-  },
-  async setUserLinks({ websites, socialAccounts }) {
-    return this.accessBackend({
-      method: 'PUT',
-      url: '/user/links',
-      data: {
-        websites,
-        socialAccounts
-      }
-    })
-  },
-  async getMyPost(id) {
-    return this.accessBackend({ url: `/mypost/${id}` })
-  },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
@@ -267,45 +179,6 @@ const API = {
     if (referral) Object.assign(params, { referral: referral })
 
     return axiosforApiServer.post('/login/github', params)
-  },
-  // 获取可用标签列表
-  async getTags() {
-    return axiosforApiServer.get('/tag/tags')
-  },
-  // 文章转让
-  async transferOwner(from, articleId, uid) {
-    // console.log(from, articleId, uid)
-    if (from === 'article')
-      return this.accessBackend({
-        method: 'POST',
-        url: '/post/transferOwner',
-        data: { signid: articleId, uid }
-      })
-    if (from === 'draft')
-      return this.accessBackend({
-        method: 'POST',
-        url: '/draft/transferOwner',
-        data: { draftid: articleId, uid }
-      })
-  },
-  // 通过用户名搜索
-  async searchUsername(username) {
-    return axiosforApiServer.get('/user/search', {
-      params: {
-        q: username
-      }
-    })
-  },
-  // 获取推荐文章或者商品
-  postsRecommend(channel) {
-    return axiosforApiServer.get('/posts/recommend', {
-      params: {
-        channel
-      }
-    })
-  },
-  async wxShare(url) {
-    return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
   async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
     return axiosforApiServer.post(`/login/captcha?email=${email}`, {
@@ -340,26 +213,6 @@ const API = {
       dataType: 'json'
     })
   },
-  async reading(id) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/reading`
-    })
-  },
-  async like(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/like`,
-      data: { time }
-    })
-  },
-  async dislike(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/dislike`,
-      data: { time }
-    })
-  },
   postsIdReadnew(id, time) {
     return this.accessBackend({
       method: 'POST',
@@ -367,84 +220,12 @@ const API = {
       data: { time }
     })
   },
-  // 搜索推荐
-  searchRecommend(params) {
-    return axiosforApiServer.get('/search/recommend', params)
-  },
   wxlogin(code) {
     return axiosforApiServer.post('/wx/login', { code })
   },
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
   },
-  // 文章持通证阅读
-  addMineTokens(data) {
-    return this.accessBackend({
-      method: 'post',
-      url: '/post/addMineTokens',
-      data: data
-    })
-  },
-  allToken({ page = 1, pagesize = 10, search = '' }) {
-    return this.accessBackend({
-      url: '/token/all',
-      method: 'get',
-      noLoading: true,
-      params: {
-        page,
-        pagesize,
-        search
-      }
-    })
-  },
-  // 获取当前用户的文章信息
-  getCurrentProfile(data) {
-    return this.accessBackend({
-      url: '/post/currentProfile',
-      method: 'post',
-      data: data
-    })
-  },
-  // 通过hash获取文章内容
-  getIpfsData(hash) {
-    return this.accessBackend({
-      url: `/post/ipfs/${hash}`
-    })
-  },
-  /**
-   * 创建我的token
-   * // TODO 有字段后可移除注释
-   * @param {Objject} data name symbol decimals // icon 暂无
-   */
-  minetokenCreate(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/minetoken/create',
-      data: data
-    })
-  },
-  /**
-   * 发行我的token
-   * @param {Object} data amount
-   */
-  minetokenMint(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/minetoken/mint',
-      data: data
-    })
-  },
-  /**
-   * 获取token详情
-   * 请求头：x-access-token
-   * 用户发行了token，data为对象，没有发行token，data为null
-   */
-  tokenDetail() {
-    return this.accessBackend({
-      method: 'get',
-      url: '/token/minetoken'
-    })
-  }
 }
 
 export default API

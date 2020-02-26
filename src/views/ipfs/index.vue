@@ -110,8 +110,8 @@ export default {
   },
   methods: {
     async init() {
-      await this.$backendAPI.getArticleInfo(this.$route.params.hash).then(res => {
-        if (res.status === 200 && res.data.code === 0) this.articleData = res.data.data
+      await this.$API.getArticleInfo(this.$route.params.hash).then(res => {
+        if (res.code === 0) this.articleData = res.data
       })
 
       this.addReadAmount(this.articleData.hash)
@@ -119,15 +119,15 @@ export default {
       if (this.articleData.require_holdtokens || this.articleData.require_buy) {
         this.showContent = false
       } else {
-        await this.$backendAPI.getIpfsData(this.$route.params.hash).then(res => {
-          if (res.status === 200 && res.data.code === 0) this.articleIpfs = res.data.data
+        await this.$API.getIpfsData(this.$route.params.hash).then(res => {
+          if (res.code === 0) this.articleIpfs = res.data
         })
         this.showContent = true
       }
     },
     // 增加文章阅读量
     async addReadAmount(hash) {
-      await this.$backendAPI
+      await this.$API
         .addReadAmount(hash)
         .catch(err => console.log('add read amount error', err))
     }

@@ -15,7 +15,7 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
-  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
+  // 获取单篇文章的信息 by hash or id 需要 token 否则无法获取投资状态
   getArticleInfo(hashOrId) {
     const reg = /^[0-9]*$/
     // post hash获取  ， p id 短链接
@@ -451,8 +451,16 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 得到草稿
   getDraft({ id }) {
     return request({ url: `/draft/${id}` })
+  },
+  // 删除草稿
+  delDraft({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/draft/${id}`
+    })
   },
   // 微信登录数据保存到数据库
   loginWeixin(code) {
@@ -495,10 +503,7 @@ minetokenGetResources(tokenId) {
     })
   },
   getMyUserData() {
-    return request({
-      method: 'get',
-      url: '/user/stats',
-    })
+    return request.get('/user/stats')
   },
   follow(uid) {
     return request.post('/follow/follow', { uid })
@@ -788,5 +793,32 @@ minetokenGetResources(tokenId) {
   // 获取用户信息链接
   getUserLinks({ id }) {
     return request.get(`/user/${id}/links`)
-  }
+  },
+  // 获取可用标签列表
+  getTags() {
+    return request.get('/tag/tags')
+  },
+  // 搜索推荐
+  searchRecommend(params) {
+    return request.get('/search/recommend', params)
+  },
+  setUserLinks(data) {
+    return request({
+      method: 'PUT',
+      url: '/user/links',
+      data: data
+    })
+  },
+  setProfile({ nickname, introduction, email, accept }) {
+    return request({
+      method: 'POST',
+      url: '/user/setProfile',
+      data: {
+        nickname,
+        introduction,
+        email,
+        accept
+      }
+    })
+  },
 }

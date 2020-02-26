@@ -201,7 +201,9 @@ export default {
     // 获取推荐文章或者商品
     async postsRecommend(channel) {
       await this.$backendAPI
-        .postsRecommend(channel)
+        .postsRecommend({
+          channel: channel
+        })
         .then(res => {
           if (res.status === 200 && res.data.code === 0) {
             this.content.recommend.list = res.data.data

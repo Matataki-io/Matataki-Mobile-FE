@@ -905,7 +905,6 @@ export default {
     // },
     // 自动创建草稿
     async autoCreateDraft(article) {
-      console.log(111, article)
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
@@ -922,7 +921,7 @@ export default {
             this.id = res.data
             // console.log(this.$route)
             const url = window.location.origin + '/publish/draft/' + res.data
-            history.pushState({}, '', url)
+            history.replaceState({}, '', url)
           } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
         })
         .catch(err => {
@@ -959,8 +958,12 @@ export default {
         return
       }
       try {
-        const response = await this.$backendAPI.delDraft({ id })
-        if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
+        const res = await this.$API.delDraft({ id }).then(res => {
+          if (res.code !== 0) {
+            console.log(res.message)
+            this.failed(this.$t('error.deleteDraft'))
+          }
+        })
       } catch (error) {
         this.failed(this.$t('error.deleteDraft'))
       }
@@ -1171,20 +1174,19 @@ export default {
     },
     // 获取标签
     async getTags() {
-      await this.$backendAPI
+      await this.$API
         .getTags()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            let { data } = res.data
+          if (res.code === 0) {
 
             // 过滤商品标签 id <= 100
             const filterId = i => i.id <= 100
-            const filterTag = data.filter(filterId)
+            const filterTag = res.data.filter(filterId)
             // 过滤商品标签 id <= 100 end
 
             filterTag.map(i => (i.status = false))
             this.tagCards = filterTag
-          } else console.log(res.data.message)
+          } else console.log(res.message)
         })
         .catch(err => {
           console.log(err)

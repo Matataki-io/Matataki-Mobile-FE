@@ -216,7 +216,7 @@ export default {
         return
       }
       this.$API
-        .like(this.article.id, this.timeCount)
+        .like(this.article.id, { time: this.timeCount })
         .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
@@ -257,7 +257,7 @@ export default {
         return
       }
       this.$API
-        .dislike(this.article.id, this.timeCount)
+        .dislike(this.article.id, { time: this.timeCount })
         .then(res => {
           if (res.code === 0) {
             clearInterval(this.timer)
