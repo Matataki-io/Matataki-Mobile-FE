@@ -23,7 +23,10 @@ import './plugins/vant'
 import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
+import './plugins/vue_directive'
+import './plugins/vue-mavon-editor'
 import './icons'
+
 import ossProcess from './utils/oss_process'
 
 import i18n from './plugins/i18n'

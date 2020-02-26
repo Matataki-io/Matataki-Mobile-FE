@@ -19,6 +19,9 @@ import {
   Select,
   Option,
   Dialog,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
   Loading,
   MessageBox,
   Tooltip,
@@ -51,6 +54,9 @@ Vue.use(Input)
   .use(Select)
   .use(Option)
   .use(Dialog)
+  .use(Dropdown)
+  .use(DropdownMenu)
+  .use(DropdownItem)
   .use(Loading.directive)
   .use(Tooltip)
   .use(Tabs)

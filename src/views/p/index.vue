@@ -85,7 +85,7 @@
         <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
-        <div class="markdown-body" v-html="compiledMarkdown"></div>
+        <div v-html="compiledMarkdown" v-highlight class="markdown-body" />
         <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
@@ -480,7 +480,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor-matataki'
 import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
@@ -506,9 +505,6 @@ import { getCookie } from '@/utils/cookie'
 import quote from './quote.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
-// MarkdownIt 实例
-const markdownIt = mavonEditor.getMarkdownIt()
-
 const RewardStatus = {
   // 0=加载中,1=未打赏 2=已打赏, -1未登录
   NOT_LOGGINED: -1,
@@ -523,7 +519,6 @@ export default {
     CommentsList,
     // ArticleInfo,
     ContentLoader,
-    mavonEditor,
     Widget,
     tagCard,
     articleTransfer,
@@ -622,8 +617,10 @@ export default {
       // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
+      const markdownIt = this.$mavonEditor.markdownIt
+
       let md = markdownIt.render(this.post.content)
-      return this.$utils.compose(xssFilter, xssImageProcess)(md)
+      return this.$utils.compose(xssImageProcess, xssFilter)(md)
     },
     getClipboard() {
       const { article, currentUserInfo } = this
