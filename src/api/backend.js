@@ -189,9 +189,6 @@ const API = {
           })
     }
   },
-  async getMyPost(id) {
-    return this.accessBackend({ url: `/mypost/${id}` })
-  },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
