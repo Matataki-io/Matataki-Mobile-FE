@@ -264,18 +264,6 @@ const API = {
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
   },
-  allToken({ page = 1, pagesize = 10, search = '' }) {
-    return this.accessBackend({
-      url: '/token/all',
-      method: 'get',
-      noLoading: true,
-      params: {
-        page,
-        pagesize,
-        search
-      }
-    })
-  },
   // 获取当前用户的文章信息
   getCurrentProfile(data) {
     return this.accessBackend({
