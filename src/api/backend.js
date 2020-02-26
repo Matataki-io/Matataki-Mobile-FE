@@ -243,12 +243,6 @@ const API = {
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
   },
-  // 通过hash获取文章内容
-  getIpfsData(hash) {
-    return this.accessBackend({
-      url: `/post/ipfs/${hash}`
-    })
-  },
 }
 
 export default API

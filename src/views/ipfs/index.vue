@@ -119,8 +119,8 @@ export default {
       if (this.articleData.require_holdtokens || this.articleData.require_buy) {
         this.showContent = false
       } else {
-        await this.$backendAPI.getIpfsData(this.$route.params.hash).then(res => {
-          if (res.status === 200 && res.data.code === 0) this.articleIpfs = res.data.data
+        await this.$API.getIpfsData(this.$route.params.hash).then(res => {
+          if (res.code === 0) this.articleIpfs = res.data
         })
         this.showContent = true
       }
