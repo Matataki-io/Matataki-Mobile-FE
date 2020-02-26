@@ -263,12 +263,6 @@ const API = {
       dataType: 'json'
     })
   },
-  async reading(id) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/reading`
-    })
-  },
   postsIdReadnew(id, time) {
     return this.accessBackend({
       method: 'POST',
