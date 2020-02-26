@@ -24,10 +24,12 @@ export default {
     avatar,
   },
   props: {
+    // 用户id
     id: {
       type: Number,
-      default: 0
+      default: -1
     },
+    // 头像
     avatar: {
       type: String,
       default: ''
@@ -47,7 +49,7 @@ export default {
     hash: {
       type: String,
       default: ''
-    }
+    },
   },
   computed: {
     avatarSrc() {
