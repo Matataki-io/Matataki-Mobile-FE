@@ -788,5 +788,7 @@ minetokenGetResources(tokenId) {
   // 获取用户信息链接
   getUserLinks({ id }) {
     return request.get(`/user/${id}/links`)
-  }
+  },
+  // 获取可用标签列表
+  getTags() { return request.get('/tag/tags')},
 }

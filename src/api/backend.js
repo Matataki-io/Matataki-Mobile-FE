@@ -261,10 +261,6 @@ const API = {
 
     return axiosforApiServer.post('/login/github', params)
   },
-  // 获取可用标签列表
-  async getTags() {
-    return axiosforApiServer.get('/tag/tags')
-  },
   async wxShare(url) {
     return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
