@@ -197,9 +197,6 @@ const API = {
       data: data
     })
   },
-  async delDraft({ id }) {
-    return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
-  },
   async setProfile({ nickname, introduction, email, accept }) {
     return this.accessBackend({
       method: 'POST',

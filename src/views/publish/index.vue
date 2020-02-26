@@ -959,8 +959,12 @@ export default {
         return
       }
       try {
-        const response = await this.$backendAPI.delDraft({ id })
-        if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
+        const res = await this.$API.delDraft({ id }).then(res => {
+          if (res.code !== 0) {
+            console.log(res.message)
+            this.failed(this.$t('error.deleteDraft'))
+          }
+        })
       } catch (error) {
         this.failed(this.$t('error.deleteDraft'))
       }

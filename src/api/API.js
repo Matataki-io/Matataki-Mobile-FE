@@ -451,8 +451,16 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 得到草稿
   getDraft({ id }) {
     return request({ url: `/draft/${id}` })
+  },
+  // 删除草稿
+  delDraft({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/draft/${id}`
+    })
   },
   // 微信登录数据保存到数据库
   loginWeixin(code) {
