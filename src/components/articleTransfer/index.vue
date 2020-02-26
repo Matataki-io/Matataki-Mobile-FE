@@ -71,6 +71,7 @@
         <template v-for="(item, index) in dialogHelpContentStep">
           {{ item }} <br :key="index" />
         </template>
+      </p>
       <div class="form-button">
         <el-button @click="widgetModalStatus = 0" type="primary" size="small">
           {{ $t('p.articleTransferHelpBtn') }}
