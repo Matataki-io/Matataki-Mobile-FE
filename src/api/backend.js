@@ -269,20 +269,6 @@ const API = {
       url: `/posts/${id}/reading`
     })
   },
-  async like(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/like`,
-      data: { time }
-    })
-  },
-  async dislike(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/dislike`,
-      data: { time }
-    })
-  },
   postsIdReadnew(id, time) {
     return this.accessBackend({
       method: 'POST',
