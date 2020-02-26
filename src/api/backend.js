@@ -404,18 +404,6 @@ const API = {
       url: `/post/ipfs/${hash}`
     })
   },
-  /**
-   * 创建我的token
-   * // TODO 有字段后可移除注释
-   * @param {Objject} data name symbol decimals // icon 暂无
-   */
-  minetokenCreate(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/minetoken/create',
-      data: data
-    })
-  },
 }
 
 export default API
