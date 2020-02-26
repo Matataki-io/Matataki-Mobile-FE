@@ -373,14 +373,12 @@ minetokenGetResources(tokenId) {
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
    * @param {Object} param1 文章参数
-   * @param {String || null} signature 签名
    */
   _sendArticle(
     url,
     { signId = null, author, data, title, fissionFactor,
        cover, isOriginal, tags, commentPayPoint, shortContent, cc_license,
        requireToken, requireBuy },
-    signature = null
   ) {
     // 账号类型
     let idProvider = (getCookie('idProvider')).toLocaleLowerCase()
@@ -393,8 +391,6 @@ minetokenGetResources(tokenId) {
         fissionFactor,
         data,
         platform: idProvider,
-        publickey: signature ? signature.publicKey : null,
-        sign: signature ? signature.signature : null,
         signId,
         title,
         is_original: isOriginal,
@@ -412,15 +408,15 @@ minetokenGetResources(tokenId) {
    * 发布文章
    * @param {Object} params 参数, 签名 非钱包用户需要签名
    */
-  publishArticle({ article, signature }) {
-    return this._sendArticle('/post/publish', article, signature)
+  publishArticle({ article }) {
+    return this._sendArticle('/post/publish', article)
   },
   /**
    * 编辑文章
    * @param {Object} params 参数, 签名 非钱包用户需要签名
    */
-  editArticle({ article, signature }) {
-    return this._sendArticle('/post/edit', article, signature)
+  editArticle({ article }) {
+    return this._sendArticle('/post/edit', article)
   },
   // 创建草稿
   createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {

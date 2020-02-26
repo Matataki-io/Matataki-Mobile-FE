@@ -104,6 +104,14 @@
             </div>
           </div>
         </transition>
+        <div v-show="readauThority" class="related-add">
+          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+            <div class="add-icon disable">
+              <i class="el-icon-plus" />
+            </div>
+          </el-tooltip>
+          <span>添加更多</span>
+        </div>
         <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
           设置支付
         </el-checkbox>
@@ -153,6 +161,27 @@
             />
           </div>
         </transition>
+      </div>
+      
+      <!-- 编辑权限 （功能开发中） -->
+      <div class="post-content">
+        <div>
+          <h3>
+            编辑权限 （功能开发中）
+            <el-tooltip class="item" effect="dark" placement="top-start">
+              <div slot="content">
+                添加编辑权限后，<br />读者在持有特定数量的Fan票或支付特定费用后可编辑文章。
+              </div>
+              <svg-icon class="help-icon" icon-class="help" />
+            </el-tooltip>
+          </h3>
+          <el-checkbox size="small" disabled>
+            设置持Fan票
+          </el-checkbox>
+        </div>
+        <el-checkbox size="small" style="margin-top: 10px;" disabled>
+          设置支付
+        </el-checkbox>
       </div>
 
       <div v-if="$route.params.type !== 'edit'" class="fission">
@@ -377,7 +406,6 @@ export default {
       toolbars: {},
       fissionNum: 2,
       cover: '',
-      signature: '',
       signId: '',
       id: '',
       isOriginal: false, // 是否原创
@@ -825,9 +853,8 @@ export default {
       const { failed } = this
       try {
         const { author, hash } = article
-        let signature = null
         try {
-          const response = await this.$API.publishArticle({ article, signature })
+          const response = await this.$API.publishArticle({ article })
 
           if (response.code !== 0) throw new Error(response.message)
 
@@ -910,11 +937,7 @@ export default {
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
       const { author } = article
-      let signature = null
-      // if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-      //   signature = await this.getSignatureOfArticle({ author, hash })
-      // }
-      const response = await this.$API.editArticle({ article, signature })
+      const response = await this.$API.editArticle({ article })
       if (response.code === 0) {
         const promiseArr = []
         promiseArr.push(this.postMineTokens(response.data)) // 持Fan票阅读
@@ -1030,7 +1053,6 @@ export default {
           title,
           data,
           fissionFactor,
-          signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary
@@ -1049,7 +1071,7 @@ export default {
           .ossUploadImage('article', imgfile)
           .then(res => {
             if (res.code === 0) {
-              this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
+              this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
             } else {
               this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
               this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
@@ -1078,7 +1100,7 @@ export default {
                 .ossUploadImage('article', blob)
                 .then(res => {
                   if (res.code === 0) {
-                    this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
+                    this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
                   } else {
                     this.$toast({ duration: 1000, message: '上传图片失败,请重试' })
                     this.$refs.md.$img2Url(pos, '上传图片失败,请重试')

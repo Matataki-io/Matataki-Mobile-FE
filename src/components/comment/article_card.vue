@@ -8,8 +8,8 @@
         <avatar :src="avatar" size="30px" ></avatar>
       </router-link>
       <div>
-        <router-link class="comment-author" :to="`/user/${comment.uid}`">
-          {{ comment.nickname || comment.username }}
+        <router-link class="comment-author" :class="!comment.username && 'logout'" :to="`/user/${comment.uid}`">
+          {{ nickname }}
           <span>
             {{ friendlyDate }}
           </span>
@@ -49,6 +49,9 @@ export default {
     avatar() {
       if (this.comment.avatar) return this.$ossProcess(this.comment.avatar, {h: 60})
       return ''
+    },
+    nickname() {
+      return this.comment.nickname || this.comment.username || '此账号已注销'
     }
   }
 }
@@ -74,6 +77,9 @@ export default {
   padding: 0;
   margin: 4px 0;
   display: inline-block;
+  &.logout {
+    color: #b2b2b2;
+  }
   span {
     color: #9c9c9c;
     margin-left: 10px;
