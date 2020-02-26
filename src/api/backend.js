@@ -416,17 +416,6 @@ const API = {
       data: data
     })
   },
-  /**
-   * 发行我的token
-   * @param {Object} data amount
-   */
-  minetokenMint(data) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/minetoken/mint',
-      data: data
-    })
-  },
 }
 
 export default API
