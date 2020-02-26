@@ -127,7 +127,7 @@ export default {
     },
     // 增加文章阅读量
     async addReadAmount(hash) {
-      await this.$backendAPI
+      await this.$API
         .addReadAmount(hash)
         .catch(err => console.log('add read amount error', err))
     }

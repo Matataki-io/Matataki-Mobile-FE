@@ -142,13 +142,6 @@ const API = {
       data: { comment, sign_id: signId }
     })
   },
-  // be Used in Article Page
-  async addReadAmount(hash) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/post/show/${hash}`
-    })
-  },
   // 设置头像
   async uploadAvatar(data = { avatar: null }) {
     return this.accessBackend({
