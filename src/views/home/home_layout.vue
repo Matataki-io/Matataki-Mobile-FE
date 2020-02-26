@@ -58,13 +58,13 @@ export default {
     }
   },
   created() {
-    this.initSwipe()
+    this.initSwipe(1)
   },
   methods: {
-    async initSwipe() {
+    async initSwipe(channel) {
       await this.$API
         .postsRecommend({
-          channel: 1
+          channel: channel
         })
         .then(res => {
           if (res.code === 0) {

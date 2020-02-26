@@ -281,14 +281,6 @@ const API = {
         data: { draftid: articleId, uid }
       })
   },
-  // 获取推荐文章或者商品
-  postsRecommend(channel) {
-    return axiosforApiServer.get('/posts/recommend', {
-      params: {
-        channel
-      }
-    })
-  },
   async wxShare(url) {
     return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
