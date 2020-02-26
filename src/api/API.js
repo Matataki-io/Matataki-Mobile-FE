@@ -802,4 +802,11 @@ minetokenGetResources(tokenId) {
   searchRecommend(params) {
     return request.get('/search/recommend', params)
   },
+  setUserLinks(data) {
+    return request({
+      method: 'PUT',
+      url: '/user/links',
+      data: data
+    })
+  },
 }

@@ -270,7 +270,7 @@ export default {
           })()
         }
 
-        await this.$backendAPI.setUserLinks(requestData)
+        await this.$API.setUserLinks(requestData)
 
         this.aboutModify = false
         this.socialModify = false
