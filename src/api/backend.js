@@ -134,14 +134,6 @@ const API = {
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
-  async sendComment({ comment, signId }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/post/comment',
-      // eslint-disable-next-line camelcase
-      data: { comment, sign_id: signId }
-    })
-  },
   // 设置头像
   async uploadAvatar(data = { avatar: null }) {
     return this.accessBackend({
@@ -212,9 +204,6 @@ const API = {
 
     return axiosforApiServer.post('/login/github', params)
   },
-  async wxShare(url) {
-    return axios.get(`${apiServer}/wx/sign?url=${url}`)
-  },
   async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
     return axiosforApiServer.post(`/login/captcha?email=${email}`, {
       geetest_challenge,
@@ -260,14 +249,6 @@ const API = {
   },
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
-  },
-  // 获取当前用户的文章信息
-  getCurrentProfile(data) {
-    return this.accessBackend({
-      url: '/post/currentProfile',
-      method: 'post',
-      data: data
-    })
   },
   // 通过hash获取文章内容
   getIpfsData(hash) {

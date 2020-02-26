@@ -165,9 +165,20 @@ describe('Ontology test', function() {
           console.log(error.config)
         })
       // throw res.config ;
-      it(`backendAPI.sendComment ${i}`, async function() {
-        return backendAPI.sendComment({ comment: `test ${i}`, signId })
-      })
+
+      // 接口删掉了 注释掉这里
+      // 这是接口
+      // async sendComment({ comment, signId }) {
+      //   return this.accessBackend({
+      //     method: 'POST',
+      //     url: '/post/comment',
+      //     // eslint-disable-next-line camelcase
+      //     data: { comment, sign_id: signId }
+      //   })
+      // },
+      // it(`backendAPI.sendComment ${i}`, async function() {
+      //   return backendAPI.sendComment({ comment: `test ${i}`, signId })
+      // })
       return true
     })
   }

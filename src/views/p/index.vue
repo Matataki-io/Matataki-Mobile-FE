@@ -1137,19 +1137,6 @@ export default {
       this.isSupported = RewardStatus.LOADING
       let sponsor = await toSponsor(this.getInvite)
       await this.makeOrder({ amount, num, signId, sponsor, comment })
-      /*try {
-        // 發 comment 到後端
-        console.log("Send comment...");
-        const response = await sendComment({ comment, signId });
-        console.log(response);
-        if (response.status !== 200) throw new Error(error);
-      } catch (error) {
-        console.error(error);
-        console.log("Resend comment...");
-        const response = await sendComment({ comment, signId });
-        console.log(response);
-        if (response.status !== 200) throw new Error(error);
-      }*/
       loading.clear()
       this.isSupported = RewardStatus.NOT_REWARD_YET
       this.isRequest = true
@@ -1254,19 +1241,6 @@ export default {
         await this.makeShare({ amount, signId, sponsor, comment })
         // if ( this.article.channel_id === 2 ) await this.makeOrder({ amount, signId, sponsor });
 
-        // try {
-        //   // 發 comment 到後端
-        //   console.log("Send comment...");
-        //   const response = await sendComment({ comment, signId });
-        //   console.log(response);
-        //   if (response.status !== 200) throw new Error(error);
-        // } catch (error) {
-        //   console.error(error);
-        //   console.log("Resend comment...");
-        //   const response = await sendComment({ comment, signId });
-        //   console.log(response);
-        //   if (response.status !== 200) throw new Error(error);
-        // }
         this.isSupported = RewardStatus.REWARDED // 按钮状态
         this.$toast.success({ duration: 1000, message: this.$t('success.success') })
         this.isRequest = true // 自动请求
