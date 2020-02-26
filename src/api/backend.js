@@ -131,9 +131,6 @@ const API = {
       data: { uid: id }
     })
   },
-  async getMyUserData() {
-    return this.accessBackend({ url: '/user/stats' })
-  },
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },

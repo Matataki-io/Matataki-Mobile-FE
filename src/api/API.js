@@ -495,10 +495,7 @@ minetokenGetResources(tokenId) {
     })
   },
   getMyUserData() {
-    return request({
-      method: 'get',
-      url: '/user/stats',
-    })
+    return request.get('/user/stats')
   },
   follow(uid) {
     return request.post('/follow/follow', { uid })
