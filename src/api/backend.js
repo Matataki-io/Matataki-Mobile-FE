@@ -265,22 +265,6 @@ const API = {
   async getTags() {
     return axiosforApiServer.get('/tag/tags')
   },
-  // 文章转让
-  async transferOwner(from, articleId, uid) {
-    // console.log(from, articleId, uid)
-    if (from === 'article')
-      return this.accessBackend({
-        method: 'POST',
-        url: '/post/transferOwner',
-        data: { signid: articleId, uid }
-      })
-    if (from === 'draft')
-      return this.accessBackend({
-        method: 'POST',
-        url: '/draft/transferOwner',
-        data: { draftid: articleId, uid }
-      })
-  },
   async wxShare(url) {
     return axios.get(`${apiServer}/wx/sign?url=${url}`)
   },
