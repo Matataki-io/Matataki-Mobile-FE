@@ -276,14 +276,6 @@ const API = {
   wxpay(total, openid) {
     return axiosforApiServer.post('/wx/pay', { total, openid })
   },
-  // 文章持通证阅读
-  addMineTokens(data) {
-    return this.accessBackend({
-      method: 'post',
-      url: '/post/addMineTokens',
-      data: data
-    })
-  },
   allToken({ page = 1, pagesize = 10, search = '' }) {
     return this.accessBackend({
       url: '/token/all',
