@@ -905,7 +905,6 @@ export default {
     // },
     // 自动创建草稿
     async autoCreateDraft(article) {
-      console.log(111, article)
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
@@ -922,7 +921,7 @@ export default {
             this.id = res.data
             // console.log(this.$route)
             const url = window.location.origin + '/publish/draft/' + res.data
-            history.pushState({}, '', url)
+            history.replaceState({}, '', url)
           } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
         })
         .catch(err => {
