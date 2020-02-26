@@ -281,14 +281,6 @@ const API = {
         data: { draftid: articleId, uid }
       })
   },
-  // 通过用户名搜索
-  async searchUsername(username) {
-    return axiosforApiServer.get('/user/search', {
-      params: {
-        q: username
-      }
-    })
-  },
   // 获取推荐文章或者商品
   postsRecommend(channel) {
     return axiosforApiServer.get('/posts/recommend', {
