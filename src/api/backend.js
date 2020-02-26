@@ -152,13 +152,6 @@ const API = {
       url: `/post/show/${hash}`
     })
   },
-  // 删除文章
-  async delArticle({ id }) {
-    return this.accessBackend({
-      method: 'DELETE',
-      url: `/post/${id}`
-    })
-  },
   // 设置头像
   async uploadAvatar(data = { avatar: null }) {
     return this.accessBackend({
