@@ -174,11 +174,11 @@ export default {
       try {
         this.articleTransfer = status
         let accept = status ? 1 : 0
-        const res = await this.$backendAPI.setProfile({ accept })
-        if (res.status === 200 && res.data.code === 0)
-          return this.$toast.success({ duration: 1000, message: this.$t('success.success') })
+        const res = await this.$API.setProfile({ accept })
+        if (res.code === 0)
+          return this.$toast.success({ duration: 1000, message: res.message })
         else {
-          this.$toast.fail({ duration: 1000, message: this.$t('error.fail') })
+          this.$toast.fail({ duration: 1000, message: res.message })
           this.articleTransfer = !status
         }
       } catch (error) {

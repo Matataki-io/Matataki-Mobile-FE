@@ -189,18 +189,6 @@ const API = {
           })
     }
   },
-  async setProfile({ nickname, introduction, email, accept }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/setProfile',
-      data: {
-        nickname,
-        introduction,
-        email,
-        accept
-      }
-    })
-  },
   async getMyPost(id) {
     return this.accessBackend({ url: `/mypost/${id}` })
   },

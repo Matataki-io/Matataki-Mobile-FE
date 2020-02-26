@@ -809,4 +809,16 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+  setProfile({ nickname, introduction, email, accept }) {
+    return request({
+      method: 'POST',
+      url: '/user/setProfile',
+      data: {
+        nickname,
+        introduction,
+        email,
+        accept
+      }
+    })
+  },
 }
