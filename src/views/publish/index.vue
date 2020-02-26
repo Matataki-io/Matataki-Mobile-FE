@@ -336,7 +336,6 @@
 <script>
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
-import { mavonEditor } from 'mavon-editor-matataki'
 import { strTrim } from '@/common/reg'
 
 import 'mavon-editor-matataki/dist/css/index.css' // editor css
@@ -359,7 +358,6 @@ import oneKeyImport from '@/components/one_key_import/index.vue'
 export default {
   name: 'NewPost',
   components: {
-    mavonEditor,
     imgUpload,
     modalPrompt,
     tagCard,

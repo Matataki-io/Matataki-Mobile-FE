@@ -39,7 +39,6 @@ export const xssFilter = html => {
     'data-tools'
   ]
   whiteList.span = ['class', 'style']
-  whiteList.p = ['class', 'style']
   let aTag = ['class', 'style', 'href', 'data-url', 'target']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
@@ -70,6 +69,10 @@ export const xssFilter = html => {
 
   let rulePush = [
     {
+      tag: 'div',
+      attributes: ['class']
+    },
+    {
       tag: 'h1',
       attributes: ['id', 'style']
     },
@@ -94,15 +97,23 @@ export const xssFilter = html => {
       attributes: ['id', 'style']
     },
     {
+      tag: 'p',
+      attributes: ['style']
+    },
+    {
       tag: 'hr',
       attributes: ['style']
     },
     {
       tag: 'code',
-      attributes: ['style']
+      attributes: ['class', 'style']
     },
     {
       tag: 'pre',
+      attributes: ['style']
+    },
+    {
+      tag: 'ol',
       attributes: ['style']
     },
   ]
@@ -148,10 +159,6 @@ export const xssFilter = html => {
         console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
       }
     },
-    // > 放过md引用
-    escapeHtml(html) {
-      return html.replace(/</g, '&lt;')
-    }
   }
   const myxss = new xss.FilterXSS(options)
 
