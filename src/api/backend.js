@@ -110,13 +110,6 @@ const API = {
   async getArticleDatafromIPFS(hash) {
     return axios.get(`${apiServer}/post/ipfs/${hash}`)
   },
-  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
-  async getArticleInfo(hashOrId) {
-    const reg = /^[0-9]*$/
-    // post hash获取  ， p id 短链接
-    const url = reg.test(hashOrId) ? 'p' : 'post'
-    return this.accessBackend({ url: `/${url}/${hashOrId}` })
-  },
   async follow({ id }) {
     return this.accessBackend({
       method: 'POST',

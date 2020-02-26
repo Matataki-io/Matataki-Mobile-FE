@@ -15,7 +15,7 @@ export default {
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
-  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
+  // 获取单篇文章的信息 by hash or id 需要 token 否则无法获取投资状态
   getArticleInfo(hashOrId) {
     const reg = /^[0-9]*$/
     // post hash获取  ， p id 短链接

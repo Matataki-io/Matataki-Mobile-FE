@@ -110,8 +110,8 @@ export default {
   },
   methods: {
     async init() {
-      await this.$backendAPI.getArticleInfo(this.$route.params.hash).then(res => {
-        if (res.status === 200 && res.data.code === 0) this.articleData = res.data.data
+      await this.$API.getArticleInfo(this.$route.params.hash).then(res => {
+        if (res.code === 0) this.articleData = res.data
       })
 
       this.addReadAmount(this.articleData.hash)
