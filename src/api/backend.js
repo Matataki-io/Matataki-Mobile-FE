@@ -110,20 +110,6 @@ const API = {
   async getArticleDatafromIPFS(hash) {
     return axios.get(`${apiServer}/post/ipfs/${hash}`)
   },
-  async follow({ id }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/follow/follow',
-      data: { uid: id }
-    })
-  },
-  async unfollow({ id }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/follow/unfollow',
-      data: { uid: id }
-    })
-  },
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
