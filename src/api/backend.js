@@ -324,10 +324,6 @@ const API = {
       data: { time }
     })
   },
-  // 搜索推荐
-  searchRecommend(params) {
-    return axiosforApiServer.get('/search/recommend', params)
-  },
   wxlogin(code) {
     return axiosforApiServer.post('/wx/login', { code })
   },
