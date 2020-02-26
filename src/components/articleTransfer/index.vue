@@ -71,6 +71,7 @@
         <template v-for="(item, index) in dialogHelpContentStep">
           {{ item }} <br :key="index" />
         </template>
+      </p>
       <div class="form-button">
         <el-button @click="widgetModalStatus = 0" type="primary" size="small">
           {{ $t('p.articleTransferHelpBtn') }}
@@ -240,7 +241,16 @@ export default {
             message: this.$t('p.articleTransferSuccess')
           })
           this.showModal = false // 移动端需要手动关闭 不然莫名其妙的遮罩层还在!!!
-          this.$router.push({ name: 'article' })
+
+          if (this.from === 'article' || this.from === 'draft') {
+            this.$router.push({ name: 'article' })
+          } else if (this.from === 'share') {
+            this.$router.push({ name: 'sharehall' })
+          } else {
+            this.$router.push({ name: 'article' })
+          }
+
+
         } else {
           this.$toast({
             duration: 1000,

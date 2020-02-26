@@ -5,7 +5,7 @@
     customize-header-bc="#fff"
     :has-bottom-border-line="true"
     class="header" >
-      <shareHeadRight v-if="isMe(content.uid)" slot="right" :id="content.uid"></shareHeadRight>
+      <shareHeadRight v-if="isMe(content.uid)" slot="right" :id="content.id"></shareHeadRight>
     </BaseHeader>
     <div v-loading="loading">
       <shareHeader
