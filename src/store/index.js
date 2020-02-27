@@ -4,7 +4,6 @@ import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
 import metamask from './metamask'
-import github from './github'
 import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
@@ -194,10 +193,6 @@ export default new Vuex.Store({
             name: state.ontology.account,
             oldAccessToken
           })
-        }
-        // GitHub
-        else if (idProvider === 'GitHub') {
-          accessToken = await dispatch(`${prefixOfType}/signIn`, { code })
         }
       } catch (error) {
         console.error(error)

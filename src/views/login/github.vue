@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import { getCookie, removeCookie } from '@/utils/cookie'
 
 export default {
@@ -56,25 +55,31 @@ export default {
           this.$router.push({ name: 'setting-account' })
         })
       } else {
-        // 移除github cookie
-        // const removeCookies = () => {
-        //   const idProvider = getCookie('idProvider')
-        //   if (idProvider.toLocaleLowerCase() === 'github') removeCookie('idProvider')
-        // }
-        this.signIn({ code, idProvider: 'GitHub' })
+        let params = { code }
+  
+        // 推荐人id
+        let referral = getCookie('referral')
+        if (referral) Object.assign(params, { referral: referral })
+
+        this.$API.loginGitHub(params)
           .then(res => {
-            this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+            if (res.code === 0) {
+              this.$store.commit('setAccessToken', res.data)
+              this.$store.commit('setUserConfig', { idProvider: 'GitHub' })
+
+              this.$router.push({ path: from })
+            } else {
+              this.$message.error(res.message)
+              this.$router.push({ path: from })
+            }
           })
-          .catch(() => {})
-          .then(() => {
-            this.$router.push({ path: from })
+          .catch(e => {
+            console.log(e)
+            this.$message.error('GitHub Login Error')
           })
       }
     }
   },
-  methods: {
-    ...mapActions(['signIn'])
-  }
 }
 </script>
 

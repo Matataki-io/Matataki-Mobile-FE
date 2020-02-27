@@ -121,21 +121,6 @@ const API = {
     delete data.signature
     return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
   },
-  async loginGitHub(code) {
-    let params = { code }
-    // 推荐人id
-    let referral = utils.getCookie('referral')
-    if (referral) Object.assign(params, { referral: referral })
-
-    return axiosforApiServer.post('/login/github', params)
-  },
-  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return axiosforApiServer.post(`/login/captcha?email=${email}`, {
-      geetest_challenge,
-      geetest_validate,
-      geetest_seccode
-    })
-  },
 }
 
 export default API

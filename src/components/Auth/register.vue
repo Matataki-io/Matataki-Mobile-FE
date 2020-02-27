@@ -156,12 +156,12 @@ export default {
       })
     },
     confirmSendCode(gt) {
-      this.$backendAPI.getCaptcha(this.registerForm.email, {
+      this.$API.getCaptcha(this.registerForm.email, {
         geetest_challenge: gt.geetest_challenge,
         geetest_validate: gt.geetest_validate,
         geetest_seccode: gt.geetest_seccode
       }).then(res => {
-        if (res.data.code === 0) {
+        if (res.code === 0) {
           this.countDown()
           this.successToast(this.$t('success.codeSendSuccess'))
         } else {
