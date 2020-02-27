@@ -110,30 +110,6 @@ const API = {
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
-  // 设置头像
-  async uploadAvatar(data = { avatar: null }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/setAvatar',
-      data
-    })
-  },
-  // 上传图片
-  async uploadImage(type, data) {
-    const url = {
-      avatar: '/user/uploadAvatar',
-      artileCover: '/post/uploadImage',
-      coins: '/post/uploadImage',
-      banner: '/user/uploadBanner'
-    }
-    const formdata = new FormData()
-    formdata.append('image', data)
-    return this.accessBackend({
-      method: 'POST',
-      url: url[type],
-      data: formdata
-    })
-  },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
