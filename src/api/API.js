@@ -79,6 +79,21 @@ export default {
   loginGitHub(params) {
     return request.post('/login/github', params)
   },
+  // 根据用户名，公钥，客户端签名请求access_token
+  auth({ idProvider, publicKey: publickey, signature: sign, username, msgParams }) {
+    let params = {
+      platform: idProvider.toLowerCase(),
+      publickey,
+      sign,
+      username,
+      msgParams
+    }
+    // 推荐人id
+    let referral = getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+    
+    return request.post('/login/auth', params)
+  },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },

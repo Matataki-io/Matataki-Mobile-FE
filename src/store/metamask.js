@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { getToken, setCookie, removeCookie } from '../utils/cookie'
 import { getSignatureForLogin } from '@/api/eth'
 import BackendApi from '../api/backend'
+import API from '@/api/API.js'
 
 const setToken = (val) => setCookie('ACCESS_TOKEN', val)
 const removeToken = () => removeCookie('ACCESS_TOKEN')
@@ -50,14 +51,14 @@ export const actions = {
     }
     try {
       const { signature, msgParams } = await getSignatureForLogin()
-      const res = await BackendApi.auth({
+      const res = await API.auth({
         idProvider: 'eth',
         publicKey: state.account,
         signature: signature,
         msgParams
       })
-      if (res.data.code === 0) {
-        setToken(res.data.data)
+      if (res.code === 0) {
+        setToken(res.data)
         this._vm.$userMsgChannel.postMessage('login')
         return '签名登录成功，正在跳转'
       } else {

@@ -86,23 +86,6 @@ const API = {
     delete data.sponsor
     return this.accessBackend({ method: 'POST', url: '/support/support', data })
   },
-
-  /*
-   * 根据用户名，公钥，客户端签名请求access_token
-   */
-  async auth({ idProvider, publicKey: publickey, signature: sign, username, msgParams }) {
-    let params = {
-      platform: idProvider.toLowerCase(),
-      publickey,
-      sign,
-      username,
-      msgParams
-    }
-    // 推荐人id
-    let referral = utils.getCookie('referral')
-    if (referral) Object.assign(params, { referral: referral })
-    return axiosforApiServer.post('/login/auth', params)
-  },
 }
 
 export default API

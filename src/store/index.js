@@ -106,12 +106,12 @@ export default new Vuex.Store({
       const { exp, iss } = accessTokenAPI.disassemble(newAccessToken)
       if (!iss || iss !== name || exp < new Date().getTime()) {
         try {
-          console.log('Retake authtoken...')
-          const res = await backendAPI.auth(await dispatch('getSignatureOfAuth', { name }))
-          if (res.status === 200 && res.data.code === 0) {
-            newAccessToken = res.data.data
+          const res = await API.auth(await dispatch('getSignatureOfAuth', { name }))
+          if (res.code === 0) {
+            console.log('res', res)
+            newAccessToken = res.data
           } else {
-            console.log('获取token报错')
+            console.log('获取token报错', res.message)
             throw 'code !== 0'
           }
         } catch (error) {
