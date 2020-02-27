@@ -7,6 +7,7 @@ import metamask from './metamask'
 import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
+import { removeCookie } from '@/utils/cookie'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
@@ -18,7 +19,6 @@ export default new Vuex.Store({
     ontology,
     scatter,
     metamask,
-    github,
     order
   },
   state: {
@@ -66,7 +66,6 @@ export default new Vuex.Store({
       if (idProvider === 'EOS') return 'scatter'
       if (idProvider === 'MetaMask') return 'metamask'
       if (idProvider === 'ONT') return 'ontology'
-      if (idProvider === 'GitHub') return 'github'
       return null
     },
     // for store
@@ -289,8 +288,9 @@ export default new Vuex.Store({
       commit('setUserConfig')
       commit('setAccessToken')
       commit('setNickname')
-      Cookies.remove('ACCESS_TOKEN', { path: '' })
-      Cookies.remove('idProvider', { path: '' })
+      removeCookie('ACCESS_TOKEN')
+      removeCookie('idProvider')
+      removeCookie('referral')
       store.clear()
       sessionStorage.clear()
       this._vm.$userMsgChannel.postMessage('logout')
