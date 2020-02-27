@@ -61,31 +61,7 @@ const API = {
       config.data.platform = accessTokenAPI.disassemble(token).platform
     }
     return axiosforApiServer(config)
-  },
-  async reportOrder(order) {
-    const data = {
-      ...order,
-      platform: 'need',
-      referrer: order.sponsor.id
-    }
-    const { idProvider } = data
-    data.amount = toPrecision(data.amount, idProvider)
-    delete data.idProvider
-    delete data.sponsor
-    return this.accessBackend({ method: 'POST', url: '/order/order', data })
-  },
-  async reportShare(share) {
-    const data = {
-      ...share,
-      platform: 'need',
-      referrer: share.sponsor.id
-    }
-    const { idProvider } = data
-    data.amount = toPrecision(data.amount, idProvider)
-    delete data.idProvider
-    delete data.sponsor
-    return this.accessBackend({ method: 'POST', url: '/support/support', data })
-  },
+  }
 }
 
 export default API

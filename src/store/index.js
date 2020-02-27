@@ -235,11 +235,15 @@ export default new Vuex.Store({
       const order2 = { ...order, idProvider, ...getters.asset }
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      const {
-        data: {
-          data: { orderId }
-        }
-      } = await api.reportOrder(order2)
+
+      let orderId = null
+      const res = await API.reportOrder(order2)
+      if (res.code === 0) {
+        orderId = res.data.orderId
+      } else {
+        console.log(res.message)
+      }
+
       // console.debug(oid);
       return dispatch(`${getters.prefixOfType}/recordOrder`, {
         ...order2,
@@ -272,7 +276,8 @@ export default new Vuex.Store({
       })
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      return api.reportShare(share)
+
+      return API.reportShare(share)
     },
     async getCurrentUser({ commit, getters: { currentUserInfo } }) {
       const api = backendAPI
