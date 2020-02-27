@@ -4,10 +4,6 @@ import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
 import utils from '../utils/utils'
-import { paginationUrl } from './pagination_url'
-// Doc : https://github.com/axios/axios
-
-import { replaceStr } from '@/utils/reg'
 
 export const urlAddress = process.env.VUE_APP_URL
 export const apiServer = process.env.VUE_APP_API
@@ -110,53 +106,6 @@ const API = {
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
-  // 设置头像
-  async uploadAvatar(data = { avatar: null }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/setAvatar',
-      data
-    })
-  },
-  // 上传图片
-  async uploadImage(type, data) {
-    const url = {
-      avatar: '/user/uploadAvatar',
-      artileCover: '/post/uploadImage',
-      coins: '/post/uploadImage',
-      banner: '/user/uploadBanner'
-    }
-    const formdata = new FormData()
-    formdata.append('image', data)
-    return this.accessBackend({
-      method: 'POST',
-      url: url[type],
-      data: formdata
-    })
-  },
-  // BasePull 分页组件
-  getBackendData({ url, params, urlReplace }, needAccessToken = false) {
-    if (!urlReplace) {
-      const pullApiUrl = paginationUrl
-      return !needAccessToken
-        ? axiosforApiServer.get(pullApiUrl[url], { params })
-        : this.accessBackend({
-            method: 'get',
-            url: pullApiUrl[url],
-            params
-          })
-    } else {
-      const pullApiUrl = paginationUrl
-      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
-      return !needAccessToken
-        ? axiosforApiServer.get(urlReg, { params })
-        : this.accessBackend({
-            method: 'get',
-            url: urlReg,
-            params
-          })
-    }
-  },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
@@ -212,19 +161,6 @@ const API = {
       method: 'get',
       dataType: 'json'
     })
-  },
-  postsIdReadnew(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/readnew`,
-      data: { time }
-    })
-  },
-  wxlogin(code) {
-    return axiosforApiServer.post('/wx/login', { code })
-  },
-  wxpay(total, openid) {
-    return axiosforApiServer.post('/wx/pay', { total, openid })
   },
 }
 

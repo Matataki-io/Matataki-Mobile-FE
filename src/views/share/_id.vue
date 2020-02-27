@@ -430,16 +430,17 @@ export default {
     // 获取引用数量
     async getReferenceCount(url, params, type) {
       try {
-        const res = await this.$backendAPI.getBackendData({ url, params, urlReplace: this.$route.params.id }, false)
-        if (res.status === 200 && res.data.code === 0) {
+        const res = await this.$API.getBackendData({ url, params, urlReplace: this.$route.params.id })
+        // console.log('res', res)
+        if (res.code === 0) {
           if (type === 'refernce') {
-            this.refernceTotal = res.data.data.count
+            this.refernceTotal = res.data.count
 
             // share
-            this.setShareRef(res.data.data.list)
+            this.setShareRef(res.data.list)
           }
-          else if (type === 'berefernce') this.berefernceTotal = res.data.data.count
-          else this.refernceTotal = res.data.data.count
+          else if (type === 'berefernce') this.berefernceTotal = res.data.count
+          else this.refernceTotal = res.data.count
         } else console.log(res.message)
       } catch (error) { console.log(error) }
     },

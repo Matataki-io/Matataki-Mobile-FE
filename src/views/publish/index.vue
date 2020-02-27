@@ -628,11 +628,11 @@ export default {
      */
     async getAllTokens() {
       const pagesize = 999
-      await this.$backendAPI
+      await this.$API
         .allToken({ pagesize })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.readSelectOptions = res.data.data.list
+          if (res.code === 0) {
+            this.readSelectOptions = res.data.list
           }
         })
         .catch(err => console.log(err))
