@@ -136,14 +136,6 @@ const API = {
       geetest_seccode
     })
   },
-  async verifyEmail(email) {
-    return axiosforApiServer({
-      url: '/login/verify',
-      method: 'get',
-      params: { email },
-      noLoading: true
-    })
-  },
 }
 
 export default API

@@ -59,8 +59,8 @@ export default {
       if (value === '') {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
-        const res = await this.$backendAPI.verifyEmail(value)
-        if (res.data.data) {
+        const res = await this.$API.verifyEmail(value)
+        if (res.data) {
           callback(new Error(this.$t('rule.emailHasBeenRegistered')))
         } else {
           callback()
