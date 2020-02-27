@@ -106,10 +106,6 @@ const API = {
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
-  // 获取账户资产列表 暂时没有EOS数据
-  async getBalance() {
-    return this.accessBackend({ url: '/user/balance' })
-  },
 }
 
 export default API

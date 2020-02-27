@@ -854,4 +854,9 @@ minetokenGetResources(tokenId) {
     delete data.signature
     return request({ method: 'POST', url: '/user/withdraw', data })
   },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  // 获取账户资产列表 暂时没有EOS数据
+  getBalance() {
+    return request({ url: '/user/balance' })
+  },
 }
