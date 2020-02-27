@@ -12,6 +12,73 @@ export default {
   getImg(hash) {
     return `${ssImgAddress}${hash}`
   },
+  // ----------------------------- 账号 --------------------------------
+  // 登录
+  login({ username, password }) {
+    return request.post('/login/account', { username, password })
+  },
+  // 注册
+  register({ email, password, captcha, referral }) {
+    return request.post('/login/regist', {
+      email,
+      password,
+      captcha: captcha.toString(),
+      referral
+    })
+  },
+  // 验证邮箱
+  verifyEmail(email) {
+    return request({
+      url: '/login/verify',
+      method: 'get',
+      params: { email },
+      noLoading: true
+    })
+  },
+  // gt验证码
+  registerGT() {
+    return request({
+      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
+      method: 'get',
+      dataType: "json",
+    })
+  },
+  // 获取验证码
+  getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    }, { noLoading: true })
+  },
+  // 找回密码验证码
+  getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword/captcha?email=${email}`,
+      data: {
+        geetest_challenge,
+        geetest_validate,
+        geetest_seccode
+      }
+    })
+  },
+  // 重置密码
+  resetPassword({ email, password, captcha }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword`,
+      data: {
+        email,
+        password,
+        captcha: captcha.toString()
+      }
+    })
+  },
+  // GitHub登录
+  loginGitHub(params) {
+    return request.post('/login/github', params)
+  },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
@@ -536,28 +603,6 @@ minetokenGetResources(tokenId) {
       }
     })
   },
-  async getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request({
-      method: 'POST',
-      url: `/login/resetPassword/captcha?email=${email}`,
-      data: {
-        geetest_challenge,
-        geetest_validate,
-        geetest_seccode
-      }
-    })
-  },
-  async resetPassword({ email, password, captcha }) {
-    return request({
-      method: 'POST',
-      url: `/login/resetPassword`,
-      data: {
-        email,
-        password,
-        captcha: captcha.toString()
-      }
-    })
-  },
     /**
    * 上传图片
    * @param {String} type 上传类型
@@ -599,30 +644,6 @@ minetokenGetResources(tokenId) {
       url: `/oss/uploadImage?folder=${folderOption[folder]}`,
       data: formdata
     })
-  },
-  async verifyEmail(email) {
-    return request({
-      url: '/login/verify',
-      method: 'get',
-      params: { email },
-      noLoading: true
-    })
-  },
-  registerGT() {
-    return request({
-      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
-      method: 'get',
-      dataType: "json",
-    })
-  },
-  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request.post(`/login/captcha?email=${email}`, {
-      geetest_challenge,
-      geetest_validate,
-      geetest_seccode
-    }, { noLoading: true })
-
-    return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   /**
    * 解析引用网址的title

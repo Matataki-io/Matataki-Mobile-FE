@@ -87,13 +87,6 @@ export default {
       if (value === '') {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
-        // const res = await this.$backendAPI.verifyEmail(value)
-        // if (res.data.data) {
-        //   callback()
-        // } else {
-        //   callback(new Error('邮箱尚未注册'))
-        // }
-
         callback()
       }
     }
@@ -234,12 +227,12 @@ export default {
       this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
           try {
-            const res = await this.$backendAPI.login({
+            const res = await this.$API.login({
               username: this.loginForm.email,
               password: this.loginForm.password
             })
-            if (res.data.code === 0) {
-              this.$store.commit('setAccessToken', res.data.data)
+            if (res.code === 0) {
+              this.$store.commit('setAccessToken', res.data)
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
               // localStorage.setItem('idProvider', config.idProvider)
               this.successToast(this.$t('success.loginSuccess'))

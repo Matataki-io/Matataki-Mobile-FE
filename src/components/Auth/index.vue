@@ -43,6 +43,7 @@ import Register from './register'
 import Wallet from './wallet'
 import ResetPassword from './resetPassword'
 import utils from "@/utils/utils";
+import { getCookie, setCookie } from '@/utils/cookie'
 
 export default {
   name: 'AuthModal',
@@ -72,32 +73,25 @@ export default {
     },
     value(val) {
       this.showModal = val
+      if (val) {
+        this.getReferral()
+      }
     }
   },
-  mounted(){
-    this.isReferral()
-    this.getReferral()
-  },
   methods: {
-    // 是否有推荐
-    isReferral() {
+    // 得到邀请状态
+    getReferral() {
       let search = window.location.search.slice(1)
       let searchArr = search.split('&')
       let searchFilter = searchArr.filter((i) => i.includes('referral='))
       // 有邀请id
-      if (searchFilter.length !== 0) utils.setCookie('referral', searchFilter[0].slice(9))
-      else { // 如果没有邀请连接
-      // 移动端和pc端不一样 会加载GitHub无法写入邀请人 所以不做删除
-        // 检查是否有邀请id 有则删除
-        // let referral = utils.getCookie('referral')
-        // if (referral) utils.delCookie('referral')
+      if (!searchFilter.length !== 0) {
+        setCookie('referral', searchFilter[0].slice(9))
+        this.referral = true
+      } else {
+        let referral = getCookie('referral')
+        if (referral) this.referral = true
       }
-      // console.log(this.referral)
-    },
-    // 得到邀请状态
-    getReferral() {
-      let referral = utils.getCookie('referral')
-      if (referral) this.referral = true
     }
   }
 }

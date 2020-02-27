@@ -135,7 +135,7 @@ const router = new VueRouter({
     {
       path: '/login/weixin',
       name: 'WeixinLogin',
-      component: () => import(/* webpackChunkName: "Login" */ './views/weixinLogin.vue'),
+      component: () => import(/* webpackChunkName: "WeixinLogin" */ './views/weixinLogin.vue'),
       mata: {
         title: '微信登录'
       }
