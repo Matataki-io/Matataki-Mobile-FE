@@ -186,14 +186,6 @@ const router = new VueRouter({
       name: 'Asset',
       props: true,
       component: () => import(/* webpackChunkName: "Asset" */ './views/user/Asset/index.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -203,14 +195,6 @@ const router = new VueRouter({
       name: 'AssetType',
       props: true,
       component: () => import(/* webpackChunkName: "AssetType" */ './views/user/Asset/Asset.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -229,14 +213,6 @@ const router = new VueRouter({
       name: 'Withdraw',
       props: true,
       component: () => import(/* webpackChunkName: "Withdraw" */ './views/user/Withdraw'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -246,14 +222,6 @@ const router = new VueRouter({
       name: 'Original',
       props: true,
       component: () => import(/* webpackChunkName: "Original" */ './views/user/Original.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '原创-瞬MATATAKI'
       }
@@ -268,23 +236,6 @@ const router = new VueRouter({
         title: '分享-瞬MATATAKI'
       }
     },
-    // {
-    //   path: '/user/:id/reward',
-    //   name: 'Reward',
-    //   props: true,
-    //   component: () => import(/* webpackChunkName: "Reward" */ './views/user/Reward.vue'),
-    //   beforeEnter: (to, from, next) => {
-    //     const { id } = to.params
-    //     const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-    //     if (id != idOfToken) next({ name: 'user-id', params: { id } })
-    //     else {
-    //       next()
-    //     }
-    //   },
-    //   meta: {
-    //     title: '投资-瞬MATATAKI'
-    //   }
-    // },
     {
       path: '/user/:id/follow',
       name: 'user-id-follow',
@@ -355,14 +306,6 @@ const router = new VueRouter({
       name: 'DraftBox',
       props: true,
       component: () => import(/* webpackChunkName: "DraftBox" */ './views/user/DraftBox.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '草稿-瞬MATATAKI'
       }
@@ -599,7 +542,13 @@ router.beforeEach((to, from, next) => {
     'setting',
     'publish-type-id',
     'buy',
-    'buy-other'
+    'buy-other',
+    'Asset',
+    'AssetType',
+    'Withdraw',
+    'Original',
+    'DraftBox',
+    'BookmarkList'
   ] // 需要登陆才能进入
   // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
   // 需要登陆的页面没有token

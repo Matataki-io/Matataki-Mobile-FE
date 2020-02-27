@@ -2,6 +2,7 @@ import axios from 'axios'
 import https from 'https'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
+import { getCookie, setCookie, removeCookie } from '@/utils/cookie'
 
 export const urlAddress = process.env.VUE_APP_URL
 export const apiServer = process.env.VUE_APP_API
@@ -16,19 +17,13 @@ const axiosforApiServer = axios.create({
 // accessToken with Cookies
 export const accessTokenAPI = {
   get() {
-    const token = Cookies.get('ACCESS_TOKEN')
-    if (token === 'null' || token === 'undefined') {
-      this.rm()
-      return this.get()
-    }
-    return token
+    return getCookie('ACCESS_TOKEN')
   },
   set(token) {
-    if (!token) this.rm()
-    else Cookies.set('ACCESS_TOKEN', token, { expires: 1 })
+    setCookie('ACCESS_TOKEN', token)
   },
   rm() {
-    Cookies.remove('ACCESS_TOKEN')
+    removeCookie('ACCESS_TOKEN')
   },
   /*
    * 拆token，返回json对象
