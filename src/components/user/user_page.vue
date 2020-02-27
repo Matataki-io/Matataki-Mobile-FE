@@ -179,7 +179,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     username() {
       return this.name.length < 12 ? this.name : this.name.slice(0, 12) + '...'
     }

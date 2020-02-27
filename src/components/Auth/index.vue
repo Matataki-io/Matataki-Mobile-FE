@@ -85,7 +85,7 @@ export default {
       let searchArr = search.split('&')
       let searchFilter = searchArr.filter((i) => i.includes('referral='))
       // 有邀请id
-      if (!searchFilter.length !== 0) {
+      if (searchFilter.length) {
         setCookie('referral', searchFilter[0].slice(9))
         this.referral = true
       } else {

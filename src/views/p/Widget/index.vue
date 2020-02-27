@@ -118,7 +118,6 @@
 import { sleep } from '@/common/methods'
 import { strTrim } from '@/common/reg' // 开发用
 import QRCodeDialog from './QRCodeDialog'
-import { urlAddress } from '@/api/backend'
 import SocialShare from '@/components/share/social_share.vue'
 // const urlAddress = 'http://localhost:8080'; // 开发用
 
@@ -145,6 +144,8 @@ export default {
   computed: {},
   watch: {
     widgetModalStatus(newVal, oldVal) {
+      const urlAddress = process.env.VUE_APP_URL
+
       // console.log(newVal, oldVal)
       this.oldWidgetModalStatus = oldVal
       // 如果显示创建widget 但是没有内容
@@ -157,6 +158,8 @@ export default {
       this.widgetModalCopy = newVal
     },
     widgetContent(newVal) {
+      const urlAddress = process.env.VUE_APP_URL
+
       let content = ''
       const invite = this.invite ? `&invite=${this.invite}&referral=${this.invite}` : ''
       // 去前后空格防止空内容

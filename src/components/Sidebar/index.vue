@@ -342,7 +342,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe', 'hasNewNotification']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'hasNewNotification']),
     displayBalance() {
       const { balance } = this.currentUserInfo
       return balance ? balance.slice(0, -4) : ''

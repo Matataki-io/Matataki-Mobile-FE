@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { accessTokenAPI } from '@/api'
 // wechat share
 import wechatShare from './utils/wechat_share'
 import { getCookie } from '@/utils/cookie'

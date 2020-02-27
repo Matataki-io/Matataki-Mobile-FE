@@ -884,25 +884,6 @@ export default {
         throw error
       }
     },
-    // confirmSaveDraft() {
-    //   this.createDraft(this.saveInfo)
-    // },
-    // 创建草稿
-    // async createDraft(article) {
-    //   try {
-    //     // 设置文章标签 🏷️
-    //     article.tags = this.setArticleTag(this.tagCards)
-    //     // 设置积分
-    //     article.commentPayPoint = this.commentPayPoint
-    //     const response = await this.$backendAPI.createDraft(article)
-    //     if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
-    //     this.$toast.success({ duration: 1000, message: this.$t('success.save') })
-    //     this.$router.go(-1)
-    //   } catch (error) {
-    //     console.log(error)
-    //     this.failed(this.$t('error.failTry'))
-    //   }
-    // },
     // 自动创建草稿
     async autoCreateDraft(article) {
       this.saveDraft = '保存中...'

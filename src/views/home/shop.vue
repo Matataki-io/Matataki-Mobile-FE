@@ -200,14 +200,13 @@ export default {
     },
     // 获取推荐文章或者商品
     async postsRecommend(channel) {
-      await this.$backendAPI
-        .postsRecommend({
+      await this.$API.postsRecommend({
           channel: channel
         })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.content.recommend.list = res.data.data
-          } else console.log('获取推荐失败')
+          if (res.code === 0) {
+            this.content.recommend.list = res.data
+          } else console.log(res.message)
         })
         .catch(err => {
           console.log(err)
