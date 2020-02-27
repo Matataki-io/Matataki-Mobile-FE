@@ -4,10 +4,6 @@ import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '../common/precisionConversion'
 import utils from '../utils/utils'
-import { paginationUrl } from './pagination_url'
-// Doc : https://github.com/axios/axios
-
-import { replaceStr } from '@/utils/reg'
 
 export const urlAddress = process.env.VUE_APP_URL
 export const apiServer = process.env.VUE_APP_API
@@ -165,12 +161,6 @@ const API = {
       method: 'get',
       dataType: 'json'
     })
-  },
-  wxlogin(code) {
-    return axiosforApiServer.post('/wx/login', { code })
-  },
-  wxpay(total, openid) {
-    return axiosforApiServer.post('/wx/pay', { total, openid })
   },
 }
 
