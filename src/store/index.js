@@ -8,7 +8,7 @@ import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 import { removeCookie } from '@/utils/cookie'
-import { withdraw } from '@/api/API'
+import API from '@/api/API.js'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
@@ -277,12 +277,15 @@ export default new Vuex.Store({
     async getCurrentUser({ commit, getters: { currentUserInfo } }) {
       const api = backendAPI
       api.accessToken = currentUserInfo.accessToken
-      const {
-        data: { data }
-      } = await api.getUser({ id: currentUserInfo.id })
-      console.info(data)
-      commit('setNickname', data.nickname)
-      return data
+
+      const res = await API.getUser(currentUserInfo.id)
+      if (res.code === 0) {
+        commit('setNickname', res.data.nickname)
+        return res.data
+      } else {
+        commit('setNickname', '')
+        return
+      }
     },
     signOut({ commit, dispatch, getters: { prefixOfType } }) {
       dispatch(`${prefixOfType}/logout`)
@@ -324,7 +327,7 @@ export default new Vuex.Store({
       }
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      return withdraw(data)
+      return API.withdraw(data)
     },
     async getNotificationCounters({ commit }) {
       const { data } = await notificationAPI.getNotificationCounters()

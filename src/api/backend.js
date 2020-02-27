@@ -103,9 +103,6 @@ const API = {
     if (referral) Object.assign(params, { referral: referral })
     return axiosforApiServer.post('/login/auth', params)
   },
-  async getUser({ id }) {
-    return this.accessBackend({ url: `/user/${id}` })
-  },
 }
 
 export default API

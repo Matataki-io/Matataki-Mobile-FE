@@ -42,29 +42,32 @@ export default {
   data() {
     return {
       comment: '',
-      avatarSrc: ''
+      // avatarSrc: ''
     }
   },
   computed: {
     ...mapGetters(['isLogined', 'currentUserInfo'])
   },
   watch: {
-    isLogined(val) {
+    // isLogined(val) {
       // 监听登陆 重新获取头像
-      if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
-    }
+      // if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
+    // }
   },
   mounted() {
-    if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
+    // if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
   },
   methods: {
-    async getUser(id) {
-      // 获取用户头像
-      await this.$backendAPI.getUser({ id }).then(res => {
-        if (res.status === 200 && res.data.code === 0)
-          this.avatarSrc = res.data.data.avatar ? this.$ossProcess(res.data.data.avatar) : ''
-      })
-    },
+    // async getUser(id) {
+    //   // 获取用户头像
+    //   await this.$API.getUser(id).then(res => {
+    //     if (res.code === 0) {
+    //       this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
+    //     } else {
+    //       console.log(res.message)
+    //     }
+    //   })
+    // },
     islogin() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
