@@ -2,8 +2,6 @@ import axios from 'axios'
 import https from 'https'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
-import { toPrecision } from '../common/precisionConversion'
-import utils from '../utils/utils'
 
 export const urlAddress = process.env.VUE_APP_URL
 export const apiServer = process.env.VUE_APP_API
