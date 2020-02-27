@@ -2,9 +2,8 @@
  * For MetaMask(ETH) Only
  */
 import BigNumber from 'bignumber.js'
-import { getToken, setCookie, removeCookie } from '../utils/cookie'
+import { setCookie, removeCookie } from '../utils/cookie'
 import { getSignatureForLogin } from '@/api/eth'
-import BackendApi from '../api/backend'
 import API from '@/api/API.js'
 
 const setToken = (val) => setCookie('ACCESS_TOKEN', val)

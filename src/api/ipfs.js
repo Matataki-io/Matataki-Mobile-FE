@@ -9,10 +9,6 @@ function sendPost({ title, author, desc, content }) {
     'data[desc]': desc,
     'data[content]': content
   })
-  // return axios.post(`${apiServer}/ipfs/addJSON`, {
-  //   data: stringifyData,
-  //   config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
-  // });
   return request({
     method: 'post',
     url: '/post/ipfs',

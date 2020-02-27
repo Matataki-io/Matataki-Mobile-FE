@@ -3,7 +3,7 @@
     <navigation v-if="isRouterAlive">
       <router-view />
     </navigation>
-    <BackTop v-if="!isPublishPage" :right="20" :bottom="70" :height="40">
+    <BackTop v-if="!hideBackTop" :right="20" :bottom="70" :height="40">
       <img class="backtop" src="@/assets/img/icon_back_top.svg" alt="backtop" />
     </BackTop>
     <AuthModal v-model="loginModalShow" />
@@ -43,24 +43,9 @@ export default {
         this.$store.commit('setLoginModal', v)
       }
     },
-    isPublishPage() {
+    hideBackTop() {
       // 如果是发布页面隐藏小火箭
       return this.$route.name === 'Publish' || this.$route.name === 'exchange'
-    }
-  },
-  watch: {
-    currentUserInfo: {
-      handler(newVal, oldVal) {
-        // console.debug(this.$backendAPI.accessToken.toString().includes('Promise'));
-        if (
-          this.$backendAPI.accessToken &&
-          this.$backendAPI.accessToken.toString().includes('Promise')
-        )
-          return
-        this.$backendAPI.accessToken = newVal.accessToken
-        // console.debug('watch $backendAPI.accessToken :', this.$backendAPI.accessToken)
-      },
-      deep: true
     }
   },
   beforeCreate(){
@@ -80,19 +65,17 @@ export default {
     // 如果有token and idProvider
     // 自动登录
     if (accessToken && idProvider) {
+      // 得到我的用户信息
+      this.getMyUserData()
+
+      let data = {
+        accessToken: accessToken,
+        idProvider: idProvider
+      }
       try {
-        accessToken = signIn({
-          accessToken: accessToken,
-          idProvider: idProvider
-        })
-        
-        this.$backendAPI.accessToken = accessToken
+        signIn(data)
       } catch (error) {
-        accessToken = signIn({
-          accessToken: accessToken,
-          idProvider: idProvider
-        })
-        this.$backendAPI.accessToken = accessToken
+        signIn(data)
       }
     }
 
@@ -104,7 +87,7 @@ export default {
     this.removeOverflowHide()
   },
   methods: {
-    ...mapActions(['signIn']),
+    ...mapActions(['signIn', 'getMyUserData']),
     async getViewMode() {
 
       const { enable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')

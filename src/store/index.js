@@ -4,7 +4,8 @@ import ontology from './ontology'
 import scatter from './scatter'
 import metamask from './metamask'
 import order from './order'
-import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
+import notificationAPI from '@/api/notification'
+
 import publishMethods from '@/utils/publish_methods'
 import API from '@/api/API.js'
 import { getCookie, setCookie, removeCookie } from '@/utils/cookie'
@@ -33,11 +34,12 @@ export default new Vuex.Store({
     loginModalShow: false,
     selectTokenShow: false,
     selectedToken: null,
-    notificationCounters: {}
+    notificationCounters: {},
+    myUserData: {} // 我的用户信息
   },
   getters: {
     currentUserInfo: (
-      { userConfig: { idProvider }, userInfo },
+      { userConfig: { idProvider }, userInfo,  myUserData},
       { 'scatter/currentBalance': scatterBalance, 'ontology/currentBalance': ontologyBalance }
     ) => {
       let balance = null
@@ -48,9 +50,10 @@ export default new Vuex.Store({
       } else if (idProvider === 'GitHub') {
         balance = null
       }
-      const { id, iss: name } = accessTokenAPI.disassemble(userInfo.accessToken)
+      // 用户id 用户名称
+      const id = myUserData.id
+      const name = myUserData.nickname || myUserData.username
 
-      console.log('currentUserInfo', name)
       return {
         id,
         idProvider,
@@ -59,9 +62,7 @@ export default new Vuex.Store({
         ...userInfo
       }
     },
-    //  displayName.length <= 12 ? name : name.slice(0, 12);
-    displayName: ({ userInfo }, { currentUserInfo }) => userInfo.nickname || currentUserInfo.name,
-    isLogined: ({ userInfo: { accessToken } }) => accessToken !== null,
+    isLogined: () => !!getCookie('ACCESS_TOKEN'),
     isMe: (state, { currentUserInfo: { id } }) => target => id === Number(target),
     // for store
     prefixOfType: ({ userConfig: { idProvider } }) => {
@@ -104,21 +105,18 @@ export default new Vuex.Store({
     async getAuth({ dispatch }, { name = null, oldAccessToken = null }) {
       let newAccessToken = oldAccessToken
       if (!name) throw new Error('no name')
-      const { exp, iss } = accessTokenAPI.disassemble(newAccessToken)
-      if (!iss || iss !== name || exp < new Date().getTime()) {
-        try {
-          const res = await API.auth(await dispatch('getSignatureOfAuth', { name }))
-          if (res.code === 0) {
-            console.log('res', res)
-            newAccessToken = res.data
-          } else {
-            console.log('获取token报错', res.message)
-            throw 'code !== 0'
-          }
-        } catch (error) {
-          console.warn('取得 access token 出錯', error)
-          throw error
+      try {
+        const res = await API.auth(await dispatch('getSignatureOfAuth', { name }))
+        if (res.code === 0) {
+          console.log('res', res)
+          newAccessToken = res.data
+        } else {
+          console.log('获取token报错', res.message)
+          throw 'code !== 0'
         }
+      } catch (error) {
+        console.warn('取得 access token 出錯', error)
+        throw error
       }
       return newAccessToken
     },
@@ -135,17 +133,10 @@ export default new Vuex.Store({
     async getSignatureOfAuth({ dispatch }, { name = null }) {
       return dispatch('getSignature', { mode: 'Auth', rawSignData: [name] })
     },
-    /*
-     * 只有刷新時才會從本地存储抓取 accessToken ，並立即 signIn ，
-     * signIn 時針對該 accessToken 驗證，不合規跟後端重要一份，並寫入store和本地存储，
-     * 並且之後送到後端的都是 store 那份，更改本地存储不影響送到後端的 accessToken
-     */
     async signIn(
       { commit, dispatch, state, getters },
       { idProvider = null, accessToken = null }
     ) {
-
-      console.log('默认执行我?')
 
       console.debug('signIn:', 'idProvider:', idProvider, 'accessToken:', accessToken)
 
@@ -233,8 +224,6 @@ export default new Vuex.Store({
     ) {
       await dispatch('accountCheck')
       const order2 = { ...order, idProvider, ...getters.asset }
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
 
       let orderId = null
       const res = await API.reportOrder(order2)
@@ -274,18 +263,16 @@ export default new Vuex.Store({
         ...share,
         sponsor: share.sponsor.username
       })
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
 
       return API.reportShare(share)
     },
-    async getCurrentUser({ commit, getters: { currentUserInfo } }) {
-      const api = backendAPI
-      api.accessToken = currentUserInfo.accessToken
-
-      const res = await API.getUser(currentUserInfo.id)
+    async getCurrentUser({ commit }) {
+      // 没有token 自然没有当前用户信息
+      if (!getCookie('ACCESS_TOKEN')) return
+      
+      const res = await API.getMyUserData()
       if (res.code === 0) {
-        commit('setNickname', res.data.nickname)
+        commit('setNickname', res.data.nickname || res.data.username)
         return res.data
       } else {
         commit('setNickname', '')
@@ -330,8 +317,7 @@ export default new Vuex.Store({
           tokenName
         })
       }
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
+
       return API.withdraw(data)
     },
     async getNotificationCounters({ commit }) {
@@ -344,14 +330,29 @@ export default new Vuex.Store({
     },
     setLoginModal({commit}, status) {
       commit('setLoginModal', status)
+    },
+    // 在有token的情况下获取我的用户信息
+    async getMyUserData({commit}) {
+      try {
+        const res = await API.getMyUserData()
+        if (res.code === 0) {
+          commit('setMyUserData', res.data)
+        } else {
+          console.log(res.message)
+        }
+      } catch (error) {
+        console.log(error) 
+      }
     }
   },
   mutations: {
     setAccessToken(state, accessToken = null) {
       state.userInfo.accessToken = accessToken
-      if (accessToken) accessTokenAPI.set(accessToken)
-      else accessTokenAPI.rm()
-      // console.info('set access token :', accessToken);
+      if (accessToken) {
+        setCookie('ACCESS_TOKEN', accessToken)
+      } else {
+        removeCookie('ACCESS_TOKEN')
+      }
     },
     setNickname(state, nickname = '') {
       state.userInfo.nickname = nickname
@@ -381,6 +382,10 @@ export default new Vuex.Store({
       if (state.notificationCounters[provider]) {
         state.notificationCounters[provider] = 0
       }
+    },
+    // 设置我的用户信息
+    setMyUserData(state, data) {
+      state.myUserData = data
     }
   }
 })
