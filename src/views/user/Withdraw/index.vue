@@ -216,7 +216,7 @@ export default {
             memo: this.type === 'EOS' ? strTrim(`${this.withdrawData.list[1].value}`) : '' // eos 交易所需要填写memo标签
           })
             .then(res => {
-              if (res.status === 200 && res.data.code === 0) {
+              if (res.code === 0) {
                 //this.toastMessage(res.data.message, 'success');
                 this.$dialog.alert({
                   title: this.$t('promptTitle'),
@@ -225,7 +225,7 @@ export default {
                 this.getBalance(this.type).then(() => {
                   this.$navigation.cleanRoutes() // 清除路由记录
                 })
-              } else this.toastMessage(res.data.message, 'fail')
+              } else this.toastMessage(res.message, 'fail')
               done()
             })
             .catch(err => {

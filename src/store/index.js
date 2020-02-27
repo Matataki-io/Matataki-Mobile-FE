@@ -8,6 +8,7 @@ import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 import { removeCookie } from '@/utils/cookie'
+import { withdraw } from '@/api/API'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
@@ -323,7 +324,7 @@ export default new Vuex.Store({
       }
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      return api.withdraw(data)
+      return withdraw(data)
     },
     async getNotificationCounters({ commit }) {
       const { data } = await notificationAPI.getNotificationCounters()

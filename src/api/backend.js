@@ -110,17 +110,6 @@ const API = {
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
   },
-  async withdraw(rawData) {
-    const data = { ...rawData, platform: rawData.tokenName.toLowerCase() }
-    if (rawData.signature) {
-      data.publickey = rawData.signature.publicKey
-      data.sign = rawData.signature.signature
-    }
-    delete data.idProvider
-    delete data.tokenName
-    delete data.signature
-    return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
-  },
 }
 
 export default API

@@ -842,4 +842,16 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  withdraw(rawData) {
+    const data = { ...rawData, platform: rawData.tokenName.toLowerCase() }
+    if (rawData.signature) {
+      data.publickey = rawData.signature.publicKey
+      data.sign = rawData.signature.signature
+    }
+    delete data.idProvider
+    delete data.tokenName
+    delete data.signature
+    return request({ method: 'POST', url: '/user/withdraw', data })
+  },
 }
