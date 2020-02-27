@@ -117,8 +117,7 @@ export default {
   },
   methods: {
     registerInitGT(cb) {
-      this.$backendAPI.registerGT().then(response => {
-        const res = response.data
+      this.$API.registerGT().then(res => {
         window.initGeetest({
           // 以下 4 个配置参数为必须，不能缺少
           gt: res.gt,

@@ -155,13 +155,6 @@ const API = {
   async login({ username, password }) {
     return axiosforApiServer.post('/login/account', { username, password })
   },
-  registerGT() {
-    return axiosforApiServer({
-      url: `/gt/register-slide?t=${new Date().getTime()}`,
-      method: 'get',
-      dataType: 'json'
-    })
-  },
 }
 
 export default API
