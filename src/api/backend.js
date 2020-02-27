@@ -144,14 +144,6 @@ const API = {
       noLoading: true
     })
   },
-  async register({ email, password, captcha, referral }) {
-    return axiosforApiServer.post('/login/regist', {
-      email,
-      password,
-      captcha: captcha.toString(),
-      referral
-    })
-  },
 }
 
 export default API

@@ -209,13 +209,12 @@ export default {
 
           try {
             this.loading = true
-            const res = await this.$backendAPI.register(params)
-            console.log(res)
-            if (res.status === 200 && res.data.code === 0) {
+            const res = await this.$API.register(params)
+            if (res.code === 0) {
               this.successToast(this.$t('success.registeredSuccess'))
               this.$emit('switch')
             } else {
-              this.failToast(res.data.message)
+              this.failToast(res.message)
             }
             this.loading = false
           } catch (error) {

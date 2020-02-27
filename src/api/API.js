@@ -16,6 +16,15 @@ export default {
   login({ username, password }) {
     return request.post('/login/account', { username, password })
   },
+  // 注册
+  register({ email, password, captcha, referral }) {
+    return request.post('/login/regist', {
+      email,
+      password,
+      captcha: captcha.toString(),
+      referral
+    })
+  },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
