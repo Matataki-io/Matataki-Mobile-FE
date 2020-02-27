@@ -12,6 +12,10 @@ export default {
   getImg(hash) {
     return `${ssImgAddress}${hash}`
   },
+  // 登录
+  login({ username, password }) {
+    return request.post('/login/account', { username, password })
+  },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },

@@ -152,9 +152,6 @@ const API = {
       referral
     })
   },
-  async login({ username, password }) {
-    return axiosforApiServer.post('/login/account', { username, password })
-  },
 }
 
 export default API
