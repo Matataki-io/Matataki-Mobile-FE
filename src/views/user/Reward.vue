@@ -1,7 +1,7 @@
 <template>
   <div class="reward mw">
     <BaseHeader :pageinfo="{ title: $t('user.investment') }" :has-bottom-border-line="true" />
-    <ArticlesList :id="id" ref="ArticlesList" :listtype="'reward'" />
+    <ArticlesList :id="Number(id)" ref="ArticlesList" :listtype="'reward'" />
   </div>
 </template>
 
