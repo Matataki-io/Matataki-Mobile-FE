@@ -6,6 +6,7 @@ const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
 import { paginationUrl } from './pagination_url'
 import { replaceStr } from '@/utils/reg'
+import { toPrecision } from '../common/precisionConversion'
 
 
 export default {
@@ -78,6 +79,21 @@ export default {
   // GitHub登录
   loginGitHub(params) {
     return request.post('/login/github', params)
+  },
+  // 根据用户名，公钥，客户端签名请求access_token
+  auth({ idProvider, publicKey: publickey, signature: sign, username, msgParams }) {
+    let params = {
+      platform: idProvider.toLowerCase(),
+      publickey,
+      sign,
+      username,
+      msgParams
+    }
+    // 推荐人id
+    let referral = getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+    
+    return request.post('/login/auth', params)
   },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
@@ -841,5 +857,48 @@ minetokenGetResources(tokenId) {
         accept
       }
     })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  withdraw(rawData) {
+    const data = { ...rawData, platform: rawData.tokenName.toLowerCase() }
+    if (rawData.signature) {
+      data.publickey = rawData.signature.publicKey
+      data.sign = rawData.signature.signature
+    }
+    delete data.idProvider
+    delete data.tokenName
+    delete data.signature
+    return request({ method: 'POST', url: '/user/withdraw', data })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  // 获取账户资产列表 暂时没有EOS数据
+  getBalance() {
+    return request({ url: '/user/balance' })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  reportOrder(order) {
+    const data = {
+      ...order,
+      platform: 'need',
+      referrer: order.sponsor.id
+    }
+    const { idProvider } = data
+    data.amount = toPrecision(data.amount, idProvider)
+    delete data.idProvider
+    delete data.sponsor
+    return request({ method: 'POST', url: '/order/order', data })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  reportShare(share) {
+    const data = {
+      ...share,
+      platform: 'need',
+      referrer: share.sponsor.id
+    }
+    const { idProvider } = data
+    data.amount = toPrecision(data.amount, idProvider)
+    delete data.idProvider
+    delete data.sponsor
+    return request({ method: 'POST', url: '/support/support', data })
   },
 }

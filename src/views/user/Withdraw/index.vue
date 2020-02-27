@@ -158,13 +158,13 @@ export default {
     ...mapActions(['withdraw']),
     // 获取账户资产列表 暂时没有EOS数据
     async getBalance(type) {
-      await this.$backendAPI
+      await this.$API
         .getBalance()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            if (res.data.data.length === 0) return
+          if (res.code === 0) {
+            if (res.data.length === 0) return
             // 筛选数据
-            const filterArr = symbol => res.data.data.filter(i => i.symbol === symbol)
+            const filterArr = symbol => res.data.filter(i => i.symbol === symbol)
             const filterArrONT = filterArr('ONT')
             const filterArrEOS = filterArr('EOS')
 
@@ -179,7 +179,7 @@ export default {
               this.withdrawData.list[1].value = Math.floor(amount) // ont 向下取整
             }
           } else {
-            this.$toast.fail({ duration: 1000, message: `${res.data.message}` })
+            this.$toast.fail({ duration: 1000, message: `${res.message}` })
           }
         })
         .catch(error => {
@@ -216,7 +216,7 @@ export default {
             memo: this.type === 'EOS' ? strTrim(`${this.withdrawData.list[1].value}`) : '' // eos 交易所需要填写memo标签
           })
             .then(res => {
-              if (res.status === 200 && res.data.code === 0) {
+              if (res.code === 0) {
                 //this.toastMessage(res.data.message, 'success');
                 this.$dialog.alert({
                   title: this.$t('promptTitle'),
@@ -225,7 +225,7 @@ export default {
                 this.getBalance(this.type).then(() => {
                   this.$navigation.cleanRoutes() // 清除路由记录
                 })
-              } else this.toastMessage(res.data.message, 'fail')
+              } else this.toastMessage(res.message, 'fail')
               done()
             })
             .catch(err => {

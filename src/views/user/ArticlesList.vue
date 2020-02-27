@@ -66,8 +66,8 @@ export default {
       required: true
     },
     id: {
-      type: String,
-      default: ''
+      type: Number,
+      required: true
     },
     isOtherUser: {
       type: Boolean,
@@ -177,12 +177,6 @@ export default {
     },
     getListDataTab({ index, list }) {
       this.tabsData[index].articles = list
-    },
-    async getUsername(id) {
-      const {
-        data: { data }
-      } = await this.$backendAPI.getUser({ id })
-      return data.username
     }
   }
 }

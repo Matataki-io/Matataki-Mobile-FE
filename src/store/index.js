@@ -8,6 +8,7 @@ import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
 import { removeCookie } from '@/utils/cookie'
+import API from '@/api/API.js'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
@@ -105,12 +106,12 @@ export default new Vuex.Store({
       const { exp, iss } = accessTokenAPI.disassemble(newAccessToken)
       if (!iss || iss !== name || exp < new Date().getTime()) {
         try {
-          console.log('Retake authtoken...')
-          const res = await backendAPI.auth(await dispatch('getSignatureOfAuth', { name }))
-          if (res.status === 200 && res.data.code === 0) {
-            newAccessToken = res.data.data
+          const res = await API.auth(await dispatch('getSignatureOfAuth', { name }))
+          if (res.code === 0) {
+            console.log('res', res)
+            newAccessToken = res.data
           } else {
-            console.log('获取token报错')
+            console.log('获取token报错', res.message)
             throw 'code !== 0'
           }
         } catch (error) {
@@ -234,11 +235,15 @@ export default new Vuex.Store({
       const order2 = { ...order, idProvider, ...getters.asset }
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      const {
-        data: {
-          data: { orderId }
-        }
-      } = await api.reportOrder(order2)
+
+      let orderId = null
+      const res = await API.reportOrder(order2)
+      if (res.code === 0) {
+        orderId = res.data.orderId
+      } else {
+        console.log(res.message)
+      }
+
       // console.debug(oid);
       return dispatch(`${getters.prefixOfType}/recordOrder`, {
         ...order2,
@@ -271,17 +276,21 @@ export default new Vuex.Store({
       })
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      return api.reportShare(share)
+
+      return API.reportShare(share)
     },
     async getCurrentUser({ commit, getters: { currentUserInfo } }) {
       const api = backendAPI
       api.accessToken = currentUserInfo.accessToken
-      const {
-        data: { data }
-      } = await api.getUser({ id: currentUserInfo.id })
-      console.info(data)
-      commit('setNickname', data.nickname)
-      return data
+
+      const res = await API.getUser(currentUserInfo.id)
+      if (res.code === 0) {
+        commit('setNickname', res.data.nickname)
+        return res.data
+      } else {
+        commit('setNickname', '')
+        return
+      }
     },
     signOut({ commit, dispatch, getters: { prefixOfType } }) {
       dispatch(`${prefixOfType}/logout`)
@@ -323,7 +332,7 @@ export default new Vuex.Store({
       }
       const api = backendAPI
       api.accessToken = getters.currentUserInfo.accessToken
-      return api.withdraw(data)
+      return API.withdraw(data)
     },
     async getNotificationCounters({ commit }) {
       const { data } = await notificationAPI.getNotificationCounters()

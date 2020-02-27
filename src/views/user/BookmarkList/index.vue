@@ -1,7 +1,7 @@
 <template>
   <div class="bookmark mw">
     <BaseHeader :pageinfo="{ title: $t('user.bookmarks') }" :has-bottom-border-line="true" />
-    <ArticlesList :id="id" ref="ArticlesList" :listtype="'bookmark'" />
+    <ArticlesList :id="Number(id)" ref="ArticlesList" :listtype="'bookmark'" />
   </div>
 </template>
 
