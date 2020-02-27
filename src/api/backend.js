@@ -134,29 +134,6 @@ const API = {
       data: formdata
     })
   },
-  // BasePull 分页组件
-  getBackendData({ url, params, urlReplace }, needAccessToken = false) {
-    if (!urlReplace) {
-      const pullApiUrl = paginationUrl
-      return !needAccessToken
-        ? axiosforApiServer.get(pullApiUrl[url], { params })
-        : this.accessBackend({
-            method: 'get',
-            url: pullApiUrl[url],
-            params
-          })
-    } else {
-      const pullApiUrl = paginationUrl
-      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
-      return !needAccessToken
-        ? axiosforApiServer.get(urlReg, { params })
-        : this.accessBackend({
-            method: 'get',
-            url: urlReg,
-            params
-          })
-    }
-  },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })
@@ -211,13 +188,6 @@ const API = {
       url: `/gt/register-slide?t=${new Date().getTime()}`,
       method: 'get',
       dataType: 'json'
-    })
-  },
-  postsIdReadnew(id, time) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/posts/${id}/readnew`,
-      data: { time }
     })
   },
   wxlogin(code) {

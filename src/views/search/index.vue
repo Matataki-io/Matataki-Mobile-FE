@@ -177,7 +177,7 @@ export default {
 
       // 获取数据
       try {
-        const res = await this.$API.getBackendData({ url: otherRouting.apiUrl, params: otherRouting.params }, false)
+        const res = await this.$API.getBackendData({ url: otherRouting.apiUrl, params: otherRouting.params })
         // console.log('结果：', otherRouting.apiUrl, res)
         if (res.code === 0) {
           otherRouting.articles = res.data.list
