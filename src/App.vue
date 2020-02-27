@@ -13,16 +13,10 @@
 <script>
 import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
-import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'
 import store from '@/utils/store.js'
-
-
-// import {
-//   enable as enableDarkMode,
-//   disable as disableDarkMode,
-// } from 'darkreader'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -69,7 +63,7 @@ export default {
       deep: true
     }
   },
-    beforeCreate(){
+  beforeCreate(){
     try {
       document.body.removeChild(document.getElementById('loading'))
     } catch (error) {
@@ -79,25 +73,32 @@ export default {
   created() {
     const { signIn, updateNotify } = this
 
-    let accessToken = null
-    // 根据本地存储的状态来自动登陆。失败之后再重试一次
-    const data = {
-      accessToken: accessTokenAPI.get(),
-      idProvider: Cookies.get('idProvider')
-    }
-    if (data.idProvider && data.accessToken) {
-      // console.log('sign in form localStorage')
+    let accessToken = getCookie('ACCESS_TOKEN')
+    let idProvider = getCookie('idProvider')
+
+    let token = null
+    // 如果有token and idProvider
+    // 自动登录
+    if (accessToken && idProvider) {
       try {
-        accessToken = signIn(data)
+        accessToken = signIn({
+          accessToken: accessToken,
+          idProvider: idProvider
+        })
+        
+        this.$backendAPI.accessToken = accessToken
       } catch (error) {
-        accessToken = signIn(data)
+        accessToken = signIn({
+          accessToken: accessToken,
+          idProvider: idProvider
+        })
+        this.$backendAPI.accessToken = accessToken
       }
     }
-    this.$backendAPI.accessToken = accessToken
-    // console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
 
     window.updateNotify = updateNotify
     this.getViewMode()
+
   },
   mounted() {
     this.removeOverflowHide()

@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
 import metamask from './metamask'
 import order from './order'
 import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
 import publishMethods from '@/utils/publish_methods'
-import { removeCookie } from '@/utils/cookie'
 import API from '@/api/API.js'
+import { getCookie, setCookie, removeCookie } from '@/utils/cookie'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
@@ -50,6 +49,8 @@ export default new Vuex.Store({
         balance = null
       }
       const { id, iss: name } = accessTokenAPI.disassemble(userInfo.accessToken)
+
+      console.log('currentUserInfo', name)
       return {
         id,
         idProvider,
@@ -141,17 +142,12 @@ export default new Vuex.Store({
      */
     async signIn(
       { commit, dispatch, state, getters },
-      { code = null, idProvider = null, accessToken = null }
+      { idProvider = null, accessToken = null }
     ) {
-      console.debug(
-        'signIn:',
-        'code:',
-        code,
-        'idProvider:',
-        idProvider,
-        'accessToken:',
-        accessToken
-      )
+
+      console.log('默认执行我?')
+
+      console.debug('signIn:', 'idProvider:', idProvider, 'accessToken:', accessToken)
 
       if (!idProvider) throw new Error('did not choice idProvider')
       commit('setUserConfig', { idProvider })
@@ -202,8 +198,12 @@ export default new Vuex.Store({
 
       // 成功後的處理
       commit('setAccessToken', accessToken)
-      Cookies.set('idProvider', state.userConfig.idProvider, { expires: 365 })
-      if (!oldAccessToken) this._vm.$userMsgChannel.postMessage('login')
+      setCookie('idProvider', state.userConfig.idProvider)
+      try {
+        if (!oldAccessToken) this._vm.$userMsgChannel.postMessage('login')
+      } catch (error) {
+        console.log(error)
+      }
       return state.userInfo.accessToken
     },
     /*
@@ -357,12 +357,11 @@ export default new Vuex.Store({
       state.userInfo.nickname = nickname
     },
     setUserConfig(state, config = null) {
-      // only idProvider now
       if (config) {
-        Cookies.set('idProvider', config.idProvider, { expires: 365 })
+        setCookie('idProvider', config.idProvider)
         state.userConfig.idProvider = config.idProvider
       } else {
-        Cookies.remove('idProvider')
+        removeCookie('idProvider')
         state.userConfig.idProvider = null
       }
     },
