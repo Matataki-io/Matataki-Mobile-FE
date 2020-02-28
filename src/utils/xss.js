@@ -220,3 +220,13 @@ export const xssImageProcess = html => {
     }
   });
 }
+
+// 过滤html标签
+export const filterOutHtmlTags = html => {
+  // 没有用markdownit渲染markdown文档, 因为可能造成不必要的消耗,(他只是一个摘要而已)
+  return xss(html, {
+    whiteList: [],
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script"]
+  });
+}
