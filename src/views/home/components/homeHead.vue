@@ -95,7 +95,7 @@ export default {
   },
   created() {
     if (this.isLogined) {
-      console.log('isLogined', this.isLogined)
+      // console.log('isLogined', this.isLogined)
       this.refreshUser()
     }
   },

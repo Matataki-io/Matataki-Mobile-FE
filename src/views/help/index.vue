@@ -61,10 +61,6 @@
         <span class="help-list-title">{{ $t('user.tg') }}</span>
         <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
       </a>
-      <!--<div class="help-list">
-        <span class="help-list-title">当前版本</span>
-        <span class="help-list-sub">v2.3.2</span>
-      </div>-->
     </div>
 
     <div class="help-block">
@@ -97,10 +93,10 @@
 import store from '@/utils/store.js'
 import packageConfig from '../../../package.json'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  naem: 'Help',
+  name: 'Help',
   data() {
     return {
       articleTransfer: false,
@@ -129,6 +125,7 @@ export default {
     this.getViewMode()
   },
   methods: {
+    ...mapActions(['resetAllStore']),
     getViewMode() {
       const viewMode = store.get('viewMode')
       if (viewMode && viewMode === 'night') {
@@ -195,22 +192,50 @@ export default {
         type: 'warning',
         customClass: 'message-box__mobile'
       }).then(() => {
-        clearAllCookie()
-        // 防止没有清除干净
-        removeCookie('ACCESS_TOKEN')
-        removeCookie('idProvider')
-        removeCookie('referral')
-        store.clearAll()
-        sessionStorage.clear()
-        this.$message({
-          type: 'success',
-          message: '清除成功!'
-        })
-        this.$router.push({ name: 'index' })
-        setTimeout(() => {
-          this.$userMsgChannel.postMessage('logout')
-          window.location.reload()
-        }, 1000)
+
+        // 出错后弹出框提示
+        const alertDialog = () => {
+          this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+            showClose: false,
+            type: 'success',
+            customClass: 'message-box__mobile',
+            callback: action => {
+              window.location.reload()
+            }
+          })
+        }
+
+        // 重置all store
+        this.resetAllStore()
+          .then(res => {
+            clearAllCookie()
+            // 防止没有清除干净
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            removeCookie('referral')
+
+            store.clearAll()
+
+            store.clear()
+            sessionStorage.clear()
+            
+            this.$toast.success({
+              duration: 1500,
+              message: '清除成功'
+            })
+            
+            this.$router.push({ name: 'index' })
+
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
+        
       }).catch(() => { })
     }
   }

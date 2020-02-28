@@ -378,7 +378,7 @@ export default {
     }
   },
   created() {
-    if (getCookie('ACCESS_TOKEN')) this.refreshUser()
+    if (this.isLogined) this.refreshUser()
   },
   mounted() {
     // 保证切换正常显示状态
@@ -415,7 +415,7 @@ export default {
               message: this.$t('success.logoutSuccess')
             })
             
-            window.location.reload()
+            this.$router.go(0)
 
             // 通知刷新其他页面
             setTimeout(() => {

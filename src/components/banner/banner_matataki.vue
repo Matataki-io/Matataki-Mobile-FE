@@ -76,7 +76,9 @@ export default {
   },
   mounted() {
     this.getPostsStats()
-    this.getUserPointStatus()
+    if (this.isLogined) {
+      this.getUserPointStatus()
+    }
   },
   methods: {
     getPostsStats() {
