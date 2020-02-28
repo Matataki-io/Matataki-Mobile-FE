@@ -13,16 +13,10 @@ import { getCookie, setCookie, removeCookie } from '@/utils/cookie'
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
 
-// That's vuex's need, sorry eslint
-/* eslint-disable no-param-reassign */
-export default new Vuex.Store({
-  modules: {
-    ontology,
-    scatter,
-    metamask,
-    order
-  },
-  state: {
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('index')
+  return {
     userConfig: {
       // Identity Provider, IdP
       idProvider: null
@@ -36,7 +30,17 @@ export default new Vuex.Store({
     selectedToken: null,
     notificationCounters: {},
     myUserData: {} // 我的用户信息
+  }
+}
+
+export default new Vuex.Store({
+  modules: {
+    ontology,
+    scatter,
+    metamask,
+    order
   },
+  state: getDefaultState(),
   getters: {
     currentUserInfo: (
       { userConfig: { idProvider }, userInfo,  myUserData},
@@ -343,7 +347,30 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error) 
       }
-    }
+    },
+    // 重置
+    resetState ({ commit }) {
+      commit('resetState')
+    },
+    // 重置所有状态
+    resetAllStore({ commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+
+          // 清空all state
+          commit('resetState')
+          commit('metamask/resetState')
+          commit('ontology/resetState')
+          commit('scatter/resetState')
+          
+          // success
+          resolve()
+        } catch (error) {
+          // fail
+          reject(error)
+        }
+      })
+    },
   },
   mutations: {
     setAccessToken(state, accessToken = null) {
@@ -386,6 +413,10 @@ export default new Vuex.Store({
     // 设置我的用户信息
     setMyUserData(state, data) {
       state.myUserData = data
+    },
+    // 重置
+    resetState (state) {
+      Object.assign(state, getDefaultState())
     }
   }
 })

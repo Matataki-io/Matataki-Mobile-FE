@@ -61,7 +61,6 @@ export default {
     let accessToken = getCookie('ACCESS_TOKEN')
     let idProvider = getCookie('idProvider')
 
-    let token = null
     // 如果有token and idProvider
     // 自动登录
     if (accessToken && idProvider) {
