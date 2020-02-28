@@ -6,6 +6,8 @@ import { getCookie } from '@/utils/cookie'
 
 if (!window.VueRouter) Vue.use(VueRouter)
 
+import Layout from '@/views/home/layout.vue'
+
 // 路由级 code-splitting
 // 这会给当前的路由页生成单独的块文件 (webpackChunkName 是 about 则得到 about.[版本哈希].js)
 // 只有使用该 route 的场合才会下载这个页面的代码 (惰性加载).
@@ -13,7 +15,40 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', name: 'index', redirect: '/article' },
+    { path: '/', 
+      name: 'index', 
+      component: Layout,
+      redirect: '/article',
+      children: [
+        {
+          path: '/article',
+          name: 'article',
+          component: () =>
+            import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
+          meta: {
+            title: '文章-瞬MATATAKI'
+          }
+        },
+        {
+          path: '/sharehall',
+          name: 'sharehall',
+          props: true,
+          component: () => import(/* webpackChunkName: "sharehall",  webpackPrefetch: true */ './views/home/sharehall.vue'),
+          meta: {
+            title: '分享大厅-瞬MATATAKI'
+          }
+        },
+        {
+          path: '/token',
+          name: 'token',
+          component: () =>
+            import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
+          meta: {
+            title: 'Fan票-瞬MATATAKI'
+          }
+        },
+      ]
+    },
     {
       path: '/home',
       name: 'home',
@@ -21,35 +56,6 @@ const router = new VueRouter({
         import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
-      }
-    },
-    // {
-    //   path: '/index_backup',
-    //   name: 'indeindex_backup',
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'
-    //     ),
-    //   meta: {
-    //     title: '首页-瞬MATATAKI'
-    //   }
-    // },
-    {
-      path: '/article',
-      name: 'article',
-      component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
-      meta: {
-        title: '文章-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/sharehall',
-      name: 'sharehall',
-      props: true,
-      component: () => import(/* webpackChunkName: "sharehall",  webpackPrefetch: true */ './views/home/sharehall.vue'),
-      meta: {
-        title: '分享大厅-瞬MATATAKI'
       }
     },
     {
@@ -443,15 +449,6 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "WeixinPay" */ './views/weixinPay.vue'),
       mata: {
         title: '微信支付'
-      }
-    },
-    {
-      path: '/token',
-      name: 'token',
-      component: () =>
-        import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
-      meta: {
-        title: 'Fan票-瞬MATATAKI'
       }
     },
     {
