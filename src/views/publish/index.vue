@@ -367,7 +367,6 @@ import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
 import { strTrim } from '@/common/reg'
 
-import 'mavon-editor-matataki/dist/css/index.css' // editor css
 // import { sleep } from '@/common/methods'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { CreativeCommonsLicenseGenerator, convertLicenseToChinese } from '@/utils/CreativeCommons'

@@ -202,11 +202,7 @@ export default new Vuex.Store({
       // 成功後的處理
       commit('setAccessToken', accessToken)
       setCookie('idProvider', state.userConfig.idProvider)
-      try {
-        if (!oldAccessToken) this._vm.$userMsgChannel.postMessage('login')
-      } catch (error) {
-        console.log(error)
-      }
+  
       return state.userInfo.accessToken
     },
     /*

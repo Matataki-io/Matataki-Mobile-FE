@@ -262,7 +262,7 @@ export default {
       await this.$API
         .tokenUserId(id)
         .then(res => {
-          if (res.code === 0 && res.data.id > 0) {
+          if (res.code === 0 && res.data && res.data.id > 0) {
             this.tokenUser = true
             this.tokenData = res.data
           }

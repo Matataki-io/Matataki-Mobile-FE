@@ -29,7 +29,7 @@
     <div v-if="isLogined">
       <!-- 列表 -->
       <BasePull
-        :key="index"
+        :key="0"
         :params="point.params"
         :api-url="point.apiUrl"
         :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
