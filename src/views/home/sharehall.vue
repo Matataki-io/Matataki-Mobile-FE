@@ -1,7 +1,5 @@
 <template>
   <div class="sharehall">
-    <home-head @login="showSidebar = true" />
-    <div style="height: 20px;"></div>
     <!-- <h3 class="sharehall-title">分享文章</h3> -->
     <div class="push">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" @submit.native.prevent>
@@ -60,7 +58,6 @@
     >
       <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" @ref="ref"></shareCard>
     </BasePull>
-    <Sidebar v-model="showSidebar"></Sidebar>
 
     <m-dialog v-model="shareDoneCard" width="320px">
       <!-- 如果内容过多可以抽离 -->
@@ -100,8 +97,6 @@
 </template>
 
 <script>
-import homeHead from './components/homeHead.vue'
-import Sidebar from '@/components/Sidebar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
@@ -120,8 +115,6 @@ import { ImagePreview } from 'vant'
 Vue.use(ImagePreview)
 export default {
   components: {
-    homeHead,
-    Sidebar,
     shareOuterCard,
     sharePCard,
     shareInsideCard,
@@ -137,7 +130,6 @@ export default {
       }
     }
     return {
-      showSidebar: false,
       ruleForm: {
         content: '',
       },
@@ -575,6 +567,7 @@ export default {
 <style lang="less" scoped>
 .sharehall {
   padding: 46px 0 20px;
+  margin-top: 20px;
   min-height: 100%;
   background-color: #fff;
 }

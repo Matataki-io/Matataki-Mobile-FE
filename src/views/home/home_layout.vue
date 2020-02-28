@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <home-head @login="showSidebar = true" />
     <div class="carousel">
       <van-swipe :autoplay="3000" indicator-color="#542DE0" :height="170">
         <van-swipe-item v-for="(item, index) in sipeList" :key="index">
@@ -23,23 +22,18 @@
     <articleTab v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
     <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
     <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
-    <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 
 <script>
-import homeHead from './components/homeHead.vue'
 import bannerMatataki from '@/components/banner/banner_matataki.vue'
-import Sidebar from '@/components/Sidebar/index.vue'
 import articleTab from './index.vue'
 import tokenTab from './token.vue'
 import followTab from './follow.vue'
 
 export default {
   components: {
-    homeHead,
-    Sidebar,
     articleTab,
     tokenTab,
     followTab,
@@ -47,7 +41,6 @@ export default {
   },
   data() {
     return {
-      showSidebar: false,
       idx: 0,
       sipeList: [
         {

@@ -1,6 +1,5 @@
 <template>
   <div class="token">
-    <home-head @login="showSidebar = true" />
     <myTokenHeader />
     <div class="tokens-list">
       <div class="fl jsb">
@@ -101,30 +100,20 @@
     >
       <tokenCard v-for="(item, index) in pull.list" :key="index" :card="item" />
     </BasePull>
-    <Sidebar v-model="showSidebar"></Sidebar>
   </div>
 </template>
 
 <script>
-// import avatar from '@/components/avatar/index.vue'
-import homeHead from '../home/components/homeHead.vue'
 import tokenCard from '@/components/token_card/index.vue'
-// import userPagination from '@/components/user/user_pagination.vue'
-import Sidebar from '@/components/Sidebar/index.vue'
 import myTokenHeader from '@/components/token/my_token_header.vue'
 
 export default {
   components: {
-    // avatar,
     tokenCard,
-    homeHead,
-    Sidebar,
     myTokenHeader
-    // userPagination
   },
   data() {
     return {
-      showSidebar: false,
       sort: this.$route.query.sort || 'general',
       pull: {
         params: {
