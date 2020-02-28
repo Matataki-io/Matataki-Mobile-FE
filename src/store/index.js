@@ -66,7 +66,15 @@ export default new Vuex.Store({
         ...userInfo
       }
     },
-    isLogined: () => !!getCookie('ACCESS_TOKEN'),
+    // 是否登录
+    isLogined: (state) => {
+      // 因为只 getCookie 这个值不会改变, 所以计算state来获取
+      if (state.myUserData.id) {
+        return !!getCookie('ACCESS_TOKEN')
+      } else {
+        return false
+      }
+    },
     isMe: (state, { currentUserInfo: { id } }) => target => id === Number(target),
     // for store
     prefixOfType: ({ userConfig: { idProvider } }) => {

@@ -6,7 +6,7 @@
     </div>
     <!-- 列表 -->
     <BasePull
-      :key="index"
+      :key="0"
       :params="point.params"
       :api-url="point.apiUrl"
       :is-obj="{ type: 'newObject', key: 'data', keys: 'logs' }"
@@ -16,9 +16,9 @@
       @getListData="getListData"
     >
       <pointCard
-        v-for="itemChild in point.list"
-        :key="itemChild.create_time"
-        :asset="itemChild"
+        v-for="(item, index) in point.list"
+        :key="index + item.create_time"
+        :asset="item"
       ></pointCard>
     </BasePull>
   </div>
