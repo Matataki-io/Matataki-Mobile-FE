@@ -9,13 +9,19 @@ import API from '@/api/API.js'
 const setToken = (val) => setCookie('ACCESS_TOKEN', val)
 const removeToken = () => removeCookie('ACCESS_TOKEN')
 
-export const state = () => ({
-  account: null,
-  balances: {
-    eth: new BigNumber(0)
-  },
-  isConnected: false
-})
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('metamask')
+  return {
+    account: null,
+    balances: {
+      eth: new BigNumber(0)
+    },
+    isConnected: false
+  }
+}
+
+export const state = getDefaultState()
 
 export const mutations = {
   SET_BALANCE(state, data) {
@@ -26,6 +32,10 @@ export const mutations = {
   },
   SET_METAMASK_CONNECTION(state, status) {
     state.isConnected = status
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -93,7 +103,11 @@ export const actions = {
       }
       resolve()
     })
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }
 
 export default {

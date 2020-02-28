@@ -1,18 +1,20 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
-
-// initial state
-const state = {
-  // account 是個物件, .name 才是帳號名
-  account: null,
-  api: null,
-  balances: {
-    eos: '... EOS'
-  },
-  isConnected: false,
-  isLoggingIn: false,
-  isLoadingData: false
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('scatter')
+  return {
+    // account 是個物件, .name 才是帳號名
+    account: null,
+    api: null,
+    balances: {
+      eos: '... EOS'
+    },
+    isConnected: false,
+    isLoggingIn: false,
+    isLoadingData: false
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {
   currentBalance: ({ balances }) => balances.eos,
@@ -34,6 +36,10 @@ const mutations = {
   },
   setBalance(state, { symbol, balance }) {
     state.balances[symbol] = balance
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -175,7 +181,11 @@ const actions = {
     commit('setAccount')
     commit('setBalance', { symbol: 'eos', balance: '... EOS' })
     commit('setIsLoggingIn')
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }
 
 export default {

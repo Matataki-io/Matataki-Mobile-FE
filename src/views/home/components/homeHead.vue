@@ -35,6 +35,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import search from './search.vue'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'HomeHead',
@@ -87,12 +88,16 @@ export default {
   },
   watch: {
     isLogined(newState) {
-      if (newState) this.refreshUser()
+      if (newState) {
+        this.refreshUser()
+      }
     }
   },
   created() {
-    const { isLogined, refreshUser } = this
-    if (isLogined) refreshUser()
+    if (this.isLogined) {
+      console.log('isLogined', this.isLogined)
+      this.refreshUser()
+    }
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -102,8 +107,10 @@ export default {
       else this.$store.commit('setLoginModal', true)
     },
     async refreshUser() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, {h: 60})
+      const res = await this.getCurrentUser()
+      if (res && res.avatar) {
+        if (res.avatar) this.avatar = this.$ossProcess(res.avatar, {h: 60})
+      }
     }
   }
 }

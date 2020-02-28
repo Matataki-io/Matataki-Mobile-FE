@@ -305,7 +305,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import Cookies from 'js-cookie'
 import defaultAvatar from '@/assets/avatar-default.svg'
-import { getCookie } from '@/utils/cookie'
+import { getCookie, removeCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 export default {
   name: 'Sidebar',
@@ -384,22 +385,51 @@ export default {
     if (this.currentUserInfo.id) this.getMyUserData()
   },
   methods: {
-    ...mapActions(['signOut', 'getNotificationCounters']),
+    ...mapActions(['signOut', 'getNotificationCounters', 'resetAllStore']),
     loginOrSignOut() {
       if (this.isLogined) {
-        this.signOut()
-        this.jumpTo({ name: 'article' })
-        this.$toast.success({
-          duration: 1500,
-          message: this.$t('success.logoutSuccess')
-        })
+        // 出错后弹出框提示
+        const alertDialog = () => {
+          this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+            showClose: false,
+            type: 'success',
+            customClass: 'message-box__mobile',
+            callback: action => {
+              window.location.reload()
+            }
+          })
+        }
+
+        // 重置all store
+        this.resetAllStore()
+          .then(res => {
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            removeCookie('referral')
+
+            store.clear()
+            sessionStorage.clear()
+            
+            this.$toast.success({
+              duration: 1500,
+              message: this.$t('success.logoutSuccess')
+            })
+            
+            window.location.reload()
+
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
+
       } else {
         this.$store.commit('setLoginModal', true)
       }
-    },
-    jumpTo(params) {
-      if (!params.name) return
-      this.$router.push(params)
     },
     async getMyUserData() {
       await this.$API
