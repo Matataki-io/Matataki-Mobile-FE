@@ -74,6 +74,13 @@ export default {
   computed: {
   ...mapGetters(['isLogined'])
   },
+  watch: {
+    isLogined(newVal) {
+      if (newVal) {
+        this.getUserPointStatus()
+      }
+    }
+  },
   mounted() {
     this.getPostsStats()
     if (this.isLogined) {
