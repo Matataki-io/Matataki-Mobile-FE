@@ -112,7 +112,7 @@ export default {
     ...mapGetters(['currentUserInfo'])
   },
   methods: {
-    ...mapActions(['signIn']),
+    ...mapActions(['signIn', 'getMyUserData']),
     ...mapActions("metamask", ["fetchAccount", "login"]),
     telegramLogin() {
       this.$store.commit('setLoginModal', false)
@@ -197,11 +197,18 @@ export default {
     async signInx(type) {
       try {
         await this.signIn({ idProvider: type })
+        this.getMyUserData()
+        // this.$userMsgChannel.postMessage("login")
         // window.location.reload() // 登陆完成刷新一次
+        
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
+        this.getMyUserData()
+
+          // this.$userMsgChannel.postMessage("login")
           // window.location.reload() // 登陆完成刷新一次
+
         } catch (err) {
           console.log(err)
           this.failToast(this.$t('error.loginFail'))
