@@ -43,6 +43,7 @@
         :placeholder="$t('publish.titlePlaceholder')"
         size="large"
         clearable
+        maxlength="50"
       />
 
       <mavon-editor

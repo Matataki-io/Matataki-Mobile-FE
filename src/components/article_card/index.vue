@@ -8,8 +8,8 @@
       <span class="card-head__time">{{friendlyDate}}</span>
     </div>
     <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
-      <p class="card-title search-res" v-html="card.title" />
-      <p class="card-content search-res" v-if="shortContent" v-html="shortContent" />
+      <p class="card-title search-res" v-html="xssTitle" />
+      <p class="card-content search-res" v-if="xssContent" v-html="xssContent" />
       <div class="card-footer">
       <div class="card-footer__lock">
         <img
@@ -58,8 +58,17 @@ export default {
     }
   },
   computed: {
-    shortContent() {
-      return filterOutHtmlTags(this.card.short_content)
+    xssTitle() {
+      if (this.card.title) {
+        return filterOutHtmlTags(this.card.title, {
+          em: []
+        })
+      } else return ''
+    },
+    xssContent() {
+      if (this.card.short_content) {
+        return filterOutHtmlTags(this.card.short_content)
+      } else return ''
     },
     avatar() {
       return this.card.avatar ? this.$ossProcess(this.card.avatar, {h: 60}) : ''
