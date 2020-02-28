@@ -923,6 +923,9 @@ export default {
         .getIpfsData(this.article.hash)
         .then(res => {
           if (res.code === 0) {
+            // 在获取ipfs内容后替换title, 因为数据库存储的title有上限 
+            this.article.title = res.data.title
+            
             this.post.content = res.data.content
             this.setWxShare()
           } else {
