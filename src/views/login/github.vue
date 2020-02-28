@@ -4,6 +4,7 @@
 
 <script>
 import { getCookie, removeCookie } from '@/utils/cookie'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'LoginPage',
@@ -66,7 +67,19 @@ export default {
             if (res.code === 0) {
               this.$store.commit('setAccessToken', res.data)
               this.$store.commit('setUserConfig', { idProvider: 'GitHub' })
-
+              // 这里用app.vue里面的func,
+              // 获取用户信息
+              this.getMyUserData()
+              // 和app.vue里面同步
+              try {
+                signIn({
+                  accessToken: getCookie('ACCESS_TOKEN'),
+                  idProvider: getCookie('idProvider')
+                })
+              } catch (error) {
+                console.log(error)
+              }
+              // end
               this.$router.push({ path: from })
             } else {
               this.$message.error(res.message)
@@ -80,6 +93,9 @@ export default {
       }
     }
   },
+  methods: {
+    ...mapActions(['signIn', 'getMyUserData']),
+  }
 }
 </script>
 

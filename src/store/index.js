@@ -167,31 +167,47 @@ export default new Vuex.Store({
       try {
         const { prefixOfType } = getters
         const oldAccessToken = accessToken // null or from localStorage
+        
+        const token = getCookie('ACCESS_TOKEN')
+
         // Scatter
-        if (idProvider === 'EOS') {
-          if (!state.scatter.isConnected) {
-            const result = await dispatch(`${prefixOfType}/connect`)
-            if (!result) throw new Error('Scatter: connection failed')
+        if (idProvider === 'EOS') {          
+          // 如果已经有token, 不需要再次连接、登录、请求签名了
+          if (token) {
+            accessToken = token
+          } else {
+            if (!state.scatter.isConnected) {
+              const result = await dispatch(`${prefixOfType}/connect`)
+              if (!result) throw new Error('Scatter: connection failed')
+            }
+
+            if (!state.scatter.isLoggingIn) {
+              const result = await dispatch(`${prefixOfType}/login`)
+              if (!result) throw new Error('Scatter: login failed')
+            }
+
+            accessToken = await dispatch('getAuth', {
+              name: getters[`${prefixOfType}/currentUsername`],
+              oldAccessToken
+            })
           }
-          if (!state.scatter.isLoggingIn) {
-            const result = await dispatch(`${prefixOfType}/login`)
-            if (!result) throw new Error('Scatter: login failed')
-          }
-          accessToken = await dispatch('getAuth', {
-            name: getters[`${prefixOfType}/currentUsername`],
-            oldAccessToken
-          })
+
         }
         // Ontology
         else if (idProvider === 'ONT') {
-          if (!state.ontology.account) await dispatch(`${prefixOfType}/getAccount`)
-          await dispatch('ontology/getBalance').catch(error =>
-            console.warn('Ontology: Failed to get balance :', error)
-          )
-          accessToken = await dispatch('getAuth', {
-            name: state.ontology.account,
-            oldAccessToken
-          })
+          // 如果已经有token, 不需要再次连接、登录、请求签名了
+          if (token) {
+            accessToken = token
+          } else {
+            if (!state.ontology.account) await dispatch(`${prefixOfType}/getAccount`)
+            await dispatch('ontology/getBalance').catch(error =>
+              console.warn('Ontology: Failed to get balance :', error)
+            )
+            accessToken = await dispatch('getAuth', {
+              name: state.ontology.account,
+              oldAccessToken
+            })
+          }
         }
       } catch (error) {
         console.error(error)
@@ -202,7 +218,7 @@ export default new Vuex.Store({
       // 成功後的處理
       commit('setAccessToken', accessToken)
       setCookie('idProvider', state.userConfig.idProvider)
-  
+
       return state.userInfo.accessToken
     },
     /*
