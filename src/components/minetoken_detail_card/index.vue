@@ -9,6 +9,7 @@
         <router-link class="info" :to="{ name: 'user-id', params: { id: card.to_uid } }" :class="!card.to_username && 'logout'">
           {{ to_nickname }}
         </router-link>
+        <txHash v-if="card.tx_hash" :hash="card.tx_hash" class="tx-hash" />
       </div>
       <span class="amount">{{ tokenAmount(card.amount) }}</span>
     </div>
@@ -24,9 +25,12 @@
 import moment from 'moment'
 
 import { precision } from '@/utils/precisionConversion'
+import txHash from '@/components/tx_hash_popover/index'
 
 export default {
-  components: {},
+  components: {
+    txHash
+  },
   props: {
     card: {
       type: Object,
@@ -81,12 +85,15 @@ export default {
     margin: 6px 0;
   }
   .info {
-    display: flex;
     align-items: center;
     font-size: 14px;
     font-weight: 400;
     color: rgba(0, 0, 0, 1);
     line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 115px;
     &.logout {
       color: #b2b2b2;
     }
@@ -124,5 +131,8 @@ export default {
   display: flex;
   align-items: center;
   flex: 1;
+}
+.tx-hash {
+  margin-left: 10px;
 }
 </style>
