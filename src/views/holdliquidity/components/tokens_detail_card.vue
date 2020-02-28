@@ -5,7 +5,10 @@
         <avatar :src="cover" size="30px" />
       </router-link>
       <div>
-        <div class="nickname">{{ card.name }}</div>
+        <div class="nickname">
+          {{ card.name }}
+          <txHash v-if="card.tx_hash" :hash="card.tx_hash" />
+        </div>
         <div class="gray">{{ type }}</div>
         <div class="time">{{ time }}</div>
       </div>
@@ -51,9 +54,12 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index.vue'
+import txHash from '@/components/tx_hash_popover/index'
+
 export default {
   components: {
-    avatar
+    avatar,
+    txHash
   },
   props: {
     card: {
@@ -213,5 +219,6 @@ export default {
   color: #000;
   font-weight: 400;
   line-height: 17px;
+  margin-bottom: 5px;
 }
 </style>

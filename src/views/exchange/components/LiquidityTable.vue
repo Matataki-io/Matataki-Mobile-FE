@@ -6,11 +6,12 @@
     header-cell-class-name="trade-log-header"
     cell-class-name="trade-log-row"
   >
-    <el-table-column label="方向" width="50">
+    <el-table-column label="方向" width="70">
       <template slot-scope="scope">
         <span :class="direction(scope.row.liquidity)">{{
           scope.row.liquidity >= 0 ? '添加' : '删除'
         }}</span>
+        <txHash v-if="scope.row.tx_hash" :hash="scope.row.tx_hash" size="15px" />
       </template>
     </el-table-column>
     <!-- <el-table-column prop="cny_amount" label="CNY">
@@ -33,7 +34,12 @@
 </template>
 
 <script>
+import txHash from '@/components/tx_hash_popover/index'
+
 export default {
+  components: {
+    txHash
+  },
   props: {
     list: {
       type: Array,
