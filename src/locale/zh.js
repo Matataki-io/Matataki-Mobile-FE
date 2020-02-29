@@ -262,8 +262,13 @@ export default {
     stageDes31: '建立人类知识共享和创新的平台',
     stageDes32: '打造区块链永存知识数据库'
   },
+  // 首页
   home: {
-    navHome: '首页',
+    home: '首页',
+    creation: '创作',
+    share: '分享',
+    fanTicket: 'Fan票',
+
     navArticle: '文章',
     navShop: '商品',
     articleNavHot: '最热',
@@ -283,12 +288,15 @@ export default {
     bannerArticles: '文章确权数',
     bannerPoint: '已发放积分'
   },
+  // 侧边栏
   sidebar: {
     article: '篇', //公用名称
+    fanTicketFolder: 'Fan票夹',
+    manageFanTicket: '管理Fan票',
     walletName: '钱包余额',
     follow: '关注',
     fans: '粉丝',
-    account: '钱包详情',
+    wallet: '钱包详情',
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
     invite: '邀请记录',
@@ -299,11 +307,16 @@ export default {
     buy: '消费记录',
     login: '立即登录',
     rule: '规则介绍',
+    manual: '使用手册',
     tg: '加入电报',
     billboard: '智能公告牌',
     feedback: '吐个槽',
-    language: '中文/English',
-    bookmarks: '我的收藏'
+    language: '简体中文/English',
+    bookmarks: '我的收藏',
+
+    setting: '设置',
+    signOut: '登出',
+    signIn: '立即登录',
   },
   publish: {
     editorText: '文章',
