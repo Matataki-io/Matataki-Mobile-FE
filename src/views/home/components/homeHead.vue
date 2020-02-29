@@ -54,21 +54,17 @@ export default {
     navList() {
       return [
         {
-          title: this.$t('home.navHome'),
+          title: this.$t('home.home'),
           name: 'home',
           urlList: ['home']
         },
-        // {
-        //   title: this.$t('home.navArticle'),
-        //   name: 'article'
-        // },
         {
-          title: '创作',
+          title: this.$t('home.creation'),
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
         {
-          title: '分享',
+          title: this.$t('home.share'),
           name: 'sharehall',
           urlList: ['sharehall']
         },
@@ -78,7 +74,7 @@ export default {
         //   urlList: ['shop']
         // },
         {
-          title: 'Fan票',
+          title: this.$t('home.fanTicket'),
           name: 'token',
           urlList: ['token']
         }

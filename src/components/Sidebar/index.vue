@@ -117,7 +117,7 @@
               <div class="cell-left">
                 <svg-icon icon-class="tokens1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  Fan票夹
+                  {{$t('sidebar.fanTicketFolder')}}
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -139,7 +139,7 @@
               <div class="cell-left">
                 <svg-icon icon-class="minetoken1" class="left-img"></svg-icon>
                 <span class="left-text">
-                  管理Fan票
+                  {{$t('sidebar.manageFanTicket')}}
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -166,7 +166,7 @@
                 <!-- <img src="@/assets/newimg/shouye-zhanghu.svg" alt="home" class="left-img" /> -->
                 <svg-icon icon-class="shouye-zhanghu" class="left-img icon-feedback" />
                 <span class="left-text">
-                  {{ $t('sidebar.account') }}
+                  {{ $t('sidebar.wallet') }}
                 </span>
               </div>
               <div class="cell-right"><span></span></div>
@@ -227,7 +227,7 @@
               <!-- <img src="@/assets/newimg/gonglue.svg" alt="article" class="left-img" /> -->
               <svg-icon icon-class="gonglue" class="left-img icon-feedback" />
               <span class="left-text">
-                使用手册
+                {{ $t('sidebar.manual') }}
               </span>
             </div>
             <div class="cell-right"><span></span></div>
@@ -259,6 +259,19 @@
           </div>
         </a>
       </div>
+      <div class="cell-container">
+        <div class="cell" @click="toggle">
+          <div class="cell-left">
+            <svg-icon icon-class="toggle" class="left-img icon-feedback" />
+            <span class="left-text">
+              {{ $t('sidebar.language') }}
+            </span>
+          </div>
+          <div class="cell-right">
+            <span>{{ currentLanguage }}</span>
+          </div>
+        </div>
+      </div>
       <!-- 智能公告牌 -->
       <!-- <div class="cell-container">
         <a href="https://matataki.io/p/616">
@@ -281,7 +294,7 @@
             <!-- <img src="@/assets/newimg/setting.svg" alt="home" class="left-img" /> -->
             <svg-icon icon-class="setting" class="left-img icon-feedback" />
             <span class="left-text">
-              {{ $t('setting') }}
+              {{ $t('sidebar.setting') }}
             </span>
           </div>
         </div>
@@ -292,7 +305,7 @@
             <!-- <img src="@/assets/newimg/logout.svg" alt="home" class="left-img" /> -->
             <svg-icon icon-class="logout" class="left-img icon-feedback" />
             <span class="left-text">
-              {{ isLogined ? $t('logout') : $t('sidebar.login') }}
+              {{ isLogined ? $t('sidebar.signOut') : $t('sidebar.signIn') }}
             </span>
           </div>
         </div>
@@ -355,6 +368,14 @@ export default {
     username() {
       let name = this.name
       return name.length > 16 ? name.slice(0, 16) + '...' : name
+    },
+    // 当前语言
+    currentLanguage() {
+      const language = {
+        zh: '简体中文',
+        en: 'English'
+      }
+      return language[this.$i18n.locale] || '默认'
     }
   },
   watch: {
@@ -502,14 +523,17 @@ export default {
     changeInfo(status) {
       this.showModal = status
     },
+    // 切换语言
     toggle() {
-      // console.log(this.$i18n.locale)
-      if (this.$i18n.locale === 'en') this.$i18n.locale = 'zh'
-      else this.$i18n.locale = 'en'
+      if (this.$i18n.locale === 'en') {
+        this.$i18n.locale = 'zh'
+      } else {
+        this.$i18n.locale = 'en'
+      }
 
       Cookies.set('language', this.$i18n.locale)
 
-      this.sidebarShow = false
+      // this.sidebarShow = false
       // window.location.reload()
     }
   }
