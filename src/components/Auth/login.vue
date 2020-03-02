@@ -63,12 +63,12 @@
           </div>
           Telegram
         </div>
-        <!-- <div class="oauth-card">
+        <div class="oauth-card">
           <div class="oauth-bg bg-twitter" @click="walletLogin('Twitter')">
             <svg-icon class="twitter" icon-class="twitter" />
           </div>
           Twitter
-        </div> -->
+        </div>
       </div>
     </div>
   </section>
@@ -187,7 +187,8 @@ export default {
         this.loginWithMetaMask();
         return
       } else if (type === "Twitter") {
-        this.twitterLogin();
+        this.$message.warning('Twitter登录功能正在开发中');
+        // this.twitterLogin();
         return;
       }
       await this.signInx(type)
@@ -335,7 +336,8 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  background: #00ACED;
+  // background: #00ACED;
+  background: #b2b2b2;
 }
 .flexCenter {
   display: flex;
