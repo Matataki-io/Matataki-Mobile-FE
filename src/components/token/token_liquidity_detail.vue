@@ -10,7 +10,7 @@
       :auto-request-time="0"
       @getListData="getListData"
     >
-      <card v-for="item in pull.list" :key="item.id" :card="item" :decimals="4"></card>
+      <card v-for="item in pull.list" :key="item.id" :card="item" :decimals="4" :token="token"></card>
     </BasePull>
   </div>
 </template>
@@ -21,6 +21,12 @@ import card from '@/components/minetoken_liquidity_detail_card/index.vue'
 export default {
   components: {
     card
+  },
+  props: {
+    token: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {

@@ -11,10 +11,23 @@
         </router-link>
         <txHash v-if="card.tx_hash" :hash="card.tx_hash" class="tx-hash" />
       </div>
-      <span class="amount">{{ tokenAmount(card.amount) }}</span>
     </div>
     <div class="fl jsb">
       <span class="time">{{ time }}</span>
+    </div>
+    <div class="fl jsb">
+      <div class="amount">
+        {{ tokenAmount(card.token_amount) }}
+        <p>Fan票/{{ token.symbol }}</p>
+      </div>
+      <div class="amount">
+        {{ tokenAmount(card.cny_amount) }}
+        <p>金额/CNY</p>
+      </div>
+      <div class="amount">
+        {{ tokenAmount(card.liquidity) }}
+        <p>流动金/{{ token.symbol }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +50,10 @@ export default {
     decimals: {
       type: Number,
       required: true
+    },
+    token: {
+      type: Object,
+      required: true
     }
   },
   computed: {
@@ -55,7 +72,7 @@ export default {
       return cover ? this.$ossProcess(cover) : ''
     },
     tokenAmount(amount) {
-      const tokenamount = Math.abs(precision(this.card.liquidity, 'CNY', this.card.decimals))
+      const tokenamount = Math.abs(precision(amount, 'CNY', this.decimals))
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
@@ -80,7 +97,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 115px;
+    max-width: 130px;
     &.logout {
       color: #b2b2b2;
     }
@@ -107,6 +124,10 @@ export default {
   font-weight: 500;
   color: rgba(0, 0, 0, 1);
   line-height: 20px;
+  p {
+    color: #B2B2B2;
+    font-size: 12px;
+  }
 }
 .from-to {
   display: flex;
