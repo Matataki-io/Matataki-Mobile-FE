@@ -430,6 +430,7 @@ export default {
             desc: this.minetokenToken.brief || '暂无',
             imgUrl: this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
           })
+          this.$emit('getToken', this.minetokenToken)
         } else {
           this.$message.success(res.message)
         }
