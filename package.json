@@ -27,6 +27,7 @@
     "animate.css": "3.7.2",
     "axios": "^0.19.0",
     "better-scroll": "^2.0.0-alpha.15",
+    "bignumber.js": "^9.0.0",
     "broadcast-channel": "^3.0.3",
     "clipboard-polyfill": "^2.8.6",
     "compressorjs": "^1.0.5",
