@@ -179,7 +179,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'displayName', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     username() {
       return this.name.length < 12 ? this.name : this.name.slice(0, 12) + '...'
     }
@@ -262,7 +262,7 @@ export default {
       await this.$API
         .tokenUserId(id)
         .then(res => {
-          if (res.code === 0 && res.data.id > 0) {
+          if (res.code === 0 && res.data && res.data.id > 0) {
             this.tokenUser = true
             this.tokenData = res.data
           }

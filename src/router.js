@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { accessTokenAPI } from '@/api'
 // wechat share
 import wechatShare from './utils/wechat_share'
 import { getCookie } from '@/utils/cookie'
 
 if (!window.VueRouter) Vue.use(VueRouter)
+
+import Layout from '@/views/home/layout.vue'
 
 // 路由级 code-splitting
 // 这会给当前的路由页生成单独的块文件 (webpackChunkName 是 about 则得到 about.[版本哈希].js)
@@ -14,7 +15,40 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', name: 'index', redirect: '/article' },
+    { path: '/', 
+      name: 'index', 
+      component: Layout,
+      redirect: '/article',
+      children: [
+        {
+          path: '/article',
+          name: 'article',
+          component: () =>
+            import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
+          meta: {
+            title: '文章-瞬MATATAKI'
+          }
+        },
+        {
+          path: '/sharehall',
+          name: 'sharehall',
+          props: true,
+          component: () => import(/* webpackChunkName: "sharehall",  webpackPrefetch: true */ './views/home/sharehall.vue'),
+          meta: {
+            title: '分享大厅-瞬MATATAKI'
+          }
+        },
+        {
+          path: '/token',
+          name: 'token',
+          component: () =>
+            import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
+          meta: {
+            title: 'Fan票-瞬MATATAKI'
+          }
+        },
+      ]
+    },
     {
       path: '/home',
       name: 'home',
@@ -22,35 +56,6 @@ const router = new VueRouter({
         import(/* webpackChunkName: "home", webpackPrefetch: true  */ './views/index/index.vue'),
       meta: {
         title: '首页-瞬MATATAKI'
-      }
-    },
-    // {
-    //   path: '/index_backup',
-    //   name: 'indeindex_backup',
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "index", webpackPrefetch: true  */ './views/index/index.vue'
-    //     ),
-    //   meta: {
-    //     title: '首页-瞬MATATAKI'
-    //   }
-    // },
-    {
-      path: '/article',
-      name: 'article',
-      component: () =>
-        import(/* webpackChunkName: "article", webpackPrefetch: true  */ './views/home/home_layout.vue'),
-      meta: {
-        title: '文章-瞬MATATAKI'
-      }
-    },
-    {
-      path: '/sharehall',
-      name: 'sharehall',
-      props: true,
-      component: () => import(/* webpackChunkName: "sharehall",  webpackPrefetch: true */ './views/home/sharehall.vue'),
-      meta: {
-        title: '分享大厅-瞬MATATAKI'
       }
     },
     {
@@ -135,7 +140,7 @@ const router = new VueRouter({
     {
       path: '/login/weixin',
       name: 'WeixinLogin',
-      component: () => import(/* webpackChunkName: "Login" */ './views/weixinLogin.vue'),
+      component: () => import(/* webpackChunkName: "WeixinLogin" */ './views/weixinLogin.vue'),
       mata: {
         title: '微信登录'
       }
@@ -186,14 +191,6 @@ const router = new VueRouter({
       name: 'Asset',
       props: true,
       component: () => import(/* webpackChunkName: "Asset" */ './views/user/Asset/index.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -203,14 +200,6 @@ const router = new VueRouter({
       name: 'AssetType',
       props: true,
       component: () => import(/* webpackChunkName: "AssetType" */ './views/user/Asset/Asset.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -229,14 +218,6 @@ const router = new VueRouter({
       name: 'Withdraw',
       props: true,
       component: () => import(/* webpackChunkName: "Withdraw" */ './views/user/Withdraw'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '资产-瞬MATATAKI'
       }
@@ -246,14 +227,6 @@ const router = new VueRouter({
       name: 'Original',
       props: true,
       component: () => import(/* webpackChunkName: "Original" */ './views/user/Original.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '原创-瞬MATATAKI'
       }
@@ -268,23 +241,6 @@ const router = new VueRouter({
         title: '分享-瞬MATATAKI'
       }
     },
-    // {
-    //   path: '/user/:id/reward',
-    //   name: 'Reward',
-    //   props: true,
-    //   component: () => import(/* webpackChunkName: "Reward" */ './views/user/Reward.vue'),
-    //   beforeEnter: (to, from, next) => {
-    //     const { id } = to.params
-    //     const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-    //     if (id != idOfToken) next({ name: 'user-id', params: { id } })
-    //     else {
-    //       next()
-    //     }
-    //   },
-    //   meta: {
-    //     title: '投资-瞬MATATAKI'
-    //   }
-    // },
     {
       path: '/user/:id/follow',
       name: 'user-id-follow',
@@ -355,14 +311,6 @@ const router = new VueRouter({
       name: 'DraftBox',
       props: true,
       component: () => import(/* webpackChunkName: "DraftBox" */ './views/user/DraftBox.vue'),
-      beforeEnter: (to, from, next) => {
-        const { id } = to.params
-        const { id: idOfToken } = accessTokenAPI.disassemble(accessTokenAPI.get())
-        if (id != idOfToken) next({ name: 'user-id', params: { id } })
-        else {
-          next()
-        }
-      },
       meta: {
         title: '草稿-瞬MATATAKI'
       }
@@ -504,15 +452,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/token',
-      name: 'token',
-      component: () =>
-        import(/* webpackChunkName: "token", webpackPrefetch: true */ './views/token/index.vue'),
-      meta: {
-        title: 'Fan票-瞬MATATAKI'
-      }
-    },
-    {
       path: '/token/:id',
       name: 'token-id',
       component: () => import(/* webpackChunkName: "token-id" */ './views/token/_id.vue'),
@@ -599,7 +538,13 @@ router.beforeEach((to, from, next) => {
     'setting',
     'publish-type-id',
     'buy',
-    'buy-other'
+    'buy-other',
+    'Asset',
+    'AssetType',
+    'Withdraw',
+    'Original',
+    'DraftBox',
+    'BookmarkList'
   ] // 需要登陆才能进入
   // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
   // 需要登陆的页面没有token

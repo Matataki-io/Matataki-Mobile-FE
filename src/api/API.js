@@ -6,16 +6,99 @@ const ssImgAddress = 'https://ssimg.frontenduse.top'
 import { getCookie } from '@/utils/cookie'
 import { paginationUrl } from './pagination_url'
 import { replaceStr } from '@/utils/reg'
+import { toPrecision } from '../common/precisionConversion'
 
 
 export default {
   getImg(hash) {
     return `${ssImgAddress}${hash}`
   },
+  // ----------------------------- 账号 --------------------------------
+  // 登录
+  login({ username, password }) {
+    return request.post('/login/account', { username, password })
+  },
+  // 注册
+  register({ email, password, captcha, referral }) {
+    return request.post('/login/regist', {
+      email,
+      password,
+      captcha: captcha.toString(),
+      referral
+    })
+  },
+  // 验证邮箱
+  verifyEmail(email) {
+    return request({
+      url: '/login/verify',
+      method: 'get',
+      params: { email },
+      noLoading: true
+    })
+  },
+  // gt验证码
+  registerGT() {
+    return request({
+      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
+      method: 'get',
+      dataType: "json",
+    })
+  },
+  // 获取验证码
+  getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    }, { noLoading: true })
+  },
+  // 找回密码验证码
+  getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword/captcha?email=${email}`,
+      data: {
+        geetest_challenge,
+        geetest_validate,
+        geetest_seccode
+      }
+    })
+  },
+  // 重置密码
+  resetPassword({ email, password, captcha }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword`,
+      data: {
+        email,
+        password,
+        captcha: captcha.toString()
+      }
+    })
+  },
+  // GitHub登录
+  loginGitHub(params) {
+    return request.post('/login/github', params)
+  },
+  // 根据用户名，公钥，客户端签名请求access_token
+  auth({ idProvider, publicKey: publickey, signature: sign, username, msgParams }) {
+    let params = {
+      platform: idProvider.toLowerCase(),
+      publickey,
+      sign,
+      username,
+      msgParams
+    }
+    // 推荐人id
+    let referral = getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+    
+    return request.post('/login/auth', params)
+  },
   getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
-  // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
+  // 获取单篇文章的信息 by hash or id 需要 token 否则无法获取投资状态
   getArticleInfo(hashOrId) {
     const reg = /^[0-9]*$/
     // post hash获取  ， p id 短链接
@@ -451,8 +534,16 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 得到草稿
   getDraft({ id }) {
     return request({ url: `/draft/${id}` })
+  },
+  // 删除草稿
+  delDraft({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/draft/${id}`
+    })
   },
   // 微信登录数据保存到数据库
   loginWeixin(code) {
@@ -495,10 +586,7 @@ minetokenGetResources(tokenId) {
     })
   },
   getMyUserData() {
-    return request({
-      method: 'get',
-      url: '/user/stats',
-    })
+    return request.get('/user/stats')
   },
   follow(uid) {
     return request.post('/follow/follow', { uid })
@@ -528,28 +616,6 @@ minetokenGetResources(tokenId) {
       url: '/asset/transfer',
       data: {
         symbol, to, amount
-      }
-    })
-  },
-  async getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request({
-      method: 'POST',
-      url: `/login/resetPassword/captcha?email=${email}`,
-      data: {
-        geetest_challenge,
-        geetest_validate,
-        geetest_seccode
-      }
-    })
-  },
-  async resetPassword({ email, password, captcha }) {
-    return request({
-      method: 'POST',
-      url: `/login/resetPassword`,
-      data: {
-        email,
-        password,
-        captcha: captcha.toString()
       }
     })
   },
@@ -594,30 +660,6 @@ minetokenGetResources(tokenId) {
       url: `/oss/uploadImage?folder=${folderOption[folder]}`,
       data: formdata
     })
-  },
-  async verifyEmail(email) {
-    return request({
-      url: '/login/verify',
-      method: 'get',
-      params: { email },
-      noLoading: true
-    })
-  },
-  registerGT() {
-    return request({
-      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
-      method: 'get',
-      dataType: "json",
-    })
-  },
-  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request.post(`/login/captcha?email=${email}`, {
-      geetest_challenge,
-      geetest_validate,
-      geetest_seccode
-    }, { noLoading: true })
-
-    return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   /**
    * 解析引用网址的title
@@ -738,18 +780,28 @@ minetokenGetResources(tokenId) {
   },
   // 文章转让
   transferOwner(from, articleId, uid) {
-    if (from === 'article')
+    // 文章
+    if (from === 'article') {
       return request({
         method: 'POST',
         url: '/post/transferOwner',
         data: { signid: articleId, uid }
       })
-    if (from === 'draft')
+    } else if (from === 'draft') {
+       // 草稿
       return request({
         method: 'POST',
         url: '/draft/transferOwner',
         data: { draftid: articleId, uid }
       })
+    } else {
+      // 其他
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    }
   },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
@@ -778,5 +830,75 @@ minetokenGetResources(tokenId) {
   // 获取用户信息链接
   getUserLinks({ id }) {
     return request.get(`/user/${id}/links`)
-  }
+  },
+  // 获取可用标签列表
+  getTags() {
+    return request.get('/tag/tags')
+  },
+  // 搜索推荐
+  searchRecommend(params) {
+    return request.get('/search/recommend', params)
+  },
+  setUserLinks(data) {
+    return request({
+      method: 'PUT',
+      url: '/user/links',
+      data: data
+    })
+  },
+  setProfile({ nickname, introduction, email, accept }) {
+    return request({
+      method: 'POST',
+      url: '/user/setProfile',
+      data: {
+        nickname,
+        introduction,
+        email,
+        accept
+      }
+    })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  withdraw(rawData) {
+    const data = { ...rawData, platform: rawData.tokenName.toLowerCase() }
+    if (rawData.signature) {
+      data.publickey = rawData.signature.publicKey
+      data.sign = rawData.signature.signature
+    }
+    delete data.idProvider
+    delete data.tokenName
+    delete data.signature
+    return request({ method: 'POST', url: '/user/withdraw', data })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  // 获取账户资产列表 暂时没有EOS数据
+  getBalance() {
+    return request({ url: '/user/balance' })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  reportOrder(order) {
+    const data = {
+      ...order,
+      platform: 'need',
+      referrer: order.sponsor.id
+    }
+    const { idProvider } = data
+    data.amount = toPrecision(data.amount, idProvider)
+    delete data.idProvider
+    delete data.sponsor
+    return request({ method: 'POST', url: '/order/order', data })
+  },
+  // 从backendAPI迁移过来 但是入口已经被隐藏无法测试
+  reportShare(share) {
+    const data = {
+      ...share,
+      platform: 'need',
+      referrer: share.sponsor.id
+    }
+    const { idProvider } = data
+    data.amount = toPrecision(data.amount, idProvider)
+    delete data.idProvider
+    delete data.sponsor
+    return request({ method: 'POST', url: '/support/support', data })
+  },
 }

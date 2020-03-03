@@ -154,8 +154,10 @@ export default {
   },
   created() {},
   mounted() {
-    // 默认查询一次
-    this.getUserPointStatus()
+    if (this.isLogined) {
+      // 默认查询一次
+      this.getUserPointStatus()
+    }
   },
   methods: {
     // 防抖防止不必要的调用

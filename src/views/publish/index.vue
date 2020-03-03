@@ -43,6 +43,7 @@
         :placeholder="$t('publish.titlePlaceholder')"
         size="large"
         clearable
+        maxlength="50"
       />
 
       <mavon-editor
@@ -104,6 +105,14 @@
             </div>
           </div>
         </transition>
+        <div v-show="readauThority" class="related-add">
+          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+            <div class="add-icon disable">
+              <i class="el-icon-plus" />
+            </div>
+          </el-tooltip>
+          <span>添加更多</span>
+        </div>
         <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
           设置支付
         </el-checkbox>
@@ -153,6 +162,27 @@
             />
           </div>
         </transition>
+      </div>
+      
+      <!-- 编辑权限 （功能开发中） -->
+      <div class="post-content">
+        <div>
+          <h3>
+            编辑权限 （功能开发中）
+            <el-tooltip class="item" effect="dark" placement="top-start">
+              <div slot="content">
+                添加编辑权限后，<br />读者在持有特定数量的Fan票或支付特定费用后可编辑文章。
+              </div>
+              <svg-icon class="help-icon" icon-class="help" />
+            </el-tooltip>
+          </h3>
+          <el-checkbox size="small" disabled>
+            设置持Fan票
+          </el-checkbox>
+        </div>
+        <el-checkbox size="small" style="margin-top: 10px;" disabled>
+          设置支付
+        </el-checkbox>
       </div>
 
       <div v-if="$route.params.type !== 'edit'" class="fission">
@@ -336,10 +366,8 @@
 <script>
 import debounce from 'lodash/debounce'
 import { mapGetters, mapActions } from 'vuex'
-import { mavonEditor } from 'mavon-editor-matataki'
 import { strTrim } from '@/common/reg'
 
-import 'mavon-editor-matataki/dist/css/index.css' // editor css
 // import { sleep } from '@/common/methods'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { CreativeCommonsLicenseGenerator, convertLicenseToChinese } from '@/utils/CreativeCommons'
@@ -359,7 +387,6 @@ import oneKeyImport from '@/components/one_key_import/index.vue'
 export default {
   name: 'NewPost',
   components: {
-    mavonEditor,
     imgUpload,
     modalPrompt,
     tagCard,
@@ -601,11 +628,11 @@ export default {
      */
     async getAllTokens() {
       const pagesize = 999
-      await this.$backendAPI
+      await this.$API
         .allToken({ pagesize })
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.readSelectOptions = res.data.data.list
+          if (res.code === 0) {
+            this.readSelectOptions = res.data.list
           }
         })
         .catch(err => console.log(err))
@@ -857,28 +884,8 @@ export default {
         throw error
       }
     },
-    // confirmSaveDraft() {
-    //   this.createDraft(this.saveInfo)
-    // },
-    // 创建草稿
-    // async createDraft(article) {
-    //   try {
-    //     // 设置文章标签 🏷️
-    //     article.tags = this.setArticleTag(this.tagCards)
-    //     // 设置积分
-    //     article.commentPayPoint = this.commentPayPoint
-    //     const response = await this.$backendAPI.createDraft(article)
-    //     if (response.data.msg !== 'success') this.failed(this.$t('error.failTry'))
-    //     this.$toast.success({ duration: 1000, message: this.$t('success.save') })
-    //     this.$router.go(-1)
-    //   } catch (error) {
-    //     console.log(error)
-    //     this.failed(this.$t('error.failTry'))
-    //   }
-    // },
     // 自动创建草稿
     async autoCreateDraft(article) {
-      console.log(111, article)
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
@@ -895,7 +902,7 @@ export default {
             this.id = res.data
             // console.log(this.$route)
             const url = window.location.origin + '/publish/draft/' + res.data
-            history.pushState({}, '', url)
+            history.replaceState({}, '', url)
           } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
         })
         .catch(err => {
@@ -932,8 +939,12 @@ export default {
         return
       }
       try {
-        const response = await this.$backendAPI.delDraft({ id })
-        if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
+        const res = await this.$API.delDraft({ id }).then(res => {
+          if (res.code !== 0) {
+            console.log(res.message)
+            this.failed(this.$t('error.deleteDraft'))
+          }
+        })
       } catch (error) {
         this.failed(this.$t('error.deleteDraft'))
       }
@@ -1144,20 +1155,19 @@ export default {
     },
     // 获取标签
     async getTags() {
-      await this.$backendAPI
+      await this.$API
         .getTags()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            let { data } = res.data
+          if (res.code === 0) {
 
             // 过滤商品标签 id <= 100
             const filterId = i => i.id <= 100
-            const filterTag = data.filter(filterId)
+            const filterTag = res.data.filter(filterId)
             // 过滤商品标签 id <= 100 end
 
             filterTag.map(i => (i.status = false))
             this.tagCards = filterTag
-          } else console.log(res.data.message)
+          } else console.log(res.message)
         })
         .catch(err => {
           console.log(err)

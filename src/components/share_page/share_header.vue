@@ -11,22 +11,25 @@
         {{ read }}
       </span>
     </div>
-    <m-ipfs :hash="hash"></m-ipfs>
+    <m-ipfs :hash="hash" />
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
+
 export default {
   components: {
     avatar,
   },
   props: {
+    // 用户id
     id: {
       type: Number,
-      default: 0
+      default: -1
     },
+    // 头像
     avatar: {
       type: String,
       default: ''
@@ -46,7 +49,7 @@ export default {
     hash: {
       type: String,
       default: ''
-    }
+    },
   },
   computed: {
     avatarSrc() {
@@ -56,7 +59,7 @@ export default {
     timeFormat() {
       return this.time ? moment(this.time).format('lll') : '00:00:00'
     }
-  }
+  },
 }
 </script>
 

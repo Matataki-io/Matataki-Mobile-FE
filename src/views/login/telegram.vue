@@ -18,6 +18,9 @@
 <script>
 import TelegramLogin from '@/components/TelegramLogin'
 import wechatTips from '@/components/wechat_tips'
+import { getCookie, removeCookie } from '@/utils/cookie'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'telegramLogin',
   components: {
@@ -47,6 +50,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['signIn', 'getMyUserData']),
     login(user) {
       const from = this.$route.query.from
       if (from === 'login') {
@@ -65,6 +69,20 @@ export default {
         .then(res => {
           this.$store.commit('setAccessToken', res.data)
           this.$store.commit('setUserConfig', { idProvider: 'telegram' })
+
+          // 这里用app.vue里面的func,
+          // 获取用户信息
+          this.getMyUserData()
+          // 和app.vue里面同步
+          try {
+            signIn({
+              accessToken: getCookie('ACCESS_TOKEN'),
+              idProvider: getCookie('idProvider')
+            })
+          } catch (error) {
+            console.log(error)
+          }
+          // end
 
           // 两个地方的back -1 vue里面没有想到什么好的判断上一页的办法, 暂时直接返回需要的页面
           // this.$router.back(-1)

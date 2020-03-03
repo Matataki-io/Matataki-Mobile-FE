@@ -61,8 +61,8 @@ export default {
       if (value === '') {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
-        const res = await this.$backendAPI.verifyEmail(value)
-        if (!res.data.data) {
+        const res = await this.$API.verifyEmail(value)
+        if (!res.data) {
           callback(new Error('邮箱未注册'))
         } else {
           callback()
@@ -119,8 +119,7 @@ export default {
   },
   methods: {
     registerInitGT(cb) {
-      this.$backendAPI.registerGT().then(response => {
-        const res = response.data
+      this.$API.registerGT().then(res => {
         window.initGeetest({
           // 以下 4 个配置参数为必须，不能缺少
           gt: res.gt,

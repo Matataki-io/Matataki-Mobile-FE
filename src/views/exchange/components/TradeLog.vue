@@ -347,6 +347,6 @@ export default {
 }
 .trade-log-row {
   border-bottom: 0 !important;
-  padding: 2px 0 !important;
+  padding: 5px 0 !important;
 }
 </style>

@@ -2,20 +2,26 @@
  * For MetaMask(ETH) Only
  */
 import BigNumber from 'bignumber.js'
-import { getToken, setCookie, removeCookie } from '../utils/cookie'
+import { setCookie, removeCookie } from '../utils/cookie'
 import { getSignatureForLogin } from '@/api/eth'
-import BackendApi from '../api/backend'
+import API from '@/api/API.js'
 
 const setToken = (val) => setCookie('ACCESS_TOKEN', val)
 const removeToken = () => removeCookie('ACCESS_TOKEN')
 
-export const state = () => ({
-  account: null,
-  balances: {
-    eth: new BigNumber(0)
-  },
-  isConnected: false
-})
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('metamask')
+  return {
+    account: null,
+    balances: {
+      eth: new BigNumber(0)
+    },
+    isConnected: false
+  }
+}
+
+export const state = getDefaultState()
 
 export const mutations = {
   SET_BALANCE(state, data) {
@@ -26,6 +32,10 @@ export const mutations = {
   },
   SET_METAMASK_CONNECTION(state, status) {
     state.isConnected = status
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -50,14 +60,14 @@ export const actions = {
     }
     try {
       const { signature, msgParams } = await getSignatureForLogin()
-      const res = await BackendApi.auth({
+      const res = await API.auth({
         idProvider: 'eth',
         publicKey: state.account,
         signature: signature,
         msgParams
       })
-      if (res.data.code === 0) {
-        setToken(res.data.data)
+      if (res.code === 0) {
+        setToken(res.data)
         this._vm.$userMsgChannel.postMessage('login')
         return '签名登录成功，正在跳转'
       } else {
@@ -93,7 +103,11 @@ export const actions = {
       }
       resolve()
     })
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }
 
 export default {

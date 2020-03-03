@@ -263,8 +263,13 @@ export default {
     stageDes31: '建立人类知识共享和创新的平台',
     stageDes32: '打造区块链永存知识数据库'
   },
+  // home
   home: {
-    navHome: 'Home',
+    home: 'Home',
+    creation: 'Creation',
+    share: 'Share',
+    fanTicket: 'FanTicket',
+
     navArticle: 'Article',
     navShop: 'Shop',
     articleNavHot: 'Hot',
@@ -284,27 +289,35 @@ export default {
     bannerArticles: '文章确权数',
     bannerPoint: '已发放积分'
   },
+  // sidebar
   sidebar: {
     article: '篇', //公用名称
+    fanTicketFolder: 'Fan Ticket Folder',
+    manageFanTicket: 'Manage Fan Ticket',
     walletName: '钱包余额',
-    follow: '关注',
-    fans: '粉丝',
-    account: '钱包详情',
+    follow: 'Follow',
+    fans: 'Fans',
+    wallet: 'Wallet details',
     accountDes: '已绑定{0}个账户',
     point: '我的积分',
-    invite: '邀请记录',
+    invite: 'Invite History',
     inviteDes: '已邀请{0}个账户',
-    original: '我的原创',
-    investment: '我的投资',
-    draft: '我的草稿',
-    buy: '消费记录',
+    original: 'Original',
+    investment: 'Investment',
+    draft: 'Draft',
+    buy: 'Buy History',
     login: '立即登录',
-    rule: '规则介绍',
-    tg: '加入电报',
-    billboard: '智能公告牌',
-    feedback: '吐个槽',
-    language: '中文/English',
-    bookmarks: '我的收藏'
+    rule: 'Rule',
+    manual: 'Manual',
+    tg: 'Join telegram',
+    billboard: 'Smart Billboard',
+    feedback: 'Feedback',
+    language: 'English/简体中文',
+    bookmarks: 'Bookmarks',
+
+    setting: 'Setting',
+    signOut: 'Sign out',
+    signIn: 'Sign in',
   },
   publish: {
     editorText: '文章',

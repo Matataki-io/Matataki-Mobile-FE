@@ -1,9 +1,9 @@
 <template>
-  <layout v-model="tabPage">
+  <layout v-model="tabPage" @getToken="setMinetokenToken">
     <tokenFanCoins v-if="tabPage === 0" />
     <tokenFanCoinsDetail v-if="tabPage === 1" />
     <tokenLiquidity v-if="tabPage === 2" />
-    <tokenLiquidityDetail v-if="tabPage === 3" />
+    <tokenLiquidityDetail v-if="tabPage === 3" :token="minetokenToken" />
   </layout>
 </template>
 
@@ -24,10 +24,15 @@ export default {
   },
   data() {
     return {
-      tabPage: Number(this.$route.query.tab) || 0
+      tabPage: Number(this.$route.query.tab) || 0,
+      minetokenToken: {}
     }
   },
-  methods: {}
+  methods: {
+    setMinetokenToken(data) {
+      this.minetokenToken = data
+    }
+  }
 }
 </script>
 

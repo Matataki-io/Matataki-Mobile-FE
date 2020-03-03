@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { backendAPI } from '@/api'
 import API from '@/api/API'
 import errorHandling from '@/common/errorHandling'
 // import "lib-flexible"; // 适配
@@ -23,12 +22,14 @@ import './plugins/vant'
 import './plugins/element-ui'
 import './plugins/baseComponents'
 import './plugins/vue_plugins'
+import './plugins/vue_directive'
+import './plugins/vue-mavon-editor'
 import './icons'
+
 import ossProcess from './utils/oss_process'
 
 import i18n from './plugins/i18n'
 
-Vue.prototype.$backendAPI = backendAPI
 Vue.prototype.$API = API
 Vue.prototype.$errorHandling = errorHandling
 Vue.prototype.$ossProcess = ossProcess
@@ -39,20 +40,7 @@ Vue.use(Navigation, { router, store, keyName: 'c' })
 
 // Register moment's default language
 moment.locale('zh-CN')
-/*
-router.beforeResolve(async (to, from) => {
-  // 根据本地存储的状态来自动登陆。失败之后再重试一次
-  console.log("sign in form localStorage");
-  const data = {
-    accessToken: accessTokenAPI.get(),
-    idProvider: localStorage.getItem("idProvider")
-  };
-  if (data.idProvider && data.accessToken) {
-    await this.$store.dispatch('signIn', data)
-    .then(() => { this.$backendAPI.accessToken = this.currentUserInfo.accessToken; })
-    .catch(() => this.$store.dispatch('signIn', data).then(() => { this.$backendAPI.accessToken = this.currentUserInfo.accessToken; }));
-  }
-}); */
+
 
 new Vue({
   router,

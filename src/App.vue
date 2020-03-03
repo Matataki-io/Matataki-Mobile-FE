@@ -3,7 +3,7 @@
     <navigation v-if="isRouterAlive">
       <router-view />
     </navigation>
-    <BackTop v-if="!isPublishPage" :right="20" :bottom="70" :height="40">
+    <BackTop v-if="!hideBackTop" :right="20" :bottom="70" :height="40">
       <img class="backtop" src="@/assets/img/icon_back_top.svg" alt="backtop" />
     </BackTop>
     <AuthModal v-model="loginModalShow" />
@@ -13,16 +13,10 @@
 <script>
 import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
-import { accessTokenAPI } from '@/api'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'
 import store from '@/utils/store.js'
-
-
-// import {
-//   enable as enableDarkMode,
-//   disable as disableDarkMode,
-// } from 'darkreader'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -49,27 +43,12 @@ export default {
         this.$store.commit('setLoginModal', v)
       }
     },
-    isPublishPage() {
+    hideBackTop() {
       // 如果是发布页面隐藏小火箭
       return this.$route.name === 'Publish' || this.$route.name === 'exchange'
     }
   },
-  watch: {
-    currentUserInfo: {
-      handler(newVal, oldVal) {
-        // console.debug(this.$backendAPI.accessToken.toString().includes('Promise'));
-        if (
-          this.$backendAPI.accessToken &&
-          this.$backendAPI.accessToken.toString().includes('Promise')
-        )
-          return
-        this.$backendAPI.accessToken = newVal.accessToken
-        // console.debug('watch $backendAPI.accessToken :', this.$backendAPI.accessToken)
-      },
-      deep: true
-    }
-  },
-    beforeCreate(){
+  beforeCreate(){
     try {
       document.body.removeChild(document.getElementById('loading'))
     } catch (error) {
@@ -79,31 +58,35 @@ export default {
   created() {
     const { signIn, updateNotify } = this
 
-    let accessToken = null
-    // 根据本地存储的状态来自动登陆。失败之后再重试一次
-    const data = {
-      accessToken: accessTokenAPI.get(),
-      idProvider: Cookies.get('idProvider')
-    }
-    if (data.idProvider && data.accessToken) {
-      // console.log('sign in form localStorage')
+    let accessToken = getCookie('ACCESS_TOKEN')
+    let idProvider = getCookie('idProvider')
+
+    // 如果有token and idProvider
+    // 自动登录
+    if (accessToken && idProvider) {
+      // 得到我的用户信息
+      this.getMyUserData()
+
+      let data = {
+        accessToken: accessToken,
+        idProvider: idProvider
+      }
       try {
-        accessToken = signIn(data)
+        signIn(data)
       } catch (error) {
-        accessToken = signIn(data)
+        signIn(data)
       }
     }
-    this.$backendAPI.accessToken = accessToken
-    // console.debug('$backendAPI.accessToken :', this.$backendAPI.accessToken)
 
     window.updateNotify = updateNotify
     this.getViewMode()
+
   },
   mounted() {
     this.removeOverflowHide()
   },
   methods: {
-    ...mapActions(['signIn']),
+    ...mapActions(['signIn', 'getMyUserData']),
     async getViewMode() {
 
       const { enable } = await import(/* webpackChunkName: "darkreader" */ 'darkreader')

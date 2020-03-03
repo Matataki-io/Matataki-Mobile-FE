@@ -63,12 +63,12 @@
           </div>
           Telegram
         </div>
-        <!-- <div class="oauth-card">
+        <div class="oauth-card">
           <div class="oauth-bg bg-twitter" @click="walletLogin('Twitter')">
             <svg-icon class="twitter" icon-class="twitter" />
           </div>
           Twitter
-        </div> -->
+        </div>
       </div>
     </div>
   </section>
@@ -87,13 +87,6 @@ export default {
       if (value === '') {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
-        // const res = await this.$backendAPI.verifyEmail(value)
-        // if (res.data.data) {
-        //   callback()
-        // } else {
-        //   callback(new Error('邮箱尚未注册'))
-        // }
-
         callback()
       }
     }
@@ -119,7 +112,7 @@ export default {
     ...mapGetters(['currentUserInfo'])
   },
   methods: {
-    ...mapActions(['signIn']),
+    ...mapActions(['signIn', 'getMyUserData']),
     ...mapActions("metamask", ["fetchAccount", "login"]),
     telegramLogin() {
       this.$store.commit('setLoginModal', false)
@@ -194,7 +187,8 @@ export default {
         this.loginWithMetaMask();
         return
       } else if (type === "Twitter") {
-        this.twitterLogin();
+        this.$message.warning('Twitter登录功能正在开发中');
+        // this.twitterLogin();
         return;
       }
       await this.signInx(type)
@@ -204,13 +198,18 @@ export default {
     async signInx(type) {
       try {
         await this.signIn({ idProvider: type })
-        this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+        this.getMyUserData()
+        // this.$userMsgChannel.postMessage("login")
         // window.location.reload() // 登陆完成刷新一次
+        
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
-          this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+        this.getMyUserData()
+
+          // this.$userMsgChannel.postMessage("login")
           // window.location.reload() // 登陆完成刷新一次
+
         } catch (err) {
           console.log(err)
           this.failToast(this.$t('error.loginFail'))
@@ -234,12 +233,12 @@ export default {
       this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
           try {
-            const res = await this.$backendAPI.login({
+            const res = await this.$API.login({
               username: this.loginForm.email,
               password: this.loginForm.password
             })
-            if (res.data.code === 0) {
-              this.$store.commit('setAccessToken', res.data.data)
+            if (res.code === 0) {
+              this.$store.commit('setAccessToken', res.data)
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
               // localStorage.setItem('idProvider', config.idProvider)
               this.successToast(this.$t('success.loginSuccess'))
@@ -337,7 +336,8 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  background: #00ACED;
+  // background: #00ACED;
+  background: #b2b2b2;
 }
 .flexCenter {
   display: flex;

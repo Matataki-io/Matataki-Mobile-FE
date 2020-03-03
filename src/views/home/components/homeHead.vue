@@ -35,6 +35,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import search from './search.vue'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'HomeHead',
@@ -53,21 +54,17 @@ export default {
     navList() {
       return [
         {
-          title: this.$t('home.navHome'),
+          title: this.$t('home.home'),
           name: 'home',
           urlList: ['home']
         },
-        // {
-        //   title: this.$t('home.navArticle'),
-        //   name: 'article'
-        // },
         {
-          title: '创作',
+          title: this.$t('home.creation'),
           name: 'article',
           urlList: ['article', 'article-token', 'article-follow']
         },
         {
-          title: '分享',
+          title: this.$t('home.share'),
           name: 'sharehall',
           urlList: ['sharehall']
         },
@@ -77,7 +74,7 @@ export default {
         //   urlList: ['shop']
         // },
         {
-          title: 'Fan票',
+          title: this.$t('home.fanTicket'),
           name: 'token',
           urlList: ['token']
         }
@@ -87,12 +84,16 @@ export default {
   },
   watch: {
     isLogined(newState) {
-      if (newState) this.refreshUser()
+      if (newState) {
+        this.refreshUser()
+      }
     }
   },
   created() {
-    const { isLogined, refreshUser } = this
-    if (isLogined) refreshUser()
+    if (this.isLogined) {
+      // console.log('isLogined', this.isLogined)
+      this.refreshUser()
+    }
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -102,8 +103,10 @@ export default {
       else this.$store.commit('setLoginModal', true)
     },
     async refreshUser() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, {h: 60})
+      const res = await this.getCurrentUser()
+      if (res && res.avatar) {
+        if (res.avatar) this.avatar = this.$ossProcess(res.avatar, {h: 60})
+      }
     }
   }
 }

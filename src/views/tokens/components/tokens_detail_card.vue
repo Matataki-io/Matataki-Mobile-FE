@@ -6,9 +6,12 @@
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
-          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
-            <span class="username">{{ username }}</span>
-          </router-link>
+          <div class="fl">
+            <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+              <span class="username">{{ username }}</span>
+            </router-link>
+            <txHash v-if="card.tx_hash" :hash="card.tx_hash" class="tx-hash" />
+          </div>
           <span class="type">{{ type }}</span>
         </div>
         <span class="amount" :style="{ color: color }">{{ amount }}</span>
@@ -26,10 +29,12 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index.vue'
+import txHash from '@/components/tx_hash_popover/index'
 
 export default {
   components: {
-    avatar
+    avatar,
+    txHash
   },
   props: {
     card: {
@@ -152,5 +157,8 @@ export default {
   font-weight: 400;
   color: rgba(178, 178, 178, 1);
   line-height: 17px;
+}
+.tx-hash {
+  margin-left: 10px;
 }
 </style>

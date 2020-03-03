@@ -135,13 +135,13 @@ export default {
     },
     // 获取账户资产列表 暂时没有EOS数据
     async getBalance() {
-      await this.$backendAPI
+      await this.$API
         .getBalance()
         .then(res => {
-          if (res.status === 200 && res.data.code === 0) {
-            if (res.data.data.length === 0) return
+          if (res.code === 0) {
+            if (res.data.length === 0) return
             // 筛选数据
-            const filterArr = symbol => res.data.data.filter(i => i.symbol === symbol)
+            const filterArr = symbol => res.data.filter(i => i.symbol === symbol)
             const filterArrONT = filterArr('ONT')
             const filterArrEOS = filterArr('EOS')
             const filterArrCNY = filterArr('CNY')
@@ -175,7 +175,7 @@ export default {
           } else {
             this.$toast.fail({
               duration: 1000,
-              message: `${res.data.message}`
+              message: `${res.message}`
             })
           }
         })

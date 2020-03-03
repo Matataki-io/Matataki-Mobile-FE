@@ -2,7 +2,7 @@
   <div class="card">
     <div class="info">
       <router-link :to="{ name: 'user-id', params: { id: card.id } }">
-        <el-avatar size="medium" :src="circleUrl"></el-avatar>
+        <avatar :src="cover"></avatar>
       </router-link>
       <router-link class="username" :to="{ name: 'user-id', params: { id: card.id } }">
         {{ card.username }}
@@ -14,8 +14,12 @@
 
 <script>
 import moment from 'moment'
+import avatar from '@/common/components/avatar/index.vue'
 
 export default {
+  components: {
+    avatar
+  },
   props: {
     card: {
       type: Object,

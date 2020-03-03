@@ -1,28 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Cookies from 'js-cookie'
 import ontology from './ontology'
 import scatter from './scatter'
 import metamask from './metamask'
-import github from './github'
 import order from './order'
-import { backendAPI, accessTokenAPI, notificationAPI } from '@/api'
+import notificationAPI from '@/api/notification'
+
 import publishMethods from '@/utils/publish_methods'
+import API from '@/api/API.js'
+import { getCookie, setCookie, removeCookie } from '@/utils/cookie'
 
 if (!window.Vue) Vue.use(Vuex)
 import store from '@/utils/store.js'
 
-// That's vuex's need, sorry eslint
-/* eslint-disable no-param-reassign */
-export default new Vuex.Store({
-  modules: {
-    ontology,
-    scatter,
-    metamask,
-    github,
-    order
-  },
-  state: {
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('index')
+  return {
     userConfig: {
       // Identity Provider, IdP
       idProvider: null
@@ -34,11 +28,22 @@ export default new Vuex.Store({
     loginModalShow: false,
     selectTokenShow: false,
     selectedToken: null,
-    notificationCounters: {}
+    notificationCounters: {},
+    myUserData: {} // 我的用户信息
+  }
+}
+
+export default new Vuex.Store({
+  modules: {
+    ontology,
+    scatter,
+    metamask,
+    order
   },
+  state: getDefaultState(),
   getters: {
     currentUserInfo: (
-      { userConfig: { idProvider }, userInfo },
+      { userConfig: { idProvider }, userInfo,  myUserData},
       { 'scatter/currentBalance': scatterBalance, 'ontology/currentBalance': ontologyBalance }
     ) => {
       let balance = null
@@ -49,7 +54,10 @@ export default new Vuex.Store({
       } else if (idProvider === 'GitHub') {
         balance = null
       }
-      const { id, iss: name } = accessTokenAPI.disassemble(userInfo.accessToken)
+      // 用户id 用户名称
+      const id = myUserData.id
+      const name = myUserData.nickname || myUserData.username
+
       return {
         id,
         idProvider,
@@ -58,16 +66,21 @@ export default new Vuex.Store({
         ...userInfo
       }
     },
-    //  displayName.length <= 12 ? name : name.slice(0, 12);
-    displayName: ({ userInfo }, { currentUserInfo }) => userInfo.nickname || currentUserInfo.name,
-    isLogined: ({ userInfo: { accessToken } }) => accessToken !== null,
+    // 是否登录
+    isLogined: (state) => {
+      // 因为只 getCookie 这个值不会改变, 所以计算state来获取
+      if (state.myUserData.id) {
+        return !!getCookie('ACCESS_TOKEN')
+      } else {
+        return false
+      }
+    },
     isMe: (state, { currentUserInfo: { id } }) => target => id === Number(target),
     // for store
     prefixOfType: ({ userConfig: { idProvider } }) => {
       if (idProvider === 'EOS') return 'scatter'
       if (idProvider === 'MetaMask') return 'metamask'
       if (idProvider === 'ONT') return 'ontology'
-      if (idProvider === 'GitHub') return 'github'
       return null
     },
     // for store
@@ -104,21 +117,18 @@ export default new Vuex.Store({
     async getAuth({ dispatch }, { name = null, oldAccessToken = null }) {
       let newAccessToken = oldAccessToken
       if (!name) throw new Error('no name')
-      const { exp, iss } = accessTokenAPI.disassemble(newAccessToken)
-      if (!iss || iss !== name || exp < new Date().getTime()) {
-        try {
-          console.log('Retake authtoken...')
-          const res = await backendAPI.auth(await dispatch('getSignatureOfAuth', { name }))
-          if (res.status === 200 && res.data.code === 0) {
-            newAccessToken = res.data.data
-          } else {
-            console.log('获取token报错')
-            throw 'code !== 0'
-          }
-        } catch (error) {
-          console.warn('取得 access token 出錯', error)
-          throw error
+      try {
+        const res = await API.auth(await dispatch('getSignatureOfAuth', { name }))
+        if (res.code === 0) {
+          console.log('res', res)
+          newAccessToken = res.data
+        } else {
+          console.log('获取token报错', res.message)
+          throw 'code !== 0'
         }
+      } catch (error) {
+        console.warn('取得 access token 出錯', error)
+        throw error
       }
       return newAccessToken
     },
@@ -135,24 +145,12 @@ export default new Vuex.Store({
     async getSignatureOfAuth({ dispatch }, { name = null }) {
       return dispatch('getSignature', { mode: 'Auth', rawSignData: [name] })
     },
-    /*
-     * 只有刷新時才會從本地存储抓取 accessToken ，並立即 signIn ，
-     * signIn 時針對該 accessToken 驗證，不合規跟後端重要一份，並寫入store和本地存储，
-     * 並且之後送到後端的都是 store 那份，更改本地存储不影響送到後端的 accessToken
-     */
     async signIn(
       { commit, dispatch, state, getters },
-      { code = null, idProvider = null, accessToken = null }
+      { idProvider = null, accessToken = null }
     ) {
-      console.debug(
-        'signIn:',
-        'code:',
-        code,
-        'idProvider:',
-        idProvider,
-        'accessToken:',
-        accessToken
-      )
+
+      console.debug('signIn:', 'idProvider:', idProvider, 'accessToken:', accessToken)
 
       if (!idProvider) throw new Error('did not choice idProvider')
       commit('setUserConfig', { idProvider })
@@ -169,35 +167,47 @@ export default new Vuex.Store({
       try {
         const { prefixOfType } = getters
         const oldAccessToken = accessToken // null or from localStorage
+        
+        const token = getCookie('ACCESS_TOKEN')
+
         // Scatter
-        if (idProvider === 'EOS') {
-          if (!state.scatter.isConnected) {
-            const result = await dispatch(`${prefixOfType}/connect`)
-            if (!result) throw new Error('Scatter: connection failed')
+        if (idProvider === 'EOS') {          
+          // 如果已经有token, 不需要再次连接、登录、请求签名了
+          if (token) {
+            accessToken = token
+          } else {
+            if (!state.scatter.isConnected) {
+              const result = await dispatch(`${prefixOfType}/connect`)
+              if (!result) throw new Error('Scatter: connection failed')
+            }
+
+            if (!state.scatter.isLoggingIn) {
+              const result = await dispatch(`${prefixOfType}/login`)
+              if (!result) throw new Error('Scatter: login failed')
+            }
+
+            accessToken = await dispatch('getAuth', {
+              name: getters[`${prefixOfType}/currentUsername`],
+              oldAccessToken
+            })
           }
-          if (!state.scatter.isLoggingIn) {
-            const result = await dispatch(`${prefixOfType}/login`)
-            if (!result) throw new Error('Scatter: login failed')
-          }
-          accessToken = await dispatch('getAuth', {
-            name: getters[`${prefixOfType}/currentUsername`],
-            oldAccessToken
-          })
+
         }
         // Ontology
         else if (idProvider === 'ONT') {
-          if (!state.ontology.account) await dispatch(`${prefixOfType}/getAccount`)
-          await dispatch('ontology/getBalance').catch(error =>
-            console.warn('Ontology: Failed to get balance :', error)
-          )
-          accessToken = await dispatch('getAuth', {
-            name: state.ontology.account,
-            oldAccessToken
-          })
-        }
-        // GitHub
-        else if (idProvider === 'GitHub') {
-          accessToken = await dispatch(`${prefixOfType}/signIn`, { code })
+          // 如果已经有token, 不需要再次连接、登录、请求签名了
+          if (token) {
+            accessToken = token
+          } else {
+            if (!state.ontology.account) await dispatch(`${prefixOfType}/getAccount`)
+            await dispatch('ontology/getBalance').catch(error =>
+              console.warn('Ontology: Failed to get balance :', error)
+            )
+            accessToken = await dispatch('getAuth', {
+              name: state.ontology.account,
+              oldAccessToken
+            })
+          }
         }
       } catch (error) {
         console.error(error)
@@ -207,8 +217,8 @@ export default new Vuex.Store({
 
       // 成功後的處理
       commit('setAccessToken', accessToken)
-      Cookies.set('idProvider', state.userConfig.idProvider, { expires: 365 })
-      if (!oldAccessToken) this._vm.$userMsgChannel.postMessage('login')
+      setCookie('idProvider', state.userConfig.idProvider)
+
       return state.userInfo.accessToken
     },
     /*
@@ -238,13 +248,15 @@ export default new Vuex.Store({
     ) {
       await dispatch('accountCheck')
       const order2 = { ...order, idProvider, ...getters.asset }
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
-      const {
-        data: {
-          data: { orderId }
-        }
-      } = await api.reportOrder(order2)
+
+      let orderId = null
+      const res = await API.reportOrder(order2)
+      if (res.code === 0) {
+        orderId = res.data.orderId
+      } else {
+        console.log(res.message)
+      }
+
       // console.debug(oid);
       return dispatch(`${getters.prefixOfType}/recordOrder`, {
         ...order2,
@@ -275,27 +287,30 @@ export default new Vuex.Store({
         ...share,
         sponsor: share.sponsor.username
       })
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
-      return api.reportShare(share)
+
+      return API.reportShare(share)
     },
-    async getCurrentUser({ commit, getters: { currentUserInfo } }) {
-      const api = backendAPI
-      api.accessToken = currentUserInfo.accessToken
-      const {
-        data: { data }
-      } = await api.getUser({ id: currentUserInfo.id })
-      console.info(data)
-      commit('setNickname', data.nickname)
-      return data
+    async getCurrentUser({ commit }) {
+      // 没有token 自然没有当前用户信息
+      if (!getCookie('ACCESS_TOKEN')) return
+      
+      const res = await API.getMyUserData()
+      if (res.code === 0) {
+        commit('setNickname', res.data.nickname || res.data.username)
+        return res.data
+      } else {
+        commit('setNickname', '')
+        return
+      }
     },
     signOut({ commit, dispatch, getters: { prefixOfType } }) {
       dispatch(`${prefixOfType}/logout`)
       commit('setUserConfig')
       commit('setAccessToken')
       commit('setNickname')
-      Cookies.remove('ACCESS_TOKEN', { path: '' })
-      Cookies.remove('idProvider', { path: '' })
+      removeCookie('ACCESS_TOKEN')
+      removeCookie('idProvider')
+      removeCookie('referral')
       store.clear()
       sessionStorage.clear()
       this._vm.$userMsgChannel.postMessage('logout')
@@ -326,9 +341,8 @@ export default new Vuex.Store({
           tokenName
         })
       }
-      const api = backendAPI
-      api.accessToken = getters.currentUserInfo.accessToken
-      return api.withdraw(data)
+
+      return API.withdraw(data)
     },
     async getNotificationCounters({ commit }) {
       const { data } = await notificationAPI.getNotificationCounters()
@@ -340,25 +354,62 @@ export default new Vuex.Store({
     },
     setLoginModal({commit}, status) {
       commit('setLoginModal', status)
-    }
+    },
+    // 在有token的情况下获取我的用户信息
+    async getMyUserData({commit}) {
+      try {
+        const res = await API.getMyUserData()
+        if (res.code === 0) {
+          commit('setMyUserData', res.data)
+        } else {
+          console.log(res.message)
+        }
+      } catch (error) {
+        console.log(error) 
+      }
+    },
+    // 重置
+    resetState ({ commit }) {
+      commit('resetState')
+    },
+    // 重置所有状态
+    resetAllStore({ commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+
+          // 清空all state
+          commit('resetState')
+          commit('metamask/resetState')
+          commit('ontology/resetState')
+          commit('scatter/resetState')
+          
+          // success
+          resolve()
+        } catch (error) {
+          // fail
+          reject(error)
+        }
+      })
+    },
   },
   mutations: {
     setAccessToken(state, accessToken = null) {
       state.userInfo.accessToken = accessToken
-      if (accessToken) accessTokenAPI.set(accessToken)
-      else accessTokenAPI.rm()
-      // console.info('set access token :', accessToken);
+      if (accessToken) {
+        setCookie('ACCESS_TOKEN', accessToken)
+      } else {
+        removeCookie('ACCESS_TOKEN')
+      }
     },
     setNickname(state, nickname = '') {
       state.userInfo.nickname = nickname
     },
     setUserConfig(state, config = null) {
-      // only idProvider now
       if (config) {
-        Cookies.set('idProvider', config.idProvider, { expires: 365 })
+        setCookie('idProvider', config.idProvider)
         state.userConfig.idProvider = config.idProvider
       } else {
-        Cookies.remove('idProvider')
+        removeCookie('idProvider')
         state.userConfig.idProvider = null
       }
     },
@@ -378,6 +429,14 @@ export default new Vuex.Store({
       if (state.notificationCounters[provider]) {
         state.notificationCounters[provider] = 0
       }
+    },
+    // 设置我的用户信息
+    setMyUserData(state, data) {
+      state.myUserData = data
+    },
+    // 重置
+    resetState (state) {
+      Object.assign(state, getDefaultState())
     }
   }
 })

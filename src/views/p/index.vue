@@ -85,7 +85,7 @@
         <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
-        <div class="markdown-body" v-html="compiledMarkdown"></div>
+        <div v-html="compiledMarkdown" v-highlight class="markdown-body" />
         <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
@@ -480,8 +480,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor-matataki'
-import 'mavon-editor-matataki/dist/css/index.css'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
 import { xssFilter, xssImageProcess } from '@/utils/xss'
@@ -506,9 +504,6 @@ import { getCookie } from '@/utils/cookie'
 import quote from './quote.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
-// MarkdownIt 实例
-const markdownIt = mavonEditor.getMarkdownIt()
-
 const RewardStatus = {
   // 0=加载中,1=未打赏 2=已打赏, -1未登录
   NOT_LOGGINED: -1,
@@ -523,7 +518,6 @@ export default {
     CommentsList,
     // ArticleInfo,
     ContentLoader,
-    mavonEditor,
     Widget,
     tagCard,
     articleTransfer,
@@ -622,8 +616,10 @@ export default {
       // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
+      const markdownIt = this.$mavonEditor.markdownIt
+
       let md = markdownIt.render(this.post.content)
-      return this.$utils.compose(xssFilter, xssImageProcess)(md)
+      return this.$utils.compose(xssImageProcess, xssFilter)(md)
     },
     getClipboard() {
       const { article, currentUserInfo } = this
@@ -927,6 +923,9 @@ export default {
         .getIpfsData(this.article.hash)
         .then(res => {
           if (res.code === 0) {
+            // 在获取ipfs内容后替换title, 因为数据库存储的title有上限 
+            this.article.title = res.data.title
+            
             this.post.content = res.data.content
             this.setWxShare()
           } else {
@@ -1140,19 +1139,6 @@ export default {
       this.isSupported = RewardStatus.LOADING
       let sponsor = await toSponsor(this.getInvite)
       await this.makeOrder({ amount, num, signId, sponsor, comment })
-      /*try {
-        // 發 comment 到後端
-        console.log("Send comment...");
-        const response = await sendComment({ comment, signId });
-        console.log(response);
-        if (response.status !== 200) throw new Error(error);
-      } catch (error) {
-        console.error(error);
-        console.log("Resend comment...");
-        const response = await sendComment({ comment, signId });
-        console.log(response);
-        if (response.status !== 200) throw new Error(error);
-      }*/
       loading.clear()
       this.isSupported = RewardStatus.NOT_REWARD_YET
       this.isRequest = true
@@ -1257,19 +1243,6 @@ export default {
         await this.makeShare({ amount, signId, sponsor, comment })
         // if ( this.article.channel_id === 2 ) await this.makeOrder({ amount, signId, sponsor });
 
-        // try {
-        //   // 發 comment 到後端
-        //   console.log("Send comment...");
-        //   const response = await sendComment({ comment, signId });
-        //   console.log(response);
-        //   if (response.status !== 200) throw new Error(error);
-        // } catch (error) {
-        //   console.error(error);
-        //   console.log("Resend comment...");
-        //   const response = await sendComment({ comment, signId });
-        //   console.log(response);
-        //   if (response.status !== 200) throw new Error(error);
-        // }
         this.isSupported = RewardStatus.REWARDED // 按钮状态
         this.$toast.success({ duration: 1000, message: this.$t('success.success') })
         this.isRequest = true // 自动请求

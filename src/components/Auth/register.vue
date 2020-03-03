@@ -59,8 +59,8 @@ export default {
       if (value === '') {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
-        const res = await this.$backendAPI.verifyEmail(value)
-        if (res.data.data) {
+        const res = await this.$API.verifyEmail(value)
+        if (res.data) {
           callback(new Error(this.$t('rule.emailHasBeenRegistered')))
         } else {
           callback()
@@ -117,8 +117,7 @@ export default {
   },
   methods: {
     registerInitGT(cb) {
-      this.$backendAPI.registerGT().then(response => {
-        const res = response.data
+      this.$API.registerGT().then(res => {
         window.initGeetest({
           // 以下 4 个配置参数为必须，不能缺少
           gt: res.gt,
@@ -157,12 +156,12 @@ export default {
       })
     },
     confirmSendCode(gt) {
-      this.$backendAPI.getCaptcha(this.registerForm.email, {
+      this.$API.getCaptcha(this.registerForm.email, {
         geetest_challenge: gt.geetest_challenge,
         geetest_validate: gt.geetest_validate,
         geetest_seccode: gt.geetest_seccode
       }).then(res => {
-        if (res.data.code === 0) {
+        if (res.code === 0) {
           this.countDown()
           this.successToast(this.$t('success.codeSendSuccess'))
         } else {
@@ -210,13 +209,12 @@ export default {
 
           try {
             this.loading = true
-            const res = await this.$backendAPI.register(params)
-            console.log(res)
-            if (res.status === 200 && res.data.code === 0) {
+            const res = await this.$API.register(params)
+            if (res.code === 0) {
               this.successToast(this.$t('success.registeredSuccess'))
               this.$emit('switch')
             } else {
-              this.failToast(res.data.message)
+              this.failToast(res.message)
             }
             this.loading = false
           } catch (error) {
