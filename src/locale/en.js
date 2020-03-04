@@ -1,7 +1,7 @@
 export default {
     notPage: 'Can\'t find the page you want to visit.',
     readMore: 'Read More',
-    not: '暂无',
+    not: 'Nobody here but us chickens!',
     notContent: 'No content',
     notProfile: 'No profile',
     notComment: 'No comment',
@@ -22,7 +22,7 @@ export default {
     follow: 'Follow',
     notFollow: 'Not follow',
     fans: 'fans',
-    notFans: '没有粉丝',
+    notFans: 'No fans',
     unFollow: 'Unfollow',
     following: 'Following',
     share: 'share',
