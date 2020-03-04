@@ -48,7 +48,7 @@ export default {
         logoutSuccess: 'Logout successfully',
         public: 'Publish successfully, redirecting to your article',
         draftUpdate: 'Update draft successfully',
-        codeSendSuccess: '验证码发送成功，5分钟内使用有效',
+        codeSendSuccess: 'Verification code sent successfully, expires in 5 minutes.',
         registeredSuccess: 'Register successfully'
     },
     error: {
@@ -94,11 +94,11 @@ export default {
     },
     // components
     auth: {
-        eosWallet: 'EOS钱包',
-        ontWallet: 'ONT钱包',
+        eosWallet: 'EOS wallet',
+        ontWallet: 'ONT wallet',
         eosTitle: 'EOS登录',
         eosType: 'EOS',
-        eosDoc: '《如何使用EOS登录》',
+        eosDoc: 'How to login with EOS',
         ontTitle: 'ONT登录',
         ontType: 'ONT',
         ontDoc: '《如何使用ONT登录》',
