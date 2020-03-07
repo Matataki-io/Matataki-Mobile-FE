@@ -37,7 +37,7 @@ export default {
     avatar: 'Avatar',
     username: 'Nickname',
     email: 'E-mail',
-    articleUtil: '篇',
+    articleUtil: 'piece',
     //公用名称
     referral: 'Quantify the value of your social influence, and any investment in hobbies will be profitable!\nIndustry-leading blockchain technology guarantees that creators\' rights will no longer be exploited by the platform!\nGot 500 points when new user registered by invite link.\nHolding points could gain benefits of the whole web in the future!\n',
     success: {
@@ -96,20 +96,20 @@ export default {
     auth: {
         eosWallet: 'EOS wallet',
         ontWallet: 'ONT wallet',
-        eosTitle: 'EOS登录',
+        eosTitle: 'log in with EOS',
         eosType: 'EOS',
         eosDoc: 'How to log in with EOS',
-        ontTitle: 'ONT登录',
+        ontTitle: 'log in with ONT',
         ontType: 'ONT',
-        ontDoc: '《如何使用ONT登录》',
+        ontDoc: 'How to log in with ONT',
         invite: 'Invited',
         //img
         viewWallet: 'view wallets supported',
         backLogin: 'Back to login',
         firstLogin: 'First login to get {0} point！',
-        pcLoginViewPointDetail: '在PC版登陆后查看积分详情',
+        pcLoginViewPointDetail: 'view point detail on desktop version',
         otherAccount: 'Third-party account login',
-        loginWarning: '不同帐号内容不互通',
+        loginWarning: 'Contents of different accounts are not interoperable',
         getEmailCode: 'Fetch verification code'
     },
     imgUpload: {
@@ -254,7 +254,7 @@ export default {
     },
     // 首页
     home: {
-        home: 'Home',
+        home: 'Dashboard',
         creation: 'Creation',
         share: 'Share',
         fanTicket: 'FanTicket',
@@ -442,12 +442,12 @@ export default {
         stepContent3: 'Click the "Copy Code" button to get the widget code',
         stepContent4: 'Paste the code into the Matataki editor to display',
         widgetView: 'widget preview',
-        widgetCopyDes: '复制下面的代码并黏贴到您的网站来展示',
-        copyCode: '复制代码',
+        widgetCopyDes: 'Copy the code below, paste it into your website to display',
+        copyCode: 'Copy code',
         sweepCodeView: 'Scan QR code See article now',
-        pressImgSave: '长按图片保存',
-        createImg: '生成图片',
-        createFail: '图片生成失败',
+        pressImgSave: 'Long press to save the image',
+        createImg: 'Generate image',
+        createFail: 'Failed to generate image',
         clipboardText1: 'Instant Matataki, Instant release, Inspiration forever',
         clipboardText2: 'Click the link to log in for the first time to get extra points',
         clipboardText3: 'Points reward！',
