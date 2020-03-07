@@ -1,7 +1,7 @@
 export default {
     notPage: 'Can\'t find the page you want to visit.',
     readMore: 'Read More',
-    not: 'Nobody here but us chickens!',
+    not: 'Nothing',
     notContent: 'No content',
     notProfile: 'No profile',
     notComment: 'No comment',
