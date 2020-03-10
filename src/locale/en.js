@@ -213,7 +213,7 @@ export default {
     about: {
         logo: 'MATATAKI',
         // img
-        logoDes: '发布瞬间 灵感永存',
+        logoDes: 'Publish once, save forever',
         // img
         homeTitle: 'A content platform for permanent storage and copyright confirmation',
         homeDes: '瞬MATATAKI 是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询；使用了Fan票经济来激励创作者、探索者、布道者共建未来的超级知识链接网络；致力于回归更加开放去中心化的互联网。',
