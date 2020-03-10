@@ -223,7 +223,7 @@ export default {
         painPointTitle1: 'Unclear incentives',
         painPointTitle2: 'Your rights are to be protected',
         painPointTitle3: 'Platform has the ownership',
-        painPointDes1: 'Traditional creative platform makes participants feel they are outsiders. Although they made contributions, without clear mechanisms, they can\'t ',
+        painPointDes1: 'Traditional creative platform makes participants feel they are outsiders. Although they made contributions, without clear mechanisms, they can\'t evade black box operations. There may have problems such as points invalidation, points inflation, untradable points.',
         painPointDes2: '作者创作的内容以及创作行为的数据存在平台数据库，缺乏信任可被随意删改，因此难以证明内容的版权。一旦需要进行法律维权则缺乏有效证据。',
         painPointDes3: '写作爱好者将自己的文笔记录在创作平台、社交网络、微信公众号中。但是这些平台可以对你的内容自由删改，对你的账号随意封禁，网站也可能会停运。',
         program: 'Solution',
