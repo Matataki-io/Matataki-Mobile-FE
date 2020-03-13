@@ -85,7 +85,7 @@
         <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
         <mavon-editor v-show="false" style="display: none;" />
-        <div v-html="compiledMarkdown" v-highlight class="markdown-body" />
+        <div v-html="compiledMarkdown" v-highlight class="markdown-body article-content" />
         <statement :article="article"></statement>
 
         <!-- 解锁按钮 -->
@@ -1506,7 +1506,7 @@ export default {
 </script>
 
 <style src="./index.less" scoped lang="less"></style>
-<style>
+<style lang="less">
 /* 覆盖投资框宽度 */
 .article .van-dialog {
   max-width: 350px;
@@ -1514,5 +1514,11 @@ export default {
 
 .article .katex-display {
   overflow: auto;
+}
+
+.article-content {
+  * {
+    max-width: 100%;
+  }
 }
 </style>
