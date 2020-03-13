@@ -482,7 +482,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import { ContentLoader } from 'vue-content-loader'
-import { xssFilter, xssImageProcess } from '@/utils/xss'
+import { xssFilter, xssImageProcess, filterOutHtmlTags } from '@/utils/xss'
 // import { sleep, isNDaysAgo } from '@/common/methods'
 import { isNDaysAgo } from '@/common/methods'
 import { ontAddressVerify } from '@/common/reg'
@@ -822,9 +822,22 @@ export default {
       return strTrim(regRemoveMarkdownTagResult)
     },
     setWxShare() {
+      let desc = ''
+      try {
+        // 解析html
+        const markdownIt = this.$mavonEditor.markdownIt
+        let md = markdownIt.render(this.post.content)
+        // 过滤所有的html标签
+        desc = this.$utils.compose(filterOutHtmlTags)(md)
+      } catch (error) {
+        console.log(error)
+        // 出差就用原来的正则过滤
+        desc = this.regRemoveContent(this.post.content)
+      }
+
       this.$wechatShare({
         title: this.article.title,
-        desc: this.regRemoveContent(this.post.content),
+        desc: desc,
         imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
     },
