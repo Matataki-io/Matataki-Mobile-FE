@@ -1,0 +1,3 @@
+files:
+  - source: /src/locale/zh.js
+    translation: /src/locale/%two_letters_code%.js
