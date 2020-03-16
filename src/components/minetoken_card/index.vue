@@ -1,7 +1,14 @@
 <template>
   <div class="card">
-    <router-link class="info" :to="{ name: 'user-id', params: { id: card.uid } }">
-      <avatar v-if="true" class="avatar" :src="cover(card.avatar)" />
+    <router-link
+      class="info"
+      :to="{ name: 'user-id', params: { id: card.uid } }"
+    >
+      <avatar
+        v-if="true"
+        class="avatar"
+        :src="cover(card.avatar)"
+      />
       <h3>{{ card.nickname || card.username }}</h3>
     </router-link>
     <div class="number">

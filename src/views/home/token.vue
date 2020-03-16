@@ -1,5 +1,8 @@
 <template>
-  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
+  <tab
+    :idx="idx"
+    @setIdx="i => $emit('setIdx', i)"
+  >
     <BasePull
       :params="pull.params"
       :api-url="pull.apiUrl"
@@ -10,8 +13,16 @@
       @getListData="getListData"
     >
       <div class="list">
-        <fanCard class="list-card" v-for="item in pull.list" :key="item.token_id" :card="item"></fanCard>
-        <router-link :to="{name: 'token'}" class="list-card add">
+        <fanCard
+          v-for="item in pull.list"
+          :key="item.token_id"
+          class="list-card"
+          :card="item"
+        />
+        <router-link
+          :to="{name: 'token'}"
+          class="list-card add"
+        >
           <svg-icon icon-class="add1" />
           <span>购买Fan票</span>
         </router-link>

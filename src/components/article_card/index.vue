@@ -1,35 +1,51 @@
 <template>
   <div class="card">
     <div class="card-head">
-      <router-link :to="{name: 'user-id', params: {id: card.uid}}" class="card-head__info">
-        <avatar class="info-avatar" :src="avatar"></avatar>
-        <span>{{card.nickname || card.author}}</span>
+      <router-link
+        :to="{name: 'user-id', params: {id: card.uid}}"
+        class="card-head__info"
+      >
+        <avatar
+          class="info-avatar"
+          :src="avatar"
+        />
+        <span>{{ card.nickname || card.author }}</span>
       </router-link>
-      <span class="card-head__time">{{friendlyDate}}</span>
+      <span class="card-head__time">{{ friendlyDate }}</span>
     </div>
-    <router-link class="card-link" :to="{name: 'p-id', params: {id: card.id}}">
-      <p class="card-title search-res" v-html="xssTitle" />
-      <p class="card-content search-res" v-if="xssContent" v-html="xssContent" />
+    <router-link
+      class="card-link"
+      :to="{name: 'p-id', params: {id: card.id}}"
+    >
+      <p
+        class="card-title search-res"
+        v-html="xssTitle"
+      />
+      <p
+        v-if="xssContent"
+        class="card-content search-res"
+        v-html="xssContent"
+      />
       <div class="card-footer">
-      <div class="card-footer__lock">
-        <img
-          v-if="card.require_holdtokens || card.require_buy"
-          class="lock-img"
-          src="@/assets/img/lock.png"
-          alt="lock"
-        /><span class="lock-text">{{ lock }}</span>
-      </div>
-      <div class="card-footer__info">
-        <div>
-          <svg-icon icon-class="eye" />
-          {{card.read}}
+        <div class="card-footer__lock">
+          <img
+            v-if="card.require_holdtokens || card.require_buy"
+            class="lock-img"
+            src="@/assets/img/lock.png"
+            alt="lock"
+          ><span class="lock-text">{{ lock }}</span>
         </div>
-        <div>
-          <svg-icon icon-class="like1" />
-          {{card.likes}}
+        <div class="card-footer__info">
+          <div>
+            <svg-icon icon-class="eye" />
+            {{ card.read }}
+          </div>
+          <div>
+            <svg-icon icon-class="like1" />
+            {{ card.likes }}
+          </div>
         </div>
       </div>
-    </div>
     </router-link>
   </div>
 </template>
@@ -39,7 +55,6 @@ import avatar from '@/components/avatar/index.vue'
 import { isNDaysAgo } from '@/common/methods'
 
 import clampy from '@clampy-js/vue-clampy'
-import Vue from 'vue'
 import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 import { filterOutHtmlTags } from '@/utils/xss'

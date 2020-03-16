@@ -1,9 +1,16 @@
 <template>
-  <router-link class="card" :to="{name: 'ring-id', params: {id: card.token_id}}">
+  <router-link
+    class="card"
+    :to="{name: 'ring-id', params: {id: card.token_id}}"
+  >
     <div class="card-logo">
-      <img v-if="logo" :src="logo" :alt="card.symbol">
+      <img
+        v-if="logo"
+        :src="logo"
+        :alt="card.symbol"
+      >
     </div>
-    <p>{{card.symbol}}{{(card.namr)}}</p>
+    <p>{{ card.symbol }}{{ (card.namr) }}</p>
   </router-link>
 </template>
 

@@ -6,27 +6,40 @@
       customize-header-bc="#fff"
     />
     <div class="list">
-      <div v-for="(item, idx) in accountList" :key="idx" class="fl ac">
+      <div
+        v-for="(item, idx) in accountList"
+        :key="idx"
+        class="fl ac"
+      >
         <div
           v-loading="item.loading"
-          @click="buildAccount(item.type, item.typename, idx)"
           :class="[item.type, item.status && 'bind']"
           :data-disabled="item.disabled"
           class="list-account"
+          @click="buildAccount(item.type, item.typename, idx)"
         >
-          <svg-icon :icon-class="item.icon" class="icon" />
+          <svg-icon
+            :icon-class="item.icon"
+            class="icon"
+          />
           <span class="typename">{{ item.typename }}</span>
           <span class="username">{{ item.username }}</span>
           <span class="close">取消绑定</span>
-          <svg-icon icon-class="correct" class="correct" />
-          <svg-icon icon-class="close_thin" class="close_thin" />
+          <svg-icon
+            icon-class="correct"
+            class="correct"
+          />
+          <svg-icon
+            icon-class="close_thin"
+            class="close_thin"
+          />
         </div>
         <el-radio
           :value="accountRadio"
           :label="item.type"
           :disabled="item.disabled"
-          @change="accountChangeFunc(item.type, idx)"
           style="margin-left: 10px;"
+          @change="accountChangeFunc(item.type, idx)"
         >
           <span v-if="accountRadio === item.type">主账号</span>
           <span v-else>&nbsp;</span>
@@ -152,7 +165,7 @@ export default {
   },
   mounted() {
     this.getAccountList()
-    this.$navigation.once('back', (to, from) => {
+    this.$navigation.once('back', () => {
       window.location.reload()
     })
   },

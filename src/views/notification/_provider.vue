@@ -14,7 +14,7 @@ import { mapActions, mapState } from 'vuex'
 import NotificationNav from './components/NotificationNav'
 import NotificationList from './components/NotificationList'
 
-const ALL_PROVIDERS = ['follow', 'recommend', 'comment', 'message', 'notice']
+// const ALL_PROVIDERS = ['follow', 'recommend', 'comment', 'message', 'notice']
 const PROVIDERS = ['follow']
 export default {
   name: 'Notifications',

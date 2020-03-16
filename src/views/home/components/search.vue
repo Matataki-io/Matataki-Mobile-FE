@@ -1,10 +1,23 @@
 <template>
-  <div class="search" :class="showSearchStatus && 'show'">
-    <search class="search-border" @backBtn="backBtn"></search>
-    <h3 class="search-title">{{ $t('search.hot') }}</h3>
+  <div
+    class="search"
+    :class="showSearchStatus && 'show'"
+  >
+    <search
+      class="search-border"
+      @backBtn="backBtn"
+    />
+    <h3 class="search-title">
+      {{ $t('search.hot') }}
+    </h3>
     <ul class="search-recommend">
-      <li v-for="(item, index) in searchRecommendList" :key="index">
-        <router-link :to="{ name: 'search', query: { type, q: item.word } }">{{ item.word }}</router-link>
+      <li
+        v-for="(item, index) in searchRecommendList"
+        :key="index"
+      >
+        <router-link :to="{ name: 'search', query: { type, q: item.word } }">
+          {{ item.word }}
+        </router-link>
       </li>
     </ul>
   </div>
@@ -31,7 +44,7 @@ export default {
     }
   },
   watch: {
-    showSearch(newVal) {
+    showSearch() {
       this.showSearchStatus = this.showSearch
       // if (newVal) {
       //   document.querySelector('body').style.overflow = 'hidden'
@@ -48,7 +61,7 @@ export default {
     this.getRecommend()
   },
   methods: {
-    onSearch(val) {
+    onSearch() {
       // console.log(val)
     },
     // 获得推荐

@@ -5,11 +5,20 @@
     <div class="topcard">
       <div class="topcard-head">
         <div>
-          <p class="topcard-title">{{ $t('withdraw.pendingCash') }}</p>
-          <p class="topcard-playerincome">{{ playerincome }}</p>
+          <p class="topcard-title">
+            {{ $t('withdraw.pendingCash') }}
+          </p>
+          <p class="topcard-playerincome">
+            {{ playerincome }}
+          </p>
         </div>
         <!-- 控制提现样式 如果修改记得修改class样式 -->
-        <div class="withdraw" @click="withdrawButton">{{ $t('withdraw.title') }}</div>
+        <div
+          class="withdraw"
+          @click="withdrawButton"
+        >
+          {{ $t('withdraw.title') }}
+        </div>
       </div>
 
       <div class="topcard-list">
@@ -20,13 +29,15 @@
               assetsRewards.totalSignIncome > 0
                 ? { color: '#41b37d' }
                 : assetsRewards.totalSignIncome < 0
-                ? { color: '#d74e5a' }
-                : { color: '#000000' }
+                  ? { color: '#d74e5a' }
+                  : { color: '#000000' }
             "
           >
             {{ assetsRewards.totalSignIncome }}
           </p>
-          <p class="topcard-list-title">{{ $t('withdraw.createIncome') }}</p>
+          <p class="topcard-list-title">
+            {{ $t('withdraw.createIncome') }}
+          </p>
         </div>
         <div class="topcard-list-line">
           <p
@@ -35,13 +46,15 @@
               assetsRewards.totalShareIncome > 0
                 ? { color: '#41b37d' }
                 : assetsRewards.totalShareIncome < 0
-                ? { color: '#d74e5a' }
-                : { color: '#000000' }
+                  ? { color: '#d74e5a' }
+                  : { color: '#000000' }
             "
           >
             {{ assetsRewards.totalShareIncome }}
           </p>
-          <p class="topcard-list-title">{{ $t('withdraw.supportIncome') }}</p>
+          <p class="topcard-list-title">
+            {{ $t('withdraw.supportIncome') }}
+          </p>
         </div>
         <div class="topcard-list-line">
           <p
@@ -50,18 +63,24 @@
               assetsRewards.totalShareExpenses > 0
                 ? { color: '#41b37d' }
                 : assetsRewards.totalShareExpenses < 0
-                ? { color: '#d74e5a' }
-                : { color: '#000000' }
+                  ? { color: '#d74e5a' }
+                  : { color: '#000000' }
             "
           >
             {{ assetsRewards.totalShareExpenses }}
           </p>
-          <p class="topcard-list-title">{{ $t('withdraw.supportExpenditure') }}</p>
+          <p class="topcard-list-title">
+            {{ $t('withdraw.supportExpenditure') }}
+          </p>
         </div>
       </div>
     </div>
 
-    <AssetList :id="id" :type="type" @getOtherAsset="getOtherAsset" />
+    <AssetList
+      :id="id"
+      :type="type"
+      @getOtherAsset="getOtherAsset"
+    />
   </div>
 </template>
 
@@ -86,13 +105,13 @@ export default {
       visible: false
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo'])
+  },  
   created() {
     // 认为是用户手动切换非法地址  考虑要不要移到路由里面去拦截
     const assetTypeArr = ['EOS', 'ONT']
     if (!assetTypeArr.includes(this.type)) this.$router.push('/home')
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo'])
   },
   methods: {
     // 得到明细数据

@@ -20,7 +20,7 @@
             :value="form.input"
             @input="inputChange"
             @keypress="isNumber"
-          />
+          >
           <button
             class="iAoRgd"
             @click="
@@ -39,7 +39,10 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="haryqg">
-        <i class="el-icon-bottom gHgbDu" @click="swap" />
+        <i
+          class="el-icon-bottom gHgbDu"
+          @click="swap"
+        />
       </div>
       <div class="jJSpkX" />
     </div>
@@ -63,7 +66,7 @@
             :value="form.output"
             @input="outputChange"
             @keypress="isNumber"
-          />
+          >
           <button
             class="iAoRgd"
             @click="
@@ -83,17 +86,23 @@
       <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">兑换比率</span>
-        <span v-if="exchangeRate"
-          >1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span
-        >
+        <span
+          v-if="exchangeRate"
+        >1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else>-</span>
       </div>
     </div>
-    <div class="mHVYT" @click="detailShow = !detailShow">
+    <div
+      class="mHVYT"
+      @click="detailShow = !detailShow"
+    >
       <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
-    <div v-show="detailShow" class="iUPTxf">
+    <div
+      v-show="detailShow"
+      class="iUPTxf"
+    >
       <div class="hRyusy">
         <div v-if="base === 'input'">
           你正在出售
@@ -120,9 +129,12 @@
           <span class="iDChvK">
             <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
-          <el-tooltip placement="bottom" effect="light">
+          <el-tooltip
+            placement="bottom"
+            effect="light"
+          >
             <div slot="content">
-              您的交易可能由于正常的价格波动而失败，<br />价格滑落区间将有助于您的交易成功
+              您的交易可能由于正常的价格波动而失败，<br>价格滑落区间将有助于您的交易成功
             </div>
             <i class="el-icon-question" />
           </el-tooltip>
@@ -130,9 +142,18 @@
       </div>
     </div>
     <div class="fixed-bottom">
-      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">交易</button>
+      <button
+        :disabled="btnDisabled"
+        class="jBltiI"
+        @click="onSubmit"
+      >
+        交易
+      </button>
     </div>
-    <TokenListModal v-model="tlShow" @selectToken="selectToken" />
+    <TokenListModal
+      v-model="tlShow"
+      @selectToken="selectToken"
+    />
     <TradeLog :tokens-id="tokensId" />
   </div>
 </template>

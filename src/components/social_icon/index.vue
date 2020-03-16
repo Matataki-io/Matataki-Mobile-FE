@@ -1,12 +1,30 @@
 <template>
-  <div class="social-icon" :class="icon">
-    <el-tooltip v-if="showTooltip" effect="dark" :content="content" placement="top">
-      <a v-if="link" :href="link + content" target="_blank">
+  <div
+    class="social-icon"
+    :class="icon"
+  >
+    <el-tooltip
+      v-if="showTooltip"
+      effect="dark"
+      :content="content"
+      placement="top"
+    >
+      <a
+        v-if="link"
+        :href="link + content"
+        target="_blank"
+      >
         <svg-icon :icon-class="iconName" />
       </a>
-      <svg-icon v-else :icon-class="iconName" />
+      <svg-icon
+        v-else
+        :icon-class="iconName"
+      />
     </el-tooltip>
-    <svg-icon v-else :icon-class="iconName" />
+    <svg-icon
+      v-else
+      :icon-class="iconName"
+    />
   </div>
 </template>
 

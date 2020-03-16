@@ -1,11 +1,22 @@
 <template>
   <div class="container">
     <div class="brick" />
-    <img class="error-gif" src="@/assets/img/500/01.gif" alt="error" />
+    <img
+      class="error-gif"
+      src="@/assets/img/500/01.gif"
+      alt="error"
+    >
     <div class="info">
       <p>移动端页面开发中，请移步到PC端操作</p>
-      <a href="/" class="btn">{{ $t('backHome') }}</a>
-      <a href="https://support.qq.com/products/98576" target="_blank" class="btn">{{
+      <a
+        href="/"
+        class="btn"
+      >{{ $t('backHome') }}</a>
+      <a
+        href="https://support.qq.com/products/98576"
+        target="_blank"
+        class="btn"
+      >{{
         $t('sidebar.feedback')
       }}</a>
     </div>

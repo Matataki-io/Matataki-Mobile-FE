@@ -3,15 +3,23 @@
     <navigation v-if="isRouterAlive">
       <router-view />
     </navigation>
-    <BackTop v-if="!hideBackTop" :right="20" :bottom="70" :height="40">
-      <img class="backtop" src="@/assets/img/icon_back_top.svg" alt="backtop" />
+    <BackTop
+      v-if="!hideBackTop"
+      :right="20"
+      :bottom="70"
+      :height="40"
+    >
+      <img
+        class="backtop"
+        src="@/assets/img/icon_back_top.svg"
+        alt="backtop"
+      >
     </BackTop>
     <AuthModal v-model="loginModalShow" />
   </div>
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'

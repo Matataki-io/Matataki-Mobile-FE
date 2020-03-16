@@ -1,9 +1,17 @@
 <template>
-  <div v-if="isPublishCoins" class="coins-publish">
+  <div
+    v-if="isPublishCoins"
+    class="coins-publish"
+  >
     <!-- <div class="line" /> -->
     <div class="coins-head">
       <div class="fl ac">
-        <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
+        <avatar
+          v-if="tokenCover"
+          :src="tokenCover"
+          size="30px"
+          style="margin-right: 10px;"
+        />
         <h1>
           {{ tokenDetailData.token.symbol }}
           ({{ tokenDetailData.token.name }})
@@ -15,9 +23,11 @@
             icon-class="help"
           />
         </el-tooltip> -->
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/979"
-        >如何管理你的Fan票?</a
-      >
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/979"
+      >如何管理你的Fan票?</a>
 
       <div class="btn">
         <router-link :to="{ name: 'token-id', params: { id: tokenDetailData.token.id || 0 } }">
@@ -30,17 +40,28 @@
             编辑
           </el-button>
         </router-link>
-        <el-button size="mini" @click="addCoins">
+        <el-button
+          size="mini"
+          @click="addCoins"
+        >
           增发
         </el-button>
         <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetailData.token.symbol } }">
-          <el-button size="mini" type="primary">
+          <el-button
+            size="mini"
+            type="primary"
+          >
             交易
           </el-button>
         </router-link>
       </div>
 
-      <p class="warning" v-if="!tokenDetailData.token.contract_address">Fan票正在部署中，请耐心等候。</p>
+      <p
+        v-if="!tokenDetailData.token.contract_address"
+        class="warning"
+      >
+        Fan票正在部署中，请耐心等候。
+      </p>
     </div>
     <div class="line" />
 
@@ -64,19 +85,34 @@
     <h2 class="token-title">
       相关网站
     </h2>
-    <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
-      <li v-for="(item, index) in resourcesWebsites" :key="index">
-        <a target="_blank" :href="item">{{ item }}</a>
+    <ul
+      v-if="resourcesWebsites.length !== 0"
+      class="about-nav"
+    >
+      <li
+        v-for="(item, index) in resourcesWebsites"
+        :key="index"
+      >
+        <a
+          target="_blank"
+          :href="item"
+        >{{ item }}</a>
       </li>
     </ul>
-    <span v-else class="not">暂无</span>
+    <span
+      v-else
+      class="not"
+    >暂无</span>
     <div class="line" />
 
     <h2 class="token-title">
       社交账号
     </h2>
 
-    <div v-if="resourcesSocialss.length !== 0" class="fl social">
+    <div
+      v-if="resourcesSocialss.length !== 0"
+      class="fl social"
+    >
       <div class="social-btn">
         <socialIcon
           v-for="(item, index) in resourcesSocialss"
@@ -87,7 +123,10 @@
         />
       </div>
     </div>
-    <span v-else class="not">暂无</span>
+    <span
+      v-else
+      class="not"
+    >暂无</span>
     <div class="line" />
 
     <h2 class="token-title">

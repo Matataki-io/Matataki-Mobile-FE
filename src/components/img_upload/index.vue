@@ -1,29 +1,27 @@
 <template>
-  <div>
+  <div class="img-uplaod">
     <!-- 上传图片 -->
     <FileUpload
+      v-if="isShowFileUpload"
       ref="upload"
       v-model="files"
+      class="img-file"
       extensions="gif,jpg,jpeg,png,webp"
       accept="image/png,image/gif,image/jpeg,image/webp"
       @input-file="inputFile"
       @input-filter="inputFilter"
-    >
-      <slot name="uploadButton">
-        <Button>{{ $t('imgUpload.btn') }}</Button>
-      </slot>
-    </FileUpload>
+    />
 
     <!-- 编辑图片 modal -->
-    <Modal
-      v-model="modal"
-      width="400"
-      class-name="img-upload-modal"
-      closable
-      :mask-closable="false"
+    <el-dialog
+      :visible.sync="modal"
+      :close-on-click-modal="false"
+      :lock-scroll="false"
+      width="400px"
+      custom-class="img-upload-modal br10"
     >
       <div
-        slot="header"
+        slot="title"
         class="modal-header"
       >
         <p class="modal-header-title">
@@ -34,8 +32,8 @@
         </p>
       </div>
       <div
-        class="modal-content"
         :style="computedStyleContent"
+        class="modal-content"
       >
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
         <img
@@ -46,15 +44,14 @@
       </div>
       <el-button
         slot="footer"
-        class="save-button"
-        type="primary"
-        size="large"
         :loading="modalLoading"
+        type="primary"
+        class="save-button"
         @click.prevent="uploadButton"
       >
         {{ buttonText }}
       </el-button>
-    </Modal>
+    </el-dialog>
   </div>
 </template>
 
@@ -62,17 +59,18 @@
 import VueUploadComponent from 'vue-upload-component'
 import Cropper from 'cropperjs'
 import Compressor from 'compressorjs'
-import { mapGetters } from 'vuex'
 import { ifpsUpload } from '@/api/ipfs'
 
 export default {
   name: 'ImgUpload',
-  components: { FileUpload: VueUploadComponent },
+  components: {
+    FileUpload: VueUploadComponent
+  },
   props: {
     // 按钮文字
     buttonText: {
       type: String,
-      default: function() {
+      default: function () {
         return this.$t('imgUpload.save')
       }
     },
@@ -80,12 +78,6 @@ export default {
     imgSize: {
       type: Number,
       default: 5
-    },
-    // 是否上传完成
-    imgUploadDone: {
-      type: Number,
-      default: 0,
-      required: true
     },
     // 比列
     aspectRatio: {
@@ -95,11 +87,28 @@ export default {
     // 上传类型
     updateType: {
       type: String,
-      required: true
-    }
+      required: false
+    },
+    // 打开窗口
+    open: {
+      type: Number,
+      default: 0
+    },
+    // 图片预览的宽度
+    viewWidth: {
+      type: String,
+      default: '240px'
+    },
+    // 图片预览的高度
+    viewHeight: {
+      type: String,
+      default: '240px'
+    },    
   },
   data() {
     return {
+      // eslint-disable-next-line no-undef
+      isShowFileUpload: false,
       files: [], // 文件数据
       modal: false, // modal 框显示和隐藏
       modalLoading: false, // modal button loading
@@ -108,22 +117,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
     computedStyleContent() {
-      if (this.updateType === 'artileCover') {
-        return {
-          width: '240px',
-          height: '120px'
-        }
-      } else {
-        return {
-          width: '240px',
-          height: '240px'
-        }
+      return {
+        width: this.viewWidth,
+        height: this.viewHeight
       }
     }
   },
   watch: {
+    open() {
+      try {
+        // 利用file调用图片上传
+        const file = document.querySelector('.img-uplaod .img-file input[type="file"]')
+        file.click()
+      } catch (error) {
+        console.log(error)
+      }
+    },
     // 显示modal
     modal(value) {
       if (value) {
@@ -152,11 +162,9 @@ export default {
         this.cropper = false
       }
     },
-    // 上传完成
-    imgUploadDone() {
-      this.modal = false
-      this.modalLoading = false
-    }
+  },
+  mounted() {
+    this.isShowFileUpload = true
   },
   methods: {
     /**
@@ -171,7 +179,7 @@ export default {
       if (newFile && !oldFile) {
         // 过滤不是图片后缀的文件
         if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-          this.$toast.fail({
+          this.$message.error({
             duration: 1000,
             message: this.$t('imgUpload.selectImg')
           })
@@ -179,9 +187,9 @@ export default {
         }
       }
       // 限定最大字节
-      const maxSize = size => {
+      const maxSize = (size) => {
         if (newFile.file.size >= 0 && newFile.file.size > 1024 * 1024 * size) {
-          this.$toast.fail({
+          this.$message.error({
             duration: 1000,
             message: this.$t('imgUpload.imgVeryBIg')
           })
@@ -204,7 +212,7 @@ export default {
             },
             error(err) {
               console.log(err)
-              this.$toast.fail({
+              this.$message.error({
                 duration: 1000,
                 message: this.$t('imgUpload.autoCompressionFail')
               })
@@ -233,36 +241,36 @@ export default {
     },
     // 上传图片
     async uploadButton() {
-      if (!this.checkLogin) return
       this.modalLoading = true
       let file = this.files[0].file
       // 如果是gif不作处理
       if (this.files[0].file.type !== 'image/gif') {
-        let oldFile = this.files[0]
-        let binStr = atob(
+        const oldFile = this.files[0]
+        const binStr = atob(
           this.cropper
             .getCroppedCanvas()
             .toDataURL(oldFile.type)
             .split(',')[1]
         )
-        let arr = new Uint8Array(binStr.length)
+        const arr = new Uint8Array(binStr.length)
         for (let i = 0; i < binStr.length; i++) {
           arr[i] = binStr.charCodeAt(i)
         }
         file = new File([arr], oldFile.name, { type: oldFile.type })
       }
-
       try {
-        const res = await this.$API.uploadImage(this.updateType, file)
         // console.log(this.files[0]);
+        const res = await this.$API.uploadImage(this.updateType, file)
         if (res.code === 0) {
-          this.$emit('doneImageUpload', {
+          this.$emit('done', {
             type: this.updateType,
             data: res.data
           })
+          this.modal = false
+          this.modalLoading = false
         } else {
           this.modalLoading = false
-          this.$toast.fail({
+          this.$message.error({
             duration: 1000,
             message: this.$t('imgUpload.uploadImgFail')
           })
@@ -274,12 +282,12 @@ export default {
         console.log(error)
         this.modalLoading = false
         if (error.toString().includes('code 401')) {
-          this.$toast.fail({
+          this.$message({
             duration: 1000,
             message: this.$t('error.pleaseLogin')
           })
         } else {
-          this.$toast.fail({
+          this.$message({
             duration: 1000,
             message: this.$t('error.uploadImgFail')
           })
@@ -293,28 +301,87 @@ export default {
      * @return undefined
      */
     // eslint-disable-next-line no-unused-vars
-    async inputFile(newFile, oldFile, prevent) {
+    inputFile(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
         //
       }
       if (!newFile && oldFile) {
         //
       }
-    },
-    checkLogin() {
-      if (!this.isLogined) {
-        this.$toast.fail({
-          duration: 1000,
-          message: this.$t('imgUpload.pleaseLogin')
-        })
-        return false
-      }
-      return true
     }
   }
 }
 </script>
 
-<style lang="less" src="./index.less">
+<style lang="less">
 // 覆盖图像上传modal样式 无法使用scoped
+@import './cropper.less';
+
+// 覆盖图像上传modal样式 无法使用scoped
+.img-upload-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal{
+        top: 0;
+    }
+
+    .ivu-modal-header {
+        border-bottom: none;
+    }
+    .modal-header {
+        text-align: center;
+        &-title {
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-align: center;
+        }
+        &-subtitle {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #8590a6;
+            text-align: center;
+        }
+    }
+    .ivu-modal-content {
+        overflow: hidden;
+    }
+    .ivu-modal-body {
+        margin: 0 40px;
+        padding: 0;
+    }
+    .modal-content {
+        width: 240px;
+        height: 240px;
+        margin: 4px auto 40px;
+        overflow: hidden;
+        border: 1px solid #6bb3ff;
+    }
+
+    .ivu-modal-footer {
+        border-top: none;
+    }
+
+    .save-button {
+        display: block;
+        margin: 0 auto 20px;
+        text-align: center;
+        width: 220px;
+        background-color: @purpleDark;
+        border-color: @purpleDark;
+    }
+}
+
+</style>
+<style lang="less" scoped>
+// 藏起来
+.img-file {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  opacity: 0;
+}
 </style>

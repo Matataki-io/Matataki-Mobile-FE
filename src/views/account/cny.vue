@@ -1,14 +1,27 @@
 <template>
   <div class="account">
-    <BaseHeader :pageinfo="{ title: $t('sidebar.account') }" :has-bottom-border-line="true" />
+    <BaseHeader
+      :pageinfo="{ title: $t('sidebar.account') }"
+      :has-bottom-border-line="true"
+    />
     <accountNav />
     <div class="account-head">
       <p>待提现</p>
       <div class="fl jsb">
         <span>￥{{ playerincome }}</span>
         <div>
-          <el-button size="mini" disabled>提现</el-button>
-          <el-button size="mini" @click="giftDialogShow = true">转账</el-button>
+          <el-button
+            size="mini"
+            disabled
+          >
+            提现
+          </el-button>
+          <el-button
+            size="mini"
+            @click="giftDialogShow = true"
+          >
+            转账
+          </el-button>
         </div>
       </div>
     </div>
@@ -23,10 +36,17 @@
         :auto-request-time="0"
         @getListData="getListData"
       >
-        <card v-for="(item, index) in pull.list" :key="index" :card="item"></card>
+        <card
+          v-for="(item, index) in pull.list"
+          :key="index"
+          :card="item"
+        />
       </BasePull>
     </div>
-    <giftDialog v-model="giftDialogShow" :balance="playerincome"/>
+    <giftDialog
+      v-model="giftDialogShow"
+      :balance="playerincome"
+    />
   </div>
 </template>
 

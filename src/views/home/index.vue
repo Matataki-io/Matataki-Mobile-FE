@@ -1,12 +1,24 @@
 <template>
-  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
+  <tab
+    :idx="idx"
+    @setIdx="i => $emit('setIdx', i)"
+  >
     <!-- <el-select slot="sort" class="head-sort" v-model="value" placeholder="请选择" size="mini" @change="changeSort">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select> -->
-    <div slot="sort" class="sort">
-      <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
+    <div
+      slot="sort"
+      class="sort"
+    >
+      <span
+        :class="value === options[0].value && 'active'"
+        @click="value = options[0].value"
+      >{{ options[0].label }}</span>
       &nbsp;/&nbsp;
-      <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
+      <span
+        :class="value === options[1].value && 'active'"
+        @click="value = options[1].value"
+      >{{ options[1].label }}</span>
     </div>
     <div class="list">
       <BasePull
@@ -18,7 +30,12 @@
         :auto-request-time="pull.autoRequestTime"
         @getListData="getListData"
       >
-        <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
+        <artcleCard
+          v-for="item in pull.list"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
       </BasePull>
     </div>
   </tab>

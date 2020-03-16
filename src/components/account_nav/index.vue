@@ -1,9 +1,15 @@
 <template>
   <div class="sort-nav">
-    <a :class="$route.name === 'accountCny' && 'active'" @click="router('accountCny')">
+    <a
+      :class="$route.name === 'accountCny' && 'active'"
+      @click="router('accountCny')"
+    >
       我的余额
     </a>
-    <a :class="$route.name === 'point' && 'active'" @click="router('point')">
+    <a
+      :class="$route.name === 'point' && 'active'"
+      @click="router('point')"
+    >
       积分详情
     </a>
   </div>

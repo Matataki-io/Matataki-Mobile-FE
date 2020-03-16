@@ -1,8 +1,19 @@
 <template>
-  <router-link :to="{ name: 'user-id', params: { id: card.id } }" class="user-list" tag="div">
-    <avatar size="40px" class="avatar" :src="avatarSrc" />
+  <router-link
+    :to="{ name: 'user-id', params: { id: card.id } }"
+    class="user-list"
+    tag="div"
+  >
+    <avatar
+      size="40px"
+      class="avatar"
+      :src="avatarSrc"
+    />
     <div class="user-info">
-      <p class="user-title search-res" v-html="userTitle" />
+      <p
+        class="user-title search-res"
+        v-html="userTitle"
+      />
       <p class="user-num">
         <span>{{ $t('follow') }}: {{ card && card.follows }}</span>
         &nbsp;
@@ -19,7 +30,10 @@
         class="follow"
         @click.stop="followOrUnFollow"
       >
-        <i v-if="!card.is_follow" class="el-icon-plus" />
+        <i
+          v-if="!card.is_follow"
+          class="el-icon-plus"
+        />
         {{ followBtnText }}
       </el-button>
     </template>
@@ -27,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import { xssFilter } from '@/utils/xss'
 

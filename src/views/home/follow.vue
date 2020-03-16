@@ -1,17 +1,25 @@
 <template>
-  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
+  <tab
+    :idx="idx"
+    @setIdx="i => $emit('setIdx', i)"
+  >
     <div class="list">
-    <BasePull
-      :params="pull.params"
-      :api-url="pull.apiUrl"
-      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-      :need-access-token="true"
-      :loading-text="$t('notContent')"
-      :auto-request-time="pull.autoRequestTime"
-      @getListData="getListData"
-    >
-      <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
-    </BasePull>
+      <BasePull
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+        :need-access-token="true"
+        :loading-text="$t('notContent')"
+        :auto-request-time="pull.autoRequestTime"
+        @getListData="getListData"
+      >
+        <artcleCard
+          v-for="item in pull.list"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
+      </BasePull>
     </div>
   </tab>
 </template>

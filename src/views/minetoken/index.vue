@@ -5,7 +5,7 @@
       :pageinfo="{ title: '管理Fan票' }"
       customize-header-bc="#fff"
     />
-    <minetoken></minetoken>
+    <minetoken />
   </div>
 </template>
 

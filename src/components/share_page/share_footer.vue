@@ -1,23 +1,46 @@
 <template>
   <div class="share-footer">
     <div class="icon-num">
-      <svg-icon class="icon" :class="bookmarked && 'active'" icon-class="bookmark-solid" @click="$emit('bookmarked', bookmarked)"/>
+      <svg-icon
+        class="icon"
+        :class="bookmarked && 'active'"
+        icon-class="bookmark-solid"
+        @click="$emit('bookmarked', bookmarked)"
+      />
       <p>收藏</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="reference" @click="pushShare"/>
+      <svg-icon
+        class="icon"
+        icon-class="reference"
+        @click="pushShare"
+      />
       <p>引用</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="share2" @click="$emit('share')"/>
+      <svg-icon
+        class="icon"
+        icon-class="share2"
+        @click="$emit('share')"
+      />
       <p>分享</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" :class="isLiked === 2 && 'active'" icon-class="great-solid" @click="$emit('like', 2)" />
+      <svg-icon
+        class="icon"
+        :class="isLiked === 2 && 'active'"
+        icon-class="great-solid"
+        @click="$emit('like', 2)"
+      />
       <p>{{ likes }}</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" :class="isLiked === 1 && 'active'" icon-class="bullshit-solid" @click="$emit('like', 1)" />
+      <svg-icon
+        class="icon"
+        :class="isLiked === 1 && 'active'"
+        icon-class="bullshit-solid"
+        @click="$emit('like', 1)"
+      />
       <p>{{ dislikes }}</p>
     </div>
   </div>

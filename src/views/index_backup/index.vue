@@ -1,33 +1,49 @@
 <template>
   <div class="home-container">
     <home-head @login="showSidebar = true" />
-    <div ref="home" class="one">
+    <div
+      ref="home"
+      class="one"
+    >
       <div class="container">
         <img
           v-scroll-reveal="{ distance: '20px' }"
           class="logo"
           src="@/assets/img/home/logo_home.png"
           :alt="$t('about.logo')"
-        />
+        >
         <img
           v-scroll-reveal="{ distance: '20px', delay: 100 }"
           class="des"
           src="@/assets/img/home/logo_des_home.png"
           :alt="$t('about.logoDes')"
-        />
+        >
         <h1 v-scroll-reveal="{ distance: '20px', delay: 200 }">
           {{ $t('about.homeTitle') }}
         </h1>
-        <p v-scroll-reveal="{ distance: '20px', delay: 400 }" class="home-text">
+        <p
+          v-scroll-reveal="{ distance: '20px', delay: 400 }"
+          class="home-text"
+        >
           {{ $t('about.homeDes') }}
         </p>
-        <div v-scroll-reveal="{ distance: '20px', delay: 600 }" class="flex ac">
+        <div
+          v-scroll-reveal="{ distance: '20px', delay: 600 }"
+          class="flex ac"
+        >
           <router-link :to="{ name: 'article' }">
-            <el-button class="home-btn" icon="el-icon-reading">
+            <el-button
+              class="home-btn"
+              icon="el-icon-reading"
+            >
               {{ $t('about.homeBtnRead') }}
             </el-button>
           </router-link>
-          <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo()">
+          <el-button
+            class="home-btn"
+            icon="el-icon-edit"
+            @click="jumpTo()"
+          >
             {{ $t('about.homeBtnCreate') }}
           </el-button>
         </div>
@@ -36,27 +52,50 @@
           class="bg"
           src="@/assets/img/home/home_bg.png"
           alt="logo"
-        />
+        >
       </div>
     </div>
     <div class="two">
       <div class="container">
-        <el-row v-for="(item, index) in effectList" :key="index">
-          <el-col v-scroll-reveal="{ distance: '20px' }" :span="24">
-            <h3 v-if="index === 0 || index === 3" :class="index === 3 && 'm'">{{ item.title }}</h3>
+        <el-row
+          v-for="(item, index) in effectList"
+          :key="index"
+        >
+          <el-col
+            v-scroll-reveal="{ distance: '20px' }"
+            :span="24"
+          >
+            <h3
+              v-if="index === 0 || index === 3"
+              :class="index === 3 && 'm'"
+            >
+              {{ item.title }}
+            </h3>
           </el-col>
-          <el-col class="margin-t-20" :span="10">
-            <p v-scroll-reveal="{ distance: '20px', delay: 200 * index }" class="title">
+          <el-col
+            class="margin-t-20"
+            :span="10"
+          >
+            <p
+              v-scroll-reveal="{ distance: '20px', delay: 200 * index }"
+              class="title"
+            >
               {{ item.subtitle }}
             </p>
             <img
               v-scroll-reveal="{ distance: '20px', delay: 220 * index }"
               :src="item.img"
               alt="Features"
-            />
+            >
           </el-col>
-          <el-col class="margin-t-20" :span="14">
-            <p v-scroll-reveal="{ distance: '20px', delay: 260 * index }" class="content">
+          <el-col
+            class="margin-t-20"
+            :span="14"
+          >
+            <p
+              v-scroll-reveal="{ distance: '20px', delay: 260 * index }"
+              class="content"
+            >
               {{ item.des }}
             </p>
           </el-col>
@@ -77,13 +116,12 @@
           href="https://www.matataki.io/p/806"
         >
           {{ $t('readMore') }}
-          ></a
-        >
+          ></a>
         <img
           v-scroll-reveal="{ distance: '20px', delay: 400 }"
           src="@/assets/img/home/home_bg1.png"
           alt="block"
-        />
+        >
       </div>
     </div>
     <div class="three">
@@ -102,13 +140,12 @@
         "
         >
           {{ $t('readMore') }}
-          ></a
-        >
+          ></a>
         <img
           v-scroll-reveal="{ distance: '20px', delay: 400 }"
           src="@/assets/img/home/home_bg2.png"
           alt="block"
-        />
+        >
       </div>
     </div>
     <div class="three">
@@ -118,14 +155,14 @@
         </h3>
         <p v-scroll-reveal="{ distance: '20px', delay: 200 }">
           {{ $t('about.blockDes31') }}
-          <br />
-          <span class="content-empty"></span>
+          <br>
+          <span class="content-empty" />
           {{ $t('about.blockDes32') }}
-          <br />
-          <span class="content-empty"></span>
+          <br>
+          <span class="content-empty" />
           {{ $t('about.blockDes33') }}
-          <br />
-          <span class="content-empty"></span>
+          <br>
+          <span class="content-empty" />
           {{ $t('about.blockDes34') }}
         </p>
         <a
@@ -134,13 +171,12 @@
           href="https://www.matataki.io/p/781"
         >
           {{ $t('readMore') }}
-          ></a
-        >
+          ></a>
         <img
           v-scroll-reveal="{ distance: '20px', delay: 400 }"
           src="@/assets/img/home/home_bg3.png"
           alt="block"
-        />
+        >
       </div>
     </div>
     <div class="four">
@@ -150,13 +186,16 @@
         v-scroll-reveal="{ distance: '20px', delay: 200 * index }"
         class="stage"
       >
-        <img :src="item.img" alt="stage" />
+        <img
+          :src="item.img"
+          alt="stage"
+        >
         <h3>{{ item.title }}</h3>
         <p>{{ item.des }}</p>
         <p>{{ item.des1 }}</p>
       </div>
     </div>
-    <Sidebar v-model="showSidebar"></Sidebar>
+    <Sidebar v-model="showSidebar" />
   </div>
 </template>
 

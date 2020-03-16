@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <home-head @login="showSidebar = true" />
-    <router-view></router-view>
-    <Sidebar v-model="showSidebar"></Sidebar>
+    <router-view />
+    <Sidebar v-model="showSidebar" />
   </div>
 </template>
 

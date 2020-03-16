@@ -6,26 +6,62 @@
       customize-header-bc="#fff"
     />
     <div class="sort-nav">
-      <div class="nav-tag" @click="switchMode(0)">
-        <el-tooltip manual :value='showTooltip0' :content="orderName0" placement="top" effect="light">
+      <div
+        class="nav-tag"
+        @click="switchMode(0)"
+      >
+        <el-tooltip
+          manual
+          :value="showTooltip0"
+          :content="orderName0"
+          placement="top"
+          effect="light"
+        >
           <p :class="tagNum === 0 && 'active'">
             持有的Fan票
           </p>
         </el-tooltip>
-        <span v-if="tagNum === 0" class="caret-wrapper">
-          <i class="sort-caret ascending" :class="pointLog[0].params.order === 1 && 'active'" />
-          <i class="sort-caret descending" :class="pointLog[0].params.order === 2 && 'active'" />
+        <span
+          v-if="tagNum === 0"
+          class="caret-wrapper"
+        >
+          <i
+            class="sort-caret ascending"
+            :class="pointLog[0].params.order === 1 && 'active'"
+          />
+          <i
+            class="sort-caret descending"
+            :class="pointLog[0].params.order === 2 && 'active'"
+          />
         </span>
       </div>
-      <div class="nav-tag" @click="switchMode(1)">
-        <el-tooltip manual :value='showTooltip1' :content="orderName1" placement="top" effect="light">
+      <div
+        class="nav-tag"
+        @click="switchMode(1)"
+      >
+        <el-tooltip
+          manual
+          :value="showTooltip1"
+          :content="orderName1"
+          placement="top"
+          effect="light"
+        >
           <p :class="tagNum === 1 && 'active'">
             持有的流动金
           </p>
         </el-tooltip>
-        <span v-if="tagNum === 1" class="caret-wrapper">
-          <i class="sort-caret ascending" :class="pointLog[1].params.order === 1 && 'active'" />
-          <i class="sort-caret descending" :class="pointLog[1].params.order === 2 && 'active'" />
+        <span
+          v-if="tagNum === 1"
+          class="caret-wrapper"
+        >
+          <i
+            class="sort-caret ascending"
+            :class="pointLog[1].params.order === 1 && 'active'"
+          />
+          <i
+            class="sort-caret descending"
+            :class="pointLog[1].params.order === 2 && 'active'"
+          />
         </span>
       </div>
     </div>
@@ -39,10 +75,18 @@
       @getListData="getListData"
     >
       <div v-if="tagNum">
-        <holdliquidityCard v-for="item in pointLog[tagNum].list" :key="item.id" :card="item" />
+        <holdliquidityCard
+          v-for="item in pointLog[tagNum].list"
+          :key="item.id"
+          :card="item"
+        />
       </div>
       <div v-else>
-        <tokensCard v-for="item in pointLog[tagNum].list" :key="item.id" :card="item" />
+        <tokensCard
+          v-for="item in pointLog[tagNum].list"
+          :key="item.id"
+          :card="item"
+        />
       </div>
     </BasePull>
   </div>

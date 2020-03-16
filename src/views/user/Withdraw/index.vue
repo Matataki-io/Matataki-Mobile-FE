@@ -3,14 +3,21 @@
     <BaseHeader :pageinfo="{ title: $t('withdraw.title') }" />
     <div class="withdraw-head">
       <div class="withdraw-head-type">
-        <img :src="withdrawData.head.logo" :alt="withdrawData.head.type" />
+        <img
+          :src="withdrawData.head.logo"
+          :alt="withdrawData.head.type"
+        >
         {{ withdrawData.head.type }}
       </div>
       <span class="withdraw-head-amount">{{ withdrawData.head.amount }}</span>
     </div>
 
     <div class="withdraw-content">
-      <div v-for="(item, index) in withdrawData.list" :key="index" class="withdraw-content-list">
+      <div
+        v-for="(item, index) in withdrawData.list"
+        :key="index"
+        class="withdraw-content-list"
+      >
         <p class="withdraw-content-title">
           {{ item.title }}
           <span>{{ item.titleDes }}</span>
@@ -21,18 +28,27 @@
             type="text"
             :placeholder="item.placeholder"
             :disabled="item.disabled"
-          />
+          >
           <span>{{ item.des }}</span>
         </div>
       </div>
     </div>
 
     <div class="withdraw-des">
-      <p v-for="(item, index) in withdrawData.des" :key="index">{{ item }}</p>
+      <p
+        v-for="(item, index) in withdrawData.des"
+        :key="index"
+      >
+        {{ item }}
+      </p>
     </div>
 
     <div class="withdraw-button-content">
-      <a href="javascript:;" class="withdraw-button" @click="withdrawButton">
+      <a
+        href="javascript:;"
+        class="withdraw-button"
+        @click="withdrawButton"
+      >
         {{ $t('withdraw.title') }}
       </a>
     </div>

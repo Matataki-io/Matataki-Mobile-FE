@@ -2,9 +2,18 @@
   <div class="search">
     <van-sticky>
       <div :class="showShadow && 'shadow'">
-        <search :search-query-val="searchQueryVal" :search-type="searchType" @backBtn="$router.go(-1)"></search>
+        <search
+          :search-query-val="searchQueryVal"
+          :search-type="searchType"
+          @backBtn="$router.go(-1)"
+        />
         <div class="type-tabs">
-          <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'">
+          <p
+            v-for="(tag, index) in tagList"
+            :key="index"
+            :class="searchType === index && 'active'"
+            @click="toggleType(index)"
+          >
             {{ tag }}
             <span>
               {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
@@ -23,19 +32,39 @@
     >
       <!-- 文章 -->
       <template v-if="searchType === 0">
-        <artcleCard v-for="item in articleCardData[0].articles" :key="item.id" :card="item" class="list-card" />
+        <artcleCard
+          v-for="item in articleCardData[0].articles"
+          :key="item.id"
+          :card="item"
+          class="list-card"
+        />
       </template>
       <!-- 分享 -->
       <template v-else-if="searchType === 1">
-        <shareCard class="list-card boundary" v-for="(item, index) in articleCardData[1].articles" :key="index" :card="item" @refClick="pushShare"></shareCard>
+        <shareCard
+          v-for="(item, index) in articleCardData[1].articles"
+          :key="index"
+          class="list-card boundary"
+          :card="item"
+          @refClick="pushShare"
+        />
       </template>
       <!-- Fan票 -->
       <template v-else-if="searchType === 2">
-        <tokenCard v-for="item in articleCardData[2].articles" :key="item.id" :card="item" class="list-card boundary" />
+        <tokenCard
+          v-for="item in articleCardData[2].articles"
+          :key="item.id"
+          :card="item"
+          class="list-card boundary"
+        />
       </template>
       <!-- 用户 -->
       <template v-else-if="searchType === 3">
-        <searchUserList v-for="item in articleCardData[3].articles" :key="item.id" :card="item" />
+        <searchUserList
+          v-for="item in articleCardData[3].articles"
+          :key="item.id"
+          :card="item"
+        />
       </template>
     </BasePull>
   </div>

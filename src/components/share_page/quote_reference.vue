@@ -12,16 +12,29 @@
   >
     <!-- <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card> -->
     <template v-for="(item, index) in pull.list">
-      <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="index"></shareOuterCard>
-      <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="index"></sharePCard>
-      <shareInsideCard
+      <shareOuterCard
+        v-if="item.ref_sign_id === 0"
+        :key="index"
         :card="item"
-        v-else-if="item.ref_sign_id && item.channel_id === 3"
-        cardType="read"
-        :toggleArticle="true"
-        @getArticle="getArticle"
+        card-type="read"
         class="list-card"
-        :key="index"></shareInsideCard>
+      />
+      <sharePCard
+        v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+        :key="index"
+        :card="item"
+        card-type="read"
+        class="list-card"
+      />
+      <shareInsideCard
+        v-else-if="item.ref_sign_id && item.channel_id === 3"
+        :key="index"
+        :card="item"
+        card-type="read"
+        :toggle-article="true"
+        class="list-card"
+        @getArticle="getArticle"
+      />
     </template>
   </BasePull>
 </template>

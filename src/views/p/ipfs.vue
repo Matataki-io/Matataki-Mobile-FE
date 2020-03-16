@@ -2,18 +2,44 @@
   <div class="article-ipfs">
     <p>
       {{ $t('p.ipfsTitle') }}
-      <el-popover placement="top-start" width="300" trigger="click" :content="$t('p.ipfsContent')">
-        <svg-icon slot="reference" class="help-icon" icon-class="help" />
+      <el-popover
+        placement="top-start"
+        width="300"
+        trigger="click"
+        :content="$t('p.ipfsContent')"
+      >
+        <svg-icon
+          slot="reference"
+          class="help-icon"
+          icon-class="help"
+        />
       </el-popover>
     </p>
-    <div v-if="isHide" class="ipfs-hash">
-      <svg-icon class="copy-hash" icon-class="copy" @click="copyText(getCopyIpfsHash)" />
-      <router-link class="ipfs" :to="{ name: 'ipfs', params: { hash: hash } }">
+    <div
+      v-if="isHide"
+      class="ipfs-hash"
+    >
+      <svg-icon
+        class="copy-hash"
+        icon-class="copy"
+        @click="copyText(getCopyIpfsHash)"
+      />
+      <router-link
+        class="ipfs"
+        :to="{ name: 'ipfs', params: { hash: hash } }"
+      >
         IPFS Hash: {{ hash || 'Loading...' }}
       </router-link>
-      <a :href="renderedHtmlLink" v-if="latestVersionOnIpfs"> 分布式入口</a>
+      <a
+        v-if="latestVersionOnIpfs"
+        :href="renderedHtmlLink"
+      > 分布式入口</a>
     </div>
-    <img class="ipfs-img" src="@/assets/img/ipfs.png" alt="ipfs" />
+    <img
+      class="ipfs-img"
+      src="@/assets/img/ipfs.png"
+      alt="ipfs"
+    >
   </div>
 </template>
 
@@ -52,6 +78,11 @@ export default {
       return `https://ipfs.io/ipfs/${this.latestVersionOnIpfs.htmlHash}`
     }
   },
+  async created() {
+    const { data } = await getIpfsByArticleId(this.postId)
+    this.history = data
+    console.info('getIpfsByArticleId', data)
+  },
   methods: {
     // 复制hash
     copyText(getCopyIpfsHash) {
@@ -64,11 +95,6 @@ export default {
         }
       )
     }
-  },
-  async created() {
-    const { data } = await getIpfsByArticleId(this.postId)
-    this.history = data
-    console.info('getIpfsByArticleId', data)
   }
 }
 </script>

@@ -3,19 +3,26 @@
     <div class="flex mt">
       <span class="is-original">
         {{ $t('p.publishMatataki') }}
-        <el-tooltip v-if="license" placement="bottom">
+        <el-tooltip
+          v-if="license"
+          placement="bottom"
+        >
           <div slot="content">
             点击可查看本文的授权许可详情
           </div>
-          <span class="cc-license"
-            >本文使用
-            <a :href="license.url" class="license-statement" rel="noopener" target="_blank"
-              >知识共享 {{ license.chinese }} 4.0</a
-            >
+          <span
+            class="cc-license"
+          >本文使用
+            <a
+              :href="license.url"
+              class="license-statement"
+              rel="noopener"
+              target="_blank"
+            >知识共享 {{ license.chinese }} 4.0</a>
             协议
           </span>
         </el-tooltip>
-        <br />
+        <br>
         <template v-if="isOriginal">
           {{ $t('p.publishMatatakOriginal') }}
         </template>

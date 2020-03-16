@@ -1,6 +1,10 @@
 <template>
   <!-- 复制了一份 来区别是否支持刷新 目前没有想到别的好办法 -->
-  <van-pull-refresh v-if="isRefresh" v-model="refreshing" @refresh="refresh">
+  <van-pull-refresh
+    v-if="isRefresh"
+    v-model="refreshing"
+    @refresh="refresh"
+  >
     <van-list
       v-model="loading"
       :finished="finished"
@@ -9,14 +13,17 @@
       :immediate-check="immediateCheck"
       @load="onLoad"
     >
-      <slot></slot>
+      <slot />
       <div class="no-more">
         <img
           v-if="showNoMoreIcon && articles.length === 0"
           src="@/assets/img/icon_no_more.svg"
           alt="no_more"
-        />
-        <p v-if="finished && articles.length === 0" :class="showNoMoreIcon && 'big'">
+        >
+        <p
+          v-if="finished && articles.length === 0"
+          :class="showNoMoreIcon && 'big'"
+        >
           {{ loadingText }}
         </p>
       </div>
@@ -31,14 +38,17 @@
     :immediate-check="immediateCheck"
     @load="onLoad"
   >
-    <slot></slot>
+    <slot />
     <div class="no-more">
       <img
         v-if="showNoMoreIcon && articles.length === 0"
         src="@/assets/img/icon_no_more.svg"
         alt="no_more"
-      />
-      <p v-if="finished && articles.length === 0" :class="showNoMoreIcon && 'big'">
+      >
+      <p
+        v-if="finished && articles.length === 0"
+        :class="showNoMoreIcon && 'big'"
+      >
         {{ loadingText }}
       </p>
     </div>
@@ -46,7 +56,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'BasePull',
@@ -152,6 +162,7 @@ export default {
     async onLoad(isEmptyArray = false) {
       // console.log("开始分页");
       // 如果传了参数但是为null 阻止请求 场景发生在文章获取分享列表处
+      // eslint-disable-next-line no-unused-vars
       for (const [key, value] of Object.entries(this.params)) if (this.$utils.isNull(value)) return this.loading = false
       const params = this.params || {}
       params.page = this.page

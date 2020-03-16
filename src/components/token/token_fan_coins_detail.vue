@@ -10,7 +10,12 @@
       :auto-request-time="0"
       @getListData="getListData"
     >
-      <card v-for="item in pull.list" :key="item.id" :card="item" :decimals="4"></card>
+      <card
+        v-for="item in pull.list"
+        :key="item.id"
+        :card="item"
+        :decimals="4"
+      />
     </BasePull>
   </div>
 </template>

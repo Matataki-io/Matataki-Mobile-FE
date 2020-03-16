@@ -1,12 +1,28 @@
 <template>
-  <router-link :to="{name: 'token-id', params: { id: card.id }}" class="fl token-card" tag="div">
+  <router-link
+    :to="{name: 'token-id', params: { id: card.id }}"
+    class="fl token-card"
+    tag="div"
+  >
     <div>
-      <avatar :src="cover" size="40px" />
+      <avatar
+        :src="cover"
+        size="40px"
+      />
     </div>
     <div class="card-info">
-      <h2 class="search-res" v-html="card.symbol" />
-      <p class="search-res" v-html="card.name" />
-      <p class="search-res" v-html="card.brief" />
+      <h2
+        class="search-res"
+        v-html="card.symbol"
+      />
+      <p
+        class="search-res"
+        v-html="card.name"
+      />
+      <p
+        class="search-res"
+        v-html="card.brief"
+      />
     </div>
   </router-link>
 </template>

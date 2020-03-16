@@ -10,20 +10,30 @@
         :class="shareCardCheckedOne && 'active'"
         @click="shareCardCheckedOne = true"
       >
-        <img src="@/assets/img/token_share_bg1.png" alt="card" />
+        <img
+          src="@/assets/img/token_share_bg1.png"
+          alt="card"
+        >
       </div>
       <div
         class="token-img"
         :class="!shareCardCheckedOne && 'active'"
         @click="shareCardCheckedOne = false"
       >
-        <img src="@/assets/img/token_share_bg2.png" alt="card" />
+        <img
+          src="@/assets/img/token_share_bg2.png"
+          alt="card"
+        >
       </div>
     </div>
     <div class="token-content">
       <div class="share">
         <div ref="tokenCard">
-          <img v-if="tokenImg" :src="tokenImg" alt="tokenImg" />
+          <img
+            v-if="tokenImg"
+            :src="tokenImg"
+            alt="tokenImg"
+          >
           <tokenShareCard
             v-else
             :minetoken-token="minetokenToken"
@@ -33,8 +43,14 @@
         </div>
       </div>
     </div>
-    <p class="doc">如果图片无法下载, 点击保存后长按保存图片</p>
-    <el-button class="save" type="primary" @click="save">
+    <p class="doc">
+      如果图片无法下载, 点击保存后长按保存图片
+    </p>
+    <el-button
+      class="save"
+      type="primary"
+      @click="save"
+    >
       保存
     </el-button>
   </div>

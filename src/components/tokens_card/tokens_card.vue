@@ -1,7 +1,13 @@
 <template>
-  <router-link class="card" :to="{ name: 'tokensId', params: { id: card.token_id } }">
+  <router-link
+    class="card"
+    :to="{ name: 'tokensId', params: { id: card.token_id } }"
+  >
     <div class="info">
-      <avatar :src="cover(card.logo)" size="30px" />
+      <avatar
+        :src="cover(card.logo)"
+        size="30px"
+      />
       <div class="user-info">
         <h3>{{ card.symbol }}</h3>
         <h4>{{ card.name }}</h4>
@@ -9,7 +15,7 @@
     </div>
     <div class="number">
       <span>{{ tokenAmount(card.amount) }}</span>
-      <i class="el-icon-arrow-right icon"></i>
+      <i class="el-icon-arrow-right icon" />
     </div>
   </router-link>
 </template>

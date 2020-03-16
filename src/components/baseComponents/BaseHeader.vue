@@ -4,14 +4,22 @@
     :style="headBc"
     :class="[isCenter && 'mw', scrollToggleStatus && 'bc', hasBottomBorderLine && 'border-bottom']"
   >
-    <div slot="left" class="header-left">
+    <div
+      slot="left"
+      class="header-left"
+    >
       <svg-icon
         icon-class="back1"
         :style="{ color: iconColor }"
         class="back-icon"
         @click="goBack"
       />
-      <svg-icon icon-class="home" :style="{ color: iconColor }" class="home-icon" @click="goHome" />
+      <svg-icon
+        icon-class="home"
+        :style="{ color: iconColor }"
+        class="home-icon"
+        @click="goHome"
+      />
     </div>
     <p
       v-if="!showLogo"

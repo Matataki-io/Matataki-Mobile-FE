@@ -2,17 +2,28 @@
   <div class="asset mw">
     <BaseHeader :pageinfo="{ title: $t('withdraw.account') }" />
     <div class="asset-list">
-      <div v-for="(item, index) in assetList" :key="index" class="list" @click="jumpTo(index)">
+      <div
+        v-for="(item, index) in assetList"
+        :key="index"
+        class="list"
+        @click="jumpTo(index)"
+      >
         <div class="list-left">
-          <img class="list-icon" :src="item.imgUrl" :alt="item.type" />
-          <span class="list-type" :class="item.status || 'unbind'">{{ item.type }}</span>
+          <img
+            class="list-icon"
+            :src="item.imgUrl"
+            :alt="item.type"
+          >
+          <span
+            class="list-type"
+            :class="item.status || 'unbind'"
+          >{{ item.type }}</span>
         </div>
         <div class="list-right">
           <template v-if="item.status">
             <div>
               <p class="list-right-text withdraw">
-                <span>{{ item.withdraw }}</span
-                >{{ $t('withdraw.pendingCash') }}
+                <span>{{ item.withdraw }}</span>{{ $t('withdraw.pendingCash') }}
               </p>
               <p class="list-right-text total">
                 {{ item.total }}
@@ -21,25 +32,41 @@
             </div>
           </template>
           <template v-else>
-            <p class="list-right-unbind">{{ $t('withdraw.notOnline') }}</p>
+            <p class="list-right-unbind">
+              {{ $t('withdraw.notOnline') }}
+            </p>
           </template>
-          <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
+          <img
+            class="arrow"
+            src="@/assets/img/icon_arrow.svg"
+            alt=""
+          >
         </div>
       </div>
     </div>
     <!-- 暂未支持的通证种 -->
     <div class="asset-list">
-      <div v-for="(item, index) in assetOtherList" :key="index" class="list">
+      <div
+        v-for="(item, index) in assetOtherList"
+        :key="index"
+        class="list"
+      >
         <div class="list-left">
-          <img class="list-icon" :src="item.imgUrl" :alt="item.type" />
-          <span class="list-type" :class="item.status || 'unbind'">{{ item.type }}</span>
+          <img
+            class="list-icon"
+            :src="item.imgUrl"
+            :alt="item.type"
+          >
+          <span
+            class="list-type"
+            :class="item.status || 'unbind'"
+          >{{ item.type }}</span>
         </div>
         <div class="list-right">
           <template v-if="item.status">
             <div>
               <p class="list-right-text withdraw">
-                <span>{{ item.withdraw }}</span
-                >{{ $t('withdraw.pendingCash') }}
+                <span>{{ item.withdraw }}</span>{{ $t('withdraw.pendingCash') }}
               </p>
               <p class="list-right-text total">
                 {{ item.total }}
@@ -48,9 +75,15 @@
             </div>
           </template>
           <template v-else>
-            <p class="list-right-unbind">{{ $t('withdraw.notOnline') }}</p>
+            <p class="list-right-unbind">
+              {{ $t('withdraw.notOnline') }}
+            </p>
           </template>
-          <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
+          <img
+            class="arrow"
+            src="@/assets/img/icon_arrow.svg"
+            alt=""
+          >
         </div>
       </div>
     </div>

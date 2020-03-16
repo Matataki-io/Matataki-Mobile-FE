@@ -1,6 +1,11 @@
 <template>
   <div class="fl ac search-container">
-    <van-icon class="back" name="arrow-left" size="20px" @click="$emit('backBtn')" />
+    <van-icon
+      class="back"
+      name="arrow-left"
+      size="20px"
+      @click="$emit('backBtn')"
+    />
     <van-search
       v-model="searchVal"
       class="search-input"
@@ -9,7 +14,12 @@
       shape="round"
       @search="onSearch"
     >
-      <div slot="action" @click="onSearch">{{ $t('search.btn') }}</div>
+      <div
+        slot="action"
+        @click="onSearch"
+      >
+        {{ $t('search.btn') }}
+      </div>
     </van-search>
   </div>
 </template>

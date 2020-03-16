@@ -1,9 +1,22 @@
 <template>
   <div class="home-fixed home-head mw">
-    <div v-if="isLogined" class="home-head-avatar" @click="$emit('login')">
-      <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+    <div
+      v-if="isLogined"
+      class="home-head-avatar"
+      @click="$emit('login')"
+    >
+      <img
+        :src="avatar"
+        alt="avatar"
+        :onerror="defaultAvatar"
+      >
     </div>
-    <a v-else href="javascript:void(0);" class="home-head-notlogin" @click="$emit('login')">
+    <a
+      v-else
+      href="javascript:void(0);"
+      class="home-head-notlogin"
+      @click="$emit('login')"
+    >
       {{ $t('login') }}
     </a>
 
@@ -20,22 +33,28 @@
       </router-link>
     </div>
     <div class="fl ac">
-      <svg-icon class="search-icon" icon-class="search" @click="showSearch = true"></svg-icon>
+      <svg-icon
+        class="search-icon"
+        icon-class="search"
+        @click="showSearch = true"
+      />
       <img
         class="home-head-create"
         src="@/assets/img/icon_home_create.svg"
         alt="create"
         @click="writeP"
-      />
+      >
     </div>
-    <search :show-search="showSearch" @showSearchStatus="showSearch = false"></search>
+    <search
+      :show-search="showSearch"
+      @showSearchStatus="showSearch = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import search from './search.vue'
-import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'HomeHead',

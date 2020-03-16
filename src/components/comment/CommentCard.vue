@@ -5,15 +5,24 @@
         class="comment-avatar"
         @click="$router.push({ name: 'user-id', params: { id: comment.id } })"
       >
-        <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+        <img
+          :src="avatar"
+          alt="avatar"
+          :onerror="defaultAvatar"
+        >
       </div>
       <div class="comment-head">
-        <router-link class="comment-author" :to="{ name: 'user-id', params: { id: comment.id } }">
+        <router-link
+          class="comment-author"
+          :to="{ name: 'user-id', params: { id: comment.id } }"
+        >
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}
         <span class="comment-quantity">{{ amount }}</span>
-        <p class="comment-timestamp">{{ friendlyDate }}</p>
+        <p class="comment-timestamp">
+          {{ friendlyDate }}
+        </p>
       </div>
     </div>
     <p class="comment-message">

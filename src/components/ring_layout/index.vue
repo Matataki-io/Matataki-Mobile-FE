@@ -1,27 +1,41 @@
 <template>
   <div class="ring">
-    <BaseHeader :pageinfo="{ title: headerTitle }" customize-header-bc="#fff" :has-bottom-border-line="true" />
+    <BaseHeader
+      :pageinfo="{ title: headerTitle }"
+      customize-header-bc="#fff"
+      :has-bottom-border-line="true"
+    />
     <div class="ring-logo">
       <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
-        <img v-if="logo" :src="logoSrc" :alt="symbol">
+        <img
+          v-if="logo"
+          :src="logoSrc"
+          :alt="symbol"
+        >
       </router-link>
     </div>
     <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
       <p class="ring-logo-title">
         <i class="el-icon-arrow-right disappear" />
-        {{symbol}}{{name ? (name) : '&nbsp;'}}
+        {{ symbol }}{{ name ? (name) : '&nbsp;' }}
         <i class="el-icon-arrow-right" />
       </p>
     </router-link>
 
     <div class="ring-head">
       <div class="ring-title">
-        <span :class="$route.name === 'ring-id' && 'active'" @click="toggleRouter('ring-id', $route.params.id)">全部内容</span>
-        <span :class="$route.name === 'ring-id-founder' && 'active'" @click="toggleRouter('ring-id-founder', $route.params.id)">只看创始人</span>
+        <span
+          :class="$route.name === 'ring-id' && 'active'"
+          @click="toggleRouter('ring-id', $route.params.id)"
+        >全部内容</span>
+        <span
+          :class="$route.name === 'ring-id-founder' && 'active'"
+          @click="toggleRouter('ring-id-founder', $route.params.id)"
+        >只看创始人</span>
       </div>
-      <slot name="sort"></slot>
+      <slot name="sort" />
     </div>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

@@ -1,21 +1,25 @@
 <template>
-  <div style="height: 100%;" v-loading="loading" element-loading-text="登录中..."></div>
+  <div
+    v-loading="loading"
+    style="height: 100%;"
+    element-loading-text="登录中..."
+  />
 </template>
 
 <script>
-import { getCookie, removeCookie } from '@/utils/cookie'
-import { mapActions, mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'LoginPage',
-  computed: {},
   data() {
     return {
       loading: true
     }
   },
+  computed: {},
   mounted() {
-    const { code, from, error } = this.$route.query
+    const { code, error } = this.$route.query
     const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
     // const clientID = '750700EDFF6D3C6199CD'
     const APP_URL = process.env.VUE_APP_URL
@@ -72,7 +76,7 @@ export default {
               this.getMyUserData()
               // 和app.vue里面同步
               try {
-                signIn({
+                this.signIn({
                   accessToken: getCookie('ACCESS_TOKEN'),
                   idProvider: getCookie('idProvider')
                 })

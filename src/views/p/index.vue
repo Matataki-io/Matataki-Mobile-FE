@@ -3,10 +3,24 @@
     <BaseHeader
       :pageinfo="{ title: article.channel_id === 2 ? $t('p.articleTitle') : $t('p.shopTitle') }"
     >
-      <div v-if="isMe(article.uid)" slot="right" class="more" @click.stop="opr = !opr">
-        <img src="@/assets/more.svg" alt="more" />
-        <transition name="fade" mode="out-in">
-          <div v-show="opr" class="dropdown">
+      <div
+        v-if="isMe(article.uid)"
+        slot="right"
+        class="more"
+        @click.stop="opr = !opr"
+      >
+        <img
+          src="@/assets/more.svg"
+          alt="more"
+        >
+        <transition
+          name="fade"
+          mode="out-in"
+        >
+          <div
+            v-show="opr"
+            class="dropdown"
+          >
             <div
               class="dropdown-item"
               @click="
@@ -19,10 +33,16 @@
             >
               {{ $t('edit') }}
             </div>
-            <div class="dropdown-item" @click="transferModal = true">
+            <div
+              class="dropdown-item"
+              @click="transferModal = true"
+            >
               {{ $t('transfer') }}
             </div>
-            <div class="dropdown-item" @click="delArticleButton">
+            <div
+              class="dropdown-item"
+              @click="delArticleButton"
+            >
               {{ $t('delete') }}
             </div>
           </div>
@@ -35,33 +55,77 @@
       </div> -->
     </BaseHeader>
 
-    <ContentLoader v-if="articleLoading" class="content-loader" :height="300">
-      <circle cx="36" cy="24" r="12" />
-      <rect x="54" y="14" rx="0" ry="0" width="64" height="10" />
-      <rect x="54" y="26" rx="0" ry="0" width="30" height="8" />
-      <rect x="27" y="46" rx="0" ry="0" width="334" height="240" />
+    <ContentLoader
+      v-if="articleLoading"
+      class="content-loader"
+      :height="300"
+    >
+      <circle
+        cx="36"
+        cy="24"
+        r="12"
+      />
+      <rect
+        x="54"
+        y="14"
+        rx="0"
+        ry="0"
+        width="64"
+        height="10"
+      />
+      <rect
+        x="54"
+        y="26"
+        rx="0"
+        ry="0"
+        width="30"
+        height="8"
+      />
+      <rect
+        x="27"
+        y="46"
+        rx="0"
+        ry="0"
+        width="334"
+        height="240"
+      />
     </ContentLoader>
     <div v-else-if="article.status === 0">
       <template>
-        <img v-if="cover" v-lazy="cover" :src="cover" alt="" class="top-image" />
+        <img
+          v-if="cover"
+          v-lazy="cover"
+          :src="cover"
+          alt=""
+          class="top-image"
+        >
         <header class="ta_header">
           <h1>{{ article.title }}</h1>
           <div class="userinfo-container">
             <div class="avatar-info">
               <router-link :to="{ name: 'user-id', params: { id: article.uid } }">
-                <avatar :src="articleAvatar" class="avatar" />
+                <avatar
+                  :src="articleAvatar"
+                  class="avatar"
+                />
               </router-link>
               <div class="avatar-right">
-                <router-link class="author" :to="{ name: 'user-id', params: { id: article.uid } }">
+                <router-link
+                  class="author"
+                  :to="{ name: 'user-id', params: { id: article.uid } }"
+                >
                   {{ article.nickname || article.username || '&nbsp;' }}
                 </router-link>
                 <p class="other">
                   {{ $t('p.publishFrom') }}
                   {{ articleCreateTimeComputed }}
-                  <svg-icon icon-class="view" class="avatar-read" />
+                  <svg-icon
+                    icon-class="view"
+                    class="avatar-read"
+                  />
                   {{ article.read || 0 }}
                   &nbsp;
-                  <ipfsAll :articleIpfsArray="articleIpfsArray" />
+                  <ipfsAll :article-ipfs-array="articleIpfsArray" />
                   &nbsp;
                   <span class="article-head__ipfs">IPFS</span>
                 </p>
@@ -69,13 +133,19 @@
             </div>
             <template v-if="!isMe(article.uid)">
               <template v-if="!followed">
-                <div class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 1 })">
+                <div
+                  class="follow-btn"
+                  @click="followOrUnfollowUser({ id: article.uid, type: 1 })"
+                >
                   <van-icon name="plus" />
                   {{ $t('follow') }}
                 </div>
               </template>
               <template v-else>
-                <span class="follow-btn" @click="followOrUnfollowUser({ id: article.uid, type: 0 })">
+                <span
+                  class="follow-btn"
+                  @click="followOrUnfollowUser({ id: article.uid, type: 0 })"
+                >
                   {{ $t('unFollow') }}
                 </span>
               </template>
@@ -84,23 +154,49 @@
         </header>
         <!-- <ipfs :is-hide="isHideIpfsHash" :hash="article.hash" :postId="Number(id)"></ipfs> -->
 
-        <mavon-editor v-show="false" style="display: none;" />
-        <div v-html="compiledMarkdown" v-highlight class="markdown-body article-content" />
-        <statement :article="article"></statement>
+        <mavon-editor
+          v-show="false"
+          style="display: none;"
+        />
+        <div
+          v-highlight
+          class="markdown-body article-content"
+          v-html="compiledMarkdown"
+        />
+        <statement :article="article" />
 
         <!-- 解锁按钮 -->
-        <div v-if="(isTokenArticle || isPriceArticle) && (!hasPaied && article.channel_id === 1)" class="lock-line">
+        <div
+          v-if="(isTokenArticle || isPriceArticle) && (!hasPaied && article.channel_id === 1)"
+          class="lock-line"
+        >
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
-          <svg-icon class="icon-arrow" icon-class="arrow_down" />
+          <svg-icon
+            class="icon-arrow"
+            icon-class="arrow_down"
+          />
           <div class="lock-line-full" />
         </div>
 
-        <div v-if="(isTokenArticle || isPriceArticle) && article.channel_id === 1" class="lock">
+        <div
+          v-if="(isTokenArticle || isPriceArticle) && article.channel_id === 1"
+          class="lock"
+        >
           <div class="lock-left">
-            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+            <img
+              v-if="!hasPaied"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            >
+            <img
+              v-else
+              class="lock-img"
+              src="@/assets/img/unlock.png"
+              alt="lock"
+            >
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
@@ -108,27 +204,60 @@
             </h3>
             <h5 class="lock-info-subtitle">
               {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
-              <el-tooltip class="item" effect="dark" content="满足全部条件后即可阅读全文。" placement="top">
-                <svg-icon icon-class="anser" class="prompt-svg left-8px" />
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="满足全部条件后即可阅读全文。"
+                placement="top"
+              >
+                <svg-icon
+                  icon-class="anser"
+                  class="prompt-svg left-8px"
+                />
               </el-tooltip>
             </h5>
-            <p v-if="!isMe(article.uid)" class="lock-info-des">
+            <p
+              v-if="!isMe(article.uid)"
+              class="lock-info-des"
+            >
               <ul>
-                <li v-if="isPriceArticle" class="fl">
+                <li
+                  v-if="isPriceArticle"
+                  class="fl"
+                >
                   <div class="fl price">
                     支付 {{ getArticlePrice }}
-                    <svg-icon icon-class="currency" class="avatar" />
+                    <svg-icon
+                      icon-class="currency"
+                      class="avatar"
+                    />
                     CNY
                   </div>
-                  <el-tooltip class="item" effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="top">
-                    <svg-icon icon-class="anser" class="prompt-svg" />
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="支付解锁的文章可在“购买记录”中永久查看。"
+                    placement="top"
+                  >
+                    <svg-icon
+                      icon-class="anser"
+                      class="prompt-svg"
+                    />
                   </el-tooltip>
                 </li>
                 <li v-if="isTokenArticle">
                   <div class="fl price">
                     持有 {{ needTokenAmount }}
-                    <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
-                      <avatar :size="'18px'" :src="needTokenLogo" class="avatar" /> 
+                    <router-link
+                      :to="{name: 'token-id', params:{ id:needTokenId }}"
+                      target="_blank"
+                      class="fl"
+                    >
+                      <avatar
+                        :size="'18px'"
+                        :src="needTokenLogo"
+                        class="avatar"
+                      /> 
                       {{ needTokenSymbol }}（{{ needTokenName }}）
                     </router-link>
                   </div>
@@ -137,23 +266,32 @@
                 </li>
               </ul>
             </p>
-            <p v-else class="lock-info-des">
+            <p
+              v-else
+              class="lock-info-des"
+            >
               自己发布的文章
             </p>
-            <div v-if="!hasPaied" class="lock-bottom">
-              <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
+            <div
+              v-if="!hasPaied"
+              class="lock-bottom"
+            >
+              <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
               <el-button
                 type="primary"
                 size="small"
                 @click="wxpayArticle"
               >
-                一键{{unlockText}}
+                一键{{ unlockText }}
               </el-button>
             </div>
           </div>
         </div>
 
-        <div v-if="article.tags !== undefined && article.tags.length !== 0" class="tag-review">
+        <div
+          v-if="article.tags !== undefined && article.tags.length !== 0"
+          class="tag-review"
+        >
           <tag-card
             v-for="(item, index) in article.tags"
             :key="index"
@@ -163,7 +301,10 @@
         </div>
       </template>
       <router-link :to="{ name: 'buy' }">
-        <div v-if="article.is_buy" class="buy-alert">
+        <div
+          v-if="article.is_buy"
+          class="buy-alert"
+        >
           {{ $t('p.buyHistory') }}
         </div>
       </router-link>
@@ -197,31 +338,56 @@
         />
       </div>
 
-      <div class="empty-line"></div>
+      <div class="empty-line" />
       <!-- 引用 -->
-      <quote :show="showQuote" :nowTime="nowTime" @showQuote="status => showQuote = status" @getArticle="getArticle"></quote>
-      <footer v-if="article.channel_id === 2" class="footer">
+      <quote
+        :show="showQuote"
+        :now-time="nowTime"
+        @showQuote="status => showQuote = status"
+        @getArticle="getArticle"
+      />
+      <footer
+        v-if="article.channel_id === 2"
+        class="footer"
+      >
         <div class="footer-block footer-info">
           <div class="amount">
-            <Dropdown trigger="click" @on-click="toggleAmount">
+            <Dropdown
+              trigger="click"
+              @on-click="toggleAmount"
+            >
               <div>
                 <div
                   :class="totalSupportedAmount.showName === 'eos' ? 'eos' : 'ont'"
                   class="amount-img"
-                ></div>
-                <span class="footer-number" :class="{ 'text-yellow': article.channel_id === 2 }">{{
+                />
+                <span
+                  class="footer-number"
+                  :class="{ 'text-yellow': article.channel_id === 2 }"
+                >{{
                   totalSupportedAmount.show
-                }}</span
-                >&nbsp;
+                }}</span>&nbsp;
                 <Icon type="ios-arrow-up" />
               </div>
               <DropdownMenu slot="list">
-                <DropdownItem name="eos" class="amount-icon">
-                  <img src="@/assets/img/icon_eos_article.svg" alt="eos" />
+                <DropdownItem
+                  name="eos"
+                  class="amount-icon"
+                >
+                  <img
+                    src="@/assets/img/icon_eos_article.svg"
+                    alt="eos"
+                  >
                   {{ totalSupportedAmount.eos }}
                 </DropdownItem>
-                <DropdownItem name="ont" class="amount-icon">
-                  <img src="@/assets/img/icon_ont_article.svg" alt="ont" />
+                <DropdownItem
+                  name="ont"
+                  class="amount-icon"
+                >
+                  <img
+                    src="@/assets/img/icon_ont_article.svg"
+                    alt="ont"
+                  >
                   {{ totalSupportedAmount.ont }}
                 </DropdownItem>
               </DropdownMenu>
@@ -230,12 +396,17 @@
               {{ article.channel_id === 2 ? $t('p.totalRevenue') : $t('p.totalInvestment') }}
             </div>
           </div>
-          <div v-if="article.channel_id !== 2" class="fission">
+          <div
+            v-if="article.channel_id !== 2"
+            class="fission"
+          >
             <div>
-              <div class="amount-img fission"></div>
+              <div class="amount-img fission" />
               <span class="footer-number">{{ getDisplayedFissionFactor }}</span>
             </div>
-            <div class="amount-text">{{ $t('p.fissionCoefficient') }}</div>
+            <div class="amount-text">
+              {{ $t('p.fissionCoefficient') }}
+            </div>
           </div>
         </div>
         <div class="footer-block footer-btn">
@@ -246,7 +417,11 @@
           >
             {{ $t('p.investment') }}<img src="@/assets/newimg/touzi.svg" />
           </button> -->
-          <button v-if="isSupported === 0" class="button-support bg-yellow border-yellow" disabled>
+          <button
+            v-if="isSupported === 0"
+            class="button-support bg-yellow border-yellow"
+            disabled
+          >
             {{ $t('p.investing') }}
           </button>
           <!-- <button
@@ -271,7 +446,7 @@
             @click="b4support"
           >
             {{ $t('p.buy') }}
-            <img src="@/assets/newimg/goumai.svg" />
+            <img src="@/assets/newimg/goumai.svg">
           </button>
           <button
             v-else-if="isSupported === 0"
@@ -279,7 +454,7 @@
             disabled
           >
             {{ $t('p.buying') }}
-            <img src="@/assets/newimg/goumai.svg" />
+            <img src="@/assets/newimg/goumai.svg">
           </button>
           <button
             v-else
@@ -288,11 +463,14 @@
             @click="buyButton"
           >
             {{ product.stock === 0 ? $t('p.soldOut') : $t('p.buy') }}
-            <img src="@/assets/newimg/goumai.svg" />
+            <img src="@/assets/newimg/goumai.svg">
           </button>
-          <button class="button-share border-yellow text-yellow" @click="widgetModal = true">
+          <button
+            class="button-share border-yellow text-yellow"
+            @click="widgetModal = true"
+          >
             {{ $t('share') }}
-            <img src="@/assets/newimg/share2.svg" />
+            <img src="@/assets/newimg/share2.svg">
           </button>
         </div>
         <!-- <button class="button-share" @click="widgetModal = true">
@@ -303,7 +481,7 @@
         v-else
         ref="articleFooter"
         class="footer flex-right"
-        :nowTime="nowTime"
+        :now-time="nowTime"
         :likes="likes"
         :dislikes="dislikes"
         :article="article"
@@ -328,21 +506,40 @@
           rows="4"
           autosize
         />
-        <van-field v-model="amount" :placeholder="displayPlaceholder" @input="handleChange(amount)" />
+        <van-field
+          v-model="amount"
+          :placeholder="displayPlaceholder"
+          @input="handleChange(amount)"
+        />
       </van-dialog>
 
-      <van-popup v-model="buyProductModal" class="buy-product-modal">
-        <h1 class="title">{{ $t('p.buyShop') }}</h1>
+      <van-popup
+        v-model="buyProductModal"
+        class="buy-product-modal"
+      >
+        <h1 class="title">
+          {{ $t('p.buyShop') }}
+        </h1>
         <div class="info-container">
-          <img :src="cover" alt="cover" class="cover" />
+          <img
+            :src="cover"
+            alt="cover"
+            class="cover"
+          >
           <div class="info-inner">
             <div class="product-price">
               <span class="ont-price">
-                <img src="@/assets/newimg/ont2.svg" alt="ont" />
+                <img
+                  src="@/assets/newimg/ont2.svg"
+                  alt="ont"
+                >
                 <span>{{ product.ontPrice }}</span>
               </span>
               <span class="eos-price">
-                <img src="@/assets/newimg/eos2.svg" alt="eos" />
+                <img
+                  src="@/assets/newimg/eos2.svg"
+                  alt="eos"
+                >
                 <span>{{ product.eosPrice }}</span>
               </span>
             </div>
@@ -350,7 +547,10 @@
               <span>
                 {{ $t('p.amount') }}
               </span>
-              <van-stepper v-model="productNumber" disabled />
+              <van-stepper
+                v-model="productNumber"
+                disabled
+              />
             </div>
           </div>
         </div>
@@ -366,14 +566,22 @@
           <span class="storage">
             {{ $t('p.remainingStock', [product.stock]) }}
           </span>
-          <div class="buy-btn" @click="buyProduct">
+          <div
+            class="buy-btn"
+            @click="buyProduct"
+          >
             {{ $t('p.buy') }}
           </div>
         </div>
       </van-popup>
 
-      <van-popup v-model="investProductModal" class="buy-product-modal">
-        <h1 class="title">{{ investTitle }}</h1>
+      <van-popup
+        v-model="investProductModal"
+        class="buy-product-modal"
+      >
+        <h1 class="title">
+          {{ investTitle }}
+        </h1>
         <div class="invest-info">
           <div class="info-item">
             <span class="info-number">{{ getDisplayedFissionFactor }}</span>
@@ -409,13 +617,19 @@
           class="comment-container"
         />
         <div class="invest-container">
-          <div class="invest-btn" @click="investProduct">
+          <div
+            class="invest-btn"
+            @click="investProduct"
+          >
             {{ $t('p.investment') }}
           </div>
         </div>
       </van-popup>
 
-      <van-popup v-model="buySuccessModal" class="buy-product-modal">
+      <van-popup
+        v-model="buySuccessModal"
+        class="buy-product-modal"
+      >
         <h1 class="title">
           {{ $t('p.buyDone') }}
         </h1>
@@ -460,9 +674,15 @@
         from="article"
       />
     </div>
-    <div v-else class="deleted-container">
+    <div
+      v-else
+      class="deleted-container"
+    >
       <div>
-        <img src="@/assets/img/deleted.png" alt="deleted" />
+        <img
+          src="@/assets/img/deleted.png"
+          alt="deleted"
+        >
       </div>
       <div class="message">
         <span>{{ $t('p.deleted') }}</span>
@@ -623,7 +843,6 @@ export default {
     },
     getClipboard() {
       const { article, currentUserInfo } = this
-      const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
       const shareLink = this.isLogined
@@ -814,6 +1033,7 @@ export default {
       // 去除markdown img
       const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
       // 去除 markdown 标签
+      // eslint-disable-next-line no-useless-escape
       const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
 
       const regRemoveTagResult = regRemoveTag(str)
@@ -1134,8 +1354,8 @@ export default {
         idProvider === 'ONT'
           ? num * product.ontPrice
           : idProvider === 'EOS'
-          ? num * product.eosPrice
-          : 0
+            ? num * product.eosPrice
+            : 0
       const toSponsor = async idOrName => {
         if (!idOrName) return { id: null, username: null }
         if (/^(0|[1-9][0-9]*)$/.test(idOrName)) {
@@ -1173,7 +1393,7 @@ export default {
         duration: 0,
         message: `${action_text}...`
       })
-      const { article, comment, signId } = this
+      const { comment, signId } = this
       const { idProvider } = this.currentUserInfo
       if (idProvider === 'GitHub') return
       // 默认 ‘’ 转成了 NAN
@@ -1203,26 +1423,25 @@ export default {
       if (!checkPricesMatch) return done(false)
 
       // 检查商品价格
-      // TODO 疑问???
-      const checkCommodityPrices = () => {
-        const filterBlockchain = this.findBlockchain(article.prices, idProvider)
-        if (filterBlockchain.length !== 0) {
-          const { symbol, price, decimals } = filterBlockchain[0]
-          // exponentiation operator (**)
-          if (symbol === 'EOS')
-            checkPricesMatch = checkPrices(
-              amount,
-              price / 10 ** decimals,
-              `${action_text}金额不能小于商品价格`
-            )
-          else if (symbol === 'ONT')
-            checkPricesMatch = checkPrices(
-              amount,
-              price / 10 ** decimals,
-              `${action_text}金额不能小于商品价格`
-            )
-        }
-      }
+      // const checkCommodityPrices = () => {
+      //   const filterBlockchain = this.findBlockchain(article.prices, idProvider)
+      //   if (filterBlockchain.length !== 0) {
+      //     const { symbol, price, decimals } = filterBlockchain[0]
+      //     // exponentiation operator (**)
+      //     if (symbol === 'EOS')
+      //       checkPricesMatch = checkPrices(
+      //         amount,
+      //         price / 10 ** decimals,
+      //         `${action_text}金额不能小于商品价格`
+      //       )
+      //     else if (symbol === 'ONT')
+      //       checkPricesMatch = checkPrices(
+      //         amount,
+      //         price / 10 ** decimals,
+      //         `${action_text}金额不能小于商品价格`
+      //       )
+      //   }
+      // }
 
       // 文章是商品判断价格
       // if (article.channel_id === 2) checkCommodityPrices();

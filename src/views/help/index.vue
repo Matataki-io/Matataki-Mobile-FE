@@ -1,10 +1,22 @@
 <template>
   <div class="mw help">
-    <BaseHeader :pageinfo="{ title: $t('setting') }" customize-header-bc="#fff" :has-bottom-border-line="true" />
+    <BaseHeader
+      :pageinfo="{ title: $t('setting') }"
+      customize-header-bc="#fff"
+      :has-bottom-border-line="true"
+    />
     <div class="help-block">
-      <a class="help-list" href="https://www.yuque.com/matataki" target="_blank">
+      <a
+        class="help-list"
+        href="https://www.yuque.com/matataki"
+        target="_blank"
+      >
         <span class="help-list-title">帮助和支持</span>
-        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          class="arrow"
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </a>
       <a
         v-for="(item, index) in helpDoc"
@@ -13,11 +25,17 @@
         target="_blank"
       >
         <span class="help-list-title">{{ item.title }}</span>
-        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </a>
     </div>
 
-    <div class="help-block" v-if="isLogined">
+    <div
+      v-if="isLogined"
+      class="help-block"
+    >
       <div class="help-list">
         <span class="help-list-title">{{ $t('user.transfer') }}</span>
         <span class="help-list-sub">
@@ -37,7 +55,10 @@
         :to="{name: 'setting-account'}"
       >
         <span class="help-list-title">{{ $t('helpPage.accountSetting') }}</span>
-        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </router-link>
     </div>
 
@@ -50,16 +71,36 @@
         <span class="help-list-title">{{ $t('user.about') }}</span>
         <div class="help-list-right">
           <span class="help-list-sub">{{ $t('user.github') }}</span>
-          <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+          <img
+            class="arrow"
+            src="@/assets/img/icon_arrow.svg"
+            alt="view"
+          >
         </div>
       </a>
-      <a class="help-list" href="https://www.yuque.com/matataki/matataki_version" target="_blank">
+      <a
+        class="help-list"
+        href="https://www.yuque.com/matataki/matataki_version"
+        target="_blank"
+      >
         <span class="help-list-title">{{ $t('user.updateRecord') }}</span>
-        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          class="arrow"
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </a>
-      <a class="help-list" href="https://t.me/smartsignature_io" target="_blank">
+      <a
+        class="help-list"
+        href="https://t.me/smartsignature_io"
+        target="_blank"
+      >
         <span class="help-list-title">{{ $t('user.tg') }}</span>
-        <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          class="arrow"
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </a>
     </div>
 
@@ -78,13 +119,21 @@
       </div>
     </div>
     <div class="help-block">
-      <div class="help-list" @click="clearCache">
+      <div
+        class="help-list"
+        @click="clearCache"
+      >
         <span class="help-list-title">一键清除缓存</span>
-        <img src="@/assets/img/icon_arrow.svg" alt="view" />
+        <img
+          src="@/assets/img/icon_arrow.svg"
+          alt="view"
+        >
       </div>
     </div>
     <div class="signout">
-      <p class="version">-version{{ version || '1.0.0' }}-</p>
+      <p class="version">
+        -version{{ version || '1.0.0' }}-
+      </p>
     </div>
   </div>
 </template>
@@ -199,7 +248,7 @@ export default {
             showClose: false,
             type: 'success',
             customClass: 'message-box__mobile',
-            callback: action => {
+            callback: () => {
               window.location.reload()
             }
           })
@@ -207,7 +256,7 @@ export default {
 
         // 重置all store
         this.resetAllStore()
-          .then(res => {
+          .then(() => {
             clearAllCookie()
             // 防止没有清除干净
             removeCookie('ACCESS_TOKEN')

@@ -1,5 +1,8 @@
 <template>
-  <div class="new-post" @click.stop="transferButton = false">
+  <div
+    class="new-post"
+    @click.stop="transferButton = false"
+  >
     <BaseHeader
       ref="baseHeader"
       :is-center="false"
@@ -10,13 +13,26 @@
       @headerBackFunc="headerBackFunc"
       @headerHomeFunc="headerHomeFunc"
     >
-      <div slot="right" class="header-right-slot">
-        <div class="post-button" @click="importVisible = true">
-          <svg-icon class="import-icon" icon-class="import" />
+      <div
+        slot="right"
+        class="header-right-slot"
+      >
+        <div
+          class="post-button"
+          @click="importVisible = true"
+        >
+          <svg-icon
+            class="import-icon"
+            icon-class="import"
+          />
           导入
         </div>
 
-        <div v-loading.fullscreen.lock="fullscreenLoading" class="post-button" @click="sendThePost">
+        <div
+          v-loading.fullscreen.lock="fullscreenLoading"
+          class="post-button"
+          @click="sendThePost"
+        >
           发布
         </div>
         <div
@@ -25,10 +41,22 @@
           class="more"
           @click.stop="transferButton = !transferButton"
         >
-          <img src="@/assets/more.svg" alt="more" />
-          <transition name="fade" mode="out-in">
-            <div v-show="transferButton" class="dropdown">
-              <div class="dropdown-item" @click="transferModal = true">
+          <img
+            src="@/assets/more.svg"
+            alt="more"
+          >
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <div
+              v-show="transferButton"
+              class="dropdown"
+            >
+              <div
+                class="dropdown-item"
+                @click="transferModal = true"
+              >
                 {{ $t('publish.transfer') }}
               </div>
             </div>
@@ -44,7 +72,7 @@
         size="large"
         clearable
         maxlength="50"
-      />
+      >
 
       <mavon-editor
         ref="md"
@@ -63,19 +91,32 @@
         <div>
           <h3>
             阅读权限
-            <el-tooltip class="item" effect="dark" placement="top-start">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="top-start"
+            >
               <div slot="content">
-                添加限制条件后，<br />读者只有在持有特定数量的Fan票后才可查看全文的。
+                添加限制条件后，<br>读者只有在持有特定数量的Fan票后才可查看全文的。
               </div>
-              <svg-icon class="help-icon" icon-class="help" />
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="readauThority" size="small">
+          <el-checkbox
+            v-model="readauThority"
+            size="small"
+          >
             设置持Fan票
           </el-checkbox>
         </div>
         <transition name="fade">
-          <div v-show="readauThority" class="fl ac">
+          <div
+            v-show="readauThority"
+            class="fl ac"
+          >
             <div>
               <h3>持Fan票类型</h3>
               <el-select
@@ -105,19 +146,33 @@
             </div>
           </div>
         </transition>
-        <div v-show="readauThority" class="related-add">
-          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+        <div
+          v-show="readauThority"
+          class="related-add"
+        >
+          <el-tooltip
+            effect="dark"
+            content="多Fan票解锁正在开发中"
+            placement="top"
+          >
             <div class="add-icon disable">
               <i class="el-icon-plus" />
             </div>
           </el-tooltip>
           <span>添加更多</span>
         </div>
-        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+        <el-checkbox
+          v-model="paymentTokenVisible"
+          size="small"
+          style="margin-top: 10px;"
+        >
           设置支付
         </el-checkbox>
         <transition name="fade">
-          <div v-show="paymentTokenVisible" class="fl ac">
+          <div
+            v-show="paymentTokenVisible"
+            class="fl ac"
+          >
             <div>
               <h3>支付类型</h3>
               <el-select
@@ -169,30 +224,54 @@
         <div>
           <h3>
             编辑权限 （功能开发中）
-            <el-tooltip class="item" effect="dark" placement="top-start">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="top-start"
+            >
               <div slot="content">
-                添加编辑权限后，<br />读者在持有特定数量的Fan票或支付特定费用后可编辑文章。
+                添加编辑权限后，<br>读者在持有特定数量的Fan票或支付特定费用后可编辑文章。
               </div>
-              <svg-icon class="help-icon" icon-class="help" />
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
             </el-tooltip>
           </h3>
-          <el-checkbox size="small" disabled>
+          <el-checkbox
+            size="small"
+            disabled
+          >
             设置持Fan票
           </el-checkbox>
         </div>
-        <el-checkbox size="small" style="margin-top: 10px;" disabled>
+        <el-checkbox
+          size="small"
+          style="margin-top: 10px;"
+          disabled
+        >
           设置支付
         </el-checkbox>
       </div>
 
-      <div v-if="$route.params.type !== 'edit'" class="fission">
+      <div
+        v-if="$route.params.type !== 'edit'"
+        class="fission"
+      >
         <p>
           {{ $t('publish.commentTitle') }}
-          <el-tooltip class="item" effect="dark" placement="top-start">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            placement="top-start"
+          >
             <div slot="content">
               {{ $t('publish.commentContent') }}
             </div>
-            <svg-icon class="help-icon" icon-class="help" />
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
           </el-tooltip>
         </p>
         <div class="fission-num-slider">
@@ -242,7 +321,11 @@
       </div> -->
       <div class="cover-container">
         <div v-show="cover">
-          <img class="cover-img" :src="coverEditor" alt="cover" />
+          <img
+            class="cover-img"
+            :src="coverEditor"
+            alt="cover"
+          >
         </div>
         <div class="cover">
           <p>
@@ -259,7 +342,12 @@
             :update-type="'artileCover'"
             @doneImageUpload="doneImageUpload"
           >
-            <img slot="uploadButton" class="cover-add" src="@/assets/newimg/add.svg" alt="add" />
+            <img
+              slot="uploadButton"
+              class="cover-add"
+              src="@/assets/newimg/add.svg"
+              alt="add"
+            >
           </img-upload>
           <img
             v-show="cover"
@@ -267,24 +355,34 @@
             src="@/assets/newimg/del.svg"
             alt="remove"
             @click.prevent="removeCover"
-          />
+          >
         </div>
       </div>
     </div>
-    <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
+    <el-checkbox
+      v-model="isOriginal"
+      class="is-original"
+      @change="originalChange"
+    >
       我声明此文章为原创
     </el-checkbox>
-    <div v-if="isOriginal" class="cc-licensing">
+    <div
+      v-if="isOriginal"
+      class="cc-licensing"
+    >
       <h3>
         Creative Commons 授权许可协议
-        <el-tooltip effect="dark" placement="top-start">
+        <el-tooltip
+          effect="dark"
+          placement="top-start"
+        >
           <div slot="content">
             CC是一种公共著作权许可协议，
-            <br />
+            <br>
             其允许分发受著作权保护的作品。
-            <br />
+            <br>
             一个创作共享许可用于一个作者想给他人分享
-            <br />
+            <br>
             使用，甚至创作派生作品的权利。
           </div>
           <i class="el-icon-info info" />
@@ -293,30 +391,51 @@
       <h3>
         请问您允许本作品被别人转载、节选、混编、二次创作吗？
       </h3>
-      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="true">
+      <el-radio
+        v-model="ccLicenseOptions.share"
+        class="cc-licensing-radio"
+        label="true"
+      >
         允许
       </el-radio>
-      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="false">
+      <el-radio
+        v-model="ccLicenseOptions.share"
+        class="cc-licensing-radio"
+        label="false"
+      >
         不允许
-        <el-tooltip effect="dark" placement="top-start">
+        <el-tooltip
+          effect="dark"
+          placement="top-start"
+        >
           <div slot="content">
             他人不能再混合、转换、或者基于该作品创作，
-            <br />且不能分发修改后的作品
+            <br>且不能分发修改后的作品
           </div>
           <i class="el-icon-info" />
         </el-tooltip>
       </el-radio>
-      <el-radio v-model="ccLicenseOptions.share" class="cc-licensing-radio" label="SA">
+      <el-radio
+        v-model="ccLicenseOptions.share"
+        class="cc-licensing-radio"
+        label="SA"
+      >
         仅允许采用本协议授权的二次创作
-        <el-tooltip effect="dark" placement="top-start">
+        <el-tooltip
+          effect="dark"
+          placement="top-start"
+        >
           <div slot="content">
             他人再混合、转换或者基于本作品进行创作，
-            <br />必须基于与原先许可协议相同的许可协议分发作品。
+            <br>必须基于与原先许可协议相同的许可协议分发作品。
           </div>
           <i class="el-icon-info" />
         </el-tooltip>
       </el-radio>
-      <el-checkbox v-model="ccLicenseOptions.commercialUse" class="cc-licensing-checkbox">
+      <el-checkbox
+        v-model="ccLicenseOptions.commercialUse"
+        class="cc-licensing-checkbox"
+      >
         允许商业性使用
       </el-checkbox>
       <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
@@ -357,9 +476,19 @@
       }"
       @confirm="createDraft(saveInfo)"
     />
-    <statement :visible="statementVisible" @close="closeStatement" />
-    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
-    <oneKeyImport v-model="oneKeyImportVisible" @res="importRes"/>
+    <statement
+      :visible="statementVisible"
+      @close="closeStatement"
+    />
+    <articleImport
+      v-model="importVisible"
+      :open-new-page="false"
+      @res="importRes"
+    />
+    <oneKeyImport
+      v-model="oneKeyImportVisible"
+      @res="importRes"
+    />
   </div>
 </template>
 
@@ -487,10 +616,10 @@ export default {
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
         // 目前只用上传一种数据格式
         tokenArr = [
-        {
-          tokenId: token[0].id,
-          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
-        }]
+          {
+            tokenId: token[0].id,
+            amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          }]
       }
       return tokenArr
     },
@@ -852,7 +981,6 @@ export default {
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
       try {
-        const { author, hash } = article
         try {
           const response = await this.$API.publishArticle({ article })
 
@@ -916,7 +1044,6 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
-      const { author } = article
       const response = await this.$API.editArticle({ article })
       if (response.code === 0) {
         const promiseArr = []
@@ -939,7 +1066,7 @@ export default {
         return
       }
       try {
-        const res = await this.$API.delDraft({ id }).then(res => {
+        await this.$API.delDraft({ id }).then(res => {
           if (res.code !== 0) {
             console.log(res.message)
             this.failed(this.$t('error.deleteDraft'))
