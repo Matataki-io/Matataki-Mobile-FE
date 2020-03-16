@@ -318,7 +318,7 @@ export default {
         })
         .catch(err => console.log('get token user error', err))
     },
-    doneImageUpload(res) {
+    doneImageUpload() {
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.$route.params.id })
     }

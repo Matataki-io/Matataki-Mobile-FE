@@ -295,8 +295,10 @@ export default {
     // eslint-disable-next-line no-unused-vars
     async inputFile(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
+        //
       }
       if (!newFile && oldFile) {
+        //
       }
     },
     checkLogin() {

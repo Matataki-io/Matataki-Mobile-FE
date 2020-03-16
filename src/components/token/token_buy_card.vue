@@ -68,7 +68,7 @@ export default {
   computed: {
     ...mapGetters(['isLogined']),
     limitValue() {
-      const { input, output } = this.form
+      const { input } = this.form
       if (!this.$utils.isNull(input)) {
         return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4)
       }
@@ -107,7 +107,7 @@ export default {
         this.$store.commit('setLoginModal', true)
       }
     },
-    inputChange: debounce(function (e) {
+    inputChange: debounce(function () {
 
       // 没有合约地址
       if (!this.token.contract_address) return

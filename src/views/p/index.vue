@@ -843,7 +843,6 @@ export default {
     },
     getClipboard() {
       const { article, currentUserInfo } = this
-      const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${process.env.VUE_APP_URL}/p/${article.id}`
       const shareLink = this.isLogined
@@ -1034,6 +1033,7 @@ export default {
       // 去除markdown img
       const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
       // 去除 markdown 标签
+      // eslint-disable-next-line no-useless-escape
       const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
 
       const regRemoveTagResult = regRemoveTag(str)
@@ -1393,7 +1393,7 @@ export default {
         duration: 0,
         message: `${action_text}...`
       })
-      const { article, comment, signId } = this
+      const { comment, signId } = this
       const { idProvider } = this.currentUserInfo
       if (idProvider === 'GitHub') return
       // 默认 ‘’ 转成了 NAN
@@ -1423,26 +1423,25 @@ export default {
       if (!checkPricesMatch) return done(false)
 
       // 检查商品价格
-      // TODO 疑问???
-      const checkCommodityPrices = () => {
-        const filterBlockchain = this.findBlockchain(article.prices, idProvider)
-        if (filterBlockchain.length !== 0) {
-          const { symbol, price, decimals } = filterBlockchain[0]
-          // exponentiation operator (**)
-          if (symbol === 'EOS')
-            checkPricesMatch = checkPrices(
-              amount,
-              price / 10 ** decimals,
-              `${action_text}金额不能小于商品价格`
-            )
-          else if (symbol === 'ONT')
-            checkPricesMatch = checkPrices(
-              amount,
-              price / 10 ** decimals,
-              `${action_text}金额不能小于商品价格`
-            )
-        }
-      }
+      // const checkCommodityPrices = () => {
+      //   const filterBlockchain = this.findBlockchain(article.prices, idProvider)
+      //   if (filterBlockchain.length !== 0) {
+      //     const { symbol, price, decimals } = filterBlockchain[0]
+      //     // exponentiation operator (**)
+      //     if (symbol === 'EOS')
+      //       checkPricesMatch = checkPrices(
+      //         amount,
+      //         price / 10 ** decimals,
+      //         `${action_text}金额不能小于商品价格`
+      //       )
+      //     else if (symbol === 'ONT')
+      //       checkPricesMatch = checkPrices(
+      //         amount,
+      //         price / 10 ** decimals,
+      //         `${action_text}金额不能小于商品价格`
+      //       )
+      //   }
+      // }
 
       // 文章是商品判断价格
       // if (article.channel_id === 2) checkCommodityPrices();

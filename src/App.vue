@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { mapActions, mapGetters } from 'vuex'
 import { sleep } from '@/common/methods'
 import AuthModal from '@/components/Auth/index.vue'

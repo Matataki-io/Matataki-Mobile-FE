@@ -159,7 +159,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
-import { sleep } from '@/common/methods'
 import SocialShare from '@/components/share/social_share.vue'
 
 import shareFooter from '@/components/share_page/share_footer'
@@ -175,6 +174,8 @@ import { ImagePreview } from 'vant'
 import shareHeadRight from '@/components/share_page/share_head_right'
 
 Vue.use(ImagePreview)
+var tp = require('tp-js-sdk')
+
 
 export default {
   components: {
@@ -331,6 +332,7 @@ export default {
       // 去除markdown img
       const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
       // 去除 markdown 标签
+      // eslint-disable-next-line no-useless-escape
       const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
 
       const regRemoveTagResult = regRemoveTag(str)
@@ -395,7 +397,7 @@ export default {
           customClass: 'message-box__mobile'
         }).then(async () => {
           await this.$API.unbookmark(this.currentProfile.id)
-            .then(res => {
+            .then(() => {
               this.$toast.success({ duration: 1000, message: '取消成功' })
               this.currentProfile.is_bookmarked = 0
             })
@@ -408,7 +410,7 @@ export default {
         })
       } else {
         await this.$API.bookmark(this.currentProfile.id)
-          .then(res => {
+          .then(() => {
             this.$toast.success({ duration: 1000, message: '收藏成功' })
             this.currentProfile.is_bookmarked = 1
           })
@@ -457,6 +459,7 @@ export default {
     hideClient() {
       this.showQuote = false
     },
+    // eslint-disable-next-line no-unused-vars
     async getArticle(id, popEvent) {
       // console.log(id, popEvent)
       this.$route.params.id = id

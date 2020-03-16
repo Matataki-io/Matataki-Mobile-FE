@@ -237,6 +237,7 @@ export default {
   },
   data() {
     let httpTest = (rule, value, callback) => {
+      // eslint-disable-next-line no-useless-escape
       if (new RegExp('[a-zA-z]+://[^\s]*').test(this.urlForm.url)) {
         callback()
       } else {
@@ -304,6 +305,12 @@ export default {
       createShareLoading: false,
       saveLoading: false, // 保存图片loading
       scrollThrottle: null
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+    iswechat() {
+      return /micromessenger/.test(navigator.userAgent.toLowerCase())
     }
   },
   watch: {
@@ -386,12 +393,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('scroll', this.scrollThrottle)
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
-    iswechat() {
-      return /micromessenger/.test(navigator.userAgent.toLowerCase())
-    }
   },
   methods: {
     initShareLink() {
@@ -513,7 +514,7 @@ export default {
       this.shareLinkList.splice(i, 1)
     },
     // 输入框改变
-    changeInput(val) {
+    changeInput() {
       this.getUrlData('urlForm')
     },
     // url 输入框聚焦

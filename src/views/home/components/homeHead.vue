@@ -55,7 +55,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import search from './search.vue'
-import { getCookie } from '@/utils/cookie'
 
 export default {
   name: 'HomeHead',

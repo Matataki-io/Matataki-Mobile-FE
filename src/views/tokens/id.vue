@@ -410,7 +410,7 @@ export default {
       let {
         symbol,
         id: tokenId,
-        total_supply: amount,
+        // total_supply: amount,
         decimals
       } = this.tokenDetail
 

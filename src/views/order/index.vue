@@ -212,7 +212,6 @@ export default {
       } else {
         return utils.down2points(result)
       }
-      return utils.down2points(result)
     },
     needPay() {
       // 支付金额向上取整
@@ -356,7 +355,7 @@ export default {
           }, interval)
         })
       }
-      const openid = this.currentUserInfo.name
+      // const openid = this.currentUserInfo.name
     },
     getWeixinOpenId() {
       if (!this.isInWeixin) return
@@ -384,6 +383,7 @@ export default {
       const { appId, timeStamp, nonceStr, signType, paySign } = order
       const self = this
       function onBridgeReady() {
+        // eslint-disable-next-line no-undef
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest',
           {

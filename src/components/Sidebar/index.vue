@@ -409,7 +409,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Cookies from 'js-cookie'
 import defaultAvatar from '@/assets/avatar-default.svg'
-import { getCookie, removeCookie } from '@/utils/cookie'
+import { removeCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 
 export default {
@@ -506,7 +506,7 @@ export default {
             showClose: false,
             type: 'success',
             customClass: 'message-box__mobile',
-            callback: action => {
+            callback: () => {
               window.location.reload()
             }
           })
@@ -514,7 +514,7 @@ export default {
 
         // 重置all store
         this.resetAllStore()
-          .then(res => {
+          .then(() => {
             removeCookie('ACCESS_TOKEN')
             removeCookie('idProvider')
             removeCookie('referral')

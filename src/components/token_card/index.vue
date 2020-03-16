@@ -98,11 +98,11 @@ export default {
 
       return (liquidity / amount).toFixed(this.card.decimals)
     },
-    tokenAmount(amount) {
+    tokenAmount() {
       const tokenamount = Math.abs(precision(this.card.liquidity || 0, 'CNY', this.card.decimals))
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-    exchangeAmount(amount) {
+    exchangeAmount() {
       const tokenamount = Math.abs(precision(this.card.exchange_amount || 0, 'CNY', this.card.decimals))
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     }

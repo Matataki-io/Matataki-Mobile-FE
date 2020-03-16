@@ -981,7 +981,6 @@ export default {
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
       try {
-        const { author, hash } = article
         try {
           const response = await this.$API.publishArticle({ article })
 
@@ -1045,7 +1044,6 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
-      const { author } = article
       const response = await this.$API.editArticle({ article })
       if (response.code === 0) {
         const promiseArr = []
@@ -1068,7 +1066,7 @@ export default {
         return
       }
       try {
-        const res = await this.$API.delDraft({ id }).then(res => {
+        await this.$API.delDraft({ id }).then(res => {
           if (res.code !== 0) {
             console.log(res.message)
             this.failed(this.$t('error.deleteDraft'))

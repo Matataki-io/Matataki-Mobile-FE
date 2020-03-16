@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { getCookie, removeCookie } from '@/utils/cookie'
-import { mapActions, mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
+import { mapActions } from 'vuex'
 export default {
   name: 'WeixinLogin',
   data() {
@@ -58,7 +58,7 @@ export default {
           this.getMyUserData()
           // 和app.vue里面同步
           try {
-            signIn({
+            this.signIn({
               accessToken: getCookie('ACCESS_TOKEN'),
               idProvider: getCookie('idProvider')
             })

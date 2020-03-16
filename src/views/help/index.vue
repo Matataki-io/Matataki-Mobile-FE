@@ -248,7 +248,7 @@ export default {
             showClose: false,
             type: 'success',
             customClass: 'message-box__mobile',
-            callback: action => {
+            callback: () => {
               window.location.reload()
             }
           })
@@ -256,7 +256,7 @@ export default {
 
         // 重置all store
         this.resetAllStore()
-          .then(res => {
+          .then(() => {
             clearAllCookie()
             // 防止没有清除干净
             removeCookie('ACCESS_TOKEN')

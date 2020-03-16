@@ -166,7 +166,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
-import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -209,7 +208,7 @@ export default {
       this.getAccountStatus()
     }
     this.getFandomList()
-    this.$navigation.once('back', (to, from) => {
+    this.$navigation.once('back', () => {
       window.location.reload()
     })
   },

@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="number">
-      <span>{{ liquidity(card.liquidity_balance, card.decimals) }} ({{
+      <span>{{ liquidity(card.liquidity_balance) }} ({{
         percent(card.liquidity_balance, card.total_supply)
       }})</span>
       <i class="el-icon-arrow-right icon" />
@@ -44,7 +44,7 @@ export default {
       }
       return ((parseFloat(balance) / parseFloat(total)) * 100).toFixed(2) + '%'
     },
-    liquidity(balance, decimals = 4) {
+    liquidity(balance) {
       return this.$utils.fromDecimal(balance, 4)
     },
     cover(cover) {

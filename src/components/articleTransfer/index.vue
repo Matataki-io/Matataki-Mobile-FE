@@ -263,7 +263,7 @@ export default {
     }
   },
   methods: {
-    submitForm(formName) {
+    submitForm() {
       // 这里没有用表单验证
       if (this.$utils.isNull(this.toUserInfo)) {
         this.$message.warning('请选择用户')

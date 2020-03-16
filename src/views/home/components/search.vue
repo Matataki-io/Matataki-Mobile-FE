@@ -44,7 +44,7 @@ export default {
     }
   },
   watch: {
-    showSearch(newVal) {
+    showSearch() {
       this.showSearchStatus = this.showSearch
       // if (newVal) {
       //   document.querySelector('body').style.overflow = 'hidden'
@@ -61,7 +61,7 @@ export default {
     this.getRecommend()
   },
   methods: {
-    onSearch(val) {
+    onSearch() {
       // console.log(val)
     },
     // 获得推荐

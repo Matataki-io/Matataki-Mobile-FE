@@ -6,6 +6,7 @@ Vue.directive('highlight',function (el) {
     try {
       let blocks = el.querySelectorAll('pre code')
       blocks.forEach((block)=>{
+        // eslint-disable-next-line no-undef
         hljs.highlightBlock(block)
       })
     } catch (error) {
@@ -19,6 +20,7 @@ Vue.directive('highlight',function (el) {
 
   timer = setInterval(() => {
     try {
+      // eslint-disable-next-line no-undef
       if (hljs || len >= 100) {
         setHljs()
         clearInterval(timer)

@@ -57,24 +57,24 @@
       <template v-for="(item, index) in card.refs.slice(0, 1)">
         <shareOuterCard
           v-if="item.ref_sign_id === 0"
-          :card="item"
           :key="'shareOuterCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
           @ref="val => $emit('ref', val)"
         />
         <sharePCard
           v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
-          :card="item"
           :key="'sharePCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
           @ref="val => $emit('ref', val)"
         />
         <shareInsideCard
           v-else-if="item.ref_sign_id && item.channel_id === 3"
-          :card="item"
           :key="'shareInsideCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
           @ref="val => $emit('ref', val)"
@@ -87,24 +87,24 @@
         <template v-for="(item, index) in shareListMore">
           <shareOuterCard
             v-if="item.ref_sign_id === 0"
-            :card="item"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
             @ref="val => $emit('ref', val)"
           />
           <sharePCard
             v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
-            :card="item"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
             @ref="val => $emit('ref', val)"
           />
           <shareInsideCard
             v-else-if="item.ref_sign_id && item.channel_id === 3"
-            :card="item"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
             @ref="val => $emit('ref', val)"

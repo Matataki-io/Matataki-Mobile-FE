@@ -401,7 +401,7 @@ export default {
       if (hash) this.avatar = this.$ossProcess(hash)
     },
     // 完成上传
-    async doneImageUpload(res) {
+    async doneImageUpload() {
       this.refreshUser()
       this.imgUploadDone += Date.now()
     },

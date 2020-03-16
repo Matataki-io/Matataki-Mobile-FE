@@ -319,7 +319,7 @@ export default {
       }
     },
     btnDisabled() {
-      const { input, inputToken, output, outputToken } = this.form
+      const { input, output, outputToken } = this.form
       const { outputPoolSize } = this
       // 检查余额情况
       if (!this.checkBalance(false)) {

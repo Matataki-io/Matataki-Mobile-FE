@@ -25,7 +25,7 @@
 
 <script>
 import userPage from '@/components/user/user_page.vue'
-import artcleCard from '@/components/article_card/index.vue'
+// import artcleCard from '@/components/article_card/index.vue'
 import shareCard from '@/components/share_card/index.vue'
 
 // import { ArticleCard } from '@/components/'

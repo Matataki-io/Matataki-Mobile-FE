@@ -31,24 +31,24 @@
       <!-- 下次功能调整重构 -->
       <template v-if="listtype === 'bookmark' && activeIndex === 1">
         <router-link
-          v-for="(item, index) in item.articles"
-          :key="index"
+          v-for="(itemChild, indexChild) in item.articles"
+          :key="indexChild"
           class="card-bookmark"
-          :to="{name: 'share-id', params: {id: item.id}}"
+          :to="{name: 'share-id', params: {id: itemChild.id}}"
         >
-          <p>{{ item.short_content }}</p>
+          <p>{{ itemChild.short_content }}</p>
           <div>
             <span>
               <svg-icon
                 class="icon"
                 icon-class="eye"
-              />{{ item.read }}
+              />{{ itemChild.read }}
             </span>
             <span>
               <svg-icon
                 class="icon"
                 icon-class="like_thin"
-              />{{ item.likes }}
+              />{{ itemChild.likes }}
             </span>
           </div>
         </router-link>
@@ -58,10 +58,10 @@
         class="list"
       >
         <artcleCard
-          v-for="item in item.articles"
-          :key="item.id"
+          v-for="itemChild in item.articles"
+          :key="itemChild.id"
           class="list-card"
-          :card="item"
+          :card="itemChild"
         />
       </div>
     </BasePull>

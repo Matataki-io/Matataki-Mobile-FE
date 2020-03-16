@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { strTrim, internetUrl } from '@/utils/reg'
+import { internetUrl } from '@/utils/reg'
 import * as clipboard from 'clipboard-polyfill'
 export default {
   props: {value : Boolean},

@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { toPrecision } from '@/utils/precisionConversion'
 import debounce from 'lodash/debounce'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
@@ -273,7 +273,7 @@ export default {
         showClose: false,
         type: 'success',
         customClass: 'message-box__mobile',
-        callback: action => {
+        callback: () => {
           this.$router.go(0)
         }
       })

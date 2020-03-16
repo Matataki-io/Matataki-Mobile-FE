@@ -257,7 +257,7 @@ export default {
       })
     },
     // 是否使用余额修改
-    useBalanceChange(v) {
+    useBalanceChange() {
       clearInterval(this.timer)
     },
     // 使用余额支付
@@ -274,7 +274,7 @@ export default {
       const {
         token_id,
         cny_amount,
-        pay_cny_amount,
+        // pay_cny_amount,
         token_amount,
         min_liquidity,
         min_tokens,
@@ -340,7 +340,7 @@ export default {
           }, interval)
         })
       }
-      const openid = this.currentUserInfo.name
+      // const openid = this.currentUserInfo.name
     },
     getWeixinOpenId() {
       if (!this.isInWeixin) return
@@ -368,6 +368,7 @@ export default {
       const { appId, timeStamp, nonceStr, signType, paySign } = order
       const self = this
       function onBridgeReady() {
+        // eslint-disable-next-line no-undef
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest',
           {
@@ -436,7 +437,7 @@ export default {
     },
     // 构造参数
     makeOrderParams(openid = null) {
-      const { input, inputToken, output, outputToken, limitValue, type } = this.form
+      const { input, output, outputToken, limitValue, type } = this.form
       let requestParams = {
         total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
         title: `购买${outputToken.symbol}`,

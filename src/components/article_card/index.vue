@@ -55,7 +55,6 @@ import avatar from '@/components/avatar/index.vue'
 import { isNDaysAgo } from '@/common/methods'
 
 import clampy from '@clampy-js/vue-clampy'
-import Vue from 'vue'
 import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 import { filterOutHtmlTags } from '@/utils/xss'

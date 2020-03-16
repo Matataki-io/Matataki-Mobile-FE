@@ -165,7 +165,7 @@ export default {
   },
   mounted() {
     this.getAccountList()
-    this.$navigation.once('back', (to, from) => {
+    this.$navigation.once('back', () => {
       window.location.reload()
     })
   },

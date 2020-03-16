@@ -142,7 +142,7 @@ export default {
   },
   created() {},
   methods: {
-    handleCheckedFilterChanged(value) {
+    handleCheckedFilterChanged() {
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(function () {

@@ -457,6 +457,7 @@ export default {
           console.log('done', res)
           clearInterval(timer)
           timer = setInterval(() => {
+            // eslint-disable-next-line no-undef
             if (TweenMax && ScrollMagic) {
               this.initScrollAnimation()
               this.setDefaultStyle()
@@ -483,10 +484,11 @@ export default {
     initScrollAnimation() {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
+        // eslint-disable-next-line no-undef
         const controller = new ScrollMagic.Controller()
         // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
 
-        componentStory.forEach((el, i) => {
+        componentStory.forEach((el) => {
           const childHeaderInner = el.querySelector(
             '.component-story__header .component-story__inner'
           )
@@ -494,15 +496,19 @@ export default {
             '.component-story__summary .component-story__inner'
           )
 
+          // eslint-disable-next-line no-undef
           const tl = new TimelineMax()
 
           // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          // eslint-disable-next-line no-undef
           tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          // eslint-disable-next-line no-undef
           tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
           // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
 
-          const scene = new ScrollMagic.Scene({
+          // eslint-disable-next-line no-undef
+          new ScrollMagic.Scene({
             triggerElement: el,
             triggerHook: 1,
             duration: '200%'
@@ -519,7 +525,9 @@ export default {
         })
       }
       const initRoadmap = () => {
+        // eslint-disable-next-line no-undef
         const controller = new ScrollMagic.Controller()
+        // eslint-disable-next-line no-undef
         const tl = new TimelineMax()
         const roadmap = document.querySelector('.roadmap')
         const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
@@ -531,11 +539,13 @@ export default {
             },
             y: 0,
             opacity: 1,
+            // eslint-disable-next-line no-undef
             ease: Linear.easeNone
           })
         })
 
-        const scene1 = new ScrollMagic.Scene({
+        // eslint-disable-next-line no-undef
+        new ScrollMagic.Scene({
           triggerElement: roadmap
           // triggerHook: 1,
           // duration: '160%'
@@ -573,6 +583,7 @@ export default {
     },
     setDefaultStyle() {
       try {
+        // eslint-disable-next-line no-undef
         const tl = new TimelineMax()
         tl.set('.story', {
           perspective: 1000
