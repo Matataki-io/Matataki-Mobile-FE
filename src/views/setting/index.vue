@@ -216,14 +216,14 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser']),
     checkSaveParams() {
-      // 中文 字母 数字 1-12
-      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
+      // 中文 字母 数字 1-50
+      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,50}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.newNickName)) {
-        throw this.$t('rule.strEnglishNumber', ['1-12'])
+        throw this.$t('rule.strEnglishNumber', ['1-50'])
       }
-      if (this.newIntroduction.length > 20) {
-        throw this.$t('rule.profileNotExceedStr', ['20'])
+      if (this.newIntroduction.length > 200) {
+        throw this.$t('rule.profileNotExceedStr', ['200'])
       }
       if (this.newEmail !== '' && !regEmail.test(this.newEmail)) {
         throw this.$t('rule.emailMessage')

@@ -6,6 +6,7 @@ import xss from 'xss'
 const isSupportWebp =!![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0
 console.log('xss', isSupportWebp)
 
+
 export const xssFilter = html => {
   // 自定义规则
   const { whiteList } = xss
@@ -186,7 +187,7 @@ export const xssFilter = html => {
 export const xssImageProcess = html => {
 
   const isSelfOss = url => {
-    let oss = process.env.ssImgAddress
+    let oss = process.env.VUE_APP_OSSADDRESS
     return new RegExp(oss).test(url)
   }
 
