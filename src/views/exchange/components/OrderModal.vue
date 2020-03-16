@@ -7,9 +7,15 @@
     custom-class="br10 nopadding"
     :before-close="handleClose"
   >
-    <div v-loading="loading" class="container">
+    <div
+      v-loading="loading"
+      class="container"
+    >
       <div class="padding20">
-        <img src="@/assets/img/m_logo.png" alt="logo" />
+        <img
+          src="@/assets/img/m_logo.png"
+          alt="logo"
+        >
         <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
         <table class="order-table">
           <tbody>
@@ -60,10 +66,13 @@
       <div class="balanceBox">
         <div class="flexBox padding20">
           <div>
-            <el-tooltip placement="bottom" effect="light">
+            <el-tooltip
+              placement="bottom"
+              effect="light"
+            >
               <div slot="content">
-                您的交易可能由于正常的价格波动而失败，<br />
-                预期价格波动区间将有助于您的交易成功。<br />
+                您的交易可能由于正常的价格波动而失败，<br>
+                预期价格波动区间将有助于您的交易成功。<br>
                 交易成功后，多支付的金额会退回。
               </div>
               <i class="el-icon-question" />
@@ -71,9 +80,12 @@
             预期价格波动：1%
           </div>
           <div>
-            <el-tooltip placement="bottom" effect="light">
+            <el-tooltip
+              placement="bottom"
+              effect="light"
+            >
               <div slot="content">
-                CNY 交易金额精度大于 0.01 时会自动进位支付，<br />多支付的金额会保留在您的CNY账户中。
+                CNY 交易金额精度大于 0.01 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。
               </div>
               <i class="el-icon-question" />
             </el-tooltip>
@@ -82,16 +94,19 @@
         </div>
         <div class="flexBox padding20 bgGray">
           <div>
-            <el-checkbox v-model="useBalance" @change="useBalanceChange"
-              >使用余额（{{ balance }} CNY）</el-checkbox
+            <el-checkbox
+              v-model="useBalance"
+              @change="useBalanceChange"
             >
+              使用余额（{{ balance }} CNY）
+            </el-checkbox>
           </div>
           <div>
             抵扣：<span class="money">{{ deduction }} CNY</span>
           </div>
         </div>
         <div class="flexBox padding20">
-          <div></div>
+          <div />
           <div>
             应付：<span class="money">{{ needPay }} CNY</span>
           </div>
@@ -99,16 +114,36 @@
       </div>
 
       <template v-if="needPay > 0">
-        <div v-if="isWeixin" class="wxpay-btn">
-          <el-button type="primary" @click="loginAndPay">
+        <div
+          v-if="isWeixin"
+          class="wxpay-btn"
+        >
+          <el-button
+            type="primary"
+            @click="loginAndPay"
+          >
             使用微信支付
-            <svg-icon icon-class="wxpay" class="wxpay-icon" />
+            <svg-icon
+              icon-class="wxpay"
+              class="wxpay-icon"
+            />
           </el-button>
         </div>
-        <QRCode v-else :pay-link="order.code_url" />
+        <QRCode
+          v-else
+          :pay-link="order.code_url"
+        />
       </template>
-      <div v-else class="payBtnBox">
-        <el-button type="primary" @click="confirmPay">确认支付</el-button>
+      <div
+        v-else
+        class="payBtnBox"
+      >
+        <el-button
+          type="primary"
+          @click="confirmPay"
+        >
+          确认支付
+        </el-button>
       </div>
     </div>
   </el-dialog>

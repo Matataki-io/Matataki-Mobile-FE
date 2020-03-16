@@ -1,8 +1,22 @@
 <template>
-  <van-popup v-model="show" :overlay="true" class="container">
+  <van-popup
+    v-model="show"
+    :overlay="true"
+    class="container"
+  >
     <h1>{{ content.title }}</h1>
-    <button class="btn blue" @click="confirm">{{ content.confirmText }}</button>
-    <button class="btn gray" @click="cancel">{{ content.cancelText }}</button>
+    <button
+      class="btn blue"
+      @click="confirm"
+    >
+      {{ content.confirmText }}
+    </button>
+    <button
+      class="btn gray"
+      @click="cancel"
+    >
+      {{ content.cancelText }}
+    </button>
   </van-popup>
 </template>
 

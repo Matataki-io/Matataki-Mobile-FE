@@ -19,15 +19,31 @@
           placeholder="搜索Fan票"
           class="dHtVAe"
           @keyup.enter="searchToken"
-        />
+        >
       </div>
-      <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
-        <el-table height="50vh" :data="tokenList" style="width: 100%" @row-click="selectToken">
-          <el-table-column width="180px" label="Fan票">
+      <div
+        v-loading="loading"
+        class="cotdDw"
+        element-loading-background="rgba(0, 0, 0, 0.3)"
+      >
+        <el-table
+          height="50vh"
+          :data="tokenList"
+          style="width: 100%"
+          @row-click="selectToken"
+        >
+          <el-table-column
+            width="180px"
+            label="Fan票"
+          >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
-                  <avatar v-if="scope.row.logo" :src="getImg(scope.row.logo)" size="30px" />
+                  <avatar
+                    v-if="scope.row.logo"
+                    :src="getImg(scope.row.logo)"
+                    size="30px"
+                  />
                 </div>
                 <div class="sc-tilXH egNEUM">
                   <span id="symbol">{{ scope.row.symbol }}</span>
@@ -61,13 +77,19 @@
                 :to="{ name: 'token-id', params: { id: scope.row.id } }"
               >
                 <el-button circle>
-                  <svg-icon icon-class="share" style="color: #B2B2B2;" />
+                  <svg-icon
+                    icon-class="share"
+                    style="color: #B2B2B2;"
+                  />
                 </el-button>
               </router-link>
             </template>
           </el-table-column>
         </el-table>
-        <div v-if="showLoadMore" class="loadmore">
+        <div
+          v-if="showLoadMore"
+          class="loadmore"
+        >
           <span @click="loadMore">
             加载更多
             <i class="el-icon-arrow-down" />

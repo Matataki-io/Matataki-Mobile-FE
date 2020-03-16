@@ -5,7 +5,10 @@
     </div>
     <div class="fl jsb">
       <span class="type">{{ type }}</span>
-      <span class="amount" :style="{ color: `${color}` }">{{ amount }}</span>
+      <span
+        class="amount"
+        :style="{ color: `${color}` }"
+      >{{ amount }}</span>
     </div>
   </div>
 </template>

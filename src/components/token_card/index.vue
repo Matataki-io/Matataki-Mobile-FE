@@ -1,17 +1,29 @@
 <template>
-  <router-link  :to="{ name: 'token-id', params: { id: card.id } }" class="fl card">
-    <avatar :src="cover" size="30px" />
+  <router-link
+    :to="{ name: 'token-id', params: { id: card.id } }"
+    class="fl card"
+  >
+    <avatar
+      :src="cover"
+      size="30px"
+    />
     <div class="cards-content">
       <div class="fl">
-        <router-link class="card-title" :to="{ name: 'token-id', params: { id: card.id } }">
+        <router-link
+          class="card-title"
+          :to="{ name: 'token-id', params: { id: card.id } }"
+        >
           <h2 class="card-info-symbol">
             {{ card.symbol || '暂无' }}
           </h2>
         </router-link>
-        <router-link class="fl ac" :to="{ name: 'user-id', params: { id: card.uid } }">
+        <router-link
+          class="fl ac"
+          :to="{ name: 'user-id', params: { id: card.uid } }"
+        >
           <span class="card-username">
             {{ name }}
-            <i class="el-icon-arrow-right"></i>
+            <i class="el-icon-arrow-right" />
           </span>
         </router-link>
       </div>

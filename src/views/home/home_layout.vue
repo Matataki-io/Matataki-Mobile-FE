@@ -1,11 +1,25 @@
 <template>
   <div class="container">
     <div class="carousel">
-      <van-swipe :autoplay="3000" indicator-color="#542DE0" :height="170">
-        <van-swipe-item v-for="(item, index) in sipeList" :key="index">
-          <div class="swip-container" @click="viewP(item.id)">
-            <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title" />
-            <p>{{item.title}}</p>
+      <van-swipe
+        :autoplay="3000"
+        indicator-color="#542DE0"
+        :height="170"
+      >
+        <van-swipe-item
+          v-for="(item, index) in sipeList"
+          :key="index"
+        >
+          <div
+            class="swip-container"
+            @click="viewP(item.id)"
+          >
+            <img
+              v-if="item.cover"
+              :src="cover(item.cover)"
+              :alt="item.title"
+            >
+            <p>{{ item.title }}</p>
             <div class="full" />
           </div>
         </van-swipe-item>
@@ -19,9 +33,21 @@
     </div>
     <slot /> -->
     <bannerMatataki />
-    <articleTab v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
-    <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
-    <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
+    <articleTab
+      v-if="idx === 0"
+      :idx="idx"
+      @setIdx="setIdx"
+    />
+    <tokenTab
+      v-if="idx === 1"
+      :idx="idx"
+      @setIdx="setIdx"
+    />
+    <followTab
+      v-if="idx === 2"
+      :idx="idx"
+      @setIdx="setIdx"
+    />
   </div>
 </template>
 

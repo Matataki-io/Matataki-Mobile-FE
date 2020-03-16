@@ -3,15 +3,25 @@
     class="m-ipfs"
     placement="bottom"
     width="300"
-    trigger="hover">
-      <div>
-        <p class="ipfs-tip">本文内容已上传星际文件存储系统「IPFS」，永久保存。</p>
-        <p class="ipfs-link">
-          IPFS Hash: {{ hash }}
-          <svg-icon icon-class="copy" @click="copy(hash)"></svg-icon>
-        </p>
-      </div>
-      <svg-icon slot="reference" icon-class="ipfs" class="ipfs"></svg-icon>
+    trigger="hover"
+  >
+    <div>
+      <p class="ipfs-tip">
+        本文内容已上传星际文件存储系统「IPFS」，永久保存。
+      </p>
+      <p class="ipfs-link">
+        IPFS Hash: {{ hash }}
+        <svg-icon
+          icon-class="copy"
+          @click="copy(hash)"
+        />
+      </p>
+    </div>
+    <svg-icon
+      slot="reference"
+      icon-class="ipfs"
+      class="ipfs"
+    />
   </el-popover>
 </template>
 

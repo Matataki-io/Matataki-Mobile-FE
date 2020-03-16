@@ -99,7 +99,7 @@ const actions = {
       signData = `${author} ${hashPiece[0]} ${hashPiece[1]} ${hashPiece[2]} ${hashPiece[3]}`
       memo = 'Smart Signature'
     } else if (mode === 'Auth') {
-      ;[signData] = rawSignData
+      [signData] = rawSignData
       memo = 'Auth'
     } else if (mode === 'withdraw') {
       // 如果是EOS登陆提现ONT

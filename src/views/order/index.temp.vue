@@ -6,16 +6,38 @@
       customize-header-bc="#fff"
     />
     <div class="img-container">
-      <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
+      <img
+        src="@/assets/img/m_logo.png"
+        alt="logo"
+        class="logo"
+      >
     </div>
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
-      <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
-      <van-cell title="交易内容" :value="tokenContent" />
-      <van-cell title="交易数量" :value="tokenAmount" />
-      <van-cell title="交易类型" :value="tradeType" />
-      <van-cell title="创建时间" :value="friendlyTime" />
-      <van-cell title="订单编号" :value="tradeNo" />
+      <van-cell
+        title="交易账号"
+        :value="currentUserInfo.nickname || currentUserInfo.name"
+      />
+      <van-cell
+        title="交易内容"
+        :value="tokenContent"
+      />
+      <van-cell
+        title="交易数量"
+        :value="tokenAmount"
+      />
+      <van-cell
+        title="交易类型"
+        :value="tradeType"
+      />
+      <van-cell
+        title="创建时间"
+        :value="friendlyTime"
+      />
+      <van-cell
+        title="订单编号"
+        :value="tradeNo"
+      />
     </van-cell-group>
     <div class="flexBox">
       <span>预期价格波动：1% </span>
@@ -25,9 +47,12 @@
     </div>
     <div class="flexBox">
       <div>
-        <el-checkbox v-model="useBalance" @change="useBalanceChange"
-          >使用余额（¥ {{ balance }}）</el-checkbox
+        <el-checkbox
+          v-model="useBalance"
+          @change="useBalanceChange"
         >
+          使用余额（¥ {{ balance }}）
+        </el-checkbox>
       </div>
       <div>
         抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>

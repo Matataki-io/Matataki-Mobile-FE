@@ -7,7 +7,11 @@
     :is-obj="isObj"
     @getListData="getListData"
   >
-    <AssetCard v-for="(item, index) in asset" :key="index" :asset="item" />
+    <AssetCard
+      v-for="(item, index) in asset"
+      :key="index"
+      :asset="item"
+    />
   </BasePull>
 </template>
 

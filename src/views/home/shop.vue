@@ -2,7 +2,10 @@
   <div class="home mw">
     <bannerMatataki :class="!isShowSlide && 'margin'" />
     <!-- 首页头部 -->
-    <home-head :now-index="nowIndex" @login="showSidebar = true" />
+    <home-head
+      :now-index="nowIndex"
+      @login="showSidebar = true"
+    />
 
     <!-- 首页内容 -->
     <div class="home-content">
@@ -22,7 +25,12 @@
       />
 
       <!-- 标题 -->
-      <div class="now-title" :class="!isShowSlide && 'nav-hide'">{{ contentTitle }}</div>
+      <div
+        class="now-title"
+        :class="!isShowSlide && 'nav-hide'"
+      >
+        {{ contentTitle }}
+      </div>
 
       <!-- 列表 -->
       <BasePull
@@ -48,9 +56,30 @@
             primary-color="#f3f3f3"
             secondary-color="#ecebeb"
           >
-            <rect x="20" y="20" rx="4" ry="4" width="120" height="60" />
-            <rect x="150" y="20" rx="0" ry="0" width="235" height="30" />
-            <rect x="150" y="60" rx="0" ry="0" width="235" height="20" />
+            <rect
+              x="20"
+              y="20"
+              rx="4"
+              ry="4"
+              width="120"
+              height="60"
+            />
+            <rect
+              x="150"
+              y="20"
+              rx="0"
+              ry="0"
+              width="235"
+              height="30"
+            />
+            <rect
+              x="150"
+              y="60"
+              rx="0"
+              ry="0"
+              width="235"
+              height="20"
+            />
           </ContentLoader>
         </template>
         <template v-else>
@@ -73,7 +102,7 @@
       </BasePull>
     </div>
 
-    <Sidebar v-model="showSidebar"></Sidebar>
+    <Sidebar v-model="showSidebar" />
   </div>
 </template>
 
@@ -201,8 +230,8 @@ export default {
     // 获取推荐文章或者商品
     async postsRecommend(channel) {
       await this.$API.postsRecommend({
-          channel: channel
-        })
+        channel: channel
+      })
         .then(res => {
           if (res.code === 0) {
             this.content.recommend.list = res.data

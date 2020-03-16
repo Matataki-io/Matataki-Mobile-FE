@@ -9,27 +9,45 @@
     :closable="false"
     @on-visible-change="change"
   >
-    <div v-if="widgetModalStatus === 0" >
+    <div v-if="widgetModalStatus === 0">
       <div class="widget-content-button">
-        <div class="widget-button" @click="createWidget">
+        <div
+          class="widget-button"
+          @click="createWidget"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/widget.svg" alt="widget" />
+            <img
+              src="@/assets/img/widget/widget.svg"
+              alt="widget"
+            >
           </div>
           <p>
             {{ $t('p.createWidget') }}
           </p>
         </div>
-        <div class="widget-button" @click="widgetModalStatus = 4">
+        <div
+          class="widget-button"
+          @click="widgetModalStatus = 4"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/share.svg" alt="widget" />
+            <img
+              src="@/assets/img/widget/share.svg"
+              alt="widget"
+            >
           </div>
           <p>
             {{ $t('p.createLongImg') }}
           </p>
         </div>
-        <div class="widget-button" @click="copyCode(getClipboard)">
+        <div
+          class="widget-button"
+          @click="copyCode(getClipboard)"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/link.svg" alt="link" />
+            <img
+              src="@/assets/img/widget/link.svg"
+              alt="link"
+            >
           </div>
           <p>
             {{ $t('p.copyInviteLink') }}
@@ -42,12 +60,17 @@
         :link="shareInfo.shareLink"
         :summary="filterStr(shareInfo.content)"
         :qq-title="shareInfo.title"
-        :showTg="true"
+        :show-tg="true"
         class="social-bt"
       />
     </div>
-    <div v-if="widgetModalStatus === 1" class="widget-writecontent">
-      <p class="widget-title">{{ $t('p.createWidget') }}</p>
+    <div
+      v-if="widgetModalStatus === 1"
+      class="widget-writecontent"
+    >
+      <p class="widget-title">
+        {{ $t('p.createWidget') }}
+      </p>
       <van-field
         v-model="widgetContent"
         class="widget-textarea"
@@ -57,40 +80,65 @@
         autosize
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">
+        <a
+          class="help"
+          href="javascript:;"
+          @click="reviewHelp"
+        >
           {{ $t('p.widgetHelp') }}
         </a>
-        <a class="create" href="javascript:;" @click="createWidgetContent">{{
+        <a
+          class="create"
+          href="javascript:;"
+          @click="createWidgetContent"
+        >{{
           $t('p.createWidget')
         }}</a>
       </div>
     </div>
-    <div v-if="widgetModalStatus === 2" class="widget-help">
+    <div
+      v-if="widgetModalStatus === 2"
+      class="widget-help"
+    >
       <p class="widget-help-title">
         {{ $t('p.articleWidgetHelp') }}
       </p>
       <p class="widget-help-content">
         {{ $t('p.articleWidgetContent') }}
       </p>
-      <br />
+      <br>
       <p class="widget-help-title">
         {{ $t('p.stepTitle') }}
       </p>
       <p class="widget-help-content">
-        1.{{ $t('p.stepContent1') }}<br />
-        2.{{ $t('p.stepContent2') }}<br />
-        3.{{ $t('p.stepContent3') }}<br />
-        4.{{ $t('p.stepContent4') }}<br />
+        1.{{ $t('p.stepContent1') }}<br>
+        2.{{ $t('p.stepContent2') }}<br>
+        3.{{ $t('p.stepContent3') }}<br>
+        4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a class="widget-help-button" href="javascript:;" @click="backPage">{{
+      <a
+        class="widget-help-button"
+        href="javascript:;"
+        @click="backPage"
+      >{{
         $t('p.articleTransferHelpBtn')
       }}</a>
     </div>
-    <div v-if="widgetModalStatus === 3" class="widget-review">
-      <p class="widget-title">{{ $t('p.widgetView') }}</p>
-      <div class="widget-review-content" v-html="widgetContentIframe"></div>
-      <p class="widget-review-des">{{ $t('p.widgetCopyDes') }}</p>
+    <div
+      v-if="widgetModalStatus === 3"
+      class="widget-review"
+    >
+      <p class="widget-title">
+        {{ $t('p.widgetView') }}
+      </p>
+      <div
+        class="widget-review-content"
+        v-html="widgetContentIframe"
+      />
+      <p class="widget-review-des">
+        {{ $t('p.widgetCopyDes') }}
+      </p>
       <van-field
         id="codeIframe"
         v-model="widgetContentIframe"
@@ -102,14 +150,25 @@
         @focus="selectValue($event)"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">{{ $t('p.widgetHelp') }}</a>
-        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">{{
+        <a
+          class="help"
+          href="javascript:;"
+          @click="reviewHelp"
+        >{{ $t('p.widgetHelp') }}</a>
+        <a
+          class="create"
+          href="javascript:;"
+          @click="copyCode(widgetContentIframe)"
+        >{{
           $t('p.copyCode')
         }}</a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 4">
-      <QRCodeDialog :share-info="shareInfo" @change="change"></QRCodeDialog>
+      <QRCodeDialog
+        :share-info="shareInfo"
+        @change="change"
+      />
     </div>
   </Modal>
 </template>

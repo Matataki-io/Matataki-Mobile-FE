@@ -1,20 +1,47 @@
 <template>
-  <a target="_blank" :href="card.url" class="card">
-    <div v-if="card.cover" class="card-cover">
-      <img :src="coverSrc" :alt="card.title">
+  <a
+    target="_blank"
+    :href="card.url"
+    class="card"
+  >
+    <div
+      v-if="card.cover"
+      class="card-cover"
+    >
+      <img
+        :src="coverSrc"
+        :alt="card.title"
+      >
     </div>
     <div>
       <div class="card-operate">
-        <p class="card-text" :class="!shareCard && 'card-sharehall'">{{ card.title || '暂无' }}</p>
-        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+        <p
+          class="card-text"
+          :class="!shareCard && 'card-sharehall'"
+        >{{ card.title || '暂无' }}</p>
+        <div
+          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+          class="card-operate"
+        >
           <!-- <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" /> -->
-          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+          <svg-icon
+            class="icon"
+            icon-class="quote"
+            @click="ref(card.url, $event)"
+          />
         </div>
       </div>
-      <p class="card-summary" :class="!shareCard && 'card-sharehall'">{{ card.summary || '暂无' }}</p>
+      <p
+        class="card-summary"
+        :class="!shareCard && 'card-sharehall'"
+      >{{ card.summary || '暂无' }}</p>
     </div>
-    <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
-      <i class="el-icon-close icon"></i>
+    <span
+      v-if="!shareCard && cardType === 'edit'"
+      class="card-remove"
+      @click="removeCard"
+    >
+      <i class="el-icon-close icon" />
     </span>
   </a>
 </template>
@@ -52,13 +79,13 @@ export default {
       else if (e && e.stopPropagation) e.stopPropagation()
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          customClass: 'message-box__mobile'
-        }).then(() => {
-          this.$emit('removeShareLink', this.idx)
-        }).catch(() => {})
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'message-box__mobile'
+      }).then(() => {
+        this.$emit('removeShareLink', this.idx)
+      }).catch(() => {})
       return false
     },
     copy(val, e) {

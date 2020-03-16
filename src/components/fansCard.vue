@@ -3,7 +3,10 @@
     <router-link
       :to="{ name: 'user-id', params: { id: type === 'follow' ? card.fuid : card.uid } }"
     >
-      <avatar class="avatar" :src="avatar" />
+      <avatar
+        class="avatar"
+        :src="avatar"
+      />
     </router-link>
     <div class="fans-info">
       <router-link
@@ -13,7 +16,9 @@
       >
         {{ name }}
       </router-link>
-      <p class="fans">{{ card.fans }}粉丝</p>
+      <p class="fans">
+        {{ card.fans }}粉丝
+      </p>
     </div>
     <template v-if="!isMe(card.id)">
       <el-button
@@ -22,7 +27,10 @@
         class="follow"
         @click.stop="followOrUnFollow"
       >
-        <i v-if="!cardCopy.is_follow" class="el-icon-plus" />
+        <i
+          v-if="!cardCopy.is_follow"
+          class="el-icon-plus"
+        />
         {{ followBtnText }}
       </el-button>
     </template>

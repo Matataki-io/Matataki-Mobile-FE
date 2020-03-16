@@ -3,8 +3,17 @@
     <navigation v-if="isRouterAlive">
       <router-view />
     </navigation>
-    <BackTop v-if="!hideBackTop" :right="20" :bottom="70" :height="40">
-      <img class="backtop" src="@/assets/img/icon_back_top.svg" alt="backtop" />
+    <BackTop
+      v-if="!hideBackTop"
+      :right="20"
+      :bottom="70"
+      :height="40"
+    >
+      <img
+        class="backtop"
+        src="@/assets/img/icon_back_top.svg"
+        alt="backtop"
+      >
     </BackTop>
     <AuthModal v-model="loginModalShow" />
   </div>

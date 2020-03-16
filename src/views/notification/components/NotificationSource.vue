@@ -1,7 +1,15 @@
 <template>
   <div class="soruce-avatar">
-    <router-link :to="{name: route, params: {id}}" :title="name" target="_blank">
-      <avatar :src="avatarUrl" class="avatar" size="30px" />
+    <router-link
+      :to="{name: route, params: {id}}"
+      :title="name"
+      target="_blank"
+    >
+      <avatar
+        :src="avatarUrl"
+        class="avatar"
+        size="30px"
+      />
     </router-link>
   </div>
 </template>

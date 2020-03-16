@@ -12,7 +12,11 @@
         @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac">
-        <el-button size="small" class="btn" @click="postComment">
+        <el-button
+          size="small"
+          class="btn"
+          @click="postComment"
+        >
           {{ $t('p.commentPointBtn') }}
         </el-button>
         <span class="btn-des">
@@ -50,8 +54,8 @@ export default {
   },
   watch: {
     // isLogined(val) {
-      // 监听登陆 重新获取头像
-      // if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
+    // 监听登陆 重新获取头像
+    // if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
     // }
   },
   mounted() {

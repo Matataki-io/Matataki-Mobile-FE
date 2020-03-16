@@ -13,7 +13,11 @@
     <div class="info">
       <div class="avatar">
         <div class="avatar-img">
-          <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+          <img
+            :src="avatar"
+            alt="avatar"
+            :onerror="defaultAvatar"
+          >
         </div>
         <span>{{ draftbox.nickname || draftbox.author }}</span>
       </div>
@@ -21,12 +25,28 @@
     </div>
     <div class="container">
       <div class="img-outer">
-        <img v-if="cover" v-lazy="cover" :src="cover" alt="cover" class="img-inner" />
-        <img v-else src="@/assets/img/article_bg.svg" alt="cover" class="img-inner" />
-        <div class="full"></div>
+        <img
+          v-if="cover"
+          v-lazy="cover"
+          :src="cover"
+          alt="cover"
+          class="img-inner"
+        >
+        <img
+          v-else
+          src="@/assets/img/article_bg.svg"
+          alt="cover"
+          class="img-inner"
+        >
+        <div class="full" />
       </div>
       <div class="card-text">
-        <h2 v-clampy="2" class="title">{{ draftbox.title }}</h2>
+        <h2
+          v-clampy="2"
+          class="title"
+        >
+          {{ draftbox.title }}
+        </h2>
         <div>
           <button
             class="del-btn"

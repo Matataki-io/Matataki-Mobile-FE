@@ -9,15 +9,23 @@
       :scroll-show-right="true"
       @scrollToggleStatus="status => (scrollStatus = status)"
     >
-      <div v-if="!isMe(id)" slot="right">
+      <div
+        v-if="!isMe(id)"
+        slot="right"
+      >
         <template v-if="!followed">
-          <span class="follow-button dark" @click="followOrUnfollowUser({ id, type: 1 })">
-            <svg-icon icon-class="add" />
-            {{ $t('follow') }}</span
+          <span
+            class="follow-button dark"
+            @click="followOrUnfollowUser({ id, type: 1 })"
           >
+            <svg-icon icon-class="add" />
+            {{ $t('follow') }}</span>
         </template>
         <template v-else>
-          <span class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">{{
+          <span
+            class="follow-button"
+            @click="followOrUnfollowUser({ id, type: 0 })"
+          >{{
             $t('following')
           }}</span>
         </template>
@@ -25,22 +33,40 @@
     </BaseHeader>
 
     <div class="user-head">
-      <div v-if="banner" class="banner user-page-banner">
-        <img :src="banner" alt="banner" />
+      <div
+        v-if="banner"
+        class="banner user-page-banner"
+      >
+        <img
+          :src="banner"
+          alt="banner"
+        >
       </div>
-      <div v-else class="default-banner user-page-banner">
-        <img src="@/assets/img/user_banner.png" alt="banner" />
+      <div
+        v-else
+        class="default-banner user-page-banner"
+      >
+        <img
+          src="@/assets/img/user_banner.png"
+          alt="banner"
+        >
       </div>
       <div class="fl ac jc token-avatar">
-        <avatar class="user-avatar" :src="avatar"></avatar>
+        <avatar
+          class="user-avatar"
+          :src="avatar"
+        />
 
         <img
           v-if="tokenUser"
           class="token-link"
           src="@/assets/img/token_link.png"
           alt="token-link"
+        >
+        <tokenAvatar
+          v-if="tokenUser"
+          :token="tokenData"
         />
-        <tokenAvatar v-if="tokenUser" :token="tokenData" />
       </div>
       <p class="name">
         {{ username }}
@@ -51,11 +77,16 @@
           content="发行了Fan票的用户"
           placement="top"
         >
-          <svg-icon class="tokens" icon-class="token" />
+          <svg-icon
+            class="tokens"
+            icon-class="token"
+          />
         </el-tooltip>
       </p>
 
-      <p class="introduction">{{ $t('profile') }}：{{ introduction || $t('not') }}</p>
+      <p class="introduction">
+        {{ $t('profile') }}：{{ introduction || $t('not') }}
+      </p>
       <p class="user-status">
         <router-link :to="{ name: 'user-id-follow', params: { id: this.$route.params.id } }">
           <span class="status-number">{{ follows }}</span>
@@ -88,7 +119,10 @@
           />
         </bannerUpload>
       </el-tooltip>
-      <div v-if="!isMe(id)" class="fixed-right follow">
+      <div
+        v-if="!isMe(id)"
+        class="fixed-right follow"
+      >
         <template v-if="!scrollStatus">
           <transition name="fade">
             <span
@@ -97,19 +131,34 @@
               @click="followOrUnfollowUser({ id, type: 1 })"
             >
               <svg-icon icon-class="add" />
-              {{ $t('follow') }}</span
+              {{ $t('follow') }}</span>
+            <span
+              v-else
+              class="follow-button"
+              @click="followOrUnfollowUser({ id, type: 0 })"
             >
-            <span v-else class="follow-button" @click="followOrUnfollowUser({ id, type: 0 })">
-              {{ $t('following') }}</span
-            >
+              {{ $t('following') }}</span>
           </transition>
         </template>
       </div>
-      <router-link v-else :to="{ name: 'setting' }" class="fixed-right edit">
-        <el-button class="edit-button" size="mini">编辑资料</el-button>
+      <router-link
+        v-else
+        :to="{ name: 'setting' }"
+        class="fixed-right edit"
+      >
+        <el-button
+          class="edit-button"
+          size="mini"
+        >
+          编辑资料
+        </el-button>
       </router-link>
       <span class="fixed-right share">
-        <el-button class="narrowing" size="mini" @click="shareModalShow = true">
+        <el-button
+          class="narrowing"
+          size="mini"
+          @click="shareModalShow = true"
+        >
           <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>
@@ -131,7 +180,7 @@
       </a>
     </nav> -->
     <userPageNav />
-    <slot></slot>
+    <slot />
 
     <Share
       :share-modal-show="shareModalShow"

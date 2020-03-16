@@ -6,7 +6,7 @@ Vue.directive('highlight',function (el) {
     try {
       let blocks = el.querySelectorAll('pre code')
       blocks.forEach((block)=>{
-          hljs.highlightBlock(block)
+        hljs.highlightBlock(block)
       })
     } catch (error) {
       console.log(error)

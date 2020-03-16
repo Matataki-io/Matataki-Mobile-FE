@@ -1,5 +1,8 @@
 <template>
-  <ul class="home-fixed mw" :class="!navShow && 'show'">
+  <ul
+    class="home-fixed mw"
+    :class="!navShow && 'show'"
+  >
     <li
       v-for="(item, index) in navMenu"
       :key="index"

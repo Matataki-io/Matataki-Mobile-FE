@@ -1,17 +1,23 @@
 <template>
-  <div class="tg-container" v-loading="loading">
+  <div
+    v-loading="loading"
+    class="tg-container"
+  >
     <TelegramLogin
-      @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
       request-access="write"
       radius="6"
+      @callback="login"
     />
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
-    <wechatTips v-if="isShowingTip" class="wechat-tips"
-     @dismiss="dismiss"></wechatTips>
+    <wechatTips
+      v-if="isShowingTip"
+      class="wechat-tips"
+      @dismiss="dismiss"
+    />
   </div>
 </template>
 
@@ -22,7 +28,7 @@ import { getCookie, removeCookie } from '@/utils/cookie'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'telegramLogin',
+  name: 'TelegramLogin',
   components: {
     TelegramLogin,
     wechatTips

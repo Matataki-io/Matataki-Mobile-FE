@@ -16,19 +16,41 @@
         />
       </el-tooltip> -->
 
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是Fan票?</a>
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/977"
+      >什么是Fan票?</a>
       &nbsp;
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980"
-        >如何发行Fan票?</a
-      >
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/980"
+      >如何发行Fan票?</a>
     </div>
 
-    <el-form ref="form" :rules="rules" class="input-form" :model="form" label-width="80px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" class="input" placeholder="请输入Fan票名称" />
+    <el-form
+      ref="form"
+      :rules="rules"
+      class="input-form"
+      :model="form"
+      label-width="80px"
+    >
+      <el-form-item
+        label="名称"
+        prop="name"
+      >
+        <el-input
+          v-model="form.name"
+          class="input"
+          placeholder="请输入Fan票名称"
+        />
       </el-form-item>
 
-      <el-form-item label="缩写" prop="symbol">
+      <el-form-item
+        label="缩写"
+        prop="symbol"
+      >
         <el-input
           v-model="form.symbol"
           class="input"
@@ -36,8 +58,15 @@
           placeholder="请输入Fan票缩写(发行后不可修改)"
         />
       </el-form-item>
-      <el-form-item label="图标" prop="logo">
-        <el-input v-model="form.logo" style="display: none;" class="input" />
+      <el-form-item
+        label="图标"
+        prop="logo"
+      >
+        <el-input
+          v-model="form.logo"
+          style="display: none;"
+          class="input"
+        />
         <img-upload
           v-show="!coinsCover"
           :img-upload-done="imgUploadDone"
@@ -45,19 +74,36 @@
           class="coins-upload-content"
           @doneImageUpload="doneImageUpload"
         >
-          <div slot="uploadButton" class="coins-upload">
+          <div
+            slot="uploadButton"
+            class="coins-upload"
+          >
             <i class="el-icon-plus add" />
           </div>
         </img-upload>
-        <div v-show="coinsCover" class="coina-cover">
-          <el-image :src="coinsCover" fit="cover" class="tokens-image" />
-          <div class="cover-full" @click="removeCoinsIcon">
+        <div
+          v-show="coinsCover"
+          class="coina-cover"
+        >
+          <el-image
+            :src="coinsCover"
+            fit="cover"
+            class="tokens-image"
+          />
+          <div
+            class="cover-full"
+            @click="removeCoinsIcon"
+          >
             <i class="el-icon-delete remove" />
           </div>
         </div>
       </el-form-item>
       <!-- 编辑页面不需要显示 -->
-      <el-form-item v-if="isPost" label="发行数量" prop="number">
+      <el-form-item
+        v-if="isPost"
+        label="发行数量"
+        prop="number"
+      >
         <el-input
           v-model="form.number"
           class="input"
@@ -65,10 +111,21 @@
         />
       </el-form-item>
 
-      <el-form-item label="简介" prop="brief">
-        <el-input v-model="form.brief" class="input" maxlength="50" placeholder="简介" />
+      <el-form-item
+        label="简介"
+        prop="brief"
+      >
+        <el-input
+          v-model="form.brief"
+          class="input"
+          maxlength="50"
+          placeholder="简介"
+        />
       </el-form-item>
-      <el-form-item label="介绍" prop="">
+      <el-form-item
+        label="介绍"
+        prop=""
+      >
         <el-input
           v-model="form.introduction"
           class="input"
@@ -80,8 +137,15 @@
         />
       </el-form-item>
 
-      <el-form-item label="相关网站" prop="">
-        <div v-for="(item, index) in about" :key="index" class="fl ac about-input">
+      <el-form-item
+        label="相关网站"
+        prop=""
+      >
+        <div
+          v-for="(item, index) in about"
+          :key="index"
+          class="fl ac about-input"
+        >
           <el-input
             v-model="about[index]"
             class="input"
@@ -91,18 +155,32 @@
             <i class="el-icon-plus" />
           </div> -->
 
-          <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+          <div
+            v-if="about.length > 1"
+            class="about-input-btn"
+            @click="abountLess(index)"
+          >
             <i class="el-icon-minus" />
           </div>
         </div>
 
-        <div v-if="about.length < 5" class="about-input-btn add" @click="aboutAdd">
+        <div
+          v-if="about.length < 5"
+          class="about-input-btn add"
+          @click="aboutAdd"
+        >
           <i class="el-icon-plus" />
         </div>
       </el-form-item>
 
-      <el-form-item label="社交帐号" prop="">
-        <div v-for="(item, index) in social" :key="index">
+      <el-form-item
+        label="社交帐号"
+        prop=""
+      >
+        <div
+          v-for="(item, index) in social"
+          :key="index"
+        >
           <p class="social-title">
             {{ item.name }}
             <span v-html="item.tooltip" />
@@ -111,14 +189,21 @@
             <div class="social-icons">
               <socialIcon :icon="item.symbol" />
             </div>
-            <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
+            <el-input
+              v-model="item.value"
+              class="social-input"
+              :placeholder="item.placeholder"
+            />
           </div>
         </div>
       </el-form-item>
 
       <el-form-item style="margin:40px 0 0 0;">
-        <el-checkbox v-if="isPost" v-model="form.agree">
-          我声明Fan票为本人自愿发行，<br />由本人承担一切法律责任
+        <el-checkbox
+          v-if="isPost"
+          v-model="form.agree"
+        >
+          我声明Fan票为本人自愿发行，<br>由本人承担一切法律责任
         </el-checkbox>
       </el-form-item>
       <div class="publish-btn-fix">
@@ -130,7 +215,10 @@
         >
           {{ isPost ? '发行Fan票' : '保存' }}
         </el-button>
-        <p v-if="isPost" class="tips">
+        <p
+          v-if="isPost"
+          class="tips"
+        >
           创建Fan票过程需要上链，请耐心等候。
         </p>
       </div>

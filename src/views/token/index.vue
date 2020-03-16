@@ -4,83 +4,120 @@
     <div class="tokens-list">
       <div class="fl jsb">
         <div class="tokens-list-nav">
-          <Dropdown class="dropdown" trigger="click" @on-click="toggleSort">
+          <Dropdown
+            class="dropdown"
+            trigger="click"
+            @on-click="toggleSort"
+          >
             <div v-if="sort === 'general'">
               综合排序
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <div v-else-if="sort === 'unit-price-desc'">
               单价最高
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <div v-else-if="sort === 'unit-price-asc'">
               单价最低
-              <i class="el-icon-arrow-up"></i>
+              <i class="el-icon-arrow-up" />
             </div>
             <div v-else-if="sort === 'liquidity-desc'">
               流动金最高
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <div v-else-if="sort === 'liquidity-asc'">
               流动金最低
-              <i class="el-icon-arrow-up"></i>
+              <i class="el-icon-arrow-up" />
             </div>
             <div v-else-if="sort === 'exchange-desc'">
               24h 成交量最高
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <div v-else-if="sort === 'exchange-asc'">
               24h 成交量最低
-              <i class="el-icon-arrow-up"></i>
+              <i class="el-icon-arrow-up" />
             </div>
             <div v-else-if="sort === 'name-asc'">
               首字母升序
-              <i class="el-icon-arrow-up"></i>
+              <i class="el-icon-arrow-up" />
             </div>
             <div v-else-if="sort === 'name-desc'">
               首字母降序
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <div v-else-if="sort === 'time-asc'">
               时间升序
-              <i class="el-icon-arrow-up"></i>
+              <i class="el-icon-arrow-up" />
             </div>
             <div v-else-if="sort === 'time-desc'">
               时间降序
-              <i class="el-icon-arrow-down"></i>
+              <i class="el-icon-arrow-down" />
             </div>
             <DropdownMenu slot="list">
-              <DropdownItem name="general" :selected="sort === 'general'">
+              <DropdownItem
+                name="general"
+                :selected="sort === 'general'"
+              >
                 综合排序
               </DropdownItem>
-              <DropdownItem name="unit-price-desc" :selected="sort === 'unit-price-desc'">
+              <DropdownItem
+                name="unit-price-desc"
+                :selected="sort === 'unit-price-desc'"
+              >
                 单价最高
               </DropdownItem>
-              <DropdownItem name="unit-price-asc" :selected="sort === 'unit-price-asc'">
+              <DropdownItem
+                name="unit-price-asc"
+                :selected="sort === 'unit-price-asc'"
+              >
                 单价最低
               </DropdownItem>
-              <DropdownItem name="liquidity-desc" :selected="sort === 'liquidity-desc'">
+              <DropdownItem
+                name="liquidity-desc"
+                :selected="sort === 'liquidity-desc'"
+              >
                 流动金最高
               </DropdownItem>
-              <DropdownItem name="liquidity-asc" :selected="sort === 'liquidity-asc'">
+              <DropdownItem
+                name="liquidity-asc"
+                :selected="sort === 'liquidity-asc'"
+              >
                 流动金最低
               </DropdownItem>
-              <DropdownItem name="exchange-desc" :selected="sort === 'exchange-desc'">
+              <DropdownItem
+                name="exchange-desc"
+                :selected="sort === 'exchange-desc'"
+              >
                 24h 成交量最高
               </DropdownItem>
-              <DropdownItem name="exchange-asc" :selected="sort === 'exchange-asc'">
+              <DropdownItem
+                name="exchange-asc"
+                :selected="sort === 'exchange-asc'"
+              >
                 24h 成交量最低
               </DropdownItem>
-              <DropdownItem name="name-asc" :selected="sort === 'name-asc'">
+              <DropdownItem
+                name="name-asc"
+                :selected="sort === 'name-asc'"
+              >
                 首字母升序
               </DropdownItem>
-              <DropdownItem name="name-desc" :selected="sort === 'name-desc'">
+              <DropdownItem
+                name="name-desc"
+                :selected="sort === 'name-desc'"
+              >
                 首字母降序
               </DropdownItem>
-              <DropdownItem name="time-asc" :selected="sort === 'time-asc'">
+              <DropdownItem
+                name="time-asc"
+                :selected="sort === 'time-asc'"
+              >
                 时间升序
               </DropdownItem>
-              <DropdownItem name="time-desc" :selected="sort === 'time-desc'">
+              <DropdownItem
+                name="time-desc"
+                :selected="sort === 'time-desc'"
+              >
                 时间降序
               </DropdownItem>
             </DropdownMenu>
@@ -98,7 +135,11 @@
       :auto-request-time="0"
       @getListData="getListData"
     >
-      <tokenCard v-for="(item, index) in pull.list" :key="index" :card="item" />
+      <tokenCard
+        v-for="(item, index) in pull.list"
+        :key="index"
+        :card="item"
+      />
     </BasePull>
   </div>
 </template>

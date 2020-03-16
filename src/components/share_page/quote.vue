@@ -1,17 +1,40 @@
 <template>
   <!-- <div v-show="refernceTotal !== 0 || berefernceTotal !== 0"> -->
   <div>
-    <div class="quote" :class="show && 'open'" @click.stop ref="quote">
+    <div
+      ref="quote"
+      class="quote"
+      :class="show && 'open'"
+      @click.stop
+    >
       <div class="quote-head">
-        <div class="quote-head__title one" @click.stop="showQuote(0)" :class="(idx === 0 || idx === -1 ) && 'open'">
-          <slot name="left-prompt">已引用</slot>
+        <div
+          class="quote-head__title one"
+          :class="(idx === 0 || idx === -1 ) && 'open'"
+          @click.stop="showQuote(0)"
+        >
+          <slot name="left-prompt">
+            已引用
+          </slot>
         </div>
-        <div class="quote-head__title two" @click.stop="showQuote(1)" :class="idx === 1 && 'open'">
-          <slot name="right-prompt">被引用</slot>
+        <div
+          class="quote-head__title two"
+          :class="idx === 1 && 'open'"
+          @click.stop="showQuote(1)"
+        >
+          <slot name="right-prompt">
+            被引用
+          </slot>
         </div>
       </div>
-      <slot v-if="idx === 0" name="ref"></slot>
-      <slot v-if="idx === 1" name="beref"></slot>
+      <slot
+        v-if="idx === 0"
+        name="ref"
+      />
+      <slot
+        v-if="idx === 1"
+        name="beref"
+      />
     </div>
     <!-- <div class="full" :class="show && 'open'"></div> -->
   </div>

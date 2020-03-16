@@ -1,6 +1,8 @@
 <template>
   <div class="home-slide">
-    <p class="home-slide-title">{{ recommend.title }}</p>
+    <p class="home-slide-title">
+      {{ recommend.title }}
+    </p>
 
     <ContentLoader
       v-if="recommend.list.length === 0"
@@ -9,11 +11,29 @@
       primary-color="#f3f3f3"
       secondary-color="#ecebeb"
     >
-      <rect x="20" y="20" rx="20" ry="20" width="280" height="117" />
-      <rect x="320" y="20" rx="20" ry="20" width="280" height="117" />
+      <rect
+        x="20"
+        y="20"
+        rx="20"
+        ry="20"
+        width="280"
+        height="117"
+      />
+      <rect
+        x="320"
+        y="20"
+        rx="20"
+        ry="20"
+        width="280"
+        height="117"
+      />
     </ContentLoader>
 
-    <div v-else ref="wrapper" class="slide-container">
+    <div
+      v-else
+      ref="wrapper"
+      class="slide-container"
+    >
       <div class="slide-content">
         <homeSlideItem
           v-for="(item, index) in recommend.list"

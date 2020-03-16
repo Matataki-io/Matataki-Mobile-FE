@@ -1,5 +1,9 @@
 <template>
-  <div style="height: 100%;" v-loading="loading" element-loading-text="登录中..."></div>
+  <div
+    v-loading="loading"
+    style="height: 100%;"
+    element-loading-text="登录中..."
+  />
 </template>
 
 <script>
@@ -7,12 +11,12 @@ import { getCookie, removeCookie } from '@/utils/cookie'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'WeixinLogin',
-  computed: {},
   data() {
     return {
       loading: true
     }
   },
+  computed: {},
   created() {
     const { code, state } = this.$route.query
     // if (from) sessionStorage.setItem('wechatFrom', from) // set sessionStorage

@@ -1,29 +1,58 @@
 <template>
   <userPage>
-    <div v-loading="loading" class="information">
-      <div v-if="urls.length !== 0" class="websites">
+    <div
+      v-loading="loading"
+      class="information"
+    >
+      <div
+        v-if="urls.length !== 0"
+        class="websites"
+      >
         <h3 class="inline h3">
           相关网站
         </h3>
         <div class="inline url">
-          <p v-for="(item, index) in urls" :key="index">
-            <a :href="formatUrl(item)" target="_blank">{{ item }} </a>
+          <p
+            v-for="(item, index) in urls"
+            :key="index"
+          >
+            <a
+              :href="formatUrl(item)"
+              target="_blank"
+            >{{ item }} </a>
           </p>
         </div>
       </div>
-      <div v-if="social.length !== 0" class="social">
+      <div
+        v-if="social.length !== 0"
+        class="social"
+      >
         <h3 class="inline h3">
           社交账号
         </h3>
         <div class="inline social">
-          <div v-for="(item, index) in social" :key="index">
+          <div
+            v-for="(item, index) in social"
+            :key="index"
+          >
             <div class="social-icons">
-              <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+              <socialIcon
+                :icon="item.icon"
+                :show-tooltip="true"
+                :content="item.content"
+              />
             </div>
-            <a v-if="item.url" class="url-text" :href="item.url + item.content">
+            <a
+              v-if="item.url"
+              class="url-text"
+              :href="item.url + item.content"
+            >
               {{ item.type !== 'email' ? item.url + item.content : item.content }}
             </a>
-            <span v-else class="url-text">{{ item.content }}</span>
+            <span
+              v-else
+              class="url-text"
+            >{{ item.content }}</span>
           </div>
         </div>
       </div>

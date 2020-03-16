@@ -2,10 +2,18 @@
   <div class="container">
     <BaseHeader :pageinfo="{ title: $t('sidebar.buy') }" />
     <div class="buy-tab">
-      <router-link :to="{ name: 'buy' }" :class="$route.name === 'buy' && 'active'" replace>
+      <router-link
+        :to="{ name: 'buy' }"
+        :class="$route.name === 'buy' && 'active'"
+        replace
+      >
         文章
       </router-link>
-      <router-link :to="{ name: 'buy-other' }" :class="$route.name === 'buy-other' && 'active'" replace>
+      <router-link
+        :to="{ name: 'buy-other' }"
+        :class="$route.name === 'buy-other' && 'active'"
+        replace
+      >
         其他
       </router-link>
     </div>

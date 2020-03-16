@@ -16,12 +16,19 @@
             <h4>{{ tokenDetail.name || '' }}</h4>
           </div>
         </div>
-        <div class="number">{{ userBalance || 0 }}</div>
+        <div class="number">
+          {{ userBalance || 0 }}
+        </div>
       </div>
       <div class="fl jsb publish-tokens">
-        <div class="username">创始人：{{ userDetail.nickname || userDetail.username }}</div>
-        <router-link class="jump" :to="{ name: 'user-id', params: { id: userDetail.id } }">
-          <svg-icon icon-class="share"></svg-icon>
+        <div class="username">
+          创始人：{{ userDetail.nickname || userDetail.username }}
+        </div>
+        <router-link
+          class="jump"
+          :to="{ name: 'user-id', params: { id: userDetail.id } }"
+        >
+          <svg-icon icon-class="share" />
         </router-link>
       </div>
     </div>
@@ -35,16 +42,35 @@
       :reload="reload"
       @getListData="getListData"
     >
-      <card v-for="item in pointLog.list" :key="item.id" :card="item"></card>
+      <card
+        v-for="item in pointLog.list"
+        :key="item.id"
+        :card="item"
+      />
     </BasePull>
     <div class="fixed-bottom">
-      <el-button class="fix-button" @click="showGift">赠送</el-button>
+      <el-button
+        class="fix-button"
+        @click="showGift"
+      >
+        赠送
+      </el-button>
       <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetail.symbol } }">
-        <el-button class="fix-button" type="primary">交易</el-button>
+        <el-button
+          class="fix-button"
+          type="primary"
+        >
+          交易
+        </el-button>
       </router-link>
     </div>
 
-    <m-dialog v-model="giftDialog" width="90%" title="赠送Fan票" class="transfer-dialog">
+    <m-dialog
+      v-model="giftDialog"
+      width="90%"
+      title="赠送Fan票"
+      class="transfer-dialog"
+    >
       <el-form
         ref="form"
         v-loading="transferLoading"
@@ -54,7 +80,9 @@
         :rules="rules"
       >
         <el-form-item label="Fan票">
-          <p class="tokenname">{{ form.tokenname }}</p>
+          <p class="tokenname">
+            {{ form.tokenname }}
+          </p>
         </el-form-item>
         <el-form-item label="接受对象">
           <el-input
@@ -68,60 +96,100 @@
             <el-tag
               v-for="item in historyUser"
               :key="item.id"
-              @click="continueUser(item)"
               type="info"
               class="history-user__tag"
+              @click="continueUser(item)"
             >
               {{
-              (item.nickname || item.username).length > 20
-              ? `${(item.nickname || item.username).slice(0, 20)}...`
-              : item.nickname || item.username
+                (item.nickname || item.username).length > 20
+                  ? `${(item.nickname || item.username).slice(0, 20)}...`
+                  : item.nickname || item.username
               }}
             </el-tag>
           </template>
           <!-- 搜索结果 -->
-          <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
-            <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
-              <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
+          <div
+            v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
+            class="transfer—search__list"
+          >
+            <div
+              v-for="item in searchUserList"
+              :key="item.id"
+              @click="continueUser(item)"
+            >
+              <avatar
+                :src="searchUserAvatar(item.avatar)"
+                class="transfer—search__list__avatar"
+              />
               <span
-                v-html="searchUserTitle(item.nickname || item.username)"
                 class="search-result__tag"
+                v-html="searchUserTitle(item.nickname || item.username)"
               />
             </div>
           </div>
         </el-form-item>
         <!-- 结果 -->
         <transition name="result">
-          <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
-            <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
-              <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
-              <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
-              <div @click="closeUser" class="gift-ful">
+          <el-form-item
+            v-if="!$utils.isNull(toUserInfo)"
+            label=""
+            prop=""
+          >
+            <router-link
+              :to="{name: 'user-id', params: {id: toUserInfo.id}}"
+              class="search-user"
+              target="_blank"
+            >
+              <avatar
+                :src="searchUserAvatar(toUserInfo.avatar)"
+                class="search-user-avatar"
+              />
+              <span
+                class="search-result__tag "
+                v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
+              />
+              <div
+                class="gift-ful"
+                @click="closeUser"
+              >
                 <i class="el-icon-close" />
               </div>
             </router-link>
           </el-form-item>
         </transition>
-        <el-form-item label="发送数量" prop="tokens">
+        <el-form-item
+          label="发送数量"
+          prop="tokens"
+        >
           <el-input
-            placeholder="请输入数量"
             v-model="form.tokens"
+            placeholder="请输入数量"
             :max="form.max"
             :min="form.min"
             size="small"
             clearable
-          ></el-input>
+          />
         </el-form-item>
-        <p v-if="form.balance" class="balance">
+        <p
+          v-if="form.balance"
+          class="balance"
+        >
           余额&nbsp;{{ form.balance }}&nbsp;
           <a
-            @click="form.tokens = form.balance"
             href="javascript:;"
+            @click="form.tokens = form.balance"
           >全部转入</a>
         </p>
         <el-form-item>
           <div class="form-button">
-            <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">确定</el-button>
+            <el-button
+              :disabled="$utils.isNull(toUserInfo)"
+              type="primary"
+              size="small"
+              @click="submitForm('form')"
+            >
+              确定
+            </el-button>
           </div>
         </el-form-item>
       </el-form>

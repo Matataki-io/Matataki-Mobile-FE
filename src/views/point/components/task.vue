@@ -1,5 +1,8 @@
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading" class="point-task">
+  <div
+    v-loading.fullscreen.lock="fullscreenLoading"
+    class="point-task"
+  >
     <div class="task-block">
       <div class="task-list">
         <span class="task-title">{{ $t('point.title') }}</span>
@@ -7,15 +10,25 @@
       </div>
     </div>
     <!-- 如果没有设置资料积分 回馈积分 隐藏所有 -->
-    <div v-if="!pointStatus.profile || !pointStatus.login" class="task-block padding">
+    <div
+      v-if="!pointStatus.profile || !pointStatus.login"
+      class="task-block padding"
+    >
       <!-- 隐藏资料积分 -->
       <div v-if="!pointStatus.profile">
         <div class="flex margin-b-10">
           <span class="task-title">
             {{ $t('point.completeProfile') }}
           </span>
-          <el-button size="mini" class="integral-btn" @click="profile">
-            <svg-icon class="box" icon-class="box" />
+          <el-button
+            size="mini"
+            class="integral-btn"
+            @click="profile"
+          >
+            <svg-icon
+              class="box"
+              icon-class="box"
+            />
             {{ $t('point.receive') }}
           </el-button>
         </div>
@@ -24,21 +37,31 @@
         </p>
       </div>
       <!-- 隐藏资料积分的占位高度 -->
-      <div v-if="!pointStatus.profile" class="empty-line"></div>
+      <div
+        v-if="!pointStatus.profile"
+        class="empty-line"
+      />
       <!-- 隐藏回馈积分 -->
       <div v-if="!pointStatus.login">
         <div class="flex margin-b-10">
           <span class="task-title">
             {{ $t('point.feedback') }}
           </span>
-          <el-button size="mini" class="integral-btn" @click="feedback">
-            <svg-icon class="box" icon-class="box" />
+          <el-button
+            size="mini"
+            class="integral-btn"
+            @click="feedback"
+          >
+            <svg-icon
+              class="box"
+              icon-class="box"
+            />
             {{ $t('point.receive') }}
           </el-button>
         </div>
         <p class="task-des pdes">
           {{ $t('point.oldUser', [$point.loginOld]) }}
-          <br />
+          <br>
           {{ $t('point.newUser', [$point.loginNew]) }}
         </p>
       </div>
@@ -51,15 +74,19 @@
         <div class="integral-link">
           {{ referralLink }}
         </div>
-        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
+        <el-button
+          size="mini"
+          class="integral-btn"
+          @click="copyLink(referralLink1)"
+        >
           {{ $t('point.copyLink') }}
         </el-button>
       </div>
       <p class="task-des pdes">
         {{ $t('point.inviteDes1', [$point.regInviteFinished + $point.regInviter]) }}
-        <br />
+        <br>
         {{ $t('point.inviteDes2', [$point.publishReferral]) }}
-        <br />
+        <br>
         {{ $t('point.inviteDes3', [1 / $point.readReferralRate]) }}
       </p>
     </div>

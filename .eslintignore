@@ -1,0 +1,7 @@
+# eslint lint 忽略
+src/static
+public
+src/assets/
+node_modules/
+# i18n
+src/locale

@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
     "test": "cross-env VUE_CLI_MODE=test mochapack --recursive --r tests/setup.js --webpack-config ./node_modules/@vue/cli-service/webpack.config.js  tests/unit/**/*.spec.js",
+    "eslint": "eslint --ext .js,.vue --ignore-path .eslintignore ./src",
     "lint": "vue-cli-service lint",
     "build-dev": "concurrently -p \"🚀\" \"npm run build-matataki-dev\" \"npm run build-widget-dev\" \"npm run build-token-dev\" \"npm run build-user-dev\"",
     "build-matataki-dev": "vue-cli-service build --mode staging",
@@ -83,7 +84,7 @@
     "compression-webpack-plugin": "3.0.0",
     "concurrently": "5.0.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.16.0",
+    "eslint": "5.16.0",
     "eslint-config-prettier": "5.1.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-prettier": "^3.1.0",

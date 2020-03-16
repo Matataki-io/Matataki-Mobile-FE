@@ -2,7 +2,10 @@
   <div class="card">
     <div class="card-info">
       <span class="card-type">{{ assetType }}</span>
-      <h2 class="card-pricing" :style="{ color: `${assetColor}` }">
+      <h2
+        class="card-pricing"
+        :style="{ color: `${assetColor}` }"
+      >
         {{ assetAmount }}
       </h2>
     </div>

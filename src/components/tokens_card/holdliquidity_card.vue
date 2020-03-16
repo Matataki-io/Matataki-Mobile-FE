@@ -1,7 +1,13 @@
 <template>
-  <router-link class="card" :to="{ name: 'holdliquidity-id', params: { id: card.token_id } }">
+  <router-link
+    class="card"
+    :to="{ name: 'holdliquidity-id', params: { id: card.token_id } }"
+  >
     <div class="info">
-      <avatar :src="cover(card.logo)" size="30px" />
+      <avatar
+        :src="cover(card.logo)"
+        size="30px"
+      />
       <div class="user-info">
         <h3>{{ card.symbol }}</h3>
         <h4>{{ card.name }}</h4>
@@ -9,12 +15,10 @@
       </div>
     </div>
     <div class="number">
-      <span
-        >{{ liquidity(card.liquidity_balance, card.decimals) }} ({{
-          percent(card.liquidity_balance, card.total_supply)
-        }})</span
-      >
-      <i class="el-icon-arrow-right icon"></i>
+      <span>{{ liquidity(card.liquidity_balance, card.decimals) }} ({{
+        percent(card.liquidity_balance, card.total_supply)
+      }})</span>
+      <i class="el-icon-arrow-right icon" />
     </div>
   </router-link>
 </template>

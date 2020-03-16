@@ -1,20 +1,36 @@
 <template>
   <div class="card">
-    <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
-      <avatar :src="cover" size="30px" />
+    <router-link
+      class="username"
+      :to="{ name: 'user-id', params: { id: id } }"
+    >
+      <avatar
+        :src="cover"
+        size="30px"
+      />
     </router-link>
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
           <div class="fl">
-            <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+            <router-link
+              class="username"
+              :to="{ name: 'user-id', params: { id: id } }"
+            >
               <span class="username">{{ username }}</span>
             </router-link>
-            <txHash v-if="card.tx_hash" :hash="card.tx_hash" class="tx-hash" />
+            <txHash
+              v-if="card.tx_hash"
+              :hash="card.tx_hash"
+              class="tx-hash"
+            />
           </div>
           <span class="type">{{ type }}</span>
         </div>
-        <span class="amount" :style="{ color: color }">{{ amount }}</span>
+        <span
+          class="amount"
+          :style="{ color: color }"
+        >{{ amount }}</span>
       </div>
       <div class="fl jsb">
         <span class="time">{{ time }}</span>

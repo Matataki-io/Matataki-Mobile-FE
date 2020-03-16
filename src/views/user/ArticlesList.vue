@@ -27,27 +27,43 @@
       :show-no-more-icon="listtype !== 'others'"
       @getListData="getListDataTab"
     >
-    <!-- 暂时处理  by xiaotian -->
-    <!-- 下次功能调整重构 -->
-    <template v-if="listtype === 'bookmark' && activeIndex === 1">
-      <router-link class="card-bookmark"
-        :to="{name: 'share-id', params: {id: item.id}}"
-        v-for="(item, index) in item.articles"
-        :key="index">
-        <p>{{item.short_content}}</p>
-        <div>
-          <span>
-            <svg-icon class="icon" icon-class="eye"></svg-icon>{{item.read}}
-          </span>
-          <span>
-            <svg-icon class="icon" icon-class="like_thin"></svg-icon>{{item.likes}}
-          </span>
-        </div>
-      </router-link>
-    </template>
-    <div class="list" v-else>
-      <artcleCard class="list-card" v-for="item in item.articles" :key="item.id" :card="item"></artcleCard>
-    </div>
+      <!-- 暂时处理  by xiaotian -->
+      <!-- 下次功能调整重构 -->
+      <template v-if="listtype === 'bookmark' && activeIndex === 1">
+        <router-link
+          v-for="(item, index) in item.articles"
+          :key="index"
+          class="card-bookmark"
+          :to="{name: 'share-id', params: {id: item.id}}"
+        >
+          <p>{{ item.short_content }}</p>
+          <div>
+            <span>
+              <svg-icon
+                class="icon"
+                icon-class="eye"
+              />{{ item.read }}
+            </span>
+            <span>
+              <svg-icon
+                class="icon"
+                icon-class="like_thin"
+              />{{ item.likes }}
+            </span>
+          </div>
+        </router-link>
+      </template>
+      <div
+        v-else
+        class="list"
+      >
+        <artcleCard
+          v-for="item in item.articles"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
+      </div>
     </BasePull>
   </div>
 </template>
@@ -59,7 +75,7 @@ export default {
   name: 'ArticlesList',
   components: {
     artcleCard
-    },
+  },
   props: {
     listtype: {
       type: String,

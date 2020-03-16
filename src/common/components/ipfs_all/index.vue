@@ -9,34 +9,61 @@
       <p class="ipfs_all__title">
         IPFS地址
       </p>
-      <div v-if="hash" class="ipfs_all__address">
+      <div
+        v-if="hash"
+        class="ipfs_all__address"
+      >
         <p>
           IPFS Hash: {{ hash }}
         </p>
-        <svg-icon @click="copy(hash)" icon-class="copy" class="icon" />
+        <svg-icon
+          icon-class="copy"
+          class="icon"
+          @click="copy(hash)"
+        />
       </div>
-      <p v-else class="ipfs_all__not">
+      <p
+        v-else
+        class="ipfs_all__not"
+      >
         暂无
       </p>
       <p class="ipfs_all__title">
         公共节点
       </p>
       <template v-if="hash">
-        <div v-for="(item, index) in link" :key="index" class="ipfs_all__link">
-          <a :href="item + hash" target="_blank">
+        <div
+          v-for="(item, index) in link"
+          :key="index"
+          class="ipfs_all__link"
+        >
+          <a
+            :href="item + hash"
+            target="_blank"
+          >
             {{ item }}{{ hash }}
           </a>
-          <svg-icon icon-class="arrow" class="icon" />
+          <svg-icon
+            icon-class="arrow"
+            class="icon"
+          />
         </div>
       </template>
-      <p v-else class="ipfs_all__not">
+      <p
+        v-else
+        class="ipfs_all__not"
+      >
         暂无
       </p>
       <p class="ipfs_all__description">
         本文内容已上传星际文件存储系统「IPFS」，永久保存。
       </p>
     </div>
-    <svg-icon slot="reference" icon-class="ipfs" class="ipfs_all__icon" />
+    <svg-icon
+      slot="reference"
+      icon-class="ipfs"
+      class="ipfs_all__icon"
+    />
   </el-popover>
 </template>
 

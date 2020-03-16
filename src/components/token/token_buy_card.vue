@@ -1,20 +1,40 @@
 <template>
   <div class="buy-card">
     <div class="buy-flex">
-      <h2 class="token-title">快捷购买</h2>
-      <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange"/></span>
+      <h2 class="token-title">
+        快捷购买
+      </h2>
+      <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
     </div>
     <el-input
+      v-model="form.output"
       placeholder="输入购买数量"
       @input="inputChange"
-      v-on:keypress.native="isNumber"
-      v-model="form.output">
-      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
+      @keypress.native="isNumber"
+    >
+      <span
+        slot="suffix"
+        class="el-input__icon suffix-text"
+      >= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
-      <el-button class="btn1" @click="pay" :disabled="payBtnDisabled && isLogined">立即支付</el-button>
-      <router-link class="link1" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-        <el-button class="btn2" type="primary">交易Fan票</el-button>        
+      <el-button
+        class="btn1"
+        :disabled="payBtnDisabled && isLogined"
+        @click="pay"
+      >
+        立即支付
+      </el-button>
+      <router-link
+        class="link1"
+        :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}"
+      >
+        <el-button
+          class="btn2"
+          type="primary"
+        >
+          交易Fan票
+        </el-button>        
       </router-link>
     </div>
   </div>

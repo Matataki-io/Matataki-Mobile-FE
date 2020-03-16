@@ -2,46 +2,130 @@
   <div class="sharehall">
     <!-- <h3 class="sharehall-title">分享文章</h3> -->
     <div class="push">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" @submit.native.prevent>
-        <el-form-item label="" prop="content">
-          <el-input ref="shareContent" size="mini" type="textarea" rows="4" placeholder="谈谈感想" v-model="ruleForm.content"></el-input>
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        :rules="rules"
+        @submit.native.prevent
+      >
+        <el-form-item
+          label=""
+          prop="content"
+        >
+          <el-input
+            ref="shareContent"
+            v-model="ruleForm.content"
+            size="mini"
+            type="textarea"
+            rows="4"
+            placeholder="谈谈感想"
+          />
         </el-form-item>
       </el-form>
 
-      <el-form :model="urlForm" :rules="urlRules" ref="urlForm" @submit.native.prevent>
-        <el-form-item label="" prop="url">
+      <el-form
+        ref="urlForm"
+        :model="urlForm"
+        :rules="urlRules"
+        @submit.native.prevent
+      >
+        <el-form-item
+          label=""
+          prop="url"
+        >
           <div class="input-line">
             <!-- 为了使用from的验证功能, 不能用css实现下划线聚焦了 用js解决 -->
-            <el-input size="mini" class="push-input" @focus="focusInput" @blur="blurInput" @change="changeInput" v-model="urlForm.url" placeholder="输入链接，包含http(s)://"></el-input>
-            <el-button type="primary" size="mini" class="btn-black" @click="getUrlData('urlForm')" v-loading="urlLoading">
-              <svg-icon icon-class="enter" class="icon" />
+            <el-input
+              v-model="urlForm.url"
+              size="mini"
+              class="push-input"
+              placeholder="输入链接，包含http(s)://"
+              @focus="focusInput"
+              @blur="blurInput"
+              @change="changeInput"
+            />
+            <el-button
+              v-loading="urlLoading"
+              type="primary"
+              size="mini"
+              class="btn-black"
+              @click="getUrlData('urlForm')"
+            >
+              <svg-icon
+                icon-class="enter"
+                class="icon"
+              />
             </el-button>
           </div>
         </el-form-item>
         <el-form-item v-if="shareLinkList.length !== 0">
           <template v-for="(item, index) in shareLinkList">
-            <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareOuterCard>
-            <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" class="list-card" :key="'shareInsideCard' + index" :idx="index" @removeShareLink="removeShareLink"></sharePCard>
-            <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" class="list-card" :key="'shareOuterCard' + index" :idx="index" @removeShareLink="removeShareLink"></shareInsideCard>
+            <shareOuterCard
+              v-if="item.ref_sign_id === 0"
+              :key="'shareInsideCard' + index"
+              :card="item"
+              class="list-card"
+              :idx="index"
+              @removeShareLink="removeShareLink"
+            />
+            <sharePCard
+              v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+              :key="'shareInsideCard' + index"
+              :card="item"
+              class="list-card"
+              :idx="index"
+              @removeShareLink="removeShareLink"
+            />
+            <shareInsideCard
+              v-else-if="item.ref_sign_id && item.channel_id === 3"
+              :key="'shareOuterCard' + index"
+              :card="item"
+              class="list-card"
+              :idx="index"
+              @removeShareLink="removeShareLink"
+            />
           </template>
         </el-form-item>
         <el-form-item>
           <div class="push-btn">
-            <el-button type="primary" @click="pushShare('ruleForm')" class="btn-black" size="mini" v-loading.fullscreen.lock="fullscreenLoading">
-              <svg-icon icon-class="edit" class="icon" />
+            <el-button
+              v-loading.fullscreen.lock="fullscreenLoading"
+              type="primary"
+              class="btn-black"
+              size="mini"
+              @click="pushShare('ruleForm')"
+            >
+              <svg-icon
+                icon-class="edit"
+                class="icon"
+              />
               发布
             </el-button>
           </div>
         </el-form-item>
       </el-form>
     </div>
-    <div style="width: 100%;height: 1px;" ref="head"></div>
-    <div class="sharehall-head" :class="shareHeadActive && 'active'">
-      <h3 class="sharehall-title">分享大厅</h3>
+    <div
+      ref="head"
+      style="width: 100%;height: 1px;"
+    />
+    <div
+      class="sharehall-head"
+      :class="shareHeadActive && 'active'"
+    >
+      <h3 class="sharehall-title">
+        分享大厅
+      </h3>
       <div class="sort">
-        <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
+        <span
+          :class="value === options[0].value && 'active'"
+          @click="value = options[0].value"
+        >{{ options[0].label }}</span>
         &nbsp;/&nbsp;
-        <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
+        <span
+          :class="value === options[1].value && 'active'"
+          @click="value = options[1].value"
+        >{{ options[1].label }}</span>
       </div>
     </div>
     <!-- pull list -->
@@ -56,13 +140,27 @@
       :auto-request-time="pull.time"
       @getListData="getListData"
     >
-      <shareCard class="list-card" v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" @ref="ref"></shareCard>
+      <shareCard
+        v-for="(item, index) in pull.list"
+        :key="index"
+        class="list-card"
+        :card="item"
+        @refClick="refClick"
+        @ref="ref"
+      />
     </BasePull>
 
-    <m-dialog v-model="shareDoneCard" width="320px">
+    <m-dialog
+      v-model="shareDoneCard"
+      width="320px"
+    >
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
-        <img src="@/assets/img/done.png" alt="done" class="share-done">
+        <img
+          src="@/assets/img/done.png"
+          alt="done"
+          class="share-done"
+        >
         <h4 class="share-done__title">
           分享已发布
         </h4>
@@ -74,23 +172,39 @@
           v-loading="createShareLoading"
           class="share-card"
         >
-          <img v-if="saveImg" :src="saveImg" alt="save" @click="viewImage(saveImg)">
+          <img
+            v-if="saveImg"
+            :src="saveImg"
+            alt="save"
+            @click="viewImage(saveImg)"
+          >
         </div>
-        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+        <el-button
+          v-loading="saveLoading"
+          :disabled="saveLoading"
+          type="primary"
+          class="share-card__btn"
+          @click="downloadShareImage"
+        >
           保存并分享卡片
         </el-button>
-        <p class="wechat" v-if="iswechat">微信内可长按保存图片</p>
+        <p
+          v-if="iswechat"
+          class="wechat"
+        >
+          微信内可长按保存图片
+        </p>
         <shareImage
-            ref="shareImage"
-            v-if="!saveImg"
-            :content="shareCard.content"
-            :avatarSrc="shareCard.avatarSrc"
-            :username="shareCard.username"
-            :reference="shareCard.reference"
-            :url="shareCard.url"
-            card-type="edit"
-            class="share-card__box"
-          />
+          v-if="!saveImg"
+          ref="shareImage"
+          :content="shareCard.content"
+          :avatar-src="shareCard.avatarSrc"
+          :username="shareCard.username"
+          :reference="shareCard.reference"
+          :url="shareCard.url"
+          card-type="edit"
+          class="share-card__box"
+        />
       </div>
     </m-dialog>
   </div>
@@ -327,10 +441,10 @@ export default {
         let { name: author = '' } = this.currentUserInfo
         this.fullscreenLoading = true
         let data = {
-            author,
-            content: this.ruleForm.content.trim(),
-            platform: idProvider.toLocaleLowerCase(),
-            refs: []
+          author,
+          content: this.ruleForm.content.trim(),
+          platform: idProvider.toLocaleLowerCase(),
+          refs: []
         }
         this.shareLinkList.map(i => {
           // 目前只有外展
@@ -435,7 +549,7 @@ export default {
         }
       })
     },
-        // 创建卡片
+    // 创建卡片
     createShareCard(id, content) {
 
       this.shareCard.content = content
@@ -474,14 +588,14 @@ export default {
         this.createShareImage()
       })
     },
-        // 下载图片
+    // 下载图片
     downloadShareImage() {
       this.saveLoading = true
 
       if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
         console.log('tp 环境')
         this.saveImgCanvas.toBlob(blob => {
-        this.$API
+          this.$API
             .ossUploadImage('temp', blob)
             .then(res => {
               if (res.code === 0) {
@@ -502,7 +616,7 @@ export default {
             .finally(() => {
               this.saveLoading = false
             })
-            })
+        })
 
       } else {
         console.log('other 环境')
@@ -539,18 +653,18 @@ export default {
             width: dom.clientWidth,
             height: dom.clientHeight
           })
-          .then(canvas => {
+            .then(canvas => {
             // this.saveLocal(canvas)
-            this.saveImgCanvas = canvas
-            this.saveImg = canvas.toDataURL()
-          })
-          .catch(error => {
-            console.log(error)
-            this.$toast({})
-          }).finally(() => {
+              this.saveImgCanvas = canvas
+              this.saveImg = canvas.toDataURL()
+            })
+            .catch(error => {
+              console.log(error)
+              this.$toast({})
+            }).finally(() => {
             // 生成完毕 关闭loading
-            this.createShareLoading = false
-          })
+              this.createShareLoading = false
+            })
         }, 1500)
       })
     },

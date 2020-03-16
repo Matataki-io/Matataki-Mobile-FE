@@ -1,62 +1,92 @@
 <template>
-  <div class="share" @click.stop="hideClient">
+  <div
+    class="share"
+    @click.stop="hideClient"
+  >
     <BaseHeader
-    :pageinfo="{title: '分享详情'}"
-    customize-header-bc="#fff"
-    :has-bottom-border-line="true"
-    class="header" >
-      <shareHeadRight v-if="isMe(content.uid)" slot="right" :id="content.id"></shareHeadRight>
+      :pageinfo="{title: '分享详情'}"
+      customize-header-bc="#fff"
+      :has-bottom-border-line="true"
+      class="header"
+    >
+      <shareHeadRight
+        v-if="isMe(content.uid)"
+        :id="content.id"
+        slot="right"
+      />
     </BaseHeader>
     <div v-loading="loading">
       <shareHeader
-      :id="content.uid"
-      :avatar="userInfo.avatar"
-      :username="userInfo.nickname || userInfo.username"
-      :time="content.create_time"
-      :read="content.read"
-      :hash="content.hash"
-      ></shareHeader>
-      <shareMain :content="shareContent"></shareMain>
-      <div class="empty"></div>
+        :id="content.uid"
+        :avatar="userInfo.avatar"
+        :username="userInfo.nickname || userInfo.username"
+        :time="content.create_time"
+        :read="content.read"
+        :hash="content.hash"
+      />
+      <shareMain :content="shareContent" />
+      <div class="empty" />
     </div>
     <quote
       v-show="refernceTotal !== 0 || berefernceTotal !== 0"
       :show="showQuote"
-      @showQuote="status => showQuote = status">
+      @showQuote="status => showQuote = status"
+    >
       <template slot="left-prompt">
-        已引用<span>{{refernceTotal}}</span>
+        已引用<span>{{ refernceTotal }}</span>
       </template>
       <template slot="right-prompt">
-        被引用<span>{{berefernceTotal}}</span>
+        被引用<span>{{ berefernceTotal }}</span>
       </template>
-      <quoteReference :nowTime="nowTime" slot="ref" @getArticle="getArticle"></quoteReference>
-      <quoteBereference :nowTime="nowTime" slot="beref" @getArticle="getArticle"></quoteBereference>
+      <quoteReference
+        slot="ref"
+        :now-time="nowTime"
+        @getArticle="getArticle"
+      />
+      <quoteBereference
+        slot="beref"
+        :now-time="nowTime"
+        @getArticle="getArticle"
+      />
     </quote>
     <shareFooter
       v-loading="footerLoading"
       :bookmarked="currentProfile.is_bookmarked"
-      :isLiked="Number(currentProfile.is_liked)"
+      :is-liked="Number(currentProfile.is_liked)"
       :likes="content.likes"
       :dislikes="content.dislikes"
+      class="footer"
       @bookmarked="bookmarked"
       @share="shareDialogVisible = true"
       @like="like"
-      class="footer">
-    </shareFooter>
-    <m-dialog v-model="shareDialogVisible" :title="$t('share')">
+    />
+    <m-dialog
+      v-model="shareDialogVisible"
+      :title="$t('share')"
+    >
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
         <div class="dialog-content__btn">
-          <div class="btn-icon" @click="shareImageShow">
-            <svg-icon icon-class="share_img"></svg-icon>
+          <div
+            class="btn-icon"
+            @click="shareImageShow"
+          >
+            <svg-icon icon-class="share_img" />
           </div>
-          <p class="btn-text">生成图片</p>
+          <p class="btn-text">
+            生成图片
+          </p>
         </div>
         <div class="dialog-content__btn">
-          <div class="btn-icon" @click="copy(shareLink)">
-            <svg-icon icon-class="copy3"></svg-icon>
+          <div
+            class="btn-icon"
+            @click="copy(shareLink)"
+          >
+            <svg-icon icon-class="copy3" />
           </div>
-          <p class="btn-text">复制分享链接</p>
+          <p class="btn-text">
+            复制分享链接
+          </p>
         </div>
       </div>
       <SocialShare
@@ -66,10 +96,17 @@
       />
     </m-dialog>
 
-    <m-dialog v-model="shareDoneCard" width="320px">
+    <m-dialog
+      v-model="shareDoneCard"
+      width="320px"
+    >
       <!-- 如果内容过多可以抽离 -->
       <div>
-        <img src="@/assets/img/done.png" alt="done" class="share-done">
+        <img
+          src="@/assets/img/done.png"
+          alt="done"
+          class="share-done"
+        >
         <h4 class="share-done__title">
           分享已发布
         </h4>
@@ -81,23 +118,39 @@
           v-loading="createShareLoading"
           class="share-card"
         >
-          <img v-if="saveImg" :src="saveImg" alt="save" @click="viewImage(saveImg)">
+          <img
+            v-if="saveImg"
+            :src="saveImg"
+            alt="save"
+            @click="viewImage(saveImg)"
+          >
         </div>
-        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+        <el-button
+          v-loading="saveLoading"
+          :disabled="saveLoading"
+          type="primary"
+          class="share-card__btn"
+          @click="downloadShareImage"
+        >
           保存并分享卡片
         </el-button>
-        <p class="wechat" v-if="iswechat">微信内可长按保存图片</p>
+        <p
+          v-if="iswechat"
+          class="wechat"
+        >
+          微信内可长按保存图片
+        </p>
         <shareImage
-            ref="shareImage"
-            v-if="!saveImg"
-            :content="shareCard.content"
-            :avatarSrc="shareCard.avatarSrc"
-            :username="shareCard.username"
-            :reference="shareCard.reference"
-            :url="shareCard.url"
-            card-type="read"
-            class="share-card__box"
-          />
+          v-if="!saveImg"
+          ref="shareImage"
+          :content="shareCard.content"
+          :avatar-src="shareCard.avatarSrc"
+          :username="shareCard.username"
+          :reference="shareCard.reference"
+          :url="shareCard.url"
+          card-type="read"
+          class="share-card__box"
+        />
       </div>
     </m-dialog>
   </div>
@@ -182,7 +235,7 @@ export default {
     }
   },
   created() {
-     // 无id
+    // 无id
     let { id = '' } = this.$route.params
     this.init(id)
     this.getReferenceCount('postsReferences', {}, 'refernce')
@@ -342,14 +395,14 @@ export default {
           customClass: 'message-box__mobile'
         }).then(async () => {
           await this.$API.unbookmark(this.currentProfile.id)
-          .then(res => {
-            this.$toast.success({ duration: 1000, message: '取消成功' })
-            this.currentProfile.is_bookmarked = 0
-          })
-          .catch(err => console.log(err))
-          .finally(() => {
-            this.footerLoading = false
-          })
+            .then(res => {
+              this.$toast.success({ duration: 1000, message: '取消成功' })
+              this.currentProfile.is_bookmarked = 0
+            })
+            .catch(err => console.log(err))
+            .finally(() => {
+              this.footerLoading = false
+            })
         }).catch(() => {
           this.footerLoading = false
         })
@@ -477,29 +530,29 @@ export default {
       this.saveLoading = true
 
       if (navigator.userAgent.includes('TokenPocket') && tp.isConnected()) {
-      console.log('tp 环境')
-      this.saveImgCanvas.toBlob(blob => {
-      this.$API
-          .ossUploadImage('temp', blob)
-          .then(res => {
-            if (res.code === 0) {
-              tp.saveImage({
-                url: this.$ossProcess(res.data)
-              })
-            } else {
-              this.$toast({ duration: 1000, message: '保存失败,请重试' })
-            }
-          })
-          .catch(err => {
-            console.log('err', err)
-            if (err.response.status === 401) {
-              this.$toast({ duration: 1000, message: '请登录后保存图片' })
-              this.$store.commit('setLoginModal', true)
-            } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
-          })
-          .finally(() => {
-            this.saveLoading = false
-          })
+        console.log('tp 环境')
+        this.saveImgCanvas.toBlob(blob => {
+          this.$API
+            .ossUploadImage('temp', blob)
+            .then(res => {
+              if (res.code === 0) {
+                tp.saveImage({
+                  url: this.$ossProcess(res.data)
+                })
+              } else {
+                this.$toast({ duration: 1000, message: '保存失败,请重试' })
+              }
+            })
+            .catch(err => {
+              console.log('err', err)
+              if (err.response.status === 401) {
+                this.$toast({ duration: 1000, message: '请登录后保存图片' })
+                this.$store.commit('setLoginModal', true)
+              } else this.$toast({ duration: 1000, message: '保存失败,请重试' })
+            })
+            .finally(() => {
+              this.saveLoading = false
+            })
         })
 
       } else {

@@ -1,6 +1,10 @@
 <template>
   <!-- 复制了一份 来区别是否支持刷新 目前没有想到别的好办法 -->
-  <van-pull-refresh v-if="isRefresh" v-model="refreshing" @refresh="refresh">
+  <van-pull-refresh
+    v-if="isRefresh"
+    v-model="refreshing"
+    @refresh="refresh"
+  >
     <van-list
       v-model="loading"
       :finished="finished"
@@ -9,14 +13,17 @@
       :immediate-check="immediateCheck"
       @load="onLoad"
     >
-      <slot></slot>
+      <slot />
       <div class="no-more">
         <img
           v-if="showNoMoreIcon && articles.length === 0"
           src="@/assets/img/icon_no_more.svg"
           alt="no_more"
-        />
-        <p v-if="finished && articles.length === 0" :class="showNoMoreIcon && 'big'">
+        >
+        <p
+          v-if="finished && articles.length === 0"
+          :class="showNoMoreIcon && 'big'"
+        >
           {{ loadingText }}
         </p>
       </div>
@@ -31,14 +38,17 @@
     :immediate-check="immediateCheck"
     @load="onLoad"
   >
-    <slot></slot>
+    <slot />
     <div class="no-more">
       <img
         v-if="showNoMoreIcon && articles.length === 0"
         src="@/assets/img/icon_no_more.svg"
         alt="no_more"
-      />
-      <p v-if="finished && articles.length === 0" :class="showNoMoreIcon && 'big'">
+      >
+      <p
+        v-if="finished && articles.length === 0"
+        :class="showNoMoreIcon && 'big'"
+      >
         {{ loadingText }}
       </p>
     </div>

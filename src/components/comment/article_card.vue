@@ -5,10 +5,17 @@
         class="comment-avatar"
         :to="{name: 'user-id', params: {id : comment.uid}}"
       >
-        <avatar :src="avatar" size="30px" ></avatar>
+        <avatar
+          :src="avatar"
+          size="30px"
+        />
       </router-link>
       <div>
-        <router-link class="comment-author" :class="!comment.username && 'logout'" :to="`/user/${comment.uid}`">
+        <router-link
+          class="comment-author"
+          :class="!comment.username && 'logout'"
+          :to="`/user/${comment.uid}`"
+        >
           {{ nickname }}
           <span>
             {{ friendlyDate }}

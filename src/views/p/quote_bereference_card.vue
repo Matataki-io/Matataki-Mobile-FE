@@ -9,7 +9,11 @@
               :href="cardUrl"
               @click.stop="toggleArticle(card.sign_id, $event)"
             >{{ cardTitle }}</a>
-            <a v-else :href="cardUrl" target="_blank">{{ cardTitle }}</a>
+            <a
+              v-else
+              :href="cardUrl"
+              target="_blank"
+            >{{ cardTitle }}</a>
           </div>
         </div>
         <!-- <div class="fl ac jfe related-3">
@@ -17,10 +21,23 @@
         </div>-->
       </div>
       <div class="fl ac related-link">
-        <a class="link" href="javascript:void(0);">{{ cardUrl }}</a>
-        <svg-icon @click.stop="copyCode(cardUrl)" class="icon-copy" icon-class="copy2" />
-        <a :href="cardUrl" target="_blank">
-          <svg-icon class="icon-share" icon-class="jump" />
+        <a
+          class="link"
+          href="javascript:void(0);"
+        >{{ cardUrl }}</a>
+        <svg-icon
+          class="icon-copy"
+          icon-class="copy2"
+          @click.stop="copyCode(cardUrl)"
+        />
+        <a
+          :href="cardUrl"
+          target="_blank"
+        >
+          <svg-icon
+            class="icon-share"
+            icon-class="jump"
+          />
         </a>
       </div>
     </div>

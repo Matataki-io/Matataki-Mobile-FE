@@ -8,7 +8,12 @@
       >
         {{ item.text }}
       </router-link>
-      <a v-else :key="index" class="unavailable" href="javascript:">{{ item.text }}</a>
+      <a
+        v-else
+        :key="index"
+        class="unavailable"
+        href="javascript:"
+      >{{ item.text }}</a>
     </template>
   </nav>
 </template>

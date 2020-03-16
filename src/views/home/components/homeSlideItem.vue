@@ -1,6 +1,13 @@
 <template>
-  <div class="slide-item" @click="jumpPage(slide.id)">
-    <img v-if="cover" :src="cover" alt="cover" />
+  <div
+    class="slide-item"
+    @click="jumpPage(slide.id)"
+  >
+    <img
+      v-if="cover"
+      :src="cover"
+      alt="cover"
+    >
     {{ cover }}
     <div class="slide-read">
       {{ slideNums }}

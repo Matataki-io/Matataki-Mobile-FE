@@ -10,7 +10,12 @@
     :auto-request-time="nowTime"
     @getListData="getListData"
   >
-    <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card>
+    <card
+      v-for="(item, index) in pull.list"
+      :key="index"
+      :card="item"
+      @getArticle="getArticle"
+    />
   </BasePull>
 </template>
 

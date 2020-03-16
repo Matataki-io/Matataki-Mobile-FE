@@ -1,13 +1,22 @@
 <template>
   <div class="share-header">
     <div class="share-header__info">
-      <router-link :to="{name: 'user-id-share', params: {id: id}}" class="share-header__author">
-        <avatar class="avatar" :src="avatarSrc"></avatar>
+      <router-link
+        :to="{name: 'user-id-share', params: {id: id}}"
+        class="share-header__author"
+      >
+        <avatar
+          class="avatar"
+          :src="avatarSrc"
+        />
         <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
       </router-link>
       <span class="share-header__time">{{ timeFormat }}</span>
       <span class="share-header__read">
-        <svg-icon icon-class="eye_blod" class="icon"></svg-icon>
+        <svg-icon
+          icon-class="eye_blod"
+          class="icon"
+        />
         {{ read }}
       </span>
     </div>

@@ -1,10 +1,20 @@
 <template>
-  <div class="infinite-list" v-infinite-scroll="load" :infinite-scroll-distance="300" :infinite-scroll-delay="500" style="overflow:auto">
-    <div class="card" v-for="(notification, index) in notifications" :key="index">
+  <div
+    v-infinite-scroll="load"
+    class="infinite-list"
+    :infinite-scroll-distance="300"
+    :infinite-scroll-delay="500"
+    style="overflow:auto"
+  >
+    <div
+      v-for="(notification, index) in notifications"
+      :key="index"
+      class="card"
+    >
       <!-- Possible an eslint issue: https://github.com/vuejs/eslint-plugin-vue/issues/869 Remove next workaround if resolved -->
       <!-- eslint-disable-next-line vue/require-component-is -->
       <component
-        v-bind:is="COMPONENTS[notification.kind]"
+        :is="COMPONENTS[notification.kind]"
         :avatar="notification.avatar"
         :source="notification.source"
         :timestamp="notification.timestamp"
@@ -25,15 +35,15 @@ export default {
   name: 'NotificationList',
   /* eslint-disable vue/no-unused-components */
   components: { NewFanNotification },
+  props: {
+    provider: { type: String, required: true }
+  },
   data() {
     return {
       COMPONENTS,
       page: 1,
       notifications: []
     }
-  },
-  props: {
-    provider: { type: String, required: true }
   },
   methods: {
     async load () {

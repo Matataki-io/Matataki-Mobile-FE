@@ -22,13 +22,27 @@
       closable
       :mask-closable="false"
     >
-      <div slot="header" class="modal-header">
-        <p class="modal-header-title">{{ $t('imgUpload.title') }}</p>
-        <p class="modal-header-subtitle">{{ $t('imgUpload.subtitle2') }}</p>
+      <div
+        slot="header"
+        class="modal-header"
+      >
+        <p class="modal-header-title">
+          {{ $t('imgUpload.title') }}
+        </p>
+        <p class="modal-header-subtitle">
+          {{ $t('imgUpload.subtitle2') }}
+        </p>
       </div>
-      <div class="modal-content" :style="computedStyleContent">
+      <div
+        class="modal-content"
+        :style="computedStyleContent"
+      >
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
-        <img v-if="files.length && modal" ref="editImage" :src="files[0].url" />
+        <img
+          v-if="files.length && modal"
+          ref="editImage"
+          :src="files[0].url"
+        >
       </div>
       <el-button
         slot="footer"

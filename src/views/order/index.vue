@@ -6,21 +6,55 @@
       customize-header-bc="#fff"
     />
     <div class="img-container">
-      <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
+      <img
+        src="@/assets/img/m_logo.png"
+        alt="logo"
+        class="logo"
+      >
     </div>
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
-      <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
-      <van-cell title="交易类型" :value="tradeType" />
-      <van-cell title="创建时间" :value="friendlyTime" />
-      <van-cell title="订单编号" :value="tradeNo" value-class="longValue" />
+      <van-cell
+        title="交易账号"
+        :value="currentUserInfo.nickname || currentUserInfo.name"
+      />
+      <van-cell
+        title="交易类型"
+        :value="tradeType"
+      />
+      <van-cell
+        title="创建时间"
+        :value="friendlyTime"
+      />
+      <van-cell
+        title="订单编号"
+        :value="tradeNo"
+        value-class="longValue"
+      />
     </van-cell-group>
     <div class="order-item">
-      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%" v-loading="loading">
-        <el-table-column prop="name" label="品名"> </el-table-column>
-        <el-table-column prop="operating" label="操作"> </el-table-column>
-        <el-table-column prop="amount" label="数量"> </el-table-column>
-        <el-table-column prop="total" label="小计"> </el-table-column>
+      <el-table
+        v-loading="loading"
+        header-cell-class-name="grayHeader"
+        :data="orderItems"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="name"
+          label="品名"
+        />
+        <el-table-column
+          prop="operating"
+          label="操作"
+        />
+        <el-table-column
+          prop="amount"
+          label="数量"
+        />
+        <el-table-column
+          prop="total"
+          label="小计"
+        />
       </el-table>
     </div>
     <div class="flexBox">
@@ -31,9 +65,12 @@
     </div>
     <div class="flexBox">
       <div>
-        <el-checkbox v-model="useBalance" @change="useBalanceChange"
-          >使用余额 <span>（¥ {{ balance }}）</span></el-checkbox
+        <el-checkbox
+          v-model="useBalance"
+          @change="useBalanceChange"
         >
+          使用余额 <span>（¥ {{ balance }}）</span>
+        </el-checkbox>
       </div>
       <div>
         抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>

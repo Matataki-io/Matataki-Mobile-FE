@@ -2,7 +2,10 @@
   <div class="trade">
     <div class="hYLPFg">
       <div class="token-info">
-        <avatar :src="logo" size="20px" />
+        <avatar
+          :src="logo"
+          size="20px"
+        />
         <span>{{ minetokenToken.symbol }}视角</span>
         <svg-icon
           v-if="tokensId.length >= 2"
@@ -12,15 +15,9 @@
         />
       </div>
       <div class="header">
-        <span
-          ><span class="black">{{ price }}</span> 最新价格</span
-        >
-        <span
-          ><span :class="changeClass">{{ change }}</span> 24h涨跌</span
-        >
-        <span
-          ><span class="black">{{ volume }}</span> 24h成交</span
-        >
+        <span><span class="black">{{ price }}</span> 最新价格</span>
+        <span><span :class="changeClass">{{ change }}</span> 24h涨跌</span>
+        <span><span class="black">{{ volume }}</span> 24h成交</span>
       </div>
       <div class="jJSpkX" />
     </div>
@@ -35,17 +32,45 @@
             :to="{ name: 'token-id', params: { id: currentId } }"
           >
             <div class="link">
-              <svg-icon icon-class="share" class="icon" />
+              <svg-icon
+                icon-class="share"
+                class="icon"
+              />
             </div>
           </router-link>
-          <el-tabs v-model="activeName" type="border-card">
-            <el-tab-pane label="我的流水" name="my">
-              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol" />
-              <LiquidityTable v-else :list="myLogs" :symbol="symbol" />
+          <el-tabs
+            v-model="activeName"
+            type="border-card"
+          >
+            <el-tab-pane
+              label="我的流水"
+              name="my"
+            >
+              <TradeTable
+                v-if="type === 'purchase'"
+                :list="myLogs"
+                :symbol="symbol"
+              />
+              <LiquidityTable
+                v-else
+                :list="myLogs"
+                :symbol="symbol"
+              />
             </el-tab-pane>
-            <el-tab-pane label="全部流水" name="all">
-              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol" />
-              <LiquidityTable v-else :list="logs" :symbol="symbol" />
+            <el-tab-pane
+              label="全部流水"
+              name="all"
+            >
+              <TradeTable
+                v-if="type === 'purchase'"
+                :list="logs"
+                :symbol="symbol"
+              />
+              <LiquidityTable
+                v-else
+                :list="logs"
+                :symbol="symbol"
+              />
             </el-tab-pane>
           </el-tabs>
         </div>

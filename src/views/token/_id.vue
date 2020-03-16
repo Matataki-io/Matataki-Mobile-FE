@@ -1,9 +1,15 @@
 <template>
-  <layout v-model="tabPage" @getToken="setMinetokenToken">
+  <layout
+    v-model="tabPage"
+    @getToken="setMinetokenToken"
+  >
     <tokenFanCoins v-if="tabPage === 0" />
     <tokenFanCoinsDetail v-if="tabPage === 1" />
     <tokenLiquidity v-if="tabPage === 2" />
-    <tokenLiquidityDetail v-if="tabPage === 3" :token="minetokenToken" />
+    <tokenLiquidityDetail
+      v-if="tabPage === 3"
+      :token="minetokenToken"
+    />
   </layout>
 </template>
 

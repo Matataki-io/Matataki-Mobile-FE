@@ -1,5 +1,9 @@
 <template>
-  <div style="height: 100%;" v-loading="loading" element-loading-text="登录中..."></div>
+  <div
+    v-loading="loading"
+    style="height: 100%;"
+    element-loading-text="登录中..."
+  />
 </template>
 
 <script>
@@ -8,12 +12,12 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'LoginPage',
-  computed: {},
   data() {
     return {
       loading: true
     }
   },
+  computed: {},
   mounted() {
     const { code, from, error } = this.$route.query
     const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID

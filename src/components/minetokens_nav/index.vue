@@ -6,7 +6,10 @@
       :class="$route.name === item.url && 'active'"
       :to="{ name: item.url, params: { id: $route.params.id } }"
     >
-      <div class="icon-tokens" :class="item.icon">
+      <div
+        class="icon-tokens"
+        :class="item.icon"
+      >
         <svg-icon :icon-class="item.icon" />
       </div>
       {{ item.title }}

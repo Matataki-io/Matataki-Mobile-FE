@@ -11,7 +11,12 @@
       :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
       @getListData="getListDataTab"
     >
-      <buy v-for="(item, index) in pull.list" :key="index" :buy="item" type="other" />
+      <buy
+        v-for="(item, index) in pull.list"
+        :key="index"
+        :buy="item"
+        type="other"
+      />
     </BasePull>
   </userByTab>
 </template>

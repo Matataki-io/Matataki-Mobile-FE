@@ -7,7 +7,7 @@
     />
     <accountNav />
     <!-- <task></task> -->
-    <point></point>
+    <point />
   </div>
 </template>
 

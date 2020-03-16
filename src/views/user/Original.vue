@@ -1,7 +1,14 @@
 <template>
   <div class="original mw">
-    <BaseHeader :pageinfo="{ title: pageTitle }" :has-bottom-border-line="true" />
-    <ArticlesList :id="Number(id)" ref="ArticlesList" :listtype="'original'" />
+    <BaseHeader
+      :pageinfo="{ title: pageTitle }"
+      :has-bottom-border-line="true"
+    />
+    <ArticlesList
+      :id="Number(id)"
+      ref="ArticlesList"
+      :listtype="'original'"
+    />
   </div>
 </template>
 
