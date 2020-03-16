@@ -58,7 +58,7 @@ const configureWebpack = () => {
 
   if (isDev) {
     pluginsConfig.push(
-        // vConsole 觉得碍眼可以自行注释
+      // vConsole 觉得碍眼可以自行注释
       new vConsolePlugin({
         filter: [],  // 需要过滤的入口文件
         enable: true // 发布代码前记得改回 false

@@ -216,6 +216,22 @@ export default {
       saveLoading: false, // 保存图片loading
     }
   },
+  computed: {
+    ...mapGetters(['isLogined', 'isMe']),
+    link() {
+      if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
+      else return process.env.VUE_APP_URL
+    },
+    shareLink() {
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${this.link}` || process.env.VUE_APP_URL
+    },
+    qqtitle() {
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享`
+    },
+    iswechat() {
+      return /micromessenger/.test(navigator.userAgent.toLowerCase())
+    }
+  },
   watch: {
     nowTime() {
       this.getReferenceCount('postsReferences', {}, 'refernce')
@@ -248,22 +264,6 @@ export default {
   destroyed() {
     // console.log('destroyed')
     this.$navigation.cleanRoutes() // 清除路由记录
-  },
-  computed: {
-    ...mapGetters(['isLogined', 'isMe']),
-    link() {
-      if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
-      else return process.env.VUE_APP_URL
-    },
-    shareLink() {
-      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${this.link}` || process.env.VUE_APP_URL
-    },
-    qqtitle() {
-      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享`
-    },
-    iswechat() {
-      return /micromessenger/.test(navigator.userAgent.toLowerCase())
-    }
   },
   methods: {
     init(id) {

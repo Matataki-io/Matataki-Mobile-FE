@@ -105,13 +105,13 @@ export default {
       visible: false
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo'])
+  },  
   created() {
     // 认为是用户手动切换非法地址  考虑要不要移到路由里面去拦截
     const assetTypeArr = ['EOS', 'ONT']
     if (!assetTypeArr.includes(this.type)) this.$router.push('/home')
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo'])
   },
   methods: {
     // 得到明细数据
