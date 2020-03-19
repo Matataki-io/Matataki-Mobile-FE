@@ -160,6 +160,10 @@ export default {
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
   },
+  // 获取可编辑的文章内容（检查我的文章，以及获取了编辑权限的文章）
+  getCanEditPost(id) {
+    return request.get(`/canEditPost/${id}`)
+  },
   /**
    * 创建我的token
    * // TODO 有字段后可移除注释
@@ -460,8 +464,9 @@ minetokenGetResources(tokenId) {
   _sendArticle(
     url,
     { signId = null, author, data, title, fissionFactor,
-       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license,
-       requireToken, requireBuy },
+      cover, isOriginal, tags, commentPayPoint, shortContent, cc_license,
+      requireToken, requireBuy,
+      editRequireToken = null, editRequireBuy = null },
   ) {
     // 账号类型
     let idProvider = (getCookie('idProvider')).toLocaleLowerCase()
@@ -482,7 +487,8 @@ minetokenGetResources(tokenId) {
         cc_license,
         shortContent,
         requireToken,
-        requireBuy
+        requireBuy,
+        editRequireToken, editRequireBuy
       },
       timeout: 30000
     })
