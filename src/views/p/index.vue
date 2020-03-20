@@ -288,6 +288,18 @@
           </div>
         </div>
 
+        <!-- 编辑全文 -->
+        <becomeAnArticleEditor
+          :article="article"
+          :has-paied="editHasPaied"
+          :token-has-paied="editTokenHasPaied"
+          :difference-token="editDifferenceToken"
+          :form="editForm"
+          :input-amount-error="getEditInputAmountError"
+          :is-toll-read="isTokenArticle || isPriceArticle"
+          :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
+        />
+
         <div
           v-if="article.tags !== undefined && article.tags.length !== 0"
           class="tag-review"
@@ -717,6 +729,7 @@ import articleTransfer from '@/components/articleTransfer/index.vue'
 import tagCard from '@/components/tagCard/index.vue'
 import ArticleFooter from '@/components/ArticleFooter.vue'
 import commentInput from '@/components/article_comment/index.vue'
+import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
 import { CNY } from '../exchange/components/consts'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
@@ -747,7 +760,8 @@ export default {
     commentInput,
     avatar,
     quote,
-    ipfsAll
+    ipfsAll,
+    becomeAnArticleEditor
   },
   data() {
     return {
@@ -803,6 +817,7 @@ export default {
       commentRequest: 0,
       currentProfile: Object.create(null),
       differenceToken: '0',
+      editDifferenceToken: '0',
       showLock: false,
       form: {
         input: '',
@@ -810,12 +825,22 @@ export default {
         output: '',
         outputToken: {}
       },
+      editForm: {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      },
       getInputAmountError: '',
+      getEditInputAmountError: '',
       payBtnDisabled: true,
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
+      editTokenHasPaied: false,
+      editPriceHasPaied: false,
       hasPaied: false,
+      editHasPaied: true,
       showQuote: false, // refernces
       nowTime: 0, // refernces
       articleIpfsArray: [], // ipfs hash
@@ -914,6 +939,14 @@ export default {
     // 是否是持通证文章
     isTokenArticle() {
       return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    // 是否是持通证编辑文章
+    isTokenEditArticle() {
+      return (this.article.editTokens && this.article.editTokens.length !== 0)
+    },
+    // 是否是付费编辑文章
+    isPriceEditArticle() {
+      return (this.article.editPrices && this.article.editPrices.length !== 0)
     },
     unlockText() {
       if (this.isPriceArticle) {
@@ -1077,9 +1110,15 @@ export default {
       if (!getCookie('ACCESS_TOKEN')) {
         this.tokenHasPaied = false
         this.priceHasPaied = false
+        this.editTokenHasPaied = false
+        this.editPriceHasPaied = false
         this.hasPaied = false
+        this.editHasPaied = false
+        this.editHasPaied= false
         this.form.outputToken = this.article.tokens && this.article.tokens.length > 0 ? this.article.tokens[0] : {}
+        this.editForm.outputToken = this.article.editTokens && this.article.editTokens.length > 0 ? this.article.editTokens[0] : {}
         this.calPayFormParams()
+        this.calPayEditFormParams()
         return
       }
       const data = {
@@ -1088,13 +1127,15 @@ export default {
       this.$API.currentProfile(data).then(res => {
         if (res.code === 0) {
           this.currentProfile = res.data
-          this.form.outputToken =
-            res.data.holdMineTokens && res.data.holdMineTokens.length > 0
-              ? res.data.holdMineTokens[0]
-              : {}
+          if(res.data.holdMineTokens && res.data.holdMineTokens.length > 0 && this.article.tokens && this.article.tokens.length > 0)
+            this.form.outputToken = res.data.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)[0]
+          if(res.data.holdMineTokens && res.data.holdMineTokens.length > 0 && this.article.editTokens && this.article.editTokens.length > 0)
+            this.editForm.outputToken = res.data.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)[0]
           // console.log('article', this.article)
           this.differenceTokenFunc()
+          this.editDifferenceTokenFunc()
           this.calPayFormParams()
+          this.calPayEditFormParams()
           this.setSSToken(res)
           this.isBookmarked = Boolean(res.data.is_bookmarked)
         } else if (res.code === 401) {
@@ -1109,7 +1150,7 @@ export default {
       if (
         this.currentProfile.holdMineTokens &&
         this.currentProfile.holdMineTokens.length !== 0 &&
-        this.article.tokens
+        this.article.tokens && this.article.tokens.length > 0
       ) {
         const tokenName = this.currentProfile.holdMineTokens.filter(
           list => list.id === this.article.tokens[0].id
@@ -1150,6 +1191,40 @@ export default {
         }
       }
     },
+    // 编辑文章差多少token
+    editDifferenceTokenFunc() {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.editTokens && this.article.editTokens.length > 0) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)
+        // 获取有多少token
+        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+        let needTokenAmount = 0
+        // 获取需要多少token
+        if (this.article.editTokens && this.article.editTokens.length !== 0) {
+          needTokenAmount = this.article.editTokens[0].amount
+        }
+        // 减之后 换算
+        const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
+        this.editDifferenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
+      } else this.editDifferenceToken = '0'
+      if (this.isMe(this.article.uid)) {
+        this.editTokenHasPaied = true
+        this.editPriceHasPaied = true
+        this.editHasPaied = true
+      } else {
+        if (this.isTokenEditArticle) {
+          this.editTokenHasPaied = Number(this.editDifferenceToken) > 0
+        } else this.editTokenHasPaied = true
+        if (this.isPriceEditArticle) {
+          this.editPriceHasPaied = Boolean(this.currentProfile.is_buy)
+        } else this.editPriceHasPaied = true
+        if (this.editPriceHasPaied && this.editTokenHasPaied) {
+          this.editHasPaied = true
+        } else {
+          this.editHasPaied = false
+        }
+      }
+    },
+
     async getIpfsData() {
       if (!this.article.hash) return
       await this.$API
@@ -1580,7 +1655,7 @@ export default {
       })
     },
     // 微信支付购买
-    calPayFormParams() {
+    async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         if (
           this.currentProfile.holdMineTokens &&
@@ -1598,36 +1673,71 @@ export default {
           else this.form.output = utils.fromDecimal(needTokenAmount - amount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
           }
         } else {
           const needTokenAmount = this.article.tokens[0].amount
           this.form.output = utils.fromDecimal(needTokenAmount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
           }
         }
       }
     },
-    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
-      const deciaml = 4
-      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
-      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then(res => {
-        this.payBtnDisabled = false
-        if (res.code === 0) {
-          this.getInputAmountError = ''
-          // rmb向上取整
-          if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
-            this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
-          } else {
-            this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+    // 获取编辑权限需要多少钱
+    async calPayEditFormParams() {
+      if (this.article.editTokens && this.article.editTokens.length !== 0) {
+        if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+          const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)
+          // 获取有多少token
+          const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+          // 获取需要多少token
+          const needTokenAmount = this.article.editTokens[0].amount
+          // 减之后 换算
+          if (needTokenAmount <= amount) this.editForm.output = 0
+          else this.editForm.output = utils.fromDecimal(needTokenAmount - amount)
+          const { inputToken, output, outputToken } = this.editForm
+          if (output > 0) {
+            console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
           }
         } else {
-          this.getInputAmountError = res.message
-          this.form.input = ''
+          // 获取需要多少token
+          const needTokenAmount = this.article.editTokens[0].amount
+          this.editForm.output = utils.fromDecimal(needTokenAmount)
+          const { inputToken, output, outputToken } = this.editForm
+          if (output > 0) {
+            console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
+          }
         }
-      })
+      }
+    },
+
+    async getInputAmount(inputTokenId, outputTokenId, outputAmount, errorTag) {
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      try {
+        let res = await this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount)
+        this.payBtnDisabled = false
+        if (res.code === 0) {
+          this[errorTag] = ''
+          // rmb向上取整
+          if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
+            return parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+          } else {
+            return parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+          }
+        } else {
+          this[errorTag] = res.message
+          console.error(res.message)
+          return ''
+        }
+      } catch(err) {
+        console.error(err)
+        return ''
+      }
     },
     hideClient() {
       this.opr = false
