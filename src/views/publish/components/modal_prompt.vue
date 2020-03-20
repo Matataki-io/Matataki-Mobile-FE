@@ -7,9 +7,22 @@
     @on-visible-change="change"
   >
     <div class="info-content">
-      <p v-for="(item, index) in modalText.text" :key="index">{{ item }}</p>
-      <a class="success" href="javascript:;" @click="success">{{ modalText.button[0] }}</a>
-      <a class="cancel" href="javascript:;" @click="cancel">{{ modalText.button[1] }}</a>
+      <p
+        v-for="(item, index) in modalText.text"
+        :key="index"
+      >
+        {{ item }}
+      </p>
+      <a
+        class="success"
+        href="javascript:;"
+        @click="success"
+      >{{ modalText.button[0] }}</a>
+      <a
+        class="cancel"
+        href="javascript:;"
+        @click="cancel"
+      >{{ modalText.button[1] }}</a>
     </div>
   </Modal>
 </template>

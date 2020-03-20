@@ -4,9 +4,10 @@
       <div class="head-title">
         <span
           v-for="(item, index) in head"
-          @click="$emit('setIdx', index)"
           :key="index"
-          :class="idx === index && 'active'">{{item.lab}}</span>
+          :class="idx === index && 'active'"
+          @click="$emit('setIdx', index)"
+        >{{ item.lab }}</span>
       </div>
       <slot name="sort" />
     </div>

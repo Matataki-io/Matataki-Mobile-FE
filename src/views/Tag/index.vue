@@ -9,9 +9,15 @@
       :scroll-show-title="true"
       @scrollToggleStatus="status => (iconColorStatus = status)"
     />
-    <div class="tag-banner" :style="{ backgroundColor: tagBanner }">
+    <div
+      class="tag-banner"
+      :style="{ backgroundColor: tagBanner }"
+    >
       <div class="tag-banner-title">
-        <img src="@/assets/img/icon_article_tag.svg" alt="tag" />
+        <img
+          src="@/assets/img/icon_article_tag.svg"
+          alt="tag"
+        >
         <span>{{ tagTitle }}</span>
       </div>
     </div>
@@ -26,9 +32,14 @@
       :api-url="apiUrl"
       @getListData="getListData"
     >
-    <div class="list">
-      <artcleCard class="list-card" v-for="item in tagList" :key="item.id" :card="item"></artcleCard>
-    </div>
+      <div class="list">
+        <artcleCard
+          v-for="item in tagList"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
+      </div>
     </BasePull>
   </div>
 </template>

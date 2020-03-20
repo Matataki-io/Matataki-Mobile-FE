@@ -1,12 +1,16 @@
 <template>
-  <m-dialog v-model="showModal" :title="dialogTitle" width="90%" class="transfer-dialog">
+  <m-dialog
+    v-model="showModal"
+    :title="dialogTitle"
+    width="90%"
+    class="transfer-dialog"
+  >
     <el-form
-      ref="form"
       v-show="widgetModalStatus === 0"
-      @submit.native.prevent
+      ref="form"
       label-width="70px"
+      @submit.native.prevent
     >
-
       <el-form-item label="接受对象">
         <el-input
           v-model="transferUsername"
@@ -16,7 +20,13 @@
         />
         <!-- 常用候选对象列表 -->
         <template v-if="historyUser.length !== 0">
-          <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+          <el-tag
+            v-for="item in historyUser"
+            :key="item.id"
+            type="info"
+            class="history-user__tag"
+            @click="continueUser(item)"
+          >
             {{
               (item.nickname || item.username).length > 20
                 ? `${(item.nickname || item.username).slice(0, 20)}...`
@@ -25,38 +35,80 @@
           </el-tag>
         </template>
         <!-- 搜索结果 -->
-        <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
-          <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
-            <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
-            <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
+        <div
+          v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
+          class="transfer—search__list"
+        >
+          <div
+            v-for="item in searchUserList"
+            :key="item.id"
+            @click="continueUser(item)"
+          >
+            <avatar
+              :src="searchUserAvatar(item.avatar)"
+              class="transfer—search__list__avatar"
+            />
+            <span
+              class="search-result__tag "
+              v-html="searchUserTitle(item.nickname || item.username)"
+            />
           </div>
         </div>
       </el-form-item>
 
       <!-- 结果 -->
       <transition name="result">
-        <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
-          <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
-            <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
-            <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
-            <div @click="closeUser" class="gift-ful">
+        <el-form-item
+          v-if="!$utils.isNull(toUserInfo)"
+          label=""
+          prop=""
+        >
+          <router-link
+            :to="{name: 'user-id', params: {id: toUserInfo.id}}"
+            class="search-user"
+            target="_blank"
+          >
+            <avatar
+              :src="searchUserAvatar(toUserInfo.avatar)"
+              class="search-user-avatar"
+            />
+            <span
+              class="search-result__tag "
+              v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
+            />
+            <div
+              class="gift-ful"
+              @click="closeUser"
+            >
               <i class="el-icon-close" />
             </div>
           </router-link>
         </el-form-item>
       </transition>
 
-      <a @click="widgetModalStatus = 1" class="transfer-help" href="javascript:;">{{ $t('p.articleTransferHelp') }}</a>
+      <a
+        class="transfer-help"
+        href="javascript:;"
+        @click="widgetModalStatus = 1"
+      >{{ $t('p.articleTransferHelp') }}</a>
       <el-form-item>
         <div class="form-button">
-          <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
+          <el-button
+            :disabled="$utils.isNull(toUserInfo)"
+            type="primary"
+            size="small"
+            @click="submitForm('form')"
+          >
             {{ dialogButton }}
           </el-button>
         </div>
       </el-form-item>
     </el-form>
 
-    <div v-show="widgetModalStatus === 1" class="widget-help">
+    <div
+      v-show="widgetModalStatus === 1"
+      class="widget-help"
+    >
       <p class="widget-help-title">
         {{ dialogHelpTitle }}
       </p>
@@ -69,19 +121,20 @@
       </p>
       <p class="widget-help-content">
         <template v-for="(item, index) in dialogHelpContentStep">
-          {{ item }} <br :key="index" />
+          {{ item }} <br :key="index">
         </template>
       </p>
       <div class="form-button">
-        <el-button @click="widgetModalStatus = 0" type="primary" size="small">
+        <el-button
+          type="primary"
+          size="small"
+          @click="widgetModalStatus = 0"
+        >
           {{ $t('p.articleTransferHelpBtn') }}
         </el-button>
       </div>
     </div>
-
-
   </m-dialog>
-
 </template>
 
 <script>
@@ -210,7 +263,7 @@ export default {
     }
   },
   methods: {
-    submitForm(formName) {
+    submitForm() {
       // 这里没有用表单验证
       if (this.$utils.isNull(this.toUserInfo)) {
         this.$message.warning('请选择用户')

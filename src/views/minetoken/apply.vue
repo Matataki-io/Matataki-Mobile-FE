@@ -6,7 +6,11 @@
       customize-header-bc="#fff"
     />
     <div class="apply-card">
-      <img class="error-gif" src="@/assets/img/wallet.png" alt="cover">
+      <img
+        class="error-gif"
+        src="@/assets/img/wallet.png"
+        alt="cover"
+      >
       <p>
         聪明又创造力十足的你终于来到这里了！快来发布你的Fan票吧，这是作为你的社区一员的身份象征哦！
       </p>
@@ -15,8 +19,14 @@
       </p>
     </div>
     <div class="bottom-bar">
-      <a href="https://wj.qq.com/s2/5208015/8e5d" target="_blank">
-        <el-button type="primary" size="small">
+      <a
+        href="https://wj.qq.com/s2/5208015/8e5d"
+        target="_blank"
+      >
+        <el-button
+          type="primary"
+          size="small"
+        >
           立即申请
         </el-button>
       </a>

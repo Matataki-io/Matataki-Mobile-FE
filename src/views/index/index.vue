@@ -1,30 +1,64 @@
 <template>
   <div class="main">
     <!-- home -->
-    <section ref="home" class="home">
+    <section
+      ref="home"
+      class="home"
+    >
       <!-- logo -->
-      <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo" />
-      <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary" />
+      <img
+        ref="logo"
+        class="home-logo"
+        src="@/assets/img/index/logo.png"
+        alt="logo"
+      >
+      <img
+        ref="sumary"
+        class="home-sumary"
+        src="@/assets/img/index/sumary.png"
+        alt="sumary"
+      >
       <!-- btn -->
-      <div class="btn-menu" ref="btnMenu">
-        <div class="btn" @click="showMoreMenu">
+      <div
+        ref="btnMenu"
+        class="btn-menu"
+      >
+        <div
+          class="btn"
+          @click="showMoreMenu"
+        >
           <svg-icon icon-class="add" />
         </div>
         <div class="btn-list">
           <router-link :to="{ name: 'article' }">
-            <svg-icon class="btn-list_btn" icon-class="article" />
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="article"
+            />
           </router-link>
           <router-link :to="{ name: 'sharehall' }">
-            <svg-icon class="btn-list_btn" icon-class="sharehall" />
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="sharehall"
+            />
           </router-link>
           <router-link :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }">
-            <svg-icon class="btn-list_btn" icon-class="write_index" />
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="write_index"
+            />
           </router-link>
           <router-link :to="{ name: 'token' }">
-            <svg-icon class="btn-list_btn" icon-class="fan" />
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="fan"
+            />
           </router-link>
           <router-link :to="{ name: 'exchange' }">
-            <svg-icon class="btn-list_btn" icon-class="exchange_home" />
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="exchange_home"
+            />
           </router-link>
         </div>
       </div>
@@ -33,27 +67,36 @@
         class="home-background__left"
         src="@/assets/img/index/top.png"
         alt="matataki home background"
-      />
+      >
       <img
         class="home-background__right"
         src="@/assets/img/index/bottom.png"
         alt="matataki home background"
-      />
+      >
     </section>
 
     <!-- story -->
     <section class="story ">
       <div>
         <!-- story 1 -->
-        <section ref="storyOne" class="component-story story-left story_01">
+        <section
+          ref="storyOne"
+          class="component-story story-left story_01"
+        >
           <section class="component-story__header">
             <article class="component-story__inner">
               <figure class="component-story__inner__title">
-                <img src="@/assets/img/index/passion.png" alt="passion" />
+                <img
+                  src="@/assets/img/index/passion.png"
+                  alt="passion"
+                >
               </figure>
               <div class="visual-wrap">
                 <figure>
-                  <img src="@/assets/img/index/story_passion.png" alt="passion" />
+                  <img
+                    src="@/assets/img/index/story_passion.png"
+                    alt="passion"
+                  >
                 </figure>
               </div>
             </article>
@@ -61,7 +104,10 @@
           <section class="component-story__summary">
             <article class="component-story__inner">
               <figure class="component-story__summary__title">
-                <img src="@/assets/img/index/sotry_passion_title.png" alt="passion" />
+                <img
+                  src="@/assets/img/index/sotry_passion_title.png"
+                  alt="passion"
+                >
               </figure>
               <ul>
                 <li>
@@ -85,15 +131,24 @@
         </section>
 
         <!-- story 2 -->
-        <section ref="storyTwo" class="component-story story-right story_02">
+        <section
+          ref="storyTwo"
+          class="component-story story-right story_02"
+        >
           <section class="component-story__header">
             <article class="component-story__inner">
               <figure class="component-story__inner__title">
-                <img src="@/assets/img/index/sustainability.png" alt="sustainability" />
+                <img
+                  src="@/assets/img/index/sustainability.png"
+                  alt="sustainability"
+                >
               </figure>
               <div class="visual-wrap">
                 <figure>
-                  <img src="@/assets/img/index/story_sustainability.png" alt="sustainability" />
+                  <img
+                    src="@/assets/img/index/story_sustainability.png"
+                    alt="sustainability"
+                  >
                 </figure>
               </div>
             </article>
@@ -101,7 +156,10 @@
           <section class="component-story__summary">
             <article class="component-story__inner">
               <figure class="component-story__summary__title">
-                <img src="@/assets/img/index/sotry_sustainability_title.png" alt="sustainability" />
+                <img
+                  src="@/assets/img/index/sotry_sustainability_title.png"
+                  alt="sustainability"
+                >
               </figure>
               <ul>
                 <li>
@@ -125,15 +183,24 @@
         </section>
 
         <!-- story 3 -->
-        <section ref="storyThree" class="component-story story-left story_03">
+        <section
+          ref="storyThree"
+          class="component-story story-left story_03"
+        >
           <section class="component-story__header">
             <article class="component-story__inner">
               <figure class="component-story__inner__title">
-                <img src="@/assets/img/index/boundary.png" alt="boundary" />
+                <img
+                  src="@/assets/img/index/boundary.png"
+                  alt="boundary"
+                >
               </figure>
               <div class="visual-wrap">
                 <figure>
-                  <img src="@/assets/img/index/story_boundary.png" alt="boundary" />
+                  <img
+                    src="@/assets/img/index/story_boundary.png"
+                    alt="boundary"
+                  >
                 </figure>
               </div>
             </article>
@@ -141,7 +208,10 @@
           <section class="component-story__summary">
             <article class="component-story__inner">
               <figure class="component-story__summary__title">
-                <img src="@/assets/img/index/sotry_boundary_title.png" alt="boundary" />
+                <img
+                  src="@/assets/img/index/sotry_boundary_title.png"
+                  alt="boundary"
+                >
               </figure>
               <ul>
                 <li>
@@ -167,39 +237,69 @@
     </section>
 
     <!-- 推荐语 -->
-    <div ref="evaluation" class="evaluation_section_div">
-    <section class="evaluation_section">
-      <div class="evaluation">
-        <i @click="pageTurning(-1)" class="el-icon-arrow-left arrow" />
-        <router-link
-          :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
-        >
-          <avatar :size="'35px'" :src="userReviews[pageNum].avatar" class="avatar" />
-        </router-link>
-        <div class="bubble">
-          <div class="bubble2">
-            <p class="name">
-              {{ userReviews[pageNum].name }}：
-            </p>
-            <p class="content">
-              <img src="@/assets/img/index/double_quotes_left.png" class="left" alt="double_quotes_left">
-              {{ userReviews[pageNum].content }}
-              <img src="@/assets/img/index/double_quotes_right.png" class="right" alt="double_quotes_right">
-            </p>
+    <div
+      ref="evaluation"
+      class="evaluation_section_div"
+    >
+      <section class="evaluation_section">
+        <div class="evaluation">
+          <i
+            class="el-icon-arrow-left arrow"
+            @click="pageTurning(-1)"
+          />
+          <router-link
+            :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
+          >
+            <avatar
+              :size="'35px'"
+              :src="userReviews[pageNum].avatar"
+              class="avatar"
+            />
+          </router-link>
+          <div class="bubble">
+            <div class="bubble2">
+              <p class="name">
+                {{ userReviews[pageNum].name }}：
+              </p>
+              <p class="content">
+                <img
+                  src="@/assets/img/index/double_quotes_left.png"
+                  class="left"
+                  alt="double_quotes_left"
+                >
+                {{ userReviews[pageNum].content }}
+                <img
+                  src="@/assets/img/index/double_quotes_right.png"
+                  class="right"
+                  alt="double_quotes_right"
+                >
+              </p>
+            </div>
           </div>
+          <i
+            class="el-icon-arrow-right arrow"
+            @click="pageTurning(1)"
+          />
         </div>
-        <i @click="pageTurning(1)" class="el-icon-arrow-right arrow" />
-      </div>
-    </section>
+      </section>
     </div>
 
     <!-- roadmap -->
     <section class="roadmap">
       <section class="roadmap-content">
-        <img class="roadmap-bg" src="@/assets/img/index/roadmap_m.png" alt="roadmap-background" />
+        <img
+          class="roadmap-bg"
+          src="@/assets/img/index/roadmap_m.png"
+          alt="roadmap-background"
+        >
         <section class="roadmap-time">
           <div class="roadmap-time__block">
-            <h4><img src="@/assets/img/index/2019Q4.png" alt="2019.Q4"></h4>
+            <h4>
+              <img
+                src="@/assets/img/index/2019Q4.png"
+                alt="2019.Q4"
+              >
+            </h4>
             <ul>
               <li>
                 <p class="sumary">
@@ -219,7 +319,12 @@
             </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4><img src="@/assets/img/index/2020Q1.png" alt="2020.Q1"></h4>
+            <h4>
+              <img
+                src="@/assets/img/index/2020Q1.png"
+                alt="2020.Q1"
+              >
+            </h4>
             <ul>
               <li>
                 <p class="sumary">
@@ -229,7 +334,12 @@
             </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4><img src="@/assets/img/index/2020Q2.png" alt="2020.Q2"></h4>
+            <h4>
+              <img
+                src="@/assets/img/index/2020Q2.png"
+                alt="2020.Q2"
+              >
+            </h4>
             <ul>
               <li>
                 <p class="sumary">
@@ -244,7 +354,12 @@
             </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4><img src="@/assets/img/index/2020Q3.png" alt="2020.Q3"></h4>
+            <h4>
+              <img
+                src="@/assets/img/index/2020Q3.png"
+                alt="2020.Q3"
+              >
+            </h4>
             <ul>
               <li>
                 <p class="sumary">
@@ -254,7 +369,12 @@
             </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4><img src="@/assets/img/index/2020Q4.png" alt="2020.Q4"></h4>
+            <h4>
+              <img
+                src="@/assets/img/index/2020Q4.png"
+                alt="2020.Q4"
+              >
+            </h4>
             <ul>
               <li>
                 <p class="sumary">
@@ -333,20 +453,21 @@ export default {
       let PromiseLoadScript = scriptSrc.map(i => loadScript(i))
       let timer = null
       Promise.all(PromiseLoadScript)
-      .then(res => {
-        console.log('done', res)
-        clearInterval(timer)
-        timer = setInterval(() => {
-          if (TweenMax && ScrollMagic) {
-            this.initScrollAnimation()
-            this.setDefaultStyle()
-            clearInterval(timer)
-          }
-        }, 300)
-      })
-      .catch(err => {
-        console.log('error', err)
-      })
+        .then(res => {
+          console.log('done', res)
+          clearInterval(timer)
+          timer = setInterval(() => {
+            // eslint-disable-next-line no-undef
+            if (TweenMax && ScrollMagic) {
+              this.initScrollAnimation()
+              this.setDefaultStyle()
+              clearInterval(timer)
+            }
+          }, 300)
+        })
+        .catch(err => {
+          console.log('error', err)
+        })
       this.resizeEvent = throttle(this.resizeHomeHeight, 300)
       this.scrollEvent = throttle(this.scrollTop, 300)
       window.addEventListener('resize', this.resizeEvent)
@@ -363,10 +484,11 @@ export default {
     initScrollAnimation() {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
+        // eslint-disable-next-line no-undef
         const controller = new ScrollMagic.Controller()
         // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
 
-        componentStory.forEach((el, i) => {
+        componentStory.forEach((el) => {
           const childHeaderInner = el.querySelector(
             '.component-story__header .component-story__inner'
           )
@@ -374,15 +496,19 @@ export default {
             '.component-story__summary .component-story__inner'
           )
 
+          // eslint-disable-next-line no-undef
           const tl = new TimelineMax()
 
           // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          // eslint-disable-next-line no-undef
           tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          // eslint-disable-next-line no-undef
           tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
           // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
 
-          const scene = new ScrollMagic.Scene({
+          // eslint-disable-next-line no-undef
+          new ScrollMagic.Scene({
             triggerElement: el,
             triggerHook: 1,
             duration: '200%'
@@ -399,7 +525,9 @@ export default {
         })
       }
       const initRoadmap = () => {
+        // eslint-disable-next-line no-undef
         const controller = new ScrollMagic.Controller()
+        // eslint-disable-next-line no-undef
         const tl = new TimelineMax()
         const roadmap = document.querySelector('.roadmap')
         const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
@@ -411,11 +539,13 @@ export default {
             },
             y: 0,
             opacity: 1,
+            // eslint-disable-next-line no-undef
             ease: Linear.easeNone
           })
         })
 
-        const scene1 = new ScrollMagic.Scene({
+        // eslint-disable-next-line no-undef
+        new ScrollMagic.Scene({
           triggerElement: roadmap
           // triggerHook: 1,
           // duration: '160%'
@@ -453,6 +583,7 @@ export default {
     },
     setDefaultStyle() {
       try {
+        // eslint-disable-next-line no-undef
         const tl = new TimelineMax()
         tl.set('.story', {
           perspective: 1000

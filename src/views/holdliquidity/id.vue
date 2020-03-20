@@ -9,19 +9,29 @@
       <div class="fl jsb">
         <div class="info">
           <router-link :to="{ name: 'token-id', params: { id: tokenDetail.id } }">
-            <avatar :src="cover" size="30px" />
+            <avatar
+              :src="cover"
+              size="30px"
+            />
           </router-link>
           <div class="user-info">
             <h3>{{ tokenDetail.symbol || '' }}</h3>
             <h4>{{ tokenDetail.name || '' }}</h4>
           </div>
         </div>
-        <div class="number">{{ tokenAmount(tokenDetail.total_supply) || 0 }}</div>
+        <div class="number">
+          {{ tokenAmount(tokenDetail.total_supply) || 0 }}
+        </div>
       </div>
       <div class="fl jsb publish-tokens">
-        <div class="username">创始人：{{ userDetail.nickname || userDetail.username }}</div>
-        <router-link class="jump" :to="{ name: 'user-id', params: { id: userDetail.id } }">
-          <svg-icon icon-class="share"></svg-icon>
+        <div class="username">
+          创始人：{{ userDetail.nickname || userDetail.username }}
+        </div>
+        <router-link
+          class="jump"
+          :to="{ name: 'user-id', params: { id: userDetail.id } }"
+        >
+          <svg-icon icon-class="share" />
         </router-link>
       </div>
     </div>
@@ -35,12 +45,21 @@
       :reload="reload"
       @getListData="getListData"
     >
-      <card v-for="item in pointLog.list" :key="item.id" :card="item"></card>
+      <card
+        v-for="item in pointLog.list"
+        :key="item.id"
+        :card="item"
+      />
     </BasePull>
     <div class="fixed-bottom">
       <!-- <el-button class="fix-button" @click="showGift">赠送</el-button> -->
       <router-link :to="{ name: 'exchange', hash: '#swap', query: { output: tokenDetail.symbol } }">
-        <el-button class="fix-button" type="primary">交易</el-button>
+        <el-button
+          class="fix-button"
+          type="primary"
+        >
+          交易
+        </el-button>
       </router-link>
     </div>
   </div>
@@ -48,7 +67,7 @@
 
 <script>
 import card from './components/tokens_detail_card.vue'
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index.vue'
 
 export default {

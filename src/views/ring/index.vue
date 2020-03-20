@@ -8,18 +8,26 @@
       trigger="click"
     >
       <div>
-        <el-checkbox-group v-model="sortCheckList" @change="sortChange">
+        <el-checkbox-group
+          v-model="sortCheckList"
+          @change="sortChange"
+        >
           <el-checkbox
-            class="head-sort-check"
             v-for="(item, idx) in sortList"
             :key="idx"
+            class="head-sort-check"
             :disabled="sortCheckList.length <= 1 && sortCheckList[0] === item.label"
             :label="item.label"
-          >{{item.value}}</el-checkbox>
+          >
+            {{ item.value }}
+          </el-checkbox>
         </el-checkbox-group>
       </div>
-      <span class="head-sort" slot="reference">
-        <i class="el-icon-s-operation"></i>筛选
+      <span
+        slot="reference"
+        class="head-sort"
+      >
+        <i class="el-icon-s-operation" />筛选
       </span>
     </el-popover>
 
@@ -34,7 +42,12 @@
         :auto-request-time="pull.autoRequestTime"
         @getListData="getListData"
       >
-        <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
+        <artcleCard
+          v-for="item in pull.list"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
       </BasePull>
     </div>
   </ringLayout>

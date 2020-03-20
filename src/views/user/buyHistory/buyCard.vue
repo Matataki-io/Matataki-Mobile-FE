@@ -1,5 +1,8 @@
 <template>
-  <div class="buy-block" @click="jumpPage(buy.sign_id)">
+  <div
+    class="buy-block"
+    @click="jumpPage(buy.sign_id)"
+  >
     <div class="head">
       <span class="date">{{ buyTime }}</span>
       <span class="des">{{ $t('user.transactionComplete') }}</span>
@@ -7,10 +10,18 @@
 
     <div class="container">
       <div class="cover">
-        <img v-if="buyCover" v-lazy="buyCover" :src="buyCover" alt="cover" />
+        <img
+          v-if="buyCover"
+          v-lazy="buyCover"
+          :src="buyCover"
+          alt="cover"
+        >
       </div>
       <div class="info">
-        <p v-clampy="2" class="title">
+        <p
+          v-clampy="2"
+          class="title"
+        >
           {{ buy.title }}
         </p>
         <p class="money">
@@ -23,9 +34,17 @@
       </div>
     </div>
 
-    <div v-for="(item, index) in buy.digital_copy" :key="index" class="copy">
+    <div
+      v-for="(item, index) in buy.digital_copy"
+      :key="index"
+      class="copy"
+    >
       <span>{{ item }}</span>
-      <svg-icon class="icon" icon-class="copy" @click.stop="copyText(item)" />
+      <svg-icon
+        class="icon"
+        icon-class="copy"
+        @click.stop="copyText(item)"
+      />
     </div>
   </div>
 </template>

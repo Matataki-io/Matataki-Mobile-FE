@@ -1,33 +1,82 @@
 <template>
   <div class="related mw">
-    <BaseHeader :pageinfo="{ title: $t('user.related') }" :has-bottom-border-line="true" />
+    <BaseHeader
+      :pageinfo="{ title: $t('user.related') }"
+      :has-bottom-border-line="true"
+    />
     <div class="options">
-      <Dropdown class="sort dropdown" trigger="click" placement="bottom-start" @on-click="toggleOrdering">
-        <div class="dropdown-header" v-if="pull.params.sort === 'popular-desc'">
+      <Dropdown
+        class="sort dropdown"
+        trigger="click"
+        placement="bottom-start"
+        @on-click="toggleOrdering"
+      >
+        <div
+          v-if="pull.params.sort === 'popular-desc'"
+          class="dropdown-header"
+        >
           按照热度排序
-          <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+          <img
+            class="arrow"
+            src="@/assets/newimg/arrow-s.svg"
+          >
         </div>
-        <div class="dropdown-header" v-else-if="pull.params.sort === 'time-desc'">
+        <div
+          v-else-if="pull.params.sort === 'time-desc'"
+          class="dropdown-header"
+        >
           按照时间排序
-          <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+          <img
+            class="arrow"
+            src="@/assets/newimg/arrow-s.svg"
+          >
         </div>
         <DropdownMenu slot="list">
-          <DropdownItem name="popular-desc" :selected="pull.params.sort === 'popular-desc'">
+          <DropdownItem
+            name="popular-desc"
+            :selected="pull.params.sort === 'popular-desc'"
+          >
             按照热度排序
           </DropdownItem>
-          <DropdownItem name="time-desc" :selected="pull.params.sort === 'time-desc'">
+          <DropdownItem
+            name="time-desc"
+            :selected="pull.params.sort === 'time-desc'"
+          >
             按照时间排序
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-      <Poptip class="filter" placement="bottom-end">
+      <Poptip
+        class="filter"
+        placement="bottom-end"
+      >
         <div class="filter-header">
-          <img class="filter-icon" src="@/assets/img/filter.svg" />过滤
+          <img
+            class="filter-icon"
+            src="@/assets/img/filter.svg"
+          >过滤
         </div>
         <div slot="content">
-          <CheckboxGroup v-model="checkedFilter" @on-change="handleCheckedFilterChanged">
-            <div style="margin-bottom: 8px"><Checkbox label="1" :disabled="checkedFilter.length === 1 && filter === 1"><span style="margin-left: 4px">持票可见</span></Checkbox></div>
-            <div><Checkbox label="2" :disabled="checkedFilter.length === 1 && filter === 2"><span style="margin-left: 4px">付费可见</span></Checkbox></div>
+          <CheckboxGroup
+            v-model="checkedFilter"
+            @on-change="handleCheckedFilterChanged"
+          >
+            <div style="margin-bottom: 8px">
+              <Checkbox
+                label="1"
+                :disabled="checkedFilter.length === 1 && filter === 1"
+              >
+                <span style="margin-left: 4px">持票可见</span>
+              </Checkbox>
+            </div>
+            <div>
+              <Checkbox
+                label="2"
+                :disabled="checkedFilter.length === 1 && filter === 2"
+              >
+                <span style="margin-left: 4px">付费可见</span>
+              </Checkbox>
+            </div>
           </CheckboxGroup>
         </div>
       </Poptip>
@@ -42,14 +91,14 @@
       :auto-request-time="0"
       @getListData="getListData"
     >
-    <div class="list">
-      <artcleCard
-        v-for="(item, i) in articles"
-        :key="i + item.id"
-        :card="item"
-        class="list-card"
-      />
-    </div>
+      <div class="list">
+        <artcleCard
+          v-for="(item, i) in articles"
+          :key="i + item.id"
+          :card="item"
+          class="list-card"
+        />
+      </div>
     </BasePull>
   </div>
 </template>
@@ -93,7 +142,7 @@ export default {
   },
   created() {},
   methods: {
-    handleCheckedFilterChanged(value) {
+    handleCheckedFilterChanged() {
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(function () {

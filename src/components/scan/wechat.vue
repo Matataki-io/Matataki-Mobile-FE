@@ -1,9 +1,19 @@
 <template>
   <div class="wechat-share">
-    <qrcode class="wechat-code" :value="link" :options="{ width: width }" />
-    <p v-if="isShowText" class="code">
+    <qrcode
+      class="wechat-code"
+      :value="link"
+      :options="{ width: width }"
+    />
+    <p
+      v-if="isShowText"
+      class="code"
+    >
       {{ text }}
-      <svg-icon class="icon" icon-class="weixin" />
+      <svg-icon
+        class="icon"
+        icon-class="weixin"
+      />
     </p>
   </div>
 </template>

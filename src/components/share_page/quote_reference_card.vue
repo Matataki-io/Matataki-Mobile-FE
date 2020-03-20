@@ -1,33 +1,56 @@
 <template>
-    <div class="related-list">
-      <div
-        :class="!card.summary && 'no-margin-bottom'"
-        class="related-list-title">
-        <div class="fl jsb">
-          <div class="fl ac related-7">
-            <div class="related-list-link">
-              <a
-                v-if="currentSite(card.url)"
-                :href="card.url"
-                @click="toggleArticle(card.url, $event)"
-              >{{ card.title }}</a>
-              <a v-else :href="card.url" target="_blank">{{ card.title }}</a>
-            </div>
-          </div>
-          <div class="fl ac jfe related-3">
-            <span class="related-id">{{ card.number }}</span>
+  <div class="related-list">
+    <div
+      :class="!card.summary && 'no-margin-bottom'"
+      class="related-list-title"
+    >
+      <div class="fl jsb">
+        <div class="fl ac related-7">
+          <div class="related-list-link">
+            <a
+              v-if="currentSite(card.url)"
+              :href="card.url"
+              @click="toggleArticle(card.url, $event)"
+            >{{ card.title }}</a>
+            <a
+              v-else
+              :href="card.url"
+              target="_blank"
+            >{{ card.title }}</a>
           </div>
         </div>
-        <div class="fl ac related-link">
-          <a class="link" href="javascript:void(0);">{{ card.url }}</a>
-          <svg-icon @click="copyCode(card.url)" class="icon-copy" icon-class="copy2" />
-          <a :href="card.url" target="_blank">
-            <svg-icon class="icon-share" icon-class="jump" />
-          </a>
+        <div class="fl ac jfe related-3">
+          <span class="related-id">{{ card.number }}</span>
         </div>
-        <p class="summary" v-if="card.summary">{{ card.summary }}</p>
       </div>
+      <div class="fl ac related-link">
+        <a
+          class="link"
+          href="javascript:void(0);"
+        >{{ card.url }}</a>
+        <svg-icon
+          class="icon-copy"
+          icon-class="copy2"
+          @click="copyCode(card.url)"
+        />
+        <a
+          :href="card.url"
+          target="_blank"
+        >
+          <svg-icon
+            class="icon-share"
+            icon-class="jump"
+          />
+        </a>
+      </div>
+      <p
+        v-if="card.summary"
+        class="summary"
+      >
+        {{ card.summary }}
+      </p>
     </div>
+  </div>
 </template>
 
 <script>

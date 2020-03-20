@@ -1,36 +1,5 @@
-// module.exports = {
-//   root: true,
-//   env: {
-//     node: true
-//   },
-//   extends: [
-//     'plugin:vue/essential',
-//     '@vue/airbnb',
-//     'plugin:vue/recommended',
-//     'eslint:recommended',
-//     'prettier/vue',
-//     'plugin:prettier/recommended'
-//   ],
-//   rules: {
-//     'vue/component-name-in-template-casing': ['error', 'PascalCase'],
-//     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-//     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-//     'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],
-//     'max-len': ['error', { code: 160 }], // 最大长度
-//     // 关闭冲突规则
-//     'prettier/prettier': [
-//       'error',
-//       {
-//         singleQuote: true,
-//         semi: false
-//       }
-//     ]
-//   },
-//   parserOptions: {
-//     parser: 'babel-eslint'
-//   }
-// }
-
+// https://zh.nuxtjs.org/guide/development-tools
+// 暂时和移动端统一eslint
 module.exports = {
   root: true,
   env: {
@@ -41,15 +10,18 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
+    'eslint:recommended',
     'plugin:vue/essential',
-    'prettier',
-    'prettier/vue'
+    'plugin:vue/strongly-recommended',
+    'plugin:vue/recommended',
   ],
-  // https://github.com/ElemeFE/eslint-config-elemefe/blob/master/rules.js
   rules: {
-    // "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    // "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
     quotes: [2, 'single'], // https://eslint.org/docs/2.0.0/rules/quotes
-    semi: [2, 'never'] // https://eslint.org/docs/2.0.0/rules/semi
+    semi: [2, 'never'], // https://eslint.org/docs/2.0.0/rules/semi
+    // https://github.com/ElemeFE/eslint-config-elemefe/blob/master/rules.js
+    // // https://cn.eslint.org/docs/rules/
+    'no-console': 0,
+    indent : [1, 2, { 'SwitchCase': 1 }],
+    'vue/no-v-html': 'off' // 关闭v-html检测
   }
 }

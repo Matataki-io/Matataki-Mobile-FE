@@ -1,17 +1,30 @@
 <template>
-  <div v-if="tokenUser" class="token-card-bg">
-    <router-link :to="{name: 'token-id', params: { id: tokenData.id }}" class="fl token-card" tag="div">
+  <div
+    v-if="tokenUser"
+    class="token-card-bg"
+  >
+    <router-link
+      :to="{name: 'token-id', params: { id: tokenData.id }}"
+      class="fl token-card"
+      tag="div"
+    >
       <div>
-        <avatar :src="cover" size="60px" />
+        <avatar
+          :src="cover"
+          size="60px"
+        />
       </div>
       <div class="card-info">
         <div class="fl">
           <h2>
             {{ tokenData.symbol }}
           </h2>
-          <router-link :to="{name: 'user-id', params: { id: currentUserInfo.id }}" class="card-username">
+          <router-link
+            :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
+            class="card-username"
+          >
             {{ name }}
-            <i class="el-icon-arrow-right"></i>
+            <i class="el-icon-arrow-right" />
           </router-link>
         </div>
         <p>

@@ -16,10 +16,20 @@
       @getListData="getListData"
     >
       <template v-if="type === 2">
-        <CommentCard v-for="item in articles" :key="item.uid" :comment="item" :type="type" />
+        <CommentCard
+          v-for="item in articles"
+          :key="item.uid"
+          :comment="item"
+          :type="type"
+        />
       </template>
       <template v-else>
-        <articleCard v-for="item in articles" :key="item.uid" :comment="item" :type="type" />
+        <articleCard
+          v-for="item in articles"
+          :key="item.uid"
+          :comment="item"
+          :type="type"
+        />
       </template>
     </BasePull>
   </div>

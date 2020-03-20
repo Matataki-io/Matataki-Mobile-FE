@@ -1,6 +1,12 @@
 <template>
-  <div role="progressbar" class="progress">
-    <div class="progress-circle" style="height: 37px; width: 37px;">
+  <div
+    role="progressbar"
+    class="progress"
+  >
+    <div
+      class="progress-circle"
+      style="height: 37px; width: 37px;"
+    >
       <svg viewBox="0 0 100 100">
         <path
           d="

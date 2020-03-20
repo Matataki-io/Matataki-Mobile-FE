@@ -1,25 +1,34 @@
 <template>
-<div>
-  <el-dropdown @command="handleMoreAction" trigger="click">
-  <div class="more-setting">
-    <svg-icon class="more-icon-setting" icon-class="more" />
-  </div>
-  <el-dropdown-menu slot="dropdown" class="share-head__right">
-    <el-dropdown-item command="transfer">
-      {{ $t('transfer') }}
-    </el-dropdown-item>
-    <el-dropdown-item command="del">
-      {{ $t('delete') }}
-    </el-dropdown-item>
-  </el-dropdown-menu>
-  </el-dropdown>
+  <div>
+    <el-dropdown
+      trigger="click"
+      @command="handleMoreAction"
+    >
+      <div class="more-setting">
+        <svg-icon
+          class="more-icon-setting"
+          icon-class="more"
+        />
+      </div>
+      <el-dropdown-menu
+        slot="dropdown"
+        class="share-head__right"
+      >
+        <el-dropdown-item command="transfer">
+          {{ $t('transfer') }}
+        </el-dropdown-item>
+        <el-dropdown-item command="del">
+          {{ $t('delete') }}
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
     <!-- 文章转让 -->
     <article-transfer
       v-model="transferModal"
       :article-id="Number(id)"
       from="share"
     />
-</div>
+  </div>
 </template>
 
 <script>
@@ -71,7 +80,7 @@ export default {
         .then(() => {
           delFunc(this.id)
         })
-        .catch((action) => {})
+        .catch(() => {})
     },
     transfer() {
       this.transferModal = true

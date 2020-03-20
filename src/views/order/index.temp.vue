@@ -6,16 +6,38 @@
       customize-header-bc="#fff"
     />
     <div class="img-container">
-      <img src="@/assets/img/m_logo.png" alt="logo" class="logo" />
+      <img
+        src="@/assets/img/m_logo.png"
+        alt="logo"
+        class="logo"
+      >
     </div>
     <!-- <p>请仔细核对订单信息，如果有误请取消后再次尝试</p> -->
     <van-cell-group>
-      <van-cell title="交易账号" :value="currentUserInfo.nickname || currentUserInfo.name" />
-      <van-cell title="交易内容" :value="tokenContent" />
-      <van-cell title="交易数量" :value="tokenAmount" />
-      <van-cell title="交易类型" :value="tradeType" />
-      <van-cell title="创建时间" :value="friendlyTime" />
-      <van-cell title="订单编号" :value="tradeNo" />
+      <van-cell
+        title="交易账号"
+        :value="currentUserInfo.nickname || currentUserInfo.name"
+      />
+      <van-cell
+        title="交易内容"
+        :value="tokenContent"
+      />
+      <van-cell
+        title="交易数量"
+        :value="tokenAmount"
+      />
+      <van-cell
+        title="交易类型"
+        :value="tradeType"
+      />
+      <van-cell
+        title="创建时间"
+        :value="friendlyTime"
+      />
+      <van-cell
+        title="订单编号"
+        :value="tradeNo"
+      />
     </van-cell-group>
     <div class="flexBox">
       <span>预期价格波动：1% </span>
@@ -25,9 +47,12 @@
     </div>
     <div class="flexBox">
       <div>
-        <el-checkbox v-model="useBalance" @change="useBalanceChange"
-          >使用余额（¥ {{ balance }}）</el-checkbox
+        <el-checkbox
+          v-model="useBalance"
+          @change="useBalanceChange"
         >
+          使用余额（¥ {{ balance }}）
+        </el-checkbox>
       </div>
       <div>
         抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
@@ -232,7 +257,7 @@ export default {
       })
     },
     // 是否使用余额修改
-    useBalanceChange(v) {
+    useBalanceChange() {
       clearInterval(this.timer)
     },
     // 使用余额支付
@@ -249,7 +274,7 @@ export default {
       const {
         token_id,
         cny_amount,
-        pay_cny_amount,
+        // pay_cny_amount,
         token_amount,
         min_liquidity,
         min_tokens,
@@ -315,7 +340,7 @@ export default {
           }, interval)
         })
       }
-      const openid = this.currentUserInfo.name
+      // const openid = this.currentUserInfo.name
     },
     getWeixinOpenId() {
       if (!this.isInWeixin) return
@@ -343,6 +368,7 @@ export default {
       const { appId, timeStamp, nonceStr, signType, paySign } = order
       const self = this
       function onBridgeReady() {
+        // eslint-disable-next-line no-undef
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest',
           {
@@ -411,7 +437,7 @@ export default {
     },
     // 构造参数
     makeOrderParams(openid = null) {
-      const { input, inputToken, output, outputToken, limitValue, type } = this.form
+      const { input, output, outputToken, limitValue, type } = this.form
       let requestParams = {
         total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
         title: `购买${outputToken.symbol}`,

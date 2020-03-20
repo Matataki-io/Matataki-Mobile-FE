@@ -2,29 +2,38 @@
   <!-- v-show="!isLogin" -->
   <section class="resetPassword">
     <h1>重置密码</h1>
-    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
+    <el-form
+      ref="registerForm"
+      :model="registerForm"
+      :rules="registerRules"
+      class="ss-form"
+    >
       <el-form-item prop="email">
         <el-input
           v-model="registerForm.email"
           type=""
           :placeholder="$t('rule.loginEmailMessage')"
-        ></el-input>
+        />
       </el-form-item>
-      <input type="text" class="is-hidden" />
+      <input
+        type="text"
+        class="is-hidden"
+      >
       <el-form-item prop="smscode">
         <div class="code-contaniner">
           <el-input
             v-model="registerForm.smscode"
             :placeholder="$t('rule.emailCode')"
             autocomplete="off"
-          ></el-input>
+          />
           <el-button
             type="primary"
             :loading="loading"
             :disabled="!!timer || loading"
             @click="sendCode"
-            >{{ timer ? `${count}S` : $t('auth.getEmailCode') }}</el-button
           >
+            {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
+          </el-button>
         </div>
       </el-form-item>
       <el-form-item prop="password">
@@ -33,7 +42,7 @@
           type="password"
           placeholder="请输入新密码"
           show-password
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="repassword">
         <el-input
@@ -41,10 +50,15 @@
           type="password"
           placeholder="请在输入一遍新密码"
           show-password
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">重置密码</el-button>
+        <el-button
+          type="primary"
+          @click="submitRegisterForm"
+        >
+          重置密码
+        </el-button>
       </el-form-item>
     </el-form>
   </section>

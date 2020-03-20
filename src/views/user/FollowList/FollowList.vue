@@ -1,6 +1,9 @@
 <template>
   <div class="mw draftbox">
-    <BaseHeader :pageinfo="{ title: '' }" :has-bottom-border-line="true" />
+    <BaseHeader
+      :pageinfo="{ title: '' }"
+      :has-bottom-border-line="true"
+    />
     <!-- tabs.less -->
     <div class="tabs">
       <div

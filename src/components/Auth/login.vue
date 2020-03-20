@@ -1,8 +1,16 @@
 <template>
   <section class="login">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="ss-form"
+    >
       <el-form-item prop="email">
-        <el-input v-model="loginForm.email" :placeholder="$t('rule.loginEmailMessage')"></el-input>
+        <el-input
+          v-model="loginForm.email"
+          :placeholder="$t('rule.loginEmailMessage')"
+        />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
@@ -10,62 +18,114 @@
           type="password"
           :placeholder="$t('rule.passwordMessage')"
           show-password
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitLoginForm">{{ $t('login') }}</el-button>
+        <el-button
+          type="primary"
+          @click="submitLoginForm"
+        >
+          {{ $t('login') }}
+        </el-button>
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin') }}</span>
-          <a href="javascript:void(0);" @click="$emit('switch')">忘记密码</a>
+          <a
+            href="javascript:void(0);"
+            @click="$emit('switch')"
+          >忘记密码</a>
           <!-- <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('registered') }}</a> -->
         </div>
         <!-- <span class="red">{{ $t('auth.pcLoginViewPointDetail') }}</span> -->
       </el-form-item>
     </el-form>
     <div class="oauth-box">
-      <h1 class="oauth-title">{{ $t('auth.otherAccount') }}</h1>
+      <h1 class="oauth-title">
+        {{ $t('auth.otherAccount') }}
+      </h1>
       <div class="oauth">
         <div>
-          <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
-            <svg-icon class="eos" icon-class="eos_login" />
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('EOS')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="eos_login"
+            />
           </div>
           EOS
         </div>
         <div class="oauth-card">
-          <div class="oauth-bg bg-gray" @click="walletLogin('MetaMask')">
-            <svg-icon class="eos" icon-class="metamask" />
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('MetaMask')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="metamask"
+            />
           </div>
           MetaMask
         </div>
         <div class="oauth-card">
-          <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
-            <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
+          <div
+            class="oauth-bg bg-blue"
+            @click="walletLogin('ONT')"
+          >
+            <img
+              src="@/assets/img/icon_logo_ont.svg"
+              alt="ONT"
+            >
           </div>
           ONT
         </div>
         <div class="oauth-card">
-          <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
-            <svg-icon class="github" icon-class="github" />
+          <div
+            class="oauth-bg bg-purple"
+            @click="walletLogin('GitHub')"
+          >
+            <svg-icon
+              class="github"
+              icon-class="github"
+            />
           </div>
           GitHub
         </div>
       </div>
       <div class="oauth">
         <div class="oauth-card">
-          <div class="oauth-bg bg-green" @click="getWeixinCode">
-            <svg-icon class="github" icon-class="weixin" />
+          <div
+            class="oauth-bg bg-green"
+            @click="getWeixinCode"
+          >
+            <svg-icon
+              class="github"
+              icon-class="weixin"
+            />
           </div>
           微信
         </div>
         <div class="oauth-card">
-          <div class="oauth-bg bg-tg" @click="telegramLogin">
-            <svg-icon class="github" icon-class="telegram2" />
+          <div
+            class="oauth-bg bg-tg"
+            @click="telegramLogin"
+          >
+            <svg-icon
+              class="github"
+              icon-class="telegram2"
+            />
           </div>
           Telegram
         </div>
         <div class="oauth-card">
-          <div class="oauth-bg bg-twitter" @click="walletLogin('Twitter')">
-            <svg-icon class="twitter" icon-class="twitter" />
+          <div
+            class="oauth-bg bg-twitter"
+            @click="walletLogin('Twitter')"
+          >
+            <svg-icon
+              class="twitter"
+              icon-class="twitter"
+            />
           </div>
           Twitter
         </div>

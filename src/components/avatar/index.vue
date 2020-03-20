@@ -6,12 +6,25 @@
       height: size
     }"
   >
-    <el-image v-if="src" :src="src" class="img-lazy" alt="avatar" fit="cover">
-      <div slot="error" class="image-slot">
+    <el-image
+      v-if="src"
+      :src="src"
+      class="img-lazy"
+      alt="avatar"
+      fit="cover"
+    >
+      <div
+        slot="error"
+        class="image-slot"
+      >
         <i class="el-icon-picture-outline" />
       </div>
     </el-image>
-    <svg-icon v-else icon-class="avatar" class="icon-avatar" />
+    <svg-icon
+      v-else
+      icon-class="avatar"
+      class="icon-avatar"
+    />
   </div>
 </template>
 

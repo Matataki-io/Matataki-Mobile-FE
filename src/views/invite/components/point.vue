@@ -9,18 +9,22 @@
         <div class="integral-link">
           {{ referralLink }}
         </div>
-        <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
-          {{ $t('invite.copyLink') }}</el-button
+        <el-button
+          size="mini"
+          class="integral-btn"
+          @click="copyLink(referralLink1)"
         >
+          {{ $t('invite.copyLink') }}
+        </el-button>
       </div>
       <p class="point-des">
         {{ $t('invite.des1', [$point.regInviteFinished + $point.regInviter]) }}
-        <br />
+        <br>
         {{ $t('invite.des2', [$point.publishReferral]) }}
-        <br />
+        <br>
         {{ $t('invite.des3', [1 / $point.readReferralRate]) }}
       </p>
-      <br />
+      <br>
       <p class="point-des">
         {{ $t('invite.des4', [$point.readNew, $point.regInviteFinished]) }}
       </p>
@@ -42,14 +46,21 @@
           v-for="itemChild in point.list"
           :key="itemChild.create_time"
           :card="itemChild"
-        ></inviteCard>
+        />
       </BasePull>
     </div>
-    <div v-else class="tips">
+    <div
+      v-else
+      class="tips"
+    >
       <p>
         {{ $t('invite.loginViewList') }}
       </p>
-      <el-button size="mini" class="integral-btn btn" @click="login">
+      <el-button
+        size="mini"
+        class="integral-btn btn"
+        @click="login"
+      >
         {{ $t('login') }}
       </el-button>
     </div>

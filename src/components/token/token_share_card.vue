@@ -1,8 +1,14 @@
 <template>
   <div class="card">
-    <div class="card-bg" :class="cardStyleComputed">
+    <div
+      class="card-bg"
+      :class="cardStyleComputed"
+    >
       <div class="avatar">
-        <img :src="cover" alt="avatar" />
+        <img
+          :src="cover"
+          alt="avatar"
+        >
       </div>
       <h1 class="title">
         {{ minetokenToken.symbol }}
@@ -24,21 +30,38 @@
         <div class="list-title">
           发行量：
         </div>
-        <div class="list-content">{{ amount }}-{{ minetokenToken.symbol }}</div>
+        <div class="list-content">
+          {{ amount }}-{{ minetokenToken.symbol }}
+        </div>
       </div>
       <div class="list">
         <div class="list-title">
           简&emsp;介：
         </div>
-        <div v-clampy="6" class="list-content">
+        <div
+          v-clampy="6"
+          class="list-content"
+        >
           {{ minetokenToken.brief }}
         </div>
       </div>
 
-      <img class="slogan" src="@/assets/img/token_share_slogan.png" alt="slogan" />
+      <img
+        class="slogan"
+        src="@/assets/img/token_share_slogan.png"
+        alt="slogan"
+      >
       <div class="fl ac jc">
-        <img class="logo" src="@/assets/img/token_share_logo.png" alt="logo" />
-        <qrcode class="code" :value="link" :options="{ width: '80' }" />
+        <img
+          class="logo"
+          src="@/assets/img/token_share_logo.png"
+          alt="logo"
+        >
+        <qrcode
+          class="code"
+          :value="link"
+          :options="{ width: '80' }"
+        />
       </div>
       <el-divider>
         <div class="info">

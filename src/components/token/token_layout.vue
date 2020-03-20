@@ -8,7 +8,10 @@
 
     <div class="token-detail no-shadow">
       <div class="fl">
-        <avatar :src="logo" class="avatar" />
+        <avatar
+          :src="logo"
+          class="avatar"
+        />
         <div class="token-detail-info">
           <div class="fl info-line">
             <div class="token-info-title bold">
@@ -58,7 +61,10 @@
             </div>
             <div>
               <p class="token-info-sub">
-                <router-link v-if="isLogined" :to="{ name: 'tokens' }">
+                <router-link
+                  v-if="isLogined"
+                  :to="{ name: 'tokens' }"
+                >
                   {{ balance }} {{ minetokenToken.symbol }}
                 </router-link>
               </p>
@@ -67,23 +73,50 @@
         </div>
       </div>
       <div class="link">
-        <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+        <a
+          class="help-link"
+          href="https://www.matataki.io/p/977"
+          target="_blank"
+        >什么是Fan票?</a>
       </div>
-      <p class="warning" v-if="!minetokenToken.contract_address">Fan票正在部署中，请耐心等候。</p>
-
+      <p
+        v-if="!minetokenToken.contract_address"
+        class="warning"
+      >
+        Fan票正在部署中，请耐心等候。
+      </p>
     </div>
 
     <div class="fl function-bar">
-      <div class="but" @click="openEtherscan()">
-        <svg-icon class="eth_mini" icon-class="eth_mini" />
+      <div
+        class="but"
+        @click="openEtherscan()"
+      >
+        <svg-icon
+          class="eth_mini"
+          icon-class="eth_mini"
+        />
         链上查看
       </div>
-      <router-link class="but" v-if="showTokenSetting" :to="{name: 'minetoken'}">
-        <svg-icon class="setting" icon-class="setting" />
+      <router-link
+        v-if="showTokenSetting"
+        class="but"
+        :to="{name: 'minetoken'}"
+      >
+        <svg-icon
+          class="setting"
+          icon-class="setting"
+        />
         管理
       </router-link>
-      <div class="but" @click="shareModalShow = true">
-        <svg-icon class="share1" icon-class="share1" />
+      <div
+        class="but"
+        @click="shareModalShow = true"
+      >
+        <svg-icon
+          class="share1"
+          icon-class="share1"
+        />
         分享Fan票
       </div>
     </div>
@@ -134,14 +167,19 @@
           <p class="token-name">
             24h成交额
           </p>
-          <p class="token-num">{{ exchangeAmount }}<sub>CNY</sub></p>
+          <p class="token-num">
+            {{ exchangeAmount }}<sub>CNY</sub>
+          </p>
         </div>
 
         <div class="fl token-data">
           <p class="token-name">
             24h涨跌幅
           </p>
-          <p class="token-num" :style="{ color: color }">
+          <p
+            class="token-num"
+            :style="{ color: color }"
+          >
             {{ change }}
           </p>
         </div>
@@ -150,25 +188,40 @@
           <p class="token-name">
             当前价格
           </p>
-          <p class="token-num">{{ price || 0 }}<sub>CNY</sub></p>
+          <p class="token-num">
+            {{ price || 0 }}<sub>CNY</sub>
+          </p>
         </div>
       </div>
     </div>
 
     <tokenBuyCard :token="minetokenToken" />
 
-    <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" :balance="balance" />
+    <TokenJoinFandom
+      :token-symbol="minetokenToken.symbol || ''"
+      :token-id="Number($route.params.id)"
+      :balance="balance"
+    />
 
     <div class="about">
       <h2 class="token-title">
         相关网站
       </h2>
       <ul v-if="resourcesWebsites.length !== 0">
-        <li v-for="(item, index) in resourcesWebsites" :key="index">
-          <a target="_blank" :href="formatUrl(item)">{{ item }}</a>
+        <li
+          v-for="(item, index) in resourcesWebsites"
+          :key="index"
+        >
+          <a
+            target="_blank"
+            :href="formatUrl(item)"
+          >{{ item }}</a>
         </li>
       </ul>
-      <span v-else class="not">暂无</span>
+      <span
+        v-else
+        class="not"
+      >暂无</span>
     </div>
 
     <div class="social">
@@ -176,12 +229,26 @@
         社交账号
       </h2>
 
-      <div v-if="resourcesSocialss.length !== 0" class="social-btn">
-        <div v-for="(item, index) in resourcesSocialss" :key="index" class="circle">
-          <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
+      <div
+        v-if="resourcesSocialss.length !== 0"
+        class="social-btn"
+      >
+        <div
+          v-for="(item, index) in resourcesSocialss"
+          :key="index"
+          class="circle"
+        >
+          <socialIcon
+            :show-tooltip="true"
+            :icon="item.type"
+            :content="item.content"
+          />
         </div>
       </div>
-      <span v-else class="not">暂无</span>
+      <span
+        v-else
+        class="not"
+      >暂无</span>
     </div>
 
     <div class="share">
@@ -197,67 +264,124 @@
       />
     </div>
 
-    <div class="related" @click="jumpToRelated">
+    <div
+      class="related"
+      @click="jumpToRelated"
+    >
       <h2 class="token-title">
         相关创作
       </h2>
-      <img class="arrow" src="@/assets/img/icon_arrow.svg" alt="" />
+      <img
+        class="arrow"
+        src="@/assets/img/icon_arrow.svg"
+        alt=""
+      >
     </div>
 
     <div class="minetoken-card">
       <div class="minetoken-tab">
-        <a :class="tabPage === 0 && 'active'" @click="tabPage = 0">
+        <a
+          :class="tabPage === 0 && 'active'"
+          @click="tabPage = 0"
+        >
           Fan票持仓
         </a>
-        <a :class="tabPage === 1 && 'active'" @click="tabPage = 1">
+        <a
+          :class="tabPage === 1 && 'active'"
+          @click="tabPage = 1"
+        >
           Fan票流水
         </a>
-        <a :class="tabPage === 2 && 'active'" @click="tabPage = 2">
+        <a
+          :class="tabPage === 2 && 'active'"
+          @click="tabPage = 2"
+        >
           流动金持仓
         </a>
-        <a :class="tabPage === 3 && 'active'" @click="tabPage = 3">
+        <a
+          :class="tabPage === 3 && 'active'"
+          @click="tabPage = 3"
+        >
           流动金流水
         </a>
       </div>
-      <div v-if="tabPage === 0 || tabPage === 2" class="minetoken-head">
-        <Dropdown class="dropdown" trigger="click" @on-click="toggleOrdering">
+      <div
+        v-if="tabPage === 0 || tabPage === 2"
+        class="minetoken-head"
+      >
+        <Dropdown
+          class="dropdown"
+          trigger="click"
+          @on-click="toggleOrdering"
+        >
           <div v-if="sort === 'amount-desc'">
             持仓量最高
-            <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            <img
+              class="arrow"
+              src="@/assets/newimg/arrow-s.svg"
+            >
           </div>
           <div v-else-if="sort === 'amount-asc'">
             持仓量最低
-            <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            <img
+              class="arrow reversed"
+              src="@/assets/newimg/arrow-s.svg"
+            >
           </div>
           <div v-else-if="sort === 'name-asc'">
             首字母升序
-            <img class="arrow reversed" src="@/assets/newimg/arrow-s.svg" />
+            <img
+              class="arrow reversed"
+              src="@/assets/newimg/arrow-s.svg"
+            >
           </div>
           <div v-else-if="sort === 'name-desc'">
             首字母降序
-            <img class="arrow" src="@/assets/newimg/arrow-s.svg" />
+            <img
+              class="arrow"
+              src="@/assets/newimg/arrow-s.svg"
+            >
           </div>
           <DropdownMenu slot="list">
-            <DropdownItem name="amount-desc" :selected="sort === 'amount-desc'">
+            <DropdownItem
+              name="amount-desc"
+              :selected="sort === 'amount-desc'"
+            >
               持仓量最高
             </DropdownItem>
-            <DropdownItem name="amount-asc" :selected="sort === 'amount-asc'">
+            <DropdownItem
+              name="amount-asc"
+              :selected="sort === 'amount-asc'"
+            >
               持仓量最低
             </DropdownItem>
-            <DropdownItem name="name-asc" :selected="sort === 'name-asc'">
+            <DropdownItem
+              name="name-asc"
+              :selected="sort === 'name-asc'"
+            >
               首字母升序
             </DropdownItem>
-            <DropdownItem name="name-desc" :selected="sort === 'name-desc'">
+            <DropdownItem
+              name="name-desc"
+              :selected="sort === 'name-desc'"
+            >
               首字母降序
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
-      <div v-if="tabPage === 0 || tabPage === 2" class="minetoken-head">
-        <div class="minetoken-title">持仓者</div>
-        <div class="minetoken-number">持仓量</div>
+      <div
+        v-if="tabPage === 0 || tabPage === 2"
+        class="minetoken-head"
+      >
+        <div class="minetoken-title">
+          持仓者
+        </div>
+        <div class="minetoken-number">
+          持仓量
+        </div>
       </div>
-      <slot></slot>
+      <slot />
     </div>
     <Share
       :share-modal-show="shareModalShow"

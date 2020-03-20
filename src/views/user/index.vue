@@ -2,16 +2,21 @@
   <userPage>
     <div class="list">
       <BasePull
-      :params="pull.params"
-      :api-url="pull.apiUrl"
-      :active-index="0"
-      :auto-request-time="pull.autoRequestTime"
-      :loading-text="pull.loadingText"
-      :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-      @getListData="getListDataTab"
-    >
-      <artcleCard class="list-card" v-for="item in pull.list" :key="item.id" :card="item"></artcleCard>
-    </BasePull>
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :active-index="0"
+        :auto-request-time="pull.autoRequestTime"
+        :loading-text="pull.loadingText"
+        :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
+        @getListData="getListDataTab"
+      >
+        <artcleCard
+          v-for="item in pull.list"
+          :key="item.id"
+          class="list-card"
+          :card="item"
+        />
+      </BasePull>
     </div>
   </userPage>
 </template>

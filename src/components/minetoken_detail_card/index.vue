@@ -2,14 +2,29 @@
   <div class="card">
     <div class="fl jsb">
       <div class="from-to">
-        <router-link class="info" :to="{ name: 'user-id', params: { id: card.from_uid } }" :class="!card.from_username && 'logout'">
+        <router-link
+          class="info"
+          :to="{ name: 'user-id', params: { id: card.from_uid } }"
+          :class="!card.from_username && 'logout'"
+        >
           {{ from_nickname }}
         </router-link>
-        <svg-icon icon-class="transfer" class="info-icon"></svg-icon>
-        <router-link class="info" :to="{ name: 'user-id', params: { id: card.to_uid } }" :class="!card.to_username && 'logout'">
+        <svg-icon
+          icon-class="transfer"
+          class="info-icon"
+        />
+        <router-link
+          class="info"
+          :to="{ name: 'user-id', params: { id: card.to_uid } }"
+          :class="!card.to_username && 'logout'"
+        >
           {{ to_nickname }}
         </router-link>
-        <txHash v-if="card.tx_hash" :hash="card.tx_hash" class="tx-hash" />
+        <txHash
+          v-if="card.tx_hash"
+          :hash="card.tx_hash"
+          class="tx-hash"
+        />
       </div>
       <span class="amount">{{ tokenAmount(card.amount) }}</span>
     </div>

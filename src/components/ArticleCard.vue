@@ -1,10 +1,21 @@
 <template>
-  <router-link tag="div" class="card" :to="{ name: 'p-id', params: { id: id } }">
+  <router-link
+    tag="div"
+    class="card"
+    :to="{ name: 'p-id', params: { id: id } }"
+  >
     <!-- 他人主页隐藏info -->
-    <div v-if="!isOtherUser" class="info">
+    <div
+      v-if="!isOtherUser"
+      class="info"
+    >
       <div class="avatar">
         <div class="avatar-img">
-          <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+          <img
+            :src="avatar"
+            alt="avatar"
+            :onerror="defaultAvatar"
+          >
         </div>
         <span>{{ article.nickname || article.author }}</span>
       </div>
@@ -12,20 +23,40 @@
     </div>
     <div class="container">
       <div class="img-outer">
-        <img v-if="cover" v-lazy="cover" :src="cover" alt="cover" class="img-inner" />
-        <img v-else src="@/assets/img/article_bg.svg" alt="cover" class="img-inner" />
-        <div class="full"></div>
-        <div v-if="article && article.status === 1" class="overlay">
+        <img
+          v-if="cover"
+          v-lazy="cover"
+          :src="cover"
+          alt="cover"
+          class="img-inner"
+        >
+        <img
+          v-else
+          src="@/assets/img/article_bg.svg"
+          alt="cover"
+          class="img-inner"
+        >
+        <div class="full" />
+        <div
+          v-if="article && article.status === 1"
+          class="overlay"
+        >
           <div class="circle">
             {{ $t('articleCard.deleted') }}
           </div>
         </div>
       </div>
       <div class="card-text">
-        <p class="title search-res" v-html="xssTitle"></p>
+        <p
+          class="title search-res"
+          v-html="xssTitle"
+        />
         <!-- 他人主页显示时间 -->
         <template v-if="!isOtherUser">
-          <p v-if="type === 'article'" class="read-ups">
+          <p
+            v-if="type === 'article'"
+            class="read-ups"
+          >
             {{ article.read }}
             {{ $t('articleCard.read') }}
             &nbsp;
@@ -37,9 +68,12 @@
               class="lock-img"
               src="@/assets/img/lock.png"
               alt="lock"
-            />
+            >
           </p>
-          <p v-else class="read-ups">
+          <p
+            v-else
+            class="read-ups"
+          >
             {{ article.sale }}{{ $t('articleCard.sale')
             }}<span>&nbsp;&nbsp;{{ articleEosValue || 0 }}{{ $t('articleCard.saleUnit') }}</span>
           </p>
@@ -52,7 +86,12 @@
       </div>
     </div>
     <!-- 只有文章卡才会有内容 -->
-    <p v-if="isSearchCard" v-clampy="3" class="content search-res" v-html="xssContent"></p>
+    <p
+      v-if="isSearchCard"
+      v-clampy="3"
+      class="content search-res"
+      v-html="xssContent"
+    />
   </router-link>
 </template>
 

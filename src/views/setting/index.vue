@@ -1,9 +1,16 @@
 /* eslint-disable no-shadow */
 <template>
-  <div v-loading="loading" class="edit-user mw">
+  <div
+    v-loading="loading"
+    class="edit-user mw"
+  >
     <BaseHeader :pageinfo="{ title: $t('edit') }">
       <div slot="right">
-        <span class="done-button" :class="!setProfile && 'no-modify'" @click="save">{{
+        <span
+          class="done-button"
+          :class="!setProfile && 'no-modify'"
+          @click="save"
+        >{{
           $t('done')
         }}</span>
       </div>
@@ -18,34 +25,65 @@
             :update-type="'avatar'"
             @doneImageUpload="doneImageUpload"
           >
-            <div slot="uploadButton" class="user-avatar">
-              <img slot="description" :src="avatar" alt="" :onerror="defaultAvatar" />
+            <div
+              slot="uploadButton"
+              class="user-avatar"
+            >
+              <img
+                slot="description"
+                :src="avatar"
+                alt=""
+                :onerror="defaultAvatar"
+              >
             </div>
           </img-upload>
         </div>
 
         <div class="card-block">
           <span>{{ $t('username') + '*' }}</span>
-          <input v-model="newNickName" :placeholder="$t('rule.strEnglishNumber', ['1-12'])" />
+          <input
+            v-model="newNickName"
+            :placeholder="$t('rule.strEnglishNumber', ['1-12'])"
+          >
         </div>
 
         <div class="card-block">
           <span>{{ $t('profile') + '*' }}</span>
-          <input v-model="newIntroduction" :placeholder="$t('rule.notExceedStr', ['20'])" />
+          <input
+            v-model="newIntroduction"
+            :placeholder="$t('rule.notExceedStr', ['20'])"
+          >
         </div>
       </div>
 
       <div class="edit-card-list">
-        <div v-for="(item, index) in about" :key="index" class="card-block">
+        <div
+          v-for="(item, index) in about"
+          :key="index"
+          class="card-block"
+        >
           <span>{{ '相关网站' + (index + 1) }}</span>
-          <input v-model="about[index]" placeholder="请填写网站链接" />
-          <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+          <input
+            v-model="about[index]"
+            placeholder="请填写网站链接"
+          >
+          <div
+            v-if="about.length > 1"
+            class="about-input-btn"
+            @click="abountLess(index)"
+          >
             <i class="el-icon-minus" />
           </div>
         </div>
-        <div v-if="about.length < 5" class="card-block">
+        <div
+          v-if="about.length < 5"
+          class="card-block"
+        >
           <span>{{ '相关网站' + (about.length + 1) }}</span>
-          <div class="about-input-btn add" @click="aboutAdd">
+          <div
+            class="about-input-btn add"
+            @click="aboutAdd"
+          >
             <i class="el-icon-plus" />
           </div>
         </div>
@@ -54,14 +92,23 @@
       <div class="edit-card-list">
         <div class="card-block">
           <span>社交账号</span>
-          <p class="note">仅用于信息展示</p>
+          <p class="note">
+            仅用于信息展示
+          </p>
         </div>
-        <div v-for="(item, index) in social" :key="index" class="card-block">
+        <div
+          v-for="(item, index) in social"
+          :key="index"
+          class="card-block"
+        >
           <div class="social-icons">
             <socialIcon :icon="item.symbol" />
           </div>
           <span>{{ item.name }}</span>
-          <input v-model="item.value" :placeholder="item.placeholder" />
+          <input
+            v-model="item.value"
+            :placeholder="item.placeholder"
+          >
         </div>
       </div>
     </div>
@@ -216,14 +263,14 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser']),
     checkSaveParams() {
-      // 中文 字母 数字 1-12
-      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
+      // 中文 字母 数字 1-50
+      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,50}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.newNickName)) {
-        throw this.$t('rule.strEnglishNumber', ['1-12'])
+        throw this.$t('rule.strEnglishNumber', ['1-50'])
       }
-      if (this.newIntroduction.length > 20) {
-        throw this.$t('rule.profileNotExceedStr', ['20'])
+      if (this.newIntroduction.length > 200) {
+        throw this.$t('rule.profileNotExceedStr', ['200'])
       }
       if (this.newEmail !== '' && !regEmail.test(this.newEmail)) {
         throw this.$t('rule.emailMessage')
@@ -354,7 +401,7 @@ export default {
       if (hash) this.avatar = this.$ossProcess(hash)
     },
     // 完成上传
-    async doneImageUpload(res) {
+    async doneImageUpload() {
       this.refreshUser()
       this.imgUploadDone += Date.now()
     },

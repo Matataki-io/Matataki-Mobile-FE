@@ -17,12 +17,22 @@
         >
           {{ articleData.nickname || articleData.username || '&nbsp;' }}
         </router-link>
-        <time itemprop="datePublished" :datetime="articleData.create_time">{{
+        <time
+          itemprop="datePublished"
+          :datetime="articleData.create_time"
+        >{{
           articleCreateTime
         }}</time>
-        <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">
+        <span
+          itemprops="provider"
+          itemscope=""
+          itemtype="https://www.matataki.io/"
+        >
           from <span itemprops="name">瞬MATATAKI</span>
-          <meta itemprops="url" content="https://www.matataki.io/" />
+          <meta
+            itemprops="url"
+            content="https://www.matataki.io/"
+          >
         </span>
         <p itemprops="hash">
           {{ articleData.hash }}
@@ -35,7 +45,11 @@
       itemprop="articleBody"
       v-html="compiledMarkdown"
     />
-    <article v-else class="markdown-body" itemprop="articleBody">
+    <article
+      v-else
+      class="markdown-body"
+      itemprop="articleBody"
+    >
       <p>该文章需持Fan票阅读,请返回原文查看 <a :href="id">立即跳转</a></p>
     </article>
   </main>

@@ -1,28 +1,34 @@
 <template>
-  <div class="tg-container" v-loading="loading">
+  <div
+    v-loading="loading"
+    class="tg-container"
+  >
     <TelegramLogin
-      @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
       request-access="write"
       radius="6"
+      @callback="login"
     />
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
-    <wechatTips v-if="isShowingTip" class="wechat-tips"
-     @dismiss="dismiss"></wechatTips>
+    <wechatTips
+      v-if="isShowingTip"
+      class="wechat-tips"
+      @dismiss="dismiss"
+    />
   </div>
 </template>
 
 <script>
 import TelegramLogin from '@/components/TelegramLogin'
 import wechatTips from '@/components/wechat_tips'
-import { getCookie, removeCookie } from '@/utils/cookie'
-import { mapActions, mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
+import { mapActions } from 'vuex'
 
 export default {
-  name: 'telegramLogin',
+  name: 'TelegramLogin',
   components: {
     TelegramLogin,
     wechatTips
@@ -75,7 +81,7 @@ export default {
           this.getMyUserData()
           // 和app.vue里面同步
           try {
-            signIn({
+            this.signIn({
               accessToken: getCookie('ACCESS_TOKEN'),
               idProvider: getCookie('idProvider')
             })
@@ -96,12 +102,13 @@ export default {
     },
     telegramBinding(user) {
       this.loading = true
+      let data = {
+        platform: 'telegram',
+        telegramParams: user,
+        telegramBotName: this.TELEGRAM_BOT_NAME
+      }
       this.$API
-        .accountBind({
-          platform: 'telegram',
-          telegramParams: user,
-          telegramBotName: this.TELEGRAM_BOT_NAME
-        })
+        .accountBind(data)
         .then(res => {
           if (res.code === 0) {
             this.$message.success(res.message)
@@ -115,7 +122,7 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          this.$message.error(`绑定失败${params.platform.toUpperCase()}`)
+          this.$message.error(`绑定失败${data.platform.toUpperCase()}`)
         })
         .finally(() => {
           this.loading = false

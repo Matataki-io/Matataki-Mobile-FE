@@ -4,10 +4,19 @@
       <!-- 推荐、不推荐和积分进度条 -->
       <div class="fl purple-box">
         <div>
-          <Progress :p="timeCount" :clicked="clicked">
+          <Progress
+            :p="timeCount"
+            :clicked="clicked"
+          >
             <template slot="text">
-              <span v-show="!clicked" class="center-text">+{{ readPoint }}</span>
-              <div v-show="type === 'great' || type === 'bullshit'" class="has-reward-box">
+              <span
+                v-show="!clicked"
+                class="center-text"
+              >+{{ readPoint }}</span>
+              <div
+                v-show="type === 'great' || type === 'bullshit'"
+                class="has-reward-box"
+              >
                 <router-link :to="{ name: 'point' }">
                   <span class="has-reward">+{{ points.all }}</span>
                 </router-link>
@@ -15,21 +24,46 @@
             </template>
           </Progress>
         </div>
-        <div class="icon-center fl" :class="renderIconSet('great')">
-          <svg-icon icon-class="great-solid" class="borderless-icon-btn" @click="like" />
-          <p class="tag">{{ token && likesFormat }}</p>
+        <div
+          class="icon-center fl"
+          :class="renderIconSet('great')"
+        >
+          <svg-icon
+            icon-class="great-solid"
+            class="borderless-icon-btn"
+            @click="like"
+          />
+          <p class="tag">
+            {{ token && likesFormat }}
+          </p>
         </div>
-        <div class="icon-center fl" :class="renderIconSet('bullshit')">
-          <svg-icon icon-class="bullshit-solid" class="borderless-icon-btn" @click="dislike" />
-          <p class="tag">{{ token && dislikesFormat }}</p>
+        <div
+          class="icon-center fl"
+          :class="renderIconSet('bullshit')"
+        >
+          <svg-icon
+            icon-class="bullshit-solid"
+            class="borderless-icon-btn"
+            @click="dislike"
+          />
+          <p class="tag">
+            {{ token && dislikesFormat }}
+          </p>
         </div>
       </div>
       <!-- 引用 -->
       <div class="icon-center icon-set">
-        <svg-icon icon-class="reference" class="borderless-icon-btn" @click="pushShare" />
+        <svg-icon
+          icon-class="reference"
+          class="borderless-icon-btn"
+          @click="pushShare"
+        />
       </div>
       <!-- 收藏 -->
-      <div class="icon-center" :class="bookmarkBtnClass">
+      <div
+        class="icon-center"
+        :class="bookmarkBtnClass"
+      >
         <svg-icon
           :icon-class="'bookmark-solid'"
           class="borderless-icon-btn"
@@ -38,7 +72,11 @@
       </div>
       <!-- 分享 -->
       <div class="icon-center icon-set">
-        <svg-icon icon-class="share2" class="borderless-icon-btn" @click="$emit('share')" />
+        <svg-icon
+          icon-class="share2"
+          class="borderless-icon-btn"
+          @click="$emit('share')"
+        />
       </div>
     </div>
   </footer>

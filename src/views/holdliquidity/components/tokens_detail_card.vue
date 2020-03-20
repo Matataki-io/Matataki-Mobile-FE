@@ -1,30 +1,55 @@
 <template>
   <div class="card">
     <div class="user-info">
-      <router-link class="avatar" :to="{ name: 'token-id', params: { id: card.token_id } }">
-        <avatar :src="cover" size="30px" />
+      <router-link
+        class="avatar"
+        :to="{ name: 'token-id', params: { id: card.token_id } }"
+      >
+        <avatar
+          :src="cover"
+          size="30px"
+        />
       </router-link>
       <div>
         <div class="nickname">
           {{ card.name }}
-          <txHash v-if="card.tx_hash" :hash="card.tx_hash" />
+          <txHash
+            v-if="card.tx_hash"
+            :hash="card.tx_hash"
+          />
         </div>
-        <div class="gray">{{ type }}</div>
-        <div class="time">{{ time }}</div>
+        <div class="gray">
+          {{ type }}
+        </div>
+        <div class="time">
+          {{ time }}
+        </div>
       </div>
     </div>
     <div class="token-info">
       <div>
-        <div :class="['fall-rise', amountClass(card.liquidity)]">{{ cnyAmount }}</div>
-        <div class="gray">CNY</div>
+        <div :class="['fall-rise', amountClass(card.liquidity)]">
+          {{ cnyAmount }}
+        </div>
+        <div class="gray">
+          CNY
+        </div>
       </div>
       <div>
-        <div :class="['fall-rise', amountClass(card.liquidity)]">{{ tokenAmount }}</div>
-        <div class="gray">{{ card.symbol }}</div>
+        <div :class="['fall-rise', amountClass(card.liquidity)]">
+          {{ tokenAmount }}
+        </div>
+        <div class="gray">
+          {{ card.symbol }}
+        </div>
       </div>
       <div>
-        <div :class="['fall-rise', tokenClass(card.liquidity)]">{{ liquidityAmount }}</div>
-        <div class="gray">流动金Token</div>
+        <div :class="['fall-rise', tokenClass(card.liquidity)]">
+          {{ liquidityAmount }}
+        </div>
+        <div class="gray">
+          流动金Token
+        </div>
       </div>
     </div>
     <!-- <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">

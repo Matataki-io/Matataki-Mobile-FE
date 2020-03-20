@@ -2,13 +2,18 @@
   <div class="card">
     <div class="info">
       <router-link :to="{ name: 'user-id', params: { id: card.id } }">
-        <avatar :src="cover"></avatar>
+        <avatar :src="cover" />
       </router-link>
-      <router-link class="username" :to="{ name: 'user-id', params: { id: card.id } }">
+      <router-link
+        class="username"
+        :to="{ name: 'user-id', params: { id: card.id } }"
+      >
         {{ card.username }}
       </router-link>
     </div>
-    <p class="card-date">{{ friendlyDate }}</p>
+    <p class="card-date">
+      {{ friendlyDate }}
+    </p>
   </div>
 </template>
 

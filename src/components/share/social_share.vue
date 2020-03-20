@@ -1,52 +1,89 @@
 <template>
   <div class="outer">
     <div class="share-btn-container">
-      <a :href="socialLink.weibo" target="_blank">
+      <a
+        :href="socialLink.weibo"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon weibo" icon-class="weibo" />
+            <svg-icon
+              class="share-icon weibo"
+              icon-class="weibo"
+            />
           </div>
           <p>{{ $t('p.shareWeibo') }}</p>
         </div>
       </a>
-      <a :href="socialLink.facebook" target="_blank">
+      <a
+        :href="socialLink.facebook"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon facebook" icon-class="facebook" />
+            <svg-icon
+              class="share-icon facebook"
+              icon-class="facebook"
+            />
           </div>
           <p>Facebook</p>
         </div>
       </a>
-      <a :href="socialLink.twitter" target="_blank">
+      <a
+        :href="socialLink.twitter"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon twitter" icon-class="twitter" />
+            <svg-icon
+              class="share-icon twitter"
+              icon-class="twitter"
+            />
           </div>
           <p>Twitter</p>
         </div>
       </a>
     </div>
     <div class="share-btn-container itop30">
-      <a :href="socialLink.qq" target="_blank">
+      <a
+        :href="socialLink.qq"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon qq" icon-class="qq" />
+            <svg-icon
+              class="share-icon qq"
+              icon-class="qq"
+            />
           </div>
           <p>QQ</p>
         </div>
       </a>
-      <a :href="socialLink.qzone" target="_blank">
+      <a
+        :href="socialLink.qzone"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon qzone" icon-class="qzone" />
+            <svg-icon
+              class="share-icon qzone"
+              icon-class="qzone"
+            />
           </div>
           <p>QQ空间</p>
         </div>
       </a>
-      <a v-if="showTg" :href="socialLink.telegram" target="_blank">
+      <a
+        v-if="showTg"
+        :href="socialLink.telegram"
+        target="_blank"
+      >
         <div class="share-btn">
           <div class="share-bg">
-            <svg-icon class="share-icon telegram" icon-class="tg" />
+            <svg-icon
+              class="share-icon telegram"
+              icon-class="tg"
+            />
           </div>
           <p>Telegram</p>
         </div>

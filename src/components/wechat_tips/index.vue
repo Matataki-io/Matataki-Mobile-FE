@@ -1,23 +1,53 @@
 <template>
   <div class="wechat-tips">
-    <div class="animated fadeInUp wechat-tips__head" v-if="isWeixin">
+    <div
+      v-if="isWeixin"
+      class="animated fadeInUp wechat-tips__head"
+    >
       点击微信右上角的
-      <svg-icon class="more" icon-class="more"></svg-icon>
+      <svg-icon
+        class="more"
+        icon-class="more"
+      />
       用浏览器打开此页面吧～
-      <svg-icon class="arrow" icon-class="arrow_top_right"></svg-icon>
+      <svg-icon
+        class="arrow"
+        icon-class="arrow_top_right"
+      />
     </div>
-    <div class="animated fadeInUp other-tips__head" v-else>
+    <div
+      v-else
+      class="animated fadeInUp other-tips__head"
+    >
       <h3>你是否正在应用内置浏览器查看本页？</h3>
       为了正常使用电报登录，请用第三方浏览器打开此页面
-      <svg-icon class="arrow" icon-class="arrow_top_right"></svg-icon>
+      <svg-icon
+        class="arrow"
+        icon-class="arrow_top_right"
+      />
     </div>
 
-    <img class="animated fadeInUp wechat-tips__img" src="@/assets/img/wechat_tips.png" alt="wechatTips">
+    <img
+      class="animated fadeInUp wechat-tips__img"
+      src="@/assets/img/wechat_tips.png"
+      alt="wechatTips"
+    >
     <div class="tip_bottom">
-      <img class="animated fadeInUp wechat-tips__more__img" src="@/assets/img/wechat_tips_more.png" alt="wechatTipsMore">
-      <p class="animated fadeInUp wechat-tips__more__text">点击 "在 浏览器 / Safari 打开"</p>
-      <el-button :type="buttonDetail.type" round @click="dismiss" :disabled="isWeixin">
-        {{buttonDetail.message}}
+      <img
+        class="animated fadeInUp wechat-tips__more__img"
+        src="@/assets/img/wechat_tips_more.png"
+        alt="wechatTipsMore"
+      >
+      <p class="animated fadeInUp wechat-tips__more__text">
+        点击 "在 浏览器 / Safari 打开"
+      </p>
+      <el-button
+        :type="buttonDetail.type"
+        round
+        :disabled="isWeixin"
+        @click="dismiss"
+      >
+        {{ buttonDetail.message }}
       </el-button>
     </div>
   </div>

@@ -2,7 +2,11 @@
   <div class="banner-container mw">
     <div class="banner">
       <div class="banner-logo">
-        <img class="logo" src="@/assets/img/index/logo.png" alt="logo" />
+        <img
+          class="logo"
+          src="@/assets/img/index/logo.png"
+          alt="logo"
+        >
       </div>
       <div class="banner-data">
         <!-- <div class="data">
@@ -39,7 +43,12 @@
         </div>
       </div>
       <div class="invite">
-        <el-button @click="share" type="primary" size="mini" class="invite-button">
+        <el-button
+          type="primary"
+          size="mini"
+          class="invite-button"
+          @click="share"
+        >
           邀请有奖
         </el-button>
       </div>
@@ -72,7 +81,7 @@ export default {
     }
   },
   computed: {
-  ...mapGetters(['isLogined'])
+    ...mapGetters(['isLogined'])
   },
   watch: {
     isLogined(newVal) {

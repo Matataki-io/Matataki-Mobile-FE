@@ -11,11 +11,32 @@
     @getListData="getListData"
   >
     <!-- <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card> -->
-      <template v-for="(item, index) in pull.list">
-        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="index"></shareOuterCard>
-        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="index"></sharePCard>
-        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" :toggleArticle="true" from="beref" class="list-card" :key="index" @getArticle="getArticle"></shareInsideCard>
-      </template>
+    <template v-for="(item, index) in pull.list">
+      <shareOuterCard
+        v-if="item.ref_sign_id === 0"
+        :key="index"
+        :card="item"
+        card-type="read"
+        class="list-card"
+      />
+      <sharePCard
+        v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+        :key="index"
+        :card="item"
+        card-type="read"
+        class="list-card"
+      />
+      <shareInsideCard
+        v-else-if="item.ref_sign_id && item.channel_id === 3"
+        :key="index"
+        :card="item"
+        card-type="read"
+        :toggle-article="true"
+        from="beref"
+        class="list-card"
+        @getArticle="getArticle"
+      />
+    </template>
   </BasePull>
 </template>
 
@@ -54,15 +75,15 @@ export default {
       // console.log('res2', res)
       // let arr = []
       // if (res) {
-        //   res.list.map(i => {
-        //   arr.push({
-        //     url: `${process.env.VUE_APP_PC_URL}/p/${i.id}`,
-        //     title: i.title,
-        //   })
-        // })
-        // this.pull.list = res.list
+      //   res.list.map(i => {
+      //   arr.push({
+      //     url: `${process.env.VUE_APP_PC_URL}/p/${i.id}`,
+      //     title: i.title,
+      //   })
+      // })
+      // this.pull.list = res.list
       // }
-        this.pull.list = res.list
+      this.pull.list = res.list
 
     },
     getArticle(idInt, popEvent) {

@@ -1,26 +1,63 @@
 <template>
-  <router-link :to="cardUrl" class="card" @click.native="toggle">
+  <router-link
+    :to="cardUrl"
+    class="card"
+    @click.native="toggle"
+  >
     <div class="card-info">
       <div class="card-info__user">
-        <avatar :src="avatarSrc" class="card-avatar" />
+        <avatar
+          :src="avatarSrc"
+          class="card-avatar"
+        />
         <span class="card-username">{{ username }}</span>
       </div>
-      <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+      <div
+        v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+        class="card-operate"
+      >
         <!-- <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" /> -->
-        <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        <svg-icon
+          class="icon"
+          icon-class="quote"
+          @click="ref(card.url, $event)"
+        />
       </div>
-
-
     </div>
     <div class="card-content">
-      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
-      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
-      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
-      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
-      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
+      <svg-icon
+        v-if="!shareCard"
+        class="icon"
+        icon-class="quotation_marks"
+      />
+      <svg-icon
+        v-if="!shareCard"
+        class="icon"
+        icon-class="quotation_marks"
+      />
+      <img
+        v-if="shareCard"
+        src="@/assets/img/quote.png"
+        alt="quote"
+        class="icon-img"
+      >
+      <img
+        v-if="shareCard"
+        src="@/assets/img/quote.png"
+        alt="quote"
+        class="icon-img"
+      >
+      <span
+        :class="!shareCard && 'card-sharehall'"
+        class="card-text"
+      >{{ card.summary || '暂无' }}</span>
     </div>
-    <span v-if="!shareCard && cardType === 'edit'" class="card-remove" @click="removeCard">
-      <i class="el-icon-close icon"></i>
+    <span
+      v-if="!shareCard && cardType === 'edit'"
+      class="card-remove"
+      @click="removeCard"
+    >
+      <i class="el-icon-close icon" />
     </span>
   </router-link>
 </template>
@@ -96,13 +133,13 @@ export default {
       else if (e && e.stopPropagation) e.stopPropagation()
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          customClass: 'message-box__mobile'
-        }).then(() => {
-          this.$emit('removeShareLink', this.idx)
-        }).catch(() => {})
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'message-box__mobile'
+      }).then(() => {
+        this.$emit('removeShareLink', this.idx)
+      }).catch(() => {})
       return false
     },
     toggle(e) {

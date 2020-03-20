@@ -1,11 +1,23 @@
 <template>
-  <div class="card" @click.stop="$router.push({ name: 'user-id', params: { id } })">
+  <div
+    class="card"
+    @click.stop="$router.push({ name: 'user-id', params: { id } })"
+  >
     <div class="avatar">
-      <img v-if="avatarList" v-lazy="avatarList" :src="avatarList" alt="avatar" />
+      <img
+        v-if="avatarList"
+        v-lazy="avatarList"
+        :src="avatarList"
+        alt="avatar"
+      >
     </div>
     <div class="card-list">
-      <p class="list-name">{{ list.nickname || list.username || list.followed }}</p>
-      <p class="list-des">{{ list.fans }}{{ this.$t('fans') }}</p>
+      <p class="list-name">
+        {{ list.nickname || list.username || list.followed }}
+      </p>
+      <p class="list-des">
+        {{ list.fans }}{{ this.$t('fans') }}
+      </p>
     </div>
     <span
       v-if="!list.is_follow"
@@ -19,8 +31,7 @@
       v-else
       class="follow-button"
       @click.stop="$emit('followOrUnfollowUser', { id, type: 0, index, indexList })"
-      >{{ this.$t('following') }}</span
-    >
+    >{{ this.$t('following') }}</span>
   </div>
 </template>
 

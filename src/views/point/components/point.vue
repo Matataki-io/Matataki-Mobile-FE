@@ -19,7 +19,7 @@
         v-for="(item, index) in point.list"
         :key="index + item.create_time"
         :asset="item"
-      ></pointCard>
+      />
     </BasePull>
   </div>
 </template>

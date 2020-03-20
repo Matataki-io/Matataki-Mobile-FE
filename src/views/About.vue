@@ -2,11 +2,22 @@
   <div class="about mw">
     <BaseHeader :pageinfo="{ title: '关于我们' }" />
     <div class="about-card">
-      <h1 class="about-title">{{ items.title }}</h1>
-      <p class="about-detail">{{ items.detail }}</p>
-      <div v-for="(item, idx) in items.content" :key="idx" class="about-content">
+      <h1 class="about-title">
+        {{ items.title }}
+      </h1>
+      <p class="about-detail">
+        {{ items.detail }}
+      </p>
+      <div
+        v-for="(item, idx) in items.content"
+        :key="idx"
+        class="about-content"
+      >
         <h3>{{ item.title }}</h3>
-        <p v-for="(itemChild, idxChild) in item.detail" :key="idxChild">
+        <p
+          v-for="(itemChild, idxChild) in item.detail"
+          :key="idxChild"
+        >
           {{ itemChild }}
         </p>
       </div>

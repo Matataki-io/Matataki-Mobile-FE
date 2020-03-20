@@ -5,7 +5,7 @@
       customize-header-bc="#fff"
       :has-bottom-border-line="true"
     />
-    <point></point>
+    <point />
   </div>
 </template>
 

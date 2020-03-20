@@ -6,10 +6,21 @@
       customize-header-bc="#fff"
     />
     <div class="outer-container">
-      <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner" />
+      <img
+        class="ma-banner"
+        src="@/assets/img/exchange-banner.png"
+        alt="banner"
+      >
       <div class="p-w">
-        <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
-          <el-tab-pane label="交易" name="#swap">
+        <el-tabs
+          v-model="tab"
+          type="border-card"
+          @tab-click="tabClick"
+        >
+          <el-tab-pane
+            label="交易"
+            name="#swap"
+          >
             <Swap />
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
@@ -17,7 +28,10 @@
               <a href="/tokens">跳转到我的Fan票页面</a>
             </div>
           </el-tab-pane>-->
-          <el-tab-pane label="流动金池" name="#pool">
+          <el-tab-pane
+            label="流动金池"
+            name="#pool"
+          >
             <Pool />
           </el-tab-pane>
         </el-tabs>
