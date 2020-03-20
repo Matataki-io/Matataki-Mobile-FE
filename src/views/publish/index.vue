@@ -291,7 +291,7 @@
           v-model="buyEditAuthority"
           size="small"
           style="margin-top: 10px;"
-          :disabled="prohibitEditingPrices"
+          disabled
         >
           设置支付
         </el-checkbox>
