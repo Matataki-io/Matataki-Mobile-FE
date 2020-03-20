@@ -46,7 +46,7 @@
             class="fl"
           >
             <div class="fl price">
-              阅读权限
+              解锁本文阅读权限
               <svg-icon
                 icon-class="view"
                 class="avatar"
