@@ -904,7 +904,7 @@ export default {
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
       await this.$API
-        .getIpfsData(hash)
+        .getIpfsData(hash, true)
         .then(res => {
           if (res.code === 0) {
             // 设置文章内容
