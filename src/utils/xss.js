@@ -140,7 +140,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'p',
-      attributes: ['style']
+      attributes: ['style', 'class', 'hold']
     },
     {
       tag: 'hr',
