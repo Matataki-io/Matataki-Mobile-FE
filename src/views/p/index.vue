@@ -1849,5 +1849,10 @@ export default {
   * {
     max-width: 100%;
   }
+  /deep/ .unlock-prompt {
+    background-color: #F7F7F7;
+    padding: 20px;
+    border-radius:6px;
+  }
 }
 </style>
