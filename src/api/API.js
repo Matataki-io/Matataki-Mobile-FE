@@ -154,8 +154,9 @@ export default {
     })
   },
   // 通过hash获取文章内容
-  getIpfsData(hash) {
-    return request.get(`/post/ipfs/${hash}`)
+  getIpfsData(hash, edit = false) {
+    const params = edit ? { params: {edit: true} } : {}
+    return request.get(`/post/ipfs/${hash}`, params)
   },
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
