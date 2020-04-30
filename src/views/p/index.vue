@@ -737,6 +737,9 @@ import { getCookie } from '@/utils/cookie'
 import quote from './quote.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
+import lockSvg from '@/assets/img/lock.svg'
+import unlockSvg from '@/assets/img/unlock.svg'
+
 const RewardStatus = {
   // 0=加载中,1=未打赏 2=已打赏, -1未登录
   NOT_LOGGINED: -1,
@@ -1023,12 +1026,18 @@ export default {
       if (!newVal) {
         this.getArticleInfo(this.id)
       }
+    },
+    compiledMarkdown() {
+      this.setAllHideContentStyle()
     }
   },
   created() {
     this.getArticleInfo(this.id) // 得到文章信息
   },
   mounted() {
+    // read语法的解锁方法，需要使用onclick触发
+    window.unlock = (need, hold) => this.unlock(need, hold)
+
     this.$navigation.once('back', (to, from) => {
       if (from.route.name === 'order-id') {
         window.location.reload()
@@ -1673,14 +1682,18 @@ export default {
           else this.form.output = utils.fromDecimal(needTokenAmount - amount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = data
+            this.getInputAmountError = error
           }
         } else {
           const needTokenAmount = this.article.tokens[0].amount
           this.form.output = utils.fromDecimal(needTokenAmount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = data
+            this.getInputAmountError = error
           }
         }
       }
@@ -1700,7 +1713,9 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = data
+            this.getEditInputAmountError = error
           }
         } else {
           // 获取需要多少token
@@ -1709,34 +1724,47 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = data
+            this.getEditInputAmountError = error
           }
         }
       }
     },
 
-    async getInputAmount(inputTokenId, outputTokenId, outputAmount, errorTag) {
+    async getInputAmount(inputTokenId, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
       try {
         let res = await this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount)
         this.payBtnDisabled = false
         if (res.code === 0) {
-          this[errorTag] = ''
           // rmb向上取整
           if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
-            return parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+            return {
+              data: parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2),
+              error: ''
+            }
           } else {
-            return parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+            return {
+              data: parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4),
+              error: ''
+            }
           }
         } else {
-          this[errorTag] = res.message
+          
           console.error(res.message)
-          return ''
+          return {
+            data: '',
+            error: res.message
+          }
         }
       } catch(err) {
         console.error(err)
-        return ''
+        return {
+          data: '',
+          error: ''
+        }
       }
     },
     hideClient() {
@@ -1829,6 +1857,116 @@ export default {
         }).catch(err => {
           console.log('err', err)
         })
+    },
+    /** 遍历所有的持币可见内容 */
+    setAllHideContentStyle() {
+      this.$nextTick(() => {
+        const unlockPrompts = document.getElementsByClassName('unlock-prompt')
+        const unlockContents = document.getElementsByClassName('unlock-content')
+
+        for(let i = 0; i < unlockPrompts.length; i++) {
+          this.setUnlockPromptStyle(unlockPrompts[i])
+        }
+        for(let i = 0; i < unlockContents.length; i++) {
+          this.setUnlockContentStyle(unlockContents[i])
+        }
+      })
+    },
+    /** 持币可见未解锁的样式 */
+    setUnlockPromptStyle(unlockPrompt) {
+      const need = JSON.parse(unlockPrompt.getAttribute('data-need'))
+      if(!need) return
+      const hold = JSON.parse(unlockPrompt.getAttribute('data-hold')) || []
+
+      // 条件列表
+      let list = ''
+      for(let i = 0; i < need.length; i++) {
+        const difference = hold[i] ? (need[i].amount - hold[i].amount) : need[i].amount
+        list += `
+        <div class="condition">
+          <p style="flex: 1">
+            持有：${need[i].amount / 10000 }
+            <a href="/token/${need[i].id}">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            ${need[i].symbol}(${need[i].name})
+            </a>
+          </p>
+          <p class="condition-difference">
+            ${ difference < 1 && hold[i] ? '已持有' : '还需持有' }${ (difference < 1 && hold[i] ? hold[i].amount : difference) / 10000 } ${need[i].symbol}
+          </p>
+        </div>
+        `
+      }
+      // 整体的html
+      unlockPrompt.innerHTML = `
+        <div class="lock-bg">
+          <img
+            src="${lockSvg}" alt="lock"
+          />
+        </div>
+        ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<div class="condition-line"></div> ' : ''}
+        <div>
+          <div class="fl condition-top">
+            <h4 class="condition-title">
+              隐藏内容，满足以下条件解锁:
+            </h4>
+            <button class="condition-button" onclick='unlock(${JSON.stringify(need)},${JSON.stringify(hold)})'>
+              解锁
+            </button>
+          </div>
+          ${list}
+        </div>`
+    },
+    /** 持币可见解锁后的样式 */
+    setUnlockContentStyle(unlockContent) {
+      unlockContent.innerHTML = `
+        <div class="lock-bg">
+          <img
+            src="${unlockSvg}" alt="lock"
+          />
+        </div>
+      ` + unlockContent.innerHTML
+    },
+    /** 买Fan票，解锁持币可见 */
+    async unlock (need, hold) {
+      if(need.length > 1) return this.$message({
+        duration: 10000,
+        showClose: true,
+        type: 'warning',
+        message: '系统暂不支持同时购买多种Fan票，请点击Fan票名称前往详情页手动购买。',
+      })
+      if(!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if(hold.length < 1) return this.$message.warning('数据加载中，稍后重试。')
+
+      const loading = this.$loading({
+        lock: true,
+        text: 'Getting the price ...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      try {
+        const difference = need[0].amount - hold[0].amount
+        const {data, error} = await this.getInputAmount(0, need[0].id, difference / 10000)
+        loading.close()
+        if(error) return this.$message.error(error)
+        this.$store.dispatch('order/createOrder', {
+          input: data,
+          output: need[0].amount / 10000,
+          outputToken: {
+            decimals: 4,
+            id: need[0].id
+          },
+          type: 'buy_token_output',
+          needToken: true,
+          needPrice: false,
+          signId: this.id
+        })
+      }
+      catch(e) {
+        loading.close()
+        console.error(e)
+        this.$message.error('订单创建失败')
+      }
     }
   }
 }
@@ -1849,10 +1987,91 @@ export default {
   * {
     max-width: 100%;
   }
-  /deep/ .unlock-prompt {
+  .unlock {
     background-color: #F7F7F7;
-    padding: 20px;
+    margin: 20px 0;
+    padding: 16px;
     border-radius:6px;
+    position: relative;
+    .lock-bg {
+      background-color: #B2B2B2;
+      width:14px;
+      height:14px;
+      border-radius:6px 0px 6px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      img {
+        height:8px;
+        background-color: #fff0;
+        color: #fff;
+      }
+    }
+  }
+  /deep/ .unlock-content {
+    .unlock();
+  }
+  /deep/ .unlock-prompt {
+    .unlock();
+    .condition-top {
+      align-items: baseline;
+      .condition-title {
+        margin-top: 10px;
+        font-size:14px;
+        flex: 1;
+      }
+      .condition-button {
+        background-color: #542DE0;
+        width:60px;
+        height:25px;
+        border-radius:6px;
+        font-size:14px;
+        line-height:20px;
+        color:white;
+        border:none;
+      }
+    }
+    .condition-line {
+      background-color: #DBDBDB;
+      width: 100%;
+      height: 1px;
+      margin: 10px 0;
+    }
+    .condition {
+      margin-bottom: 16px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+      p {
+        color: #B2B2B2;
+        font-size:14px;
+        line-height:22px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        &.condition-difference {
+          font-size:12px;
+          line-height:20px;
+        }
+      }
+      a {
+        font-size:14px;
+        color: #542DE0;
+        line-height:22px;
+        text-decoration: blink;
+        display: flex;
+        align-items: center;
+      }
+      img {
+        width:16px;
+        height:16px;
+        border-radius:50%;
+        margin: 0 5px;
+      }
+    }
   }
 }
 </style>
