@@ -1035,9 +1035,9 @@ export default {
     this.getArticleInfo(this.id) // 得到文章信息
   },
   mounted() {
-    window.unlock = () => {
-      this.$message.warning('一键解锁功能正在开发中')
-    }
+    // read语法的解锁方法，需要使用onclick触发
+    window.unlock = (need, hold) => this.unlock(need, hold)
+
     this.$navigation.once('back', (to, from) => {
       if (from.route.name === 'order-id') {
         window.location.reload()
@@ -1682,14 +1682,18 @@ export default {
           else this.form.output = utils.fromDecimal(needTokenAmount - amount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = data
+            this.getInputAmountError = error
           }
         } else {
           const needTokenAmount = this.article.tokens[0].amount
           this.form.output = utils.fromDecimal(needTokenAmount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = data
+            this.getInputAmountError = error
           }
         }
       }
@@ -1709,7 +1713,9 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = data
+            this.getEditInputAmountError = error
           }
         } else {
           // 获取需要多少token
@@ -1718,34 +1724,47 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
+            const { data, error } = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = data
+            this.getEditInputAmountError = error
           }
         }
       }
     },
 
-    async getInputAmount(inputTokenId, outputTokenId, outputAmount, errorTag) {
+    async getInputAmount(inputTokenId, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
       try {
         let res = await this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount)
         this.payBtnDisabled = false
         if (res.code === 0) {
-          this[errorTag] = ''
           // rmb向上取整
           if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
-            return parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+            return {
+              data: parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2),
+              error: ''
+            }
           } else {
-            return parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+            return {
+              data: parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4),
+              error: ''
+            }
           }
         } else {
-          this[errorTag] = res.message
+          
           console.error(res.message)
-          return ''
+          return {
+            data: '',
+            error: res.message
+          }
         }
       } catch(err) {
         console.error(err)
-        return ''
+        return {
+          data: '',
+          error: ''
+        }
       }
     },
     hideClient() {
@@ -1873,7 +1892,7 @@ export default {
             </a>
           </p>
           <p class="condition-difference">
-            ${ difference < 1 && hold[i] ? '已持有' : '还需持有' }${ difference < 1 && hold[i] ? hold[i].amount : difference / 10000 } ${need[i].symbol}
+            ${ difference < 1 && hold[i] ? '已持有' : '还需持有' }${ (difference < 1 && hold[i] ? hold[i].amount : difference) / 10000 } ${need[i].symbol}
           </p>
         </div>
         `
@@ -1891,7 +1910,7 @@ export default {
             <h4 class="condition-title">
               隐藏内容，满足以下条件解锁:
             </h4>
-            <button class="condition-button" onclick="unlock()">
+            <button class="condition-button" onclick='unlock(${JSON.stringify(need)},${JSON.stringify(hold)})'>
               解锁
             </button>
           </div>
@@ -1907,6 +1926,47 @@ export default {
           />
         </div>
       ` + unlockContent.innerHTML
+    },
+    /** 买Fan票，解锁持币可见 */
+    async unlock (need, hold) {
+      if(need.length > 1) return this.$message({
+        duration: 10000,
+        showClose: true,
+        type: 'warning',
+        message: '系统暂不支持同时购买多种Fan票，请点击Fan票名称前往详情页手动购买。',
+      })
+      if(!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if(hold.length < 1) return this.$message.warning('数据加载中，稍后重试。')
+
+      const loading = this.$loading({
+        lock: true,
+        text: 'Getting the price ...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      try {
+        const difference = need[0].amount - hold[0].amount
+        const {data, error} = await this.getInputAmount(0, need[0].id, difference / 10000)
+        loading.close()
+        if(error) return this.$message.error(error)
+        this.$store.dispatch('order/createOrder', {
+          input: data,
+          output: need[0].amount / 10000,
+          outputToken: {
+            decimals: 4,
+            id: need[0].id
+          },
+          type: 'buy_token_output',
+          needToken: true,
+          needPrice: false,
+          signId: this.id
+        })
+      }
+      catch(e) {
+        loading.close()
+        console.error(e)
+        this.$message.error('订单创建失败')
+      }
     }
   }
 }
