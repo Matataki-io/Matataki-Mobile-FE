@@ -986,19 +986,22 @@ export default {
       await this.$API
         .getDraft({ id })
         .then(res => {
-          this.fissionNum = res.fission_factor ? res.fission_factor / 1000 : 2
-          this.cover = res.cover
-          this.title = res.title
-          this.markdownData = res.content
-          this.id = id
-          this.isOriginal = Boolean(res.is_original)
-          this.commentPayPoint = res.comment_pay_point
-
-          this.setTag(res)
+          if (res.code === 0) {
+            let {data} = res
+            this.fissionNum = data.fission_factor ? data.fission_factor / 1000 : 2
+            this.cover = data.cover
+            this.title = data.title
+            this.markdownData = data.content
+            this.id = id
+            this.isOriginal = Boolean(data.is_original)
+            this.commentPayPoint = data.comment_pay_point
+            this.setTag(res.data)
+          } else {
+            this.$message.error(res.message)
+          }
         })
         .catch(err => {
           console.log(err)
-          this.$message.error('获取草稿内容失败')
         })
         .finally(() => {
           this.autoUpdateDfaft = true
@@ -1152,9 +1155,13 @@ export default {
     // 自动创建草稿
     async autoCreateDraft(article) {
       this.saveDraft = '保存中...'
+      console.log(this.tagCards)
       // 设置文章标签 🏷️
       this.allowLeave = true
-      article.tags = this.setArticleTag(this.tagCards)
+
+      const tags = this.tagCards.filter(i => i.status)
+      // article.tags = this.setArticleTag(this.tagCards)  
+      article.tags = tags.map(i => i.name)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       await this.$API
@@ -1226,8 +1233,11 @@ export default {
       this.allowLeave = true
 
       this.saveDraft = '保存中...'
+
+      const tags = this.tagCards.filter(i => i.status)
+      // article.tags = this.setArticleTag(this.tagCards)  
+      article.tags = tags.map(i => i.name)
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       try {
