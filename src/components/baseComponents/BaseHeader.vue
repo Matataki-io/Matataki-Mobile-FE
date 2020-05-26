@@ -26,8 +26,8 @@
       slot="title"
       :class="[scrollShowTitle && 'scroll', scrollShowTitle && scrollToggleStatus && 'scroll-show']"
       class="title"
+      v-html="pageinfo.title"
     >
-      {{ pageinfo.title }}
     </p>
     <!-- <img v-else class="logo" src="@/assets/img/logo.png" alt="logo" /> -->
     <div
